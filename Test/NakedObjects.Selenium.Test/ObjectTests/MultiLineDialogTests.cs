@@ -14,9 +14,10 @@ using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class MultiLineDialogTestsRoot : AWTest {
+public abstract class MultiLineDialogTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void MultiLineMenuAction() {
         Debug.WriteLine(nameof(MultiLineMenuAction));
         GeminiUrl("home?m1=SpecialOfferRepository");
@@ -84,6 +85,7 @@ public abstract class MultiLineDialogTestsRoot : AWTest {
         Assert.AreEqual(description, row1.Text);
     }
 
+    [TestMethod]
     public virtual void MultiLineObjectAction() {
         Debug.WriteLine(nameof(MultiLineObjectAction));
         GeminiUrl("object?i1=View&r1=1&o1=___1.Vendor--1504&as1=open");
@@ -136,6 +138,7 @@ public abstract class MultiLineDialogTestsRoot : AWTest {
         WaitForTextEquals(".summary .details", 0, "2 Items");
     }
 
+    [TestMethod]
     public virtual void MultiLineObjectActionInCollection() {
         Debug.WriteLine(nameof(MultiLineObjectActionInCollection));
         GeminiUrl("object?i1=View&r1=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
@@ -204,6 +207,7 @@ public abstract class MultiLineDialogTestsRoot : AWTest {
         WaitForTextEquals(".summary .details", 0, "2 Items");
     }
 
+    [TestMethod]
     //#53
     public virtual void InvokeMLDFromObjectInRightPane() {
         Debug.WriteLine(nameof(InvokeMLDFromObjectInRightPane));
@@ -214,41 +218,10 @@ public abstract class MultiLineDialogTestsRoot : AWTest {
     }
 }
 
-#region Mega tests
-
-public abstract class MegaMultiLineDialogTestsRoot : MultiLineDialogTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void MultiLineDialogTests() {
-        MultiLineMenuAction();
-        MultiLineObjectAction();
-        InvokeMLDFromObjectInRightPane();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicMultiLineDialogTests() {
-        //MultiLineObjectActionInCollection();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaMultiLineDialogTestsChrome : MegaMultiLineDialogTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class MultiLineDialogTestsChrome : MultiLineDialogTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion

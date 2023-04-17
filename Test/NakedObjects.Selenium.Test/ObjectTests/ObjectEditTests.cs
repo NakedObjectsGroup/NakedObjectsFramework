@@ -16,9 +16,10 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class ObjectEditTestsRoot : AWTest {
+public abstract class ObjectEditTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void EditPropertyInline_usingEditAttribute() {
         GeminiUrl("object?o1=___1.SpecialOffer--10");
         var minQty = WaitForCssNo(".property", 7);
@@ -38,6 +39,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         WaitForTextEquals(".property .value", 7, "1");
     }
 
+    [TestMethod]
     public virtual void EditAttributeHonoursValidationMethod() {
         GeminiUrl("object?o1=___1.SpecialOffer--10");
         var minQty = WaitForCssNo(".property", 7);
@@ -49,6 +51,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         wait.Until(el => el.FindElement(By.CssSelector(".parameter .validation")).Text == "Min Qty must be > 0");
     }
 
+    [TestMethod]
     public virtual void EditAttribute_ValidateOnMultipleProperties() {
         GeminiUrl("object?i1=View&o1=___1.WorkOrder--26138");
         var prop = WaitForCssNo(".property", 5);
@@ -63,6 +66,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         wait.Until(el => el.FindElement(By.CssSelector(".co-validation")).Text == "Due date is before start date");
     }
 
+    [TestMethod]
     public virtual void ObjectEditChangeScalar() {
         var rand = new Random();
         GeminiUrl("object?o1=___1.Product--870");
@@ -88,6 +92,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         return int.TryParse(s, out temp);
     }
 
+    [TestMethod]
     public virtual void ObjectEditCancelLeavesUnchanged() {
         var rand = new Random();
         GeminiUrl("object?o1=___1.Product--870");
@@ -119,6 +124,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[17].Text == "Days To Manufacture:\r\n" + oldDays);
     }
 
+    [TestMethod]
     public virtual void LocalValidationOfMandatoryFields() {
         GeminiUrl("object?i1=Edit&o1=___1.SpecialOffer--11");
         SaveButton().AssertIsEnabled();
@@ -133,6 +139,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Description; Start Date; ");
     }
 
+    [TestMethod]
     public virtual void LocalValidationOfMaxLength() {
         GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
         ClearFieldThenType("#title1", "Generalis");
@@ -144,6 +151,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         SaveButton().AssertIsEnabled();
     }
 
+    [TestMethod]
     public virtual void LocalValidationOfRegex() {
         GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
         ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
@@ -155,6 +163,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         SaveButton().AssertIsEnabled();
     }
 
+    [TestMethod]
     public virtual void RangeValidationOnNumber() {
         GeminiUrl("object?i1=Edit&o1=___1.Product--817");
         WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
@@ -179,6 +188,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
     }
 
+    [TestMethod]
     public virtual void RangeValidationOnDate() {
         GeminiUrl("object?i1=Edit&o1=___1.Product--448");
         WaitForView(Pane.Single, PaneType.Object, "Editing - Lock Nut 13");
@@ -205,6 +215,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
     }
 
+    [TestMethod]
     public virtual void ObjectEditChangeEnum() {
         GeminiUrl("object?i1=View&o1=___1.Person--6748");
         wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
@@ -218,6 +229,8 @@ public abstract class ObjectEditTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
     }
 
+    [TestMethod]
+    [Ignore("#502")]
     public virtual void ObjectEditChangeDateTime() {
         GeminiUrl("object?o1=___1.Product--870");
         EditObject();
@@ -246,6 +259,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         Assert.AreEqual("Sell End Date:\r\n" + sellEnd.ToString("d MMM yyyy"), properties[19].Text); //...but output format standardised.
     }
 
+    [TestMethod]
     public virtual void CanSetAndClearAnOptionalDropDown() {
         GeminiUrl("object?o1=___1.WorkOrder--54064");
         WaitForView(Pane.Single, PaneType.Object);
@@ -261,6 +275,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         Assert.AreEqual("Scrap Reason:", prop.Text);
     }
 
+    [TestMethod]
     public virtual void ObjectEditPicksUpLatestServerVersion() {
         GeminiUrl("object?o1=___1.Person--8410&as1=open");
         WaitForView(Pane.Single, PaneType.Object);
@@ -278,12 +293,14 @@ public abstract class ObjectEditTestsRoot : AWTest {
         Assert.AreEqual(newValue, WaitForCss(".property:nth-child(6) .value").Text);
     }
 
+    [TestMethod]
     public virtual void ViewModelEditOpensInEditMode() {
         GeminiUrl("object?i1=Form&r1=1&o1=___1.EmailTemplate----------New");
         WaitForCss("input#to1");
         WaitForCss("input#from1");
     }
 
+    [TestMethod]
     public virtual void MultiLineText() {
         GeminiUrl("object?o1=___1.SalesOrderHeader--44440&as1=open");
         WaitForView(Pane.Single, PaneType.Object);
@@ -311,6 +328,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
                         $"{ran1}\r\n{ran2}\r\n{ran3}");
     }
 
+    [TestMethod]
     public virtual void ObjectEditChangeChoices() {
         GeminiUrl("object?o1=___1.Product--870");
         EditObject();
@@ -327,6 +345,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
     }
 
+    [TestMethod]
     public virtual void ObjectEditChangeConditionalChoices() {
         GeminiUrl("object?o1=___1.Product--870");
         EditObject();
@@ -392,6 +411,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
     }
 
+    [TestMethod]
     public virtual void CoValidationOnSavingChanges() {
         GeminiUrl("object?o1=___1.WorkOrder--43134&i1=Edit");
         WaitForView(Pane.Single, PaneType.Object);
@@ -402,6 +422,7 @@ public abstract class ObjectEditTestsRoot : AWTest {
         WaitForMessage("StartDate must be before DueDate");
     }
 
+    [TestMethod]
     // test for #108
     public virtual void ObjectEditScalarAutocomplete() {
         GeminiUrl("object?i1=Edit&o1=___1.Vendor--1686");
@@ -411,156 +432,10 @@ public abstract class ObjectEditTestsRoot : AWTest {
     }
 }
 
-public abstract class ObjectEditTests : ObjectEditTestsRoot {
-    [TestMethod]
-    public override void EditAttribute_ValidateOnMultipleProperties() {
-        base.EditAttribute_ValidateOnMultipleProperties();
-    }
-
-    [TestMethod]
-    public override void EditAttributeHonoursValidationMethod() {
-        base.EditAttributeHonoursValidationMethod();
-    }
-
-    [TestMethod]
-    public override void EditPropertyInline_usingEditAttribute() {
-        base.EditPropertyInline_usingEditAttribute();
-    }
-
-    [TestMethod]
-    public override void ObjectEditChangeScalar() {
-        base.ObjectEditChangeScalar();
-    }
-
-    [TestMethod]
-    public override void LocalValidationOfMandatoryFields() {
-        base.LocalValidationOfMandatoryFields();
-    }
-
-    [TestMethod]
-    public override void LocalValidationOfMaxLength() {
-        base.LocalValidationOfMaxLength();
-    }
-
-    [TestMethod]
-    public override void LocalValidationOfRegex() {
-        base.LocalValidationOfRegex();
-    }
-
-    [TestMethod]
-    public override void RangeValidationOnNumber() {
-        base.RangeValidationOnNumber();
-    }
-
-    [TestMethod]
-    public override void RangeValidationOnDate() {
-        base.RangeValidationOnDate();
-    }
-
-    [TestMethod]
-    public override void ObjectEditChangeEnum() {
-        base.ObjectEditChangeEnum();
-    }
-
-    [TestMethod]
-    public override void ObjectEditChangeDateTime() {
-        base.ObjectEditChangeDateTime();
-    }
-
-    [TestMethod]
-    public override void CanSetAndClearAnOptionalDropDown() {
-        base.CanSetAndClearAnOptionalDropDown();
-    }
-
-    [TestMethod]
-    public override void ObjectEditPicksUpLatestServerVersion() {
-        base.ObjectEditPicksUpLatestServerVersion();
-    }
-
-    [TestMethod]
-    public override void ViewModelEditOpensInEditMode() {
-        base.ViewModelEditOpensInEditMode();
-    }
-
-    [TestMethod]
-    public override void MultiLineText() {
-        base.MultiLineText();
-    }
-}
-
-#region browsers specific subclasses
-
-//[TestClass]
-public class ObjectEditPageTestsChrome : ObjectEditTests {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class ObjectEditTestsChrome : ObjectEditTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
-}
-
-#endregion
-
-#region Mega tests
-
-public abstract class MegaObjectEditTestsRoot : ObjectEditTestsRoot {
-    [TestMethod] //Mega
-    //[Priority(0)]
-    public void ObjectEditTest() {
-        EditAttribute_ValidateOnMultipleProperties();
-        EditAttributeHonoursValidationMethod();
-        //EditPropertyInline_usingEditAttribute();
-        ObjectEditChangeScalar();
-        LocalValidationOfMandatoryFields();
-        LocalValidationOfMaxLength();
-        LocalValidationOfRegex();
-        RangeValidationOnNumber();
-        ObjectEditChangeEnum();
-        CanSetAndClearAnOptionalDropDown();
-        ObjectEditPicksUpLatestServerVersion();
-        ViewModelEditOpensInEditMode();
-        MultiLineText();
-        ObjectEditChangeChoices();
-        ObjectEditChangeConditionalChoices();
-        ObjectEditScalarAutocomplete();
-    }
-
-    [TestMethod]
-    //[Priority(-1)]
-    public void ProblematicObjectEditTests() {
-        ObjectEditCancelLeavesUnchanged();
-        RangeValidationOnDate();
-        ObjectEditChangeDateTime();
-        CoValidationOnSavingChanges();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaObjectEditTestsChrome : MegaObjectEditTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
