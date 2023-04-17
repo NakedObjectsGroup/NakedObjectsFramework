@@ -15,9 +15,10 @@ using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
-public abstract class ObjectViewTestsRoot : AWTest {
+public abstract class ObjectViewTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void ActionsAlreadyOpen() {
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
@@ -33,6 +34,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual("Recent Orders", actions[6].GetAttribute("value"));
     }
 
+    [TestMethod]
     public virtual void OpenActionsMenuNotAlreadyOpen() {
         GeminiUrl("object?o1=___1.Customer--309");
         WaitForView(Pane.Single, PaneType.Object, "The Gear Store, AW00000309");
@@ -41,6 +43,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         GetObjectActions(7);
     }
 
+    [TestMethod]
     public virtual void OpenAndCloseSubMenusTo3Levels() {
         GeminiUrl("object?i1=View&o1=___1.ProductInventory--320--1&as1=open");
         AssertActionNotDisplayed("Action0");
@@ -74,6 +77,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         AssertActionNotDisplayed("Action4");
     }
 
+    [TestMethod]
     public virtual void Properties() {
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
@@ -89,6 +93,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"), properties[3].Text);
     }
 
+    [TestMethod]
     public virtual void DisplayAsPropertyOnALocalInstanceMethod() {
         GeminiUrl("object?o1=___1.SpecialOffer--2");
         WaitForTitle("Volume Discount 11 to 14");
@@ -96,6 +101,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual("1,095", days);
     }
 
+    [TestMethod]
     public virtual void Collections() {
         GeminiUrl("object?i1=View&o1=___1.Product--821");
         wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
@@ -103,6 +109,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
     }
 
+    [TestMethod]
     public virtual void CollectionEagerlyRendered() {
         GeminiUrl("object?r1=0&i1=View&o1=___1.Product--464");
         wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
@@ -114,6 +121,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForCss("tbody tr", 3);
     }
 
+    [TestMethod]
     public virtual void NonNavigableReferenceProperty() {
         //Tests properties of types that have had the NonNavigable Facet added to them 
         //(in this case by the custom AdventureWorksNotNavigableFacetFactory)
@@ -134,6 +142,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual(0, links.Count);
     }
 
+    [TestMethod]
     public virtual void DateAndCurrencyProperties() {
         GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
         wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
@@ -150,6 +159,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual("Sub Total:\r\n£819.31", properties[11].Text);
     }
 
+    [TestMethod]
     public virtual void ConcurrencyProperties() {
         GeminiUrl("object?i1=View&o1=___1.Product--355");
         wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
@@ -164,6 +174,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.IsTrue(properties[22].Text.EndsWith(":01:36")); //Only check mm:ss to avoid TimeZone difference server vs. client
     }
 
+    [TestMethod]
     public virtual void TableViewHonouredOnCollection() {
         GeminiUrl("object?i1=View&o1=___1.Employee--83&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
         var cols = WaitForCss("th", 3).ToArray();
@@ -179,11 +190,13 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual("31 Dec 2008", cell.Text);
     }
 
+    [TestMethod]
     public virtual void TableViewIgnoresDuplicatedColumnName() {
         GeminiUrl("object?i1=View&r1=1&o1=___1.SalesPerson--280&c1_QuotaHistory=Table");
         WaitForView(Pane.Single, PaneType.Object); //i.e. not an error (c.f. bug #57)
     }
 
+    [TestMethod]
     public virtual void ClickReferenceProperty() {
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
@@ -192,6 +205,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Lynn Tsoflias");
     }
 
+    [TestMethod]
     public virtual void OpenCollectionAsList() {
         GeminiUrl("object?i1=View&o1=___1.Employee--5");
         WaitForCss(".collection", 2);
@@ -203,12 +217,14 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitUntilGone(d => d.FindElement(By.CssSelector("table")));
     }
 
+    [TestMethod]
     public virtual void ContributedCollection_UsingDisplayAsProperty() {
         GeminiUrl("object?o1=___1.SpecialOffer--8");
         WaitForCss(".collection", 1);
         wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Products:\r\n3 Items"));
     }
 
+    [TestMethod]
     public virtual void NotCountedCollection() {
         //Test NotCounted collection
         GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
@@ -225,6 +241,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
     }
 
+    [TestMethod]
     //#60 bug caused by cache
     public virtual void CollectionsUpdateProperly() {
         //Open Reasons collection as  List 
@@ -257,6 +274,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
     }
 
+    [TestMethod]
     //#60 - test orginal version of bug involving NotCounted
     public virtual void NotCountedCollectionUpdatesCorrectly() {
         GeminiUrl("object?i1=View&r1=1&o1=___1.Person--7489&as1=open&d1=CreateNewPhoneNumber");
@@ -274,6 +292,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
     }
 
+    [TestMethod]
     public virtual void ClickOnLineItemWithCollectionAsList() {
         var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=List";
         Url(testUrl);
@@ -282,6 +301,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Main Office: 2253-217 Palmer Street ...");
     }
 
+    [TestMethod]
     public virtual void ClickOnLineItemWithCollectionAsTable() {
         var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table&c1_Contacts=Summary";
         Url(testUrl);
@@ -294,6 +314,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, type + ": " + addr);
     }
 
+    [TestMethod]
     public virtual void CanClickOnTitleInTableView() {
         GeminiUrl("object?i1=View&r1=1&o1=___1.Employee--56&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
         WaitForView(Pane.Single, PaneType.Object, "Denise Smith");
@@ -308,6 +329,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         //WaitForView(Pane.Single, PaneType.Object, "£11.00 from 09/03/2003");
     }
 
+    [TestMethod]
     public virtual void QueryOnlyActionDoesNotReloadAutomatically() {
         GeminiUrl("object?o1=___1.Person--8410&as1=open");
         WaitForView(Pane.Single, PaneType.Object);
@@ -328,6 +350,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
     }
 
+    [TestMethod]
     public virtual void PotentActionDoesReloadAutomatically() {
         GeminiUrl("object?o1=___1.Person--8410&as1=open");
         WaitForView(Pane.Single, PaneType.Object);
@@ -340,6 +363,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
     }
 
+    [TestMethod]
     public virtual void Colours() {
         //Specific type matches
         GeminiUrl("object?i1=View&o1=___1.Customer--226");
@@ -375,6 +399,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color"));
     }
 
+    [TestMethod]
     public virtual void ZeroIntValues() {
         GeminiUrl("object?i1=View&o1=___1.SpecialOffer--13");
         WaitForView(Pane.Single, PaneType.Object, "Touring-3000 Promotion");
@@ -384,6 +409,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual("Min Qty:\r\n0", properties[7].Text);
     }
 
+    [TestMethod]
     public virtual void AddingObjectToCollectionUpdatesTableView() {
         GeminiUrl("object?i1=View&o1=___1.SalesPerson--276&as1=open&c1_QuotaHistory=Table&d1=ChangeSalesQuota");
         var details = WaitForCssNo(".summary .details", 0).Text;
@@ -397,6 +423,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual(rowCount + 1, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
     }
 
+    [TestMethod]
     public virtual void TimeSpanProperty() {
         GeminiUrl("object?i1=View&o1=___1.Shift--2");
         WaitForTextEquals(".property", 2, "Start Time:\r\n15:00");
@@ -404,6 +431,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
 
     #region Actions
 
+    [TestMethod]
     public virtual void DialogAction() {
         GeminiUrl("home");
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
@@ -411,6 +439,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         OpenActionDialog("Search For Orders");
     }
 
+    [TestMethod]
     public virtual void DialogActionOk() {
         GeminiUrl("home");
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
@@ -425,6 +454,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "Search For Orders");
     }
 
+    [TestMethod]
     public virtual void DialogActionOk1() {
         GeminiUrl("home");
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
@@ -438,6 +468,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "Search For Orders");
     }
 
+    [TestMethod]
     public virtual void ObjectAction() {
         GeminiUrl("home");
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
@@ -446,6 +477,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(d => d.FindElement(By.CssSelector(".object")));
     }
 
+    [TestMethod]
     public virtual void CollectionAction() {
         GeminiUrl("home");
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
@@ -454,12 +486,14 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "Recent Orders");
     }
 
+    [TestMethod]
     public virtual void DescriptionRenderedAsTooltip() {
         GeminiUrl("home?m1=SalesRepository");
         var a = GetObjectEnabledAction("Create New Sales Person");
         Assert.AreEqual("... from an existing Employee", a.GetAttribute("title"));
     }
 
+    [TestMethod]
     public virtual void DisabledAction() {
         GeminiUrl("object?o1=___1.SalesOrderHeader--43893&as1=open");
         //First the control test
@@ -469,6 +503,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         GetObjectAction("Recalculate").AssertIsDisabled("Can only recalculate an 'In Process' order");
     }
 
+    [TestMethod]
     public virtual void ActionsMenuDisabledOnObjectWithNoActions() {
         GeminiUrl("object?o1=___1.Address--21467");
         WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
@@ -476,6 +511,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         Assert.AreEqual("true", actions.GetAttribute("disabled"));
     }
 
+    [TestMethod]
     public virtual void ZeroParamActionCausesObjectToReload() {
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--72079&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "SO72079");
@@ -506,6 +542,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
     //potent action, or attempting to invoke another action before a slow one has completed.
     //The UI should disable potent actions (zero param or OK on open dialog) until first action has
     //completed.
+    [TestMethod]
     public virtual void CanInvokeOneNonPotentActionBeforePreviousHasCompleted() {
         GeminiUrl("object?i1=View&o1=___1.Customer--389&as1=open");
         wait.Until(d => br.FindElements(By.CssSelector(".submenu")).Count >= 1);
@@ -517,6 +554,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         WaitForView(Pane.Right, PaneType.List, "Recent Orders");
     }
 
+    [TestMethod]
     public virtual void CannotInvokeAPotentActionUntilPriorOneHasCompleted() {
         GeminiUrl("object?r1=0&i1=View&o1=___1.SalesOrderHeader--51863&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "SO51863");
@@ -532,6 +570,7 @@ public abstract class ObjectViewTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
     }
 
+    [TestMethod]
     public virtual void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed() {
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--69143&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "SO69143");
@@ -558,289 +597,10 @@ public abstract class ObjectViewTestsRoot : AWTest {
     #endregion
 }
 
-public abstract class ObjectViewTests : ObjectViewTestsRoot {
-    [TestMethod]
-    public override void ActionsAlreadyOpen() {
-        base.ActionsAlreadyOpen();
-    }
-
-    [TestMethod]
-    public override void OpenActionsMenuNotAlreadyOpen() {
-        base.OpenActionsMenuNotAlreadyOpen();
-    }
-
-    [TestMethod]
-    public override void OpenAndCloseSubMenusTo3Levels() {
-        base.OpenAndCloseSubMenusTo3Levels();
-    }
-
-    [TestMethod]
-    public override void Properties() {
-        base.Properties();
-    }
-
-    [TestMethod]
-    public override void Collections() {
-        base.Collections();
-    }
-
-    [TestMethod]
-    public override void CollectionEagerlyRendered() {
-        base.CollectionEagerlyRendered();
-    }
-
-    [TestMethod]
-    public override void DateAndCurrencyProperties() {
-        base.DateAndCurrencyProperties();
-    }
-
-    [TestMethod]
-    public override void ConcurrencyProperties() {
-        base.ConcurrencyProperties();
-    }
-
-    [TestMethod]
-    public override void TableViewHonouredOnCollection() {
-        base.TableViewHonouredOnCollection();
-    }
-
-    [TestMethod]
-    public override void TableViewIgnoresDuplicatedColumnName() {
-        base.TableViewIgnoresDuplicatedColumnName();
-    }
-
-    [TestMethod]
-    public override void ClickReferenceProperty() {
-        base.ClickReferenceProperty();
-    }
-
-    [TestMethod]
-    public override void OpenCollectionAsList() {
-        base.OpenCollectionAsList();
-    }
-
-    [TestMethod]
-    public override void ContributedCollection_UsingDisplayAsProperty() {
-        base.ContributedCollection_UsingDisplayAsProperty();
-    }
-
-    [TestMethod]
-    public override void NotCountedCollection() {
-        base.NotCountedCollection();
-    }
-
-    [TestMethod]
-    public override void NotCountedCollectionUpdatesCorrectly() {
-        base.NotCountedCollectionUpdatesCorrectly();
-    }
-
-    [TestMethod]
-    public override void CollectionsUpdateProperly() {
-        base.CollectionsUpdateProperly();
-    }
-
-    [TestMethod]
-    public override void ClickOnLineItemWithCollectionAsList() {
-        base.ClickOnLineItemWithCollectionAsList();
-    }
-
-    [TestMethod]
-    public override void ClickOnLineItemWithCollectionAsTable() {
-        base.ClickOnLineItemWithCollectionAsTable();
-    }
-
-    [TestMethod]
-    public override void CanClickOnTitleInTableView() {
-        base.CanClickOnTitleInTableView();
-    }
-
-    [TestMethod]
-    public override void DialogAction() {
-        base.DialogAction();
-    }
-
-    [TestMethod]
-    public override void DialogActionOk() {
-        base.DialogActionOk();
-    }
-
-    [TestMethod]
-    public override void DialogActionOk1() {
-        base.DialogActionOk1();
-    }
-
-    [TestMethod]
-    public override void ObjectAction() {
-        base.ObjectAction();
-    }
-
-    [TestMethod]
-    public override void CollectionAction() {
-        base.CollectionAction();
-    }
-
-    [TestMethod]
-    public override void DescriptionRenderedAsTooltip() {
-        base.DescriptionRenderedAsTooltip();
-    }
-
-    [TestMethod]
-    public override void DisabledAction() {
-        base.DisabledAction();
-    }
-
-    [TestMethod]
-    public override void ActionsMenuDisabledOnObjectWithNoActions() {
-        base.ActionsMenuDisabledOnObjectWithNoActions();
-    }
-
-    [TestMethod]
-    public override void QueryOnlyActionDoesNotReloadAutomatically() {
-        base.QueryOnlyActionDoesNotReloadAutomatically();
-    }
-
-    [TestMethod]
-    public override void PotentActionDoesReloadAutomatically() {
-        base.PotentActionDoesReloadAutomatically();
-    }
-
-    [TestMethod]
-    public override void NonNavigableReferenceProperty() {
-        base.NonNavigableReferenceProperty();
-    }
-
-    [TestMethod]
-    public override void Colours() {
-        base.Colours();
-    }
-
-    [TestMethod]
-    public override void ZeroIntValues() {
-        base.ZeroIntValues();
-    }
-
-    [TestMethod]
-    public override void AddingObjectToCollectionUpdatesTableView() {
-        base.AddingObjectToCollectionUpdatesTableView();
-    }
-
-    [TestMethod]
-    public override void TimeSpanProperty() {
-        base.TimeSpanProperty();
-    }
-
-    [TestMethod]
-    public override void ZeroParamActionCausesObjectToReload() {
-        base.ZeroParamActionCausesObjectToReload();
-    }
-
-    [TestMethod]
-    public override void UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed() {
-        base.UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
-    }
-
-    [TestMethod]
-    public override void CannotInvokeAPotentActionUntilPriorOneHasCompleted() {
-        base.CannotInvokeAPotentActionUntilPriorOneHasCompleted();
-    }
-
-    [TestMethod]
-    public override void CanInvokeOneNonPotentActionBeforePreviousHasCompleted() {
-        base.CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
-    }
-}
-
-#region browsers specific subclasses
-
-//[TestClass]
-public class ObjectViewTestsChrome : ObjectViewTests {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class ObjectViewTestChrome : ObjectViewTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
-    }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
-}
-
-#endregion
-
-#region Mega tests
-
-public abstract class MegaObjectViewTestsRoot : ObjectViewTestsRoot {
-    [TestMethod] //Mega
-    //[Priority(0)]
-    public void ObjectViewTest() {
-        DisplayAsPropertyOnALocalInstanceMethod();
-        ActionsAlreadyOpen();
-        OpenActionsMenuNotAlreadyOpen();
-        OpenAndCloseSubMenusTo3Levels();
-        Properties();
-        Collections();
-        ContributedCollection_UsingDisplayAsProperty();
-        CollectionEagerlyRendered();
-        DateAndCurrencyProperties();
-        ConcurrencyProperties();
-        TableViewHonouredOnCollection();
-        TableViewIgnoresDuplicatedColumnName();
-        ClickReferenceProperty();
-        OpenCollectionAsList();
-        NotCountedCollection();
-        ClickOnLineItemWithCollectionAsList();
-        ClickOnLineItemWithCollectionAsTable();
-        CanClickOnTitleInTableView();
-        DialogAction();
-        DialogActionOk();
-        DialogActionOk1();
-        ObjectAction();
-        CollectionAction();
-        DescriptionRenderedAsTooltip();
-        DisabledAction();
-        ActionsMenuDisabledOnObjectWithNoActions();
-        QueryOnlyActionDoesNotReloadAutomatically();
-        PotentActionDoesReloadAutomatically();
-        NonNavigableReferenceProperty();
-        Colours();
-        ZeroIntValues();
-        AddingObjectToCollectionUpdatesTableView();
-        TimeSpanProperty();
-        ZeroParamActionCausesObjectToReload();
-        CanInvokeOneNonPotentActionBeforePreviousHasCompleted();
-        UpdatingObjectWhileAPotentDialogIsOpenCausesEtagToBeRefreshed();
-        CannotInvokeAPotentActionUntilPriorOneHasCompleted();
-        CollectionsUpdateProperly();
-        NotCountedCollectionUpdatesCorrectly();
-    }
-
-    //[TestMethod]
-    [Priority(-1)]
-    public void ProblematicObjectViewTest() { }
-}
-
-//[TestClass] //toggle
-public class MegaObjectViewTestChrome : MegaObjectViewTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
-    [TestInitialize]
-    public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
