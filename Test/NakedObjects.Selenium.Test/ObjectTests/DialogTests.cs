@@ -21,9 +21,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests;
 ///     Tests for the detailed operation of dialogs, including parameter rendering,
 ///     choices, auto-complete, default values, formatting, and validation
 /// </summary>
-public abstract class DialogTestsRoot : AWTest {
+public abstract class DialogTests : AWTest {
     protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
+    [TestMethod]
     public virtual void PasswordParam() {
         Debug.WriteLine(nameof(PasswordParam));
         GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
@@ -31,6 +32,7 @@ public abstract class DialogTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "password") == 3);
     }
 
+    [TestMethod]
     public virtual void ScalarChoicesParm() {
         Debug.WriteLine(nameof(ScalarChoicesParm));
         Url(OrdersMenuUrl);
@@ -41,6 +43,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("SO51131");
     }
 
+    [TestMethod]
     public virtual void TestCancelDialog() {
         Debug.WriteLine(nameof(TestCancelDialog));
         Url(OrdersMenuUrl);
@@ -49,6 +52,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitUntilElementDoesNotExist(".dialog");
     }
 
+    [TestMethod]
     public virtual void FieldsRetainedWhenNavigatingAwayAndBack() {
         Debug.WriteLine(nameof(FieldsRetainedWhenNavigatingAwayAndBack));
         GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
@@ -63,6 +67,7 @@ public abstract class DialogTestsRoot : AWTest {
         wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
     }
 
+    [TestMethod]
     public virtual void ReopeningADialogThatWasntCancelledDoesNotRetainFields() {
         Debug.WriteLine(nameof(ReopeningADialogThatWasntCancelledDoesNotRetainFields));
         ClickRecentButton();
@@ -76,6 +81,7 @@ public abstract class DialogTestsRoot : AWTest {
         wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
     }
 
+    [TestMethod]
     public virtual void ScalarParmShowsDefaultValue() {
         Debug.WriteLine(nameof(ScalarParmShowsDefaultValue));
         Url(CustomersMenuUrl);
@@ -85,6 +91,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("AW", input.GetAttribute("value"));
     }
 
+    [TestMethod]
     public virtual void DateTimeParmKeepsValue() {
         Debug.WriteLine(nameof(DateTimeParmKeepsValue));
         GeminiUrl("object?o1=___1.Customer--29923&as1=open");
@@ -101,6 +108,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("Page 1 of 1; viewing 2 of 2 items", details.Text);
     }
 
+    [TestMethod]
     public virtual void TimeSpanParm() {
         Debug.WriteLine(nameof(TimeSpanParm));
         GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
@@ -120,6 +128,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForTextEquals(".property", 3, "End Time:\r\n" + end.ToString(@"hh\:mm"));
     }
 
+    [TestMethod]
     public virtual void RefChoicesParmKeepsValue() {
         Debug.WriteLine(nameof(RefChoicesParmKeepsValue));
         Url(ProductServiceUrl);
@@ -131,6 +140,7 @@ public abstract class DialogTestsRoot : AWTest {
         wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
     }
 
+    [TestMethod]
     public virtual void MultipleRefChoicesDefaults() {
         Debug.WriteLine(nameof(MultipleRefChoicesDefaults));
         Url(ProductServiceUrl);
@@ -144,6 +154,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("Mountain-100 Black, 38");
     }
 
+    [TestMethod]
     public virtual void MultipleRefChoicesChangeDefaults() {
         Debug.WriteLine(nameof(MultipleRefChoicesChangeDefaults));
         GeminiUrl("home");
@@ -178,6 +189,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("Road-150 Red, 44");
     }
 
+    [TestMethod]
     public virtual void ChoicesDefaults() {
         Debug.WriteLine(nameof(ChoicesDefaults));
         Url(ProductServiceUrl);
@@ -194,6 +206,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("HL Mountain Frame - Silver, 42");
     }
 
+    [TestMethod]
     public virtual void ChoicesOptional() {
         Debug.WriteLine(nameof(ChoicesOptional));
         //Test that a field with choices that is optional can be left blank
@@ -202,6 +215,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "Find By Optional Product Lines And Classes");
     }
 
+    [TestMethod]
     public virtual void ChoicesChangeDefaults() {
         Debug.WriteLine(nameof(ChoicesChangeDefaults));
         Url(ProductServiceUrl);
@@ -215,6 +229,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("LL Road Frame - Black, 58");
     }
 
+    [TestMethod]
     public virtual void ConditionalChoices() {
         Debug.WriteLine(nameof(ConditionalChoices));
         GeminiUrl("home?m1=ProductRepository");
@@ -238,6 +253,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("", msg);
     }
 
+    [TestMethod]
     public virtual void ConditionalChoicesDefaults() {
         Debug.WriteLine(nameof(ConditionalChoicesDefaults));
         Url(ProductServiceUrl);
@@ -259,6 +275,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("Mountain-100 Black, 38");
     }
 
+    [TestMethod]
     public virtual void ConditionalChoicesMultiple() {
         Debug.WriteLine(nameof(ConditionalChoicesMultiple));
         Url(ProductServiceUrl);
@@ -281,6 +298,7 @@ public abstract class DialogTestsRoot : AWTest {
         AssertTopItemInListIs("Mountain-100 Black, 38");
     }
 
+    [TestMethod]
     public virtual void ParameterDescriptionRenderedAsPlaceholder() {
         Debug.WriteLine(nameof(ParameterDescriptionRenderedAsPlaceholder));
         GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
@@ -288,6 +306,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
     }
 
+    [TestMethod]
     public virtual void BooleanParams() {
         Debug.WriteLine(nameof(BooleanParams));
         GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees2");
@@ -311,6 +330,7 @@ public abstract class DialogTestsRoot : AWTest {
         OKButton().AssertIsEnabled();
     }
 
+    [TestMethod]
     public virtual void NullableBooleanParams() {
         Debug.WriteLine(nameof(NullableBooleanParams));
         GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
@@ -353,6 +373,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("true", current.GetAttribute("checked"));
     }
 
+    [TestMethod]
     public virtual void WarningShownWithinDialogAndInFooter() {
         Debug.WriteLine(nameof(WarningShownWithinDialogAndInFooter));
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
@@ -362,6 +383,7 @@ public abstract class DialogTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
     }
 
+    [TestMethod]
     public virtual void DefaultReferenceParamRendersCorrectly() {
         Debug.WriteLine(nameof(DefaultReferenceParamRendersCorrectly));
         //To test a previous bug, where reference was beign rendered as a Url, not its title
@@ -370,6 +392,7 @@ public abstract class DialogTestsRoot : AWTest {
         wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).GetAttribute("value").StartsWith("Zeiter Weg 9922"));
     }
 
+    [TestMethod]
     public virtual void QueryOnlyActionDialogPersists() {
         Debug.WriteLine(nameof(QueryOnlyActionDialogPersists));
         //To test:
@@ -392,6 +415,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("b", field.GetAttribute("value"));
     }
 
+    [TestMethod]
     public virtual void PotentActionDialogDisappearsAndFieldsNotRemembered() {
         Debug.WriteLine(nameof(PotentActionDialogDisappearsAndFieldsNotRemembered));
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--57732&as1=open");
@@ -405,6 +429,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("", WaitForCss("#comment1").GetAttribute("value"));
     }
 
+    [TestMethod]
     //Test for #49
     public virtual void NoResultFoundMessageLeavesDialogOpen() {
         Debug.WriteLine(nameof(NoResultFoundMessageLeavesDialogOpen));
@@ -420,6 +445,7 @@ public abstract class DialogTestsRoot : AWTest {
 
     #region Auto Complete
 
+    [TestMethod]
     public virtual void AutoCompleteParm() {
         Debug.WriteLine(nameof(AutoCompleteParm));
         Url(SalesServiceUrl);
@@ -446,6 +472,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "List Accounts For Sales Person");
     }
 
+    [TestMethod]
     public virtual void AutoCompleteParmDefault() {
         Debug.WriteLine(nameof(AutoCompleteParmDefault));
         Url(ProductServiceUrl);
@@ -456,6 +483,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Adjustable Race");
     }
 
+    [TestMethod]
     public virtual void ClearingAutoCompleteTextClearsUnderlyingReference() {
         Debug.WriteLine(nameof(ClearingAutoCompleteTextClearsUnderlyingReference));
         Url(ProductServiceUrl);
@@ -469,6 +497,7 @@ public abstract class DialogTestsRoot : AWTest {
         OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
     }
 
+    [TestMethod]
     public virtual void AutoCompleteParmShowSingleItem() {
         Debug.WriteLine(nameof(AutoCompleteParmShowSingleItem));
         Url(ProductServiceUrl);
@@ -490,6 +519,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "BB Ball Bearing");
     }
 
+    [TestMethod]
     public virtual void AutoCompleteScalarField() {
         Debug.WriteLine(nameof(AutoCompleteScalarField));
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
@@ -504,6 +534,7 @@ public abstract class DialogTestsRoot : AWTest {
         //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count == 2);
     }
 
+    [TestMethod]
     public virtual void AutoCompleteOptionalParamNotSelected() {
         Debug.WriteLine(nameof(AutoCompleteOptionalParamNotSelected));
         //Test written against a bug in 8.0.0-beta9
@@ -529,6 +560,7 @@ public abstract class DialogTestsRoot : AWTest {
 
     #region Parameter validation
 
+    [TestMethod]
     public virtual void MandatoryParameterEnforced() {
         Debug.WriteLine(nameof(MandatoryParameterEnforced));
         GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
@@ -541,6 +573,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "Find Sales Person By Name");
     }
 
+    [TestMethod]
     public virtual void AutoCompleteMandatoryParmWithoutSelectionFails() {
         Debug.WriteLine(nameof(AutoCompleteMandatoryParmWithoutSelectionFails));
         //To test  -  enter valid text but don't select from drop-down
@@ -548,9 +581,10 @@ public abstract class DialogTestsRoot : AWTest {
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
         ClearFieldThenType("#customer1", "AW000");
         wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 10);
-        OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Customer; ");
+        OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
     }
 
+    [TestMethod]
     public virtual void ValidateSingleValueParameter() {
         Debug.WriteLine(nameof(ValidateSingleValueParameter));
         GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
@@ -567,6 +601,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "No Discount");
     }
 
+    [TestMethod]
     public virtual void ValidateSingleRefParamFromChoices() {
         Debug.WriteLine(nameof(ValidateSingleRefParamFromChoices));
         GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open");
@@ -588,6 +623,7 @@ public abstract class DialogTestsRoot : AWTest {
         Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
     }
 
+    [TestMethod]
     public virtual void CoValidationOfMultipleParameters() {
         Debug.WriteLine(nameof(CoValidationOfMultipleParameters));
         GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
@@ -601,6 +637,7 @@ public abstract class DialogTestsRoot : AWTest {
                          "Qty Into Stock + Qty Rejected must add up to Qty Received");
     }
 
+    [TestMethod]
     public virtual void OptionalReferenceParamCanBeNull() {
         Debug.WriteLine(nameof(OptionalReferenceParamCanBeNull));
         //Test written against specific bug in 8.0Beta9
@@ -609,6 +646,7 @@ public abstract class DialogTestsRoot : AWTest {
         WaitForView(Pane.Single, PaneType.List, "Find Orders");
     }
 
+    [TestMethod]
     public virtual void ValidationOfContributeeParameter() {
         Debug.WriteLine(nameof(ValidationOfContributeeParameter));
         GeminiUrl("object?r1=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
@@ -621,74 +659,10 @@ public abstract class DialogTestsRoot : AWTest {
     #endregion
 }
 
-#region Mega tests
-
-public abstract class MegaDialogTestsRoot : DialogTestsRoot {
-    [TestMethod] //Mega
-    [Priority(0)]
-    public void DialogTests() {
-        PasswordParam();
-        ScalarChoicesParm();
-        TestCancelDialog();
-        FieldsRetainedWhenNavigatingAwayAndBack();
-        ReopeningADialogThatWasntCancelledDoesNotRetainFields();
-        ScalarParmShowsDefaultValue();
-        DateTimeParmKeepsValue();
-        TimeSpanParm();
-        RefChoicesParmKeepsValue();
-        MultipleRefChoicesDefaults();
-        MultipleRefChoicesChangeDefaults();
-        ConditionalChoices();
-        ChoicesDefaults();
-        ChoicesOptional();
-        ChoicesChangeDefaults();
-        ConditionalChoicesDefaults();
-        ConditionalChoicesMultiple();
-        AutoCompleteParm();
-        AutoCompleteParmDefault();
-        ClearingAutoCompleteTextClearsUnderlyingReference();
-        AutoCompleteParmShowSingleItem();
-        AutoCompleteScalarField();
-        AutoCompleteOptionalParamNotSelected();
-        MandatoryParameterEnforced();
-        ValidateSingleValueParameter();
-        ValidateSingleRefParamFromChoices();
-        CoValidationOfMultipleParameters();
-        ParameterDescriptionRenderedAsPlaceholder();
-        BooleanParams();
-        NullableBooleanParams();
-        WarningShownWithinDialogAndInFooter();
-        DefaultReferenceParamRendersCorrectly();
-        QueryOnlyActionDialogPersists();
-        OptionalReferenceParamCanBeNull();
-        ValidationOfContributeeParameter();
-        NoResultFoundMessageLeavesDialogOpen();
-    }
-
-    [TestMethod]
-    [Priority(-1)]
-    public void ProblematicTests() {
-        PotentActionDialogDisappearsAndFieldsNotRemembered();
-    }
-}
-
-//[TestClass] //toggle
-public class MegaDialogTestsChrome : MegaDialogTestsRoot {
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-    }
-
+[TestClass]
+public class DialogTestsChrome : DialogTests {
     [TestInitialize]
     public virtual void InitializeTest() {
-        InitChromeDriver();
         Url(BaseUrl);
     }
-
-    [TestCleanup]
-    public virtual void CleanupTest() {
-        CleanupChromeDriver();
-    }
 }
-
-#endregion
