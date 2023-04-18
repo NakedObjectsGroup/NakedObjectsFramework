@@ -37,7 +37,7 @@ public abstract class BaseTest {
     protected static IWebDriver br;
     protected static SafeWebDriverWait wait;
 
-    protected static int TimeOut { get; set; } = 10;
+    protected static int TimeOut => 10;
 
     protected static void CleanupChromeDriver() {
         br?.Manage().Cookies.DeleteAllCookies();

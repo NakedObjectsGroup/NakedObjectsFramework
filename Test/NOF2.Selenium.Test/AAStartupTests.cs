@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
 using NakedFrameworkClient.TestFramework.Tests;
@@ -39,13 +40,13 @@ public class AAStartupTests : BaseTest {
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        TimeOut = 40;
+        wait.Timeout = new TimeSpan(0, 0, 40);
         helper = new Helper(BaseUrl, br, wait);
     }
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        TimeOut = 10;
+        wait.Timeout = new TimeSpan(0, 0, 10);
     }
 
     #endregion

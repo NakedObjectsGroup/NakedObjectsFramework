@@ -26,13 +26,6 @@ public class Helper {
     private readonly string GeminiBaseUrl;
     internal readonly SafeWebDriverWait wait;
 
-    public Helper(string baseUrl) {
-        GeminiBaseUrl = baseUrl + "gemini/";
-        br = new ChromeDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
-    }
-
     public Helper(string baseUrl, IWebDriver webDriver, SafeWebDriverWait safeWebDriverWait) {
         GeminiBaseUrl = baseUrl + "gemini/";
         br = webDriver;
