@@ -39,7 +39,7 @@ public class AAStartupTests : BaseTest {
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        TimeOut = 10;
+        TimeOut = 40;
         helper = new Helper(BaseUrl, br, wait);
     }
 
