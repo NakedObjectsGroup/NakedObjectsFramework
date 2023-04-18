@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public class SelectionInputField : InputField {
     private readonly SelectElement SelectElement;

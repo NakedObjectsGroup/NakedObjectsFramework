@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public abstract class InputField : SubView {
     protected InputField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }

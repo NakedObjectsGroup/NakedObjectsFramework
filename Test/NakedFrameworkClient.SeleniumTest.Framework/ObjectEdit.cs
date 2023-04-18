@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public class ObjectEdit : ObjectPresentation {
     public ObjectEdit(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }

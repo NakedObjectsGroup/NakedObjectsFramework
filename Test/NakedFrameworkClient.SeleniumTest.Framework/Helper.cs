@@ -19,7 +19,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public class Helper {
     internal readonly IWebDriver br;
@@ -37,10 +37,8 @@ public class Helper {
         GeminiBaseUrl = baseUrl + "gemini/";
         br = webDriver;
         wait = safeWebDriverWait;
-       // br.Manage().Window.Maximize();
+        // br.Manage().Window.Maximize();
     }
-
-
 
     #region chrome helper
 

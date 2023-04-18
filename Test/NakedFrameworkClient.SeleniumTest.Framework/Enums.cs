@@ -1,4 +1,4 @@
-﻿namespace NakedFrameworkClient.TestFramework; 
+﻿namespace NakedFrameworkClient.TestFramework;
 
 public enum Pane {
     Single = 0,

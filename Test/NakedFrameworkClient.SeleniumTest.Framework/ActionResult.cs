@@ -2,7 +2,7 @@
 using System.Linq;
 using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public abstract class ActionResult : View {
     protected ActionResult(IWebElement element, Helper helper, Pane pane = Pane.Single) : base(element, helper, pane) { }

@@ -9,31 +9,15 @@ using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
+using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NOF2.Selenium.Test; 
+namespace NOF2.Selenium.Test;
 
 [TestClass]
-public class DevelopmentStoryTests {
-    [TestMethod]
-    public void AllWorkingStories() {
-        ViewPersistentObjectsAndProperties();
-        ReferencePropertiesAndCollections();
-        Titles();
-        MemberOrder();
-        BoundedTypes();
-        ActionsThatRetrieveObjects();
-        EditingObjects();
-        Menus();
-        PropertyControl();
-        CreatingAndSavingObjects();
-        ActionAboutControl();
-        ParameterControl();
-        AddInformationAndWarningMessages();
-    }
-
+public class DevelopmentStoryTests : BaseTest {
     #region Bounded Types
 
-    //[TestMethod]
+    [TestMethod]
     public void BoundedTypes() {
         AccessInstanceWithTitle("Employee--33", "Annik Stahl")
             .OpenActions().GetActionWithDialog("Change Department Or Shift")
@@ -47,7 +31,7 @@ public class DevelopmentStoryTests {
 
     #region Messages
 
-    //[TestMethod]
+    [TestMethod]
     public void AddInformationAndWarningMessages() {
         var home = helper.GotoHome();
         home.OpenMainMenu("Employees").GetActionWithoutDialog("Me")
@@ -60,27 +44,31 @@ public class DevelopmentStoryTests {
 
     #region Overhead
 
-    private readonly string baseUrl = "http://nakedlegacytest.azurewebsites.net/";
-    private Helper helper;
+    protected override string BaseUrl => "http://nakedlegacytest.azurewebsites.net/";
 
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        Helper.FilePath(@"drivers.chromedriver.exe");
+    [AssemblyInitialize]
+    public static void InitialiseAssembly(TestContext context) {
+        FilePath(@"drivers.chromedriver.exe");
+        InitChromeDriver();
     }
+
+    [AssemblyCleanup]
+    public static void CleanUpAssembly() {
+        CleanupChromeDriver();
+    }
+
+    private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(baseUrl);
+        helper = new Helper(BaseUrl, br, wait);
     }
-
-    [TestCleanup]
-    public virtual void CleanUpTest() => helper.CleanUp();
 
     #endregion
 
     #region ViewPersistentObjectsAndProperties
 
-    //[TestMethod]
+    [TestMethod]
     public void ViewPersistentObjectsAndProperties() {
         ViewInstanceDirectlyByUrl();
         TextStringProperty();
@@ -91,38 +79,38 @@ public class DevelopmentStoryTests {
         TitleConstructedFromValueFields();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ViewInstanceDirectlyByUrl() {
         helper.GotoUrlDirectly(prefix + "Address--13618");
         helper.GetObjectView();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TextStringProperty() {
         helper.GotoUrlDirectly(prefix + "Address--13618");
         helper.GetObjectView().GetProperty("Address Line1").AssertValueIs("Waldstr 91");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TimeStampProperty() {
         helper.GotoUrlDirectly(prefix + "Address--13618");
         var d = helper.GetObjectView().GetProperty("Modified Date").GetValue();
         Assert.IsTrue(d.StartsWith("31 Jul 2008") && d.EndsWith(":00:00")); //Miss out the hours due to time zone issues
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DateProperty() {
         helper.GotoUrlDirectly(prefix + "Employee--2");
         helper.GetObjectView().GetProperty("Hire Date").AssertValueIs("3 Mar 2002");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void WholeNumberProperty() {
         helper.GotoUrlDirectly(prefix + "Employee--2");
         helper.GetObjectView().GetProperty("Sick Leave Hours").AssertValueIs("20");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void BooleanProperty() {
         helper.GotoUrlDirectly(prefix + "Employee--2");
         var flag = helper.GetObjectView().GetProperty("Salaried");
@@ -133,20 +121,20 @@ public class DevelopmentStoryTests {
 
     #region Reference properties and collections
 
-    //[TestMethod]
+    [TestMethod]
     public void ReferencePropertiesAndCollections() {
         ReferenceProperty();
         TitleConstructedFromReferenceFields();
         InternalCollection();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ReferenceProperty() {
         helper.GotoUrlDirectly(prefix + "Employee--66");
         helper.GetObjectView().GetProperty("Person Details").GetReference().AssertTitleIs("Karan Khanna");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void InternalCollection() {
         helper.GotoUrlDirectly(prefix + "SalesOrderHeader--52035");
         var obj = helper.GetObjectView().AssertTitleIs("SO52035");
@@ -159,19 +147,19 @@ public class DevelopmentStoryTests {
 
     #region Titles
 
-    //[TestMethod]
+    [TestMethod]
     public void Titles() {
         TitleConstructedFromReferenceFields();
         TitleConstructedFromValueFields();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TitleConstructedFromReferenceFields() {
         helper.GotoUrlDirectly(prefix + "Employee--67");
         helper.GetObjectView().AssertTitleIs("Jay Adams");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TitleConstructedFromValueFields() {
         helper.GotoUrlDirectly(prefix + "Person--2284");
         helper.GetObjectView().AssertTitleIs("Lynn Tsoflias");
@@ -181,19 +169,19 @@ public class DevelopmentStoryTests {
 
     #region Member Order
 
-    //[TestMethod]
+    [TestMethod]
     public void MemberOrder() {
         FieldOrderSpecifiedByAttribute();
         FieldOrderSpecifiedByMethod();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void FieldOrderSpecifiedByAttribute() {
         var obj = AccessInstanceWithTitle("Address--24082", "4669 Berry Dr....");
         obj.AssertPropertiesAre("Address Line1", "Address Line2", "City", "Postal Code", "State Province", "Modified Date");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void FieldOrderSpecifiedByMethod() {
         var obj = AccessInstanceWithTitle("Vendor--1674", "Varsity Sport Co.");
         obj.AssertPropertiesAre("Account Number", "Name", "Credit Rating", "Preferred Vendor Status",
@@ -204,7 +192,7 @@ public class DevelopmentStoryTests {
 
     #region Actions that retrieve objects
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionsThatRetrieveObjects() {
         //MainMenuActionToRetrieveAnArrayList(); TODO: Unreliable
         ObjectActionToRetrieveAQueryable();
@@ -215,7 +203,7 @@ public class DevelopmentStoryTests {
         SharedActionWithContainerAsParamater();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MainMenuActionToRetrieveAnArrayList() {
         helper.GotoHome().OpenMainMenu("Employees")
               .GetActionWithoutDialog("List All Departments").ClickToViewList()
@@ -223,7 +211,7 @@ public class DevelopmentStoryTests {
               .AssertTitleIs("Marketing");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ObjectActionToRetrieveAQueryable() {
         helper.GotoHome().OpenMainMenu("Products")
               .GetActionWithoutDialog("All Products").ClickToViewList()
@@ -231,14 +219,14 @@ public class DevelopmentStoryTests {
               .GetRowFromList(0).AssertTitleIs("Adjustable Race");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ObjectActionToRetrieveASingleInstance() {
         var dialog = AccessInstanceWithTitle("Product--829", "Touring Rear Wheel").OpenActions().GetActionWithDialog("Best Special Offer").Open();
         dialog.GetTextField("Quantity").Enter("10");
         dialog.ClickOKToViewObject().AssertTitleIs("No Discount");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ObjectActionThatDelegatesToARepositoryService() {
         AccessInstanceWithTitle("Person--1", "Ken Sánchez").OpenActions()
                                                            .GetActionWithoutDialog("Others With Same Initials").ClickToViewList()
@@ -246,7 +234,7 @@ public class DevelopmentStoryTests {
                                                            .GetRowFromList(0).AssertTitleIs("Kaitlin Sai");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MenuActionThatTakesParameters() {
         var dialog = helper.GotoHome().OpenMainMenu("Employees")
                            .GetActionWithDialog("Find Employee By National ID Number").Open();
@@ -254,7 +242,7 @@ public class DevelopmentStoryTests {
         dialog.ClickOKToViewObject().AssertTitleIs("Hao Chen");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MenuActionThatReturnsArrayList() {
         var dialog = helper.GotoHome().OpenMainMenu("Employees")
                            .GetActionWithDialog("Find Employee By Name").Open();
@@ -264,7 +252,7 @@ public class DevelopmentStoryTests {
               .GetRowFromList(0).AssertTitleIs("Angela Barbariol");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void SharedActionWithContainerAsParamater() {
         var dialog = helper.GotoHome().OpenMainMenu("Contacts")
                            .GetActionWithDialog("Find Person By Name").Open();
@@ -277,21 +265,21 @@ public class DevelopmentStoryTests {
 
     #region Editing objects
 
-    //[TestMethod]
+    [TestMethod]
     public void EditingObjects() {
         EditAndCancelWithoutModification();
         EditAndSaveChange();
         MakeEditablePropertyRequiredViaAttribute();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void EditAndCancelWithoutModification() {
         AccessInstanceWithTitle("WorkOrder--16080", "LL Bottom Bracket: 04/07/2006")
             .Edit().AssertTitleIs("Editing - LL Bottom Bracket: 04/07/2006")
             .Cancel().AssertTitleIs("LL Bottom Bracket: 04/07/2006");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void EditAndSaveChange() {
         var editView = AccessInstanceWithTitle("WorkOrder--16080", "LL Bottom Bracket: 04/07/2006")
             .Edit();
@@ -310,7 +298,7 @@ public class DevelopmentStoryTests {
         updated.GetProperty("Scrapped Qty").AssertValueIs("0");
     }
 
-    //[TestMethod] 
+    [TestMethod]
     public void MakeEditablePropertyRequiredViaAttribute() {
         var edit = AccessInstanceWithTitle("Department--7", "Production").Edit();
         edit.AssertSaveIsEnabled();
@@ -325,20 +313,20 @@ public class DevelopmentStoryTests {
 
     #region Menus
 
-    //[TestMethod]
+    [TestMethod]
     public void Menus() {
         MainMenuWithSubMenus();
         ObjectActionsMenu();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MainMenuWithSubMenus() {
         helper.GotoHome().OpenMainMenu("Employees").AssertHasActions("Random Employee",
                                                                      "All Employees", "Find Employee By Name", "Find Employee By National ID Number", "Me", "Create New Job Candidate")
               .AssertHasSubMenus("Organisation").OpenSubMenu("Organisation").AssertHasAction("List All Departments");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ObjectActionsMenu() {
         AccessInstanceWithTitle("Product--897", "LL Touring Frame - Blue, 58")
             .OpenActions().AssertHasActions("Best Special Offer", "Associate With Special Offer", "Change Subcategory")
@@ -350,7 +338,7 @@ public class DevelopmentStoryTests {
 
     #region PropertyControl_UsingFieldAbout
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyControl() {
         PropertyHiddenUsingFieldAbout();
         PropertyHiddenUsingAttribute();
@@ -362,37 +350,37 @@ public class DevelopmentStoryTests {
         TableColumnsSpecifiedViaAttribute();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyHiddenUsingFieldAbout() {
         var obj = AccessInstanceWithTitle("PhoneNumberType--1", "Cell");
         obj.AssertPropertiesAre(); //Because all properties have been hidden individually using FieldAbout
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyHiddenUsingAttribute() {
         var obj = AccessInstanceWithTitle("ContactType--1", "Accounting Manager");
         obj.AssertPropertiesAre("Modified Date"); //Because Name property hidden by Attribute
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyRenamedUsingAttribute() {
         AccessInstanceWithTitle("EmailAddress--9--9", "gigi0@adventure-works.com")
             .GetProperty(0).AssertNameIs("Email Address");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyRenamedUsingFieldAbout() {
         AccessInstanceWithTitle("Person--115", "Angela Barbariol")
             .GetProperty(4).AssertNameIs("Reverse name order");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyMadeUneditableUsingFieldAbout() {
         AccessInstanceWithTitle("Department--1", "Engineering").Edit()
                                                                .AssertPropertyIsDisabledForEdit("Modified Date");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyValidationUsingFieldAbout() {
         var editView = AccessInstanceWithTitle("Department--10", "Finance").Edit();
         editView.GetEditableTextInputProperty("Group Name").Clear()
@@ -403,12 +391,12 @@ public class DevelopmentStoryTests {
         editView.Cancel();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TypeImplementingINotEditableOncePersistent() {
         AccessInstanceWithTitle("Vendor--1660", "Magic Cycles").AssertIsNotEditable();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyMadeVisibleOnlyWhenPersistent() {
         helper.GotoHome().OpenMainMenu("Special Offers")
               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject()
@@ -419,7 +407,7 @@ public class DevelopmentStoryTests {
                                  "Start Date", "End Date", "Min Qty", "Max Qty", "Modified Date");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TableColumnsSpecifiedViaAttribute() {
         AccessInstanceWithTitle("Employee--187&c1_DepartmentHistory=Table", "Yvonne McKay")
             .GetCollection("Department History").AssertIsOpenAsTable()
@@ -431,7 +419,7 @@ public class DevelopmentStoryTests {
 
     #region Creating & Saving objects
 
-    //[TestMethod]
+    [TestMethod]
     public void CreatingAndSavingObjects() {
         CreateAndSaveObjectProgrammatically();
         //Too unreliable on server
@@ -441,7 +429,7 @@ public class DevelopmentStoryTests {
         SavingATransientWithAReferenceToAPersistentObject();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateAndSaveObjectProgrammatically() {
         var dialog = helper.GotoHome().OpenMainMenu("Employees").OpenSubMenu("Organisation")
                            .GetActionWithDialog("Create New Department").Open();
@@ -457,7 +445,7 @@ public class DevelopmentStoryTests {
               .GetRowFromList(0).AssertTitleIs(name);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DisplayingAndSavingATransientObjectFromTheUI() {
         var transient = helper.GotoHome().OpenMainMenu("Special Offers")
                               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
@@ -478,7 +466,7 @@ public class DevelopmentStoryTests {
               .GetRowFromList(0).AssertTitleIs(desc);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ControlOverSaving() {
         var transient = helper.GotoHome().OpenMainMenu("Special Offers")
                               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
@@ -505,7 +493,7 @@ public class DevelopmentStoryTests {
         transient.Save().AssertTitleIs(desc);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PersistingALinkObjectToFormAMultipleAssociation() {
         var dialog = helper.GotoHome().OpenMainMenu("Special Offers")
                            .GetActionWithDialog("Demo Special Offer Product Bug").Open();
@@ -519,7 +507,7 @@ public class DevelopmentStoryTests {
             .GetRowFromList(0).AssertTitleIs(prodTitle);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void SavingATransientWithAReferenceToAPersistentObject() {
         var start = helper.GotoUrlDirectly("home/object?m1=Employees&i2=View&o2=AW.Types.Employee--240");
         var jc = helper.GetHomeView(Pane.Left).OpenMainMenu("Employees").GetActionWithoutDialog("Create New Job Candidate").ClickToViewTransientObject();
@@ -534,7 +522,7 @@ public class DevelopmentStoryTests {
 
     #region ActionAbout control
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionAboutControl() {
         ActionVisibility();
         ActionNameAndDescription();
@@ -543,7 +531,7 @@ public class DevelopmentStoryTests {
         EnforcingMandatoryParameters();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionVisibility() {
         AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660")
             .OpenActions().AssertHasActions("Add New Detail",
@@ -551,7 +539,7 @@ public class DevelopmentStoryTests {
         //i.e. no action called No Comment
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionNameAndDescription() {
         AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660")
             .OpenActions().GetActionWithDialog("Add Comment")
@@ -559,7 +547,7 @@ public class DevelopmentStoryTests {
             .AssertHasTooltip("Append new comment to any existing");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionUsabilityBasedOnObjectState() {
         var order = AccessInstanceWithTitle("SalesOrderHeader--43670", "SO43670");
         order.GetProperty("Comment").AssertValueIs("");
@@ -567,7 +555,7 @@ public class DevelopmentStoryTests {
              .AssertIsDisabled("Comment field is already clear");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionParameterValidation() {
         var dialog = AccessInstanceWithTitle("SalesOrderHeader--43660", "SO43660").OpenActions()
                                                                                   .GetActionWithDialog("Add Comment").Open();
@@ -578,7 +566,7 @@ public class DevelopmentStoryTests {
         dialog.AssertHasValidationError("Total comment length would exceed 50 chars");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void EnforcingMandatoryParameters() {
         //Note that this is also testing #372
         var dialog = helper.GotoHome().OpenMainMenu("Employees")
@@ -593,12 +581,12 @@ public class DevelopmentStoryTests {
 
     #region Parameter Control
 
-    //[TestMethod]
+    [TestMethod]
     public void ParameterControl() {
         ParameterNaming_Options_Default();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ParameterNaming_Options_Default() {
         var emp = AccessInstanceWithTitle("Employee--66", "Karan Khanna");
         emp.GetProperty("Marital Status").AssertValueIs("S");

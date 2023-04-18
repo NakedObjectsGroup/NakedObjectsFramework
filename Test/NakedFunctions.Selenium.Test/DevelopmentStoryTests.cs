@@ -11,10 +11,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
 using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests;
+namespace NakedFunctions.Selenium.Test;
 
 [TestClass]
-public class DevelopmentStoryTests_usingNewFramework : BaseTest {
+public class DevelopmentStoryTests : BaseTest {
     [TestMethod]
     public void RetrieveObjectViaMenuAction() {
         var dialog = helper.GotoHome().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")

@@ -9,10 +9,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
 using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests;
+namespace NakedFunctions.Selenium.Test;
 
 [TestClass]
-public class TypeRetrievalTests_UsingNewFramework : BaseTest {
+public class TypeRetrievalTests : BaseTest {
     private const string prefix = "object?i1=View&o1=AW.Types.";
 
     [TestMethod]

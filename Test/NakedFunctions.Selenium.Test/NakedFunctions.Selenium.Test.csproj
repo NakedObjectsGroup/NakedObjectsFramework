@@ -6,12 +6,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Remove="DevelopmentStoryTests.cs" />
-		<Compile Remove="TestAttributes.cs" />
-		<Compile Remove="TypeRetrievalTests.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />

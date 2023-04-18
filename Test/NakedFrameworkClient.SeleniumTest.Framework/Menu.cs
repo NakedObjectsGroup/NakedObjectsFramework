@@ -4,7 +4,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public class Menu : SubView {
     public Menu(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }

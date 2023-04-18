@@ -10,10 +10,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
 using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests;
+namespace NakedFunctions.Selenium.Test;
 
 [TestClass]
-public class TestAttributes_usingNewFramework : BaseTest {
+public class TestAttributes : BaseTest {
     [TestMethod]
     public void Bounded() {
         //Change Department Or Shift on Employee. Both params are of Bounded types

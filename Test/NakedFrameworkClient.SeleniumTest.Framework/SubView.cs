@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public abstract class SubView {
     internal readonly IWebElement element;

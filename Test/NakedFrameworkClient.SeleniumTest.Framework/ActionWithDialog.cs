@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public class ActionWithDialog : MenuAction {
     public ActionWithDialog(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }

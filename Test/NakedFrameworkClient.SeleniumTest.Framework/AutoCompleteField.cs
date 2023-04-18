@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenQA.Selenium;
 
-namespace NakedFrameworkClient.TestFramework; 
+namespace NakedFrameworkClient.TestFramework;
 
 public class AutoCompleteField : ReferenceInputField {
     public AutoCompleteField(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
