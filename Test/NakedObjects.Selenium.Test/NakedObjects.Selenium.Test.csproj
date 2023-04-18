@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\NakedFramework.Selenium.Helpers\NakedFramework.Selenium.Helpers.csproj" />
+		<ProjectReference Include="..\NakedFrameworkClient.SeleniumTest.Framework\NakedFrameworkClient.TestFramework.csproj" />
 	</ItemGroup>
 
 </Project>
