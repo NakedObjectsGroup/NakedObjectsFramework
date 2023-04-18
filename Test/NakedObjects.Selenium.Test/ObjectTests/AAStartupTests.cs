@@ -20,6 +20,7 @@ public abstract class AAStartupTests : AWTest {
     public virtual void WaitForStartServer() {
         WaitForView(Pane.Single, PaneType.Home, "Home");
         WaitForCss(".main-column");
+        WaitForCss("nof-menu-bar nof-action input", MainMenusCount);
     }
 }
 
