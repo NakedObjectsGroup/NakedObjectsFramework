@@ -7,39 +7,17 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework.Selenium.Helpers.Helpers;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedFramework.Selenium.Helpers.Tests;
+namespace NakedFrameworkClient.TestFramework.Tests;
 
-public abstract class GeminiTest {
-    #region chrome helper
-
-    protected static void FilePath(string resourcename, int attempt = 0) {
-        var assembly = Assembly.GetExecutingAssembly();
-        var fileName = resourcename.Remove(0, resourcename.IndexOf(".") + 1);
-        var newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-
-        using var stream = assembly.GetManifestResourceStream("NakedFrameworkClient.TestFramework." + resourcename);
-        using var fileStream = File.Create(newFile, (int)stream.Length);
-        var bytesInStream = new byte[stream.Length];
-        stream.Read(bytesInStream, 0, bytesInStream.Length);
-        fileStream.Write(bytesInStream, 0, bytesInStream.Length);
-    }
-
-    #endregion
-
+public abstract class GeminiTest : BaseTest {
     protected void AssertElementExists(string cssSelector) {
         wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count >= 1);
     }
@@ -69,43 +47,6 @@ public abstract class GeminiTest {
 
     protected IWebElement WaitForTitle(string title, Pane pane = Pane.Single) =>
         WaitForTextEquals(CssSelectorFor(pane) + " .title", title);
-
-    #region overhead
-
-    protected abstract string BaseUrl { get; }
-    protected string GeminiBaseUrl => BaseUrl + "gemini/";
-
-    protected static IWebDriver br;
-    protected static SafeWebDriverWait wait;
-
-    private static int TimeOut => 10;
-
-    protected static void CleanupChromeDriver() {
-        br?.Manage().Cookies.DeleteAllCookies();
-        br?.Quit();
-        br?.Dispose();
-        br = null;
-    }
-
-    protected void InitFirefoxDriver() {
-        br = new FirefoxDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
-    }
-
-    protected void InitIeDriver() {
-        br = new InternetExplorerDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
-    }
-
-    protected static void InitChromeDriver() {
-        br = new ChromeDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
-    }
-
-    #endregion
 
     #region Helpers
 

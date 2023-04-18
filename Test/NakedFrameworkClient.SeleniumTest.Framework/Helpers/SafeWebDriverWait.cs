@@ -10,7 +10,7 @@ using System.Diagnostics;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedFramework.Selenium.Helpers.Helpers;
+namespace NakedFrameworkClient.TestFramework.Helpers;
 
 public class SafeWebDriverWait : IWait<IWebDriver> {
     private readonly WebDriverWait wait;

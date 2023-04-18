@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework.Selenium.Helpers.Tests;
+using NakedFrameworkClient.TestFramework.Tests;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 

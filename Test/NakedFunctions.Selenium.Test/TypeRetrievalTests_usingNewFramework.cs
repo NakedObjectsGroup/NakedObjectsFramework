@@ -7,11 +7,12 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
+using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests; 
+namespace NakedFunctions.Selenium.Test.FunctionTests;
 
 [TestClass]
-public class TypeRetrievalTests_UsingNewFramework {
+public class TypeRetrievalTests_UsingNewFramework : BaseTest {
     private const string prefix = "object?i1=View&o1=AW.Types.";
 
     [TestMethod]
@@ -94,21 +95,14 @@ public class TypeRetrievalTests_UsingNewFramework {
 
     #region Overhead
 
-    private readonly string baseUrl = "http://nakedfunctionstest.azurewebsites.net/";
-    private Helper helper;
+    protected override string BaseUrl => "http://nakedfunctionstest.azurewebsites.net/";
 
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        Helper.FilePath(@"drivers.chromedriver.exe");
-    }
+    private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(baseUrl);
+        helper = new Helper(BaseUrl, br, wait);
     }
-
-    [TestCleanup]
-    public virtual void CleanUpTest() => helper.CleanUp();
 
     #endregion
 }

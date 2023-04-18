@@ -8,33 +8,13 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
+using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests; 
+namespace NakedFunctions.Selenium.Test.FunctionTests;
 
 [TestClass]
-public class TestAttributes_usingNewFramework {
+public class TestAttributes_usingNewFramework : BaseTest {
     [TestMethod]
-    public void AllWorkingAttributes() {
-        Bounded();
-        DefaultValue();
-        DescribedAsFunction();
-        DescribedAsParameter();
-        Hidden();
-        Mask();
-        MaxLength();
-        MemberOrder();
-        MultiLine();
-        Named();
-        Optionally();
-        PageSize();
-        Password();
-        RegEx();
-        RenderEagerly();
-        TableView();
-        ValueRangeInt();
-    }
-
-    //[TestMethod]
     public void Bounded() {
         //Change Department Or Shift on Employee. Both params are of Bounded types
         var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--7&c1_DepartmentHistory=Table")
@@ -45,7 +25,7 @@ public class TestAttributes_usingNewFramework {
               .AssertOptionIs(1, "Tool Design");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DefaultValue() {
         var dialog = helper.GotoHome().OpenMainMenu("Special Offers").GetActionWithDialog("Create New Special Offer").AssertIsEnabled().Open();
         dialog.GetTextField("Type").AssertDefaultValueIs("Promotion");
@@ -54,13 +34,13 @@ public class TestAttributes_usingNewFramework {
         dialog.GetTextField("Start Date").AssertDefaultValueIs(tomorrow);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DescribedAsFunction() {
         helper.GotoHome().OpenMainMenu("Sales").OpenSubMenu("Sales")
               .GetActionWithDialog("Create New Sales Person").AssertHasTooltip("... from an existing Employee");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DescribedAsParameter() {
         var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Person--16315").GetObjectView().AssertTitleIs("Casey Nath")
                            .OpenActions().GetActionWithDialog("Create New Credit Card").Open();
@@ -68,21 +48,21 @@ public class TestAttributes_usingNewFramework {
         dialog.GetTextField("Expires").AssertHasPlaceholder("* mm/yy");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void Hidden() {
         var shift = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Shift--1").GetObjectView().AssertTitleIs("Day");
         shift.AssertPropertiesAre("Name", "Start Time", "End Time", "Modified Date");
         //i.e. no 'Shift ID' field showing
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void Mask() {
         var prod = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--497").GetObjectView().AssertTitleIs("Pinch Bolt");
         prod.GetProperty("List Price").AssertValueIs("£0.00");
         prod.GetProperty("Sell Start Date").AssertValueIs("1 Jun 2002");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MaxLength() {
         var longText = "Now is the time for all good men to come to the aid of the party.";
 
@@ -95,27 +75,27 @@ public class TestAttributes_usingNewFramework {
         desc.Clear().Enter(longText.Substring(0, 50)).AssertNoValidationError();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MemberOrder() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Store--670")
               .GetObjectView().AssertTitleIs("Fitness Cycling")
               .AssertPropertiesAre("Store Name", "Demographics", "Sales Person", "Modified Date");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MultiLine() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--51131")
               .GetObjectView().AssertTitleIs("SO51131")
               .GetProperty("Comment").AssertIsMultiLine();
     }
 
-    // [TestMethod]
+    [TestMethod]
     public void Named() {
         helper.GotoHome().AssertMainMenusAre("Employees", "Addresses", "Persons", "Products",
                                              "Work Orders", "Purchase Orders", "Vendors", "Customers", "Orders", "Sales", "Cart", "Special Offers");
     }
 
-    //TestMethod]
+    [TestMethod]
     public void Optionally() {
         var dialog = helper.GotoHome().OpenMainMenu("Employees")
                            .GetActionWithDialog("Find Employee By Name").AssertIsEnabled().Open();
@@ -124,13 +104,13 @@ public class TestAttributes_usingNewFramework {
         dialog.AssertOKIsDisabled("Missing mandatory fields: Last Name; ");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PageSize() {
         helper.GotoHome().OpenMainMenu("Employees").GetActionWithoutDialog("All Employees").ClickToViewList()
               .AssertDetails("Page 1 of 20; viewing 15 of 290 items");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void Password() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Person--11714")
               .GetObjectView().AssertTitleIs("Marshall Black")
@@ -138,7 +118,7 @@ public class TestAttributes_usingNewFramework {
               .GetTextField("Old Password").AssertIsPassword();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void RegEx() {
         var dialog = helper.GotoHome().OpenMainMenu("Customers")
                            .GetActionWithDialog("Find Customer By Account Number").Open();
@@ -149,14 +129,14 @@ public class TestAttributes_usingNewFramework {
               .Clear().Enter("AW00012345").AssertNoValidationError();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void RenderEagerly() {
         helper.GotoHome().OpenMainMenu("Employees")
               .GetActionWithoutDialog("List All Departments").ClickToViewList()
               .AssertIsTable().AssertTableHeaderHasColumns("", "Group Name");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void TableView() {
         helper.GotoHome().OpenMainMenu("Purchase Orders")
               .GetActionWithoutDialog("All Open Purchase Orders").ClickToViewList()
@@ -164,7 +144,7 @@ public class TestAttributes_usingNewFramework {
               .AssertTableHeaderHasColumns("", "Vendor", "Order Date", "Total Due");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ValueRangeInt() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--890")
               .GetObjectView().AssertTitleIs("HL Touring Frame - Blue, 46")
@@ -180,21 +160,14 @@ public class TestAttributes_usingNewFramework {
 
     #region Overhead
 
-    private readonly string baseUrl = "http://nakedfunctionstest.azurewebsites.net/";
-    private Helper helper;
+    protected override string BaseUrl => "http://nakedfunctionstest.azurewebsites.net/";
 
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        Helper.FilePath(@"drivers.chromedriver.exe");
-    }
+    private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(baseUrl);
+        helper = new Helper(BaseUrl, br, wait);
     }
-
-    [TestCleanup]
-    public virtual void CleanUpTest() => helper.CleanUp();
 
     #endregion
 }

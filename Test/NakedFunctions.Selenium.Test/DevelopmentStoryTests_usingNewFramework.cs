@@ -9,67 +9,13 @@ using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework;
+using NakedFrameworkClient.TestFramework.Tests;
 
-namespace NakedFunctions.Selenium.Test.FunctionTests; 
+namespace NakedFunctions.Selenium.Test.FunctionTests;
 
 [TestClass]
-public class DevelopmentStoryTests_usingNewFramework {
+public class DevelopmentStoryTests_usingNewFramework : BaseTest {
     [TestMethod]
-    public void AllWorkingStories() {
-        RetrieveObjectViaMenuAction();
-        ObjectActionThatReturnsJustAContext();
-        OverriddenPrincipalProviderService();
-        UseOfRandomSeedGenerator();
-        ObjectContributedAction();
-        InformUserViaIAlertService();
-        EditAction();
-        AccessToIClock();
-        RecordsDoNotHaveEditButton();
-        EnumProperty();
-        EnumParam();
-        DisplayValueAsProperty();
-        DisplayCollectionAsProperty();
-        DisplayGuidProperty();
-        ParameterChoicesSimple();
-        ParameterChoicesDependent();
-        ParameterDefaultFunction();
-        ParameterDisabledFunction();
-        ValidateSingleParam();
-        ValidateMultipleParams();
-        DisableFunction();
-        HideFunction();
-        AutoCompleteFunction();
-        ViewModel1();
-        //CreateNewObectWithOnlyValueProperties();
-        CreateNewObjectWithAReferenceToAnotherExistingObject();
-        CreateNewObjectWithAReferenceToMultipleExistingObjects();
-        CreateAGraphOfTwoNewRelatedObjects();
-        CreateAGraphOfObjectsThreeLevelsDeep();
-        PropertyHiddenViaAHideMethod();
-        SubMenuOnObject();
-        SubMenuOnMainMenu();
-        ImageProperty();
-        ImageParameter();
-        QueryContributedActionReturningOnlyAContext();
-        QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType();
-        LocalCollectionContributedAction();
-        SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection();
-        UseOfDeferredFunctionIncludingReload();
-        UseOfResolveMethodInADeferredFunction();
-        WithDelete();
-        //WithMultipleDeletes();
-        ObjectActionRenderedWithinCollection();
-        QueryContributedActionWithChoicesFunction();
-        QueryContributedActionWithCoValidation();
-        ActionReturingImmutableList();
-        //MultiLineActionDialog();
-        InlinePropertyEdit();
-        InlineMultiPropertyEdit();
-        CovalidationOnInlineMultiPropertyEdit();
-        CreateNewUsingAttribute();
-    }
-
-    //[TestMethod]
     public void RetrieveObjectViaMenuAction() {
         var dialog = helper.GotoHome().OpenMainMenu("Products").GetActionWithDialog("Find Product By Name")
                            .AssertIsEnabled().Open().AssertOKIsDisabled("Missing mandatory fields: Search String; ");
@@ -77,7 +23,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         dialog.ClickOKToViewNewList().AssertTitleIs("Find Product By Name").GetRowFromList(0).AssertTitleIs("Handlebar Tube");
     }
 
-    // [TestMethod]
+    [TestMethod]
     public void ObjectActionThatReturnsJustAContext() {
         var offer = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--5")
                           .GetObjectView();
@@ -90,13 +36,13 @@ public class DevelopmentStoryTests_usingNewFramework {
         offer.AssertTitleIs("Volume Discount 41 to 60");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void OverriddenPrincipalProviderService() {
         helper.GotoHome().OpenMainMenu("Employees").GetActionWithoutDialog("Me")
               .ClickToViewObject().AssertTitleIs("Ken Sánchez");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void UseOfRandomSeedGenerator() {
         var prod1Title = helper.GotoHome().OpenMainMenu("Products")
                                .GetActionWithoutDialog("Random Product")
@@ -111,7 +57,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         Assert.AreNotEqual(prod2Title, prod1Title);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ObjectContributedAction() {
         //Tests that an action (side effect free) can be associated with an object
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open").GetObjectView()
@@ -123,7 +69,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertTitleIs("HL Mountain Tire");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void InformUserViaIAlertService() {
         var dialog = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928")
                            .GetObjectView(Pane.Left).GetOpenedDialog();
@@ -141,7 +87,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         //Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void EditAction() {
         var offer = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--9&as1=open&d1=EditQuantities")
                           .GetObjectView(Pane.Left).AssertTitleIs("Road-650 Overstock");
@@ -158,35 +104,35 @@ public class DevelopmentStoryTests_usingNewFramework {
         dialog.ClickOKToViewObject().GetProperty("Max Qty").AssertValueIs(original);
     }
 
-    //[TestMethod] 
+    [TestMethod]
     public void AccessToIClock() {
         var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--1&as1=open&d1=EditDates")
               .GetObjectView().GetOpenedDialog().GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void RecordsDoNotHaveEditButton() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--4717")
               .GetObjectView().AssertTitleIs("Road-650 Red, 58: 10/30/2005 12:00:00 AM")
               .AssertIsNotEditable();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void EnumProperty() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--55864")
               .GetObjectView().AssertTitleIs("SO55864")
               .GetProperty("Status").AssertValueIs("Shipped");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void EnumParam() {
         helper.GotoHome().OpenMainMenu("Orders").GetActionWithDialog("Orders By Status").Open()
               .GetSelectionField("Status")
               .AssertNoOfOptionsIs(7).AssertOptionIs(0, "*").AssertOptionIs(6, "Shipped");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DisplayValueAsProperty() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--790")
               .GetObjectView().AssertTitleIs("Road-250 Red, 48")
@@ -194,21 +140,21 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertTitleIs("Alluminum-alloy frame provides a light, stiff ride, whether you are racing in the velodrome or on a demanding club ride on country roads.");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DisplayCollectionAsProperty() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--790")
               .GetObjectView().AssertTitleIs("Road-250 Red, 48")
               .GetCollection("Special Offers").AssertDetails("2 Items");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DisplayGuidProperty() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesTaxRate--1")
               .GetObjectView().AssertTitleIs("Sales Tax Rate for Alberta")
               .GetProperty("Rowguid").AssertValueIs("683de5dd-521a-47d4-a573-06a3cdb1bc5d");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ParameterChoicesSimple() {
         var emp = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--105")
                         .GetObjectView().AssertTitleIs("Kevin Homer");
@@ -225,7 +171,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         emp.GetProperty("Marital Status").AssertValueIs("S");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ParameterChoicesDependent() {
         var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Address--22691&as1=open&d1=EditStateProvince")
                            .GetObjectView().AssertTitleIs("2107 Cardinal...").GetOpenedDialog();
@@ -236,7 +182,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertOptionIs(13, "Yukon Territory");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ParameterDefaultFunction() {
         var oneMonthOn = DateTime.Today.AddMonths(1).ToString("d MMM yyyy");
         helper.GotoHome().OpenMainMenu("Special Offers")
@@ -244,14 +190,14 @@ public class DevelopmentStoryTests_usingNewFramework {
               .GetTextField("End Date").AssertDefaultValueIs(oneMonthOn);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ParameterDisabledFunction() {
         helper.GotoHome().OpenMainMenu("Products")
               .GetActionWithDialog("List Bikes").Open()
               .AssertDisabledField("Category", "Bikes");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ValidateSingleParam() {
         var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities")
                            .GetObjectView().AssertTitleIs("Volume Discount 15 to 24").GetOpenedDialog();
@@ -263,7 +209,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         min.AssertHasValidationError("Must be > 0");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ValidateMultipleParams() {
         var dialog = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SpecialOffer--3&as1=open&d1=EditQuantities")
                            .GetObjectView().AssertTitleIs("Volume Discount 15 to 24").GetOpenedDialog();
@@ -275,14 +221,14 @@ public class DevelopmentStoryTests_usingNewFramework {
         dialog.AssertHasValidationError("Max Qty cannot be < Min Qty");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void DisableFunction() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--75084")
               .GetObjectView().AssertTitleIs("SO75084").OpenActions()
               .GetActionWithDialog("Add New Detail").AssertIsDisabled("Can only add to 'In Process' order");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void HideFunction() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--75084")
               .GetObjectView().AssertTitleIs("SO75084").OpenActions()
@@ -290,7 +236,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertDoesNotHaveAction("Approve Order");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void AutoCompleteFunction() {
         helper.GotoHome().OpenMainMenu("Work Orders").GetActionWithDialog("List Work Orders").Open()
               .GetReferenceField("Product").AssertSupportsAutoComplete().Enter("fr")
@@ -298,7 +244,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertHasAutoCompleteOption(0, "Freewheel");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ViewModel1() {
         var summary = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.StaffSummary--84--206")
                             .GetObjectView().AssertTitleIs("Staff Summary");
@@ -308,7 +254,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         summary.GetProperty("Total Staff").AssertValueIs("290");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateNewObectWithOnlyValueProperties() {
         var dialog = helper.GotoHome().OpenMainMenu("Special Offers")
                            .GetActionWithDialog("Create New Special Offer").Open();
@@ -325,7 +271,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         Assert.AreEqual(now, modified.Substring(0, 16));
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateNewObjectWithAReferenceToAnotherExistingObject() {
         var dialog = helper.GotoHome().OpenMainMenu("Addresses")
                            .GetActionWithDialog("Create New Address").Open();
@@ -341,7 +287,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         addr.GetProperty("State Province").AssertValueIs("Alberta");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateNewObjectWithAReferenceToMultipleExistingObjects() {
         var order = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--12211&as1=open")
                           .GetObjectView().AssertTitleIs("AW00012211 Victor Romero").OpenActions()
@@ -352,7 +298,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         order.GetProperty("Customer").GetReference().AssertTitleIs("AW00012211 Victor Romero");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateAGraphOfTwoNewRelatedObjects() {
         var dialog = helper.GotoHome().OpenMainMenu("Customers").OpenSubMenu("Stores")
                            .GetActionWithDialog("Create New Store Customer").Open();
@@ -365,7 +311,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         Assert.IsTrue(storeTitle.EndsWith(name));
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateAGraphOfObjectsThreeLevelsDeep() {
         //This story involves creation of a graph of three new objects (Customer, Person, Password)
         //with two levels of dependency
@@ -381,7 +327,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         person.GetProperty("Password").GetReference().AssertTitleIs("Password");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void PropertyHiddenViaAHideMethod() {
         //An Individual Customer should not display a Store property
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Customer--29207")
@@ -394,7 +340,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertPropertiesAre("Account Number", "Customer Type", "Store", "Sales Territory");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void SubMenuOnObject() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Vendor--1500")
               .GetObjectView().AssertTitleIs("Morgan Bike Accessories").OpenActions()
@@ -403,7 +349,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertHasActions("Create New Purchase Order", "Open Purchase Orders", "List Purchase Orders", "Show All Products", "Check Credit");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void SubMenuOnMainMenu() {
         helper.GotoHome().OpenMainMenu("Customers").AssertHasActions(
                   "Find Customer By Account Number",
@@ -428,14 +374,14 @@ public class DevelopmentStoryTests_usingNewFramework {
                   "List Customers For Sales Territory");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ImageProperty() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--881")
               .GetObjectView().AssertTitleIs("Short-Sleeve Classic Jersey, S")
               .GetProperty("Photo").AssertIsImage();
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ImageParameter() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Product--881")
               .GetObjectView().AssertTitleIs("Short-Sleeve Classic Jersey, S")
@@ -443,7 +389,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertHasImageField("New Image");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void QueryContributedActionReturningOnlyAContext() {
         var offers = helper.GotoHome().OpenMainMenu("Special Offers")
                            .GetActionWithoutDialog("All Special Offers").ClickToViewList()
@@ -475,7 +421,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         updated.GetRowFromTable(3).AssertColumnValueIs(6, original3);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void QueryContributedAndObjectContributedActionsOfSameNameDefinedOnSameType() {
         helper.GotoHome().OpenMainMenu("Orders")
               .GetActionWithoutDialog("Orders In Process").ClickToViewList()
@@ -488,7 +434,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .GetTextField("Comment To Append");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void LocalCollectionContributedAction() {
         var details = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--53535&c1_Details=Table")
                             .GetObjectView().AssertTitleIs("SO53535").GetCollection("Details");
@@ -510,7 +456,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         details.GetRowFromTable(0).AssertColumnValueIs(7, originalCtn0);
     }
 
-    // [TestMethod]
+    [TestMethod]
     public void SaveNewChildObjectAndTestItsVisibilityInTheParentsCollection() {
         var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
         var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
@@ -527,7 +473,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .AssertTitleIs("1 x Sport-100 Helmet, Red");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void UseOfDeferredFunctionIncludingReload() {
         var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
         var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
@@ -543,7 +489,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         updated.GetProperty("Total Due").AssertValueIs("£267.67");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void UseOfResolveMethodInADeferredFunction() {
         var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
         var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
@@ -572,7 +518,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         order.FreshView().GetProperty("Sub Total").AssertValueIs("£59.48");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void WithDelete() {
         var view = helper.GotoUrlViaHome("object/object?i1=View&o1=AW.Types.Customer--12211&i2=View&o2=AW.Types.Product--707");
         var cust = view.GetObjectView(Pane.Left).AssertTitleIs("AW00012211 Victor Romero");
@@ -589,7 +535,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         order.GetCollection("Details").AssertDetails("Empty");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void WithMultipleDeletes() {
         //Build an order
         var main = helper.GotoUrlViaHome(@"object/list?i1=View&o1=AW.Types.Customer--29861&m2=Product_MenuFunctions&a2=ListProductsByCategory&pg2=1&ps2=20&s2_=0&c2=List&pm2_category=%7B""href"":""___0%2Fobjects%2FAW.Types.ProductCategory%2F1""%7D&pm2_subCategory=null");
@@ -624,14 +570,14 @@ public class DevelopmentStoryTests_usingNewFramework {
         order.GetCollection("Details").AssertDetails("1 Item");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ObjectActionRenderedWithinCollection() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.SalesOrderHeader--44868&c1_Details=List")
               .GetObjectView().GetCollection("Details")
               .GetActionWithDialog("Change A Quantity");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void QueryContributedActionWithChoicesFunction() {
         var list = helper.GotoUrlViaHome("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews")
                          .GetReloadedListView();
@@ -650,7 +596,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         //TODO: column numbers wrong!
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void QueryContributedActionWithCoValidation() {
         var list = helper.GotoUrlViaHome("list?m1=Product_MenuFunctions&a1=AllProducts&pg1=1&ps1=20&s1_=0&c1=List&as1=open&r1=1&d1=AddAnonReviews")
                          .GetReloadedListView().AssertTitleIs("All Products");
@@ -662,7 +608,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         dialog.AssertHasValidationError("Must provide comments for rating < 5");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void ActionReturingImmutableList() {
         helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Vendor--1696&as1=open")
               .GetObjectView().AssertTitleIs("Chicago City Saddles")
@@ -671,7 +617,7 @@ public class DevelopmentStoryTests_usingNewFramework {
               .GetLastRowFromList().AssertTitleIs("HL Touring Seat/Saddle");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void MultiLineActionDialog() {
         //GeminiUrl("multiLineDialog?m1=SpecialOffer_MenuFunctions&d1=CreateMultipleSpecialOffers");
         //WaitForTitle("Create Multiple Special Offers");
@@ -701,7 +647,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         //WaitForCssNo(".lineDialog", 2);
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void InlinePropertyEdit() {
         var emp = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.Employee--281")
                         .GetObjectView(Pane.Left).AssertTitleIs("Shu Ito");
@@ -717,7 +663,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         jt = emp.GetProperty("Job Title").AssertValueIs("Sales Representative");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void InlineMultiPropertyEdit() {
         var wo = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--71669")
                        .GetObjectView(Pane.Left).AssertTitleIs("Road-250 Black, 44: 6/25/2008 12:00:00 AM");
@@ -738,7 +684,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         wo.GetProperty("Due Date").AssertValueIs("6 Jul 2008");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CovalidationOnInlineMultiPropertyEdit() {
         var wo = helper.GotoUrlViaHome("object?i1=View&o1=AW.Types.WorkOrder--71669")
                        .GetObjectView(Pane.Left).AssertTitleIs("Road-250 Black, 44: 6/25/2008 12:00:00 AM");
@@ -752,7 +698,7 @@ public class DevelopmentStoryTests_usingNewFramework {
         dialog.AssertHasValidationError("StartDate must be before DueDate");
     }
 
-    //[TestMethod]
+    [TestMethod]
     public void CreateNewUsingAttribute() {
         var cnv = helper.GotoHome().OpenMainMenu("Work Orders")
                         .GetActionWithDialog("Create New Work Order").OpenToCreateNewView();
@@ -770,21 +716,25 @@ public class DevelopmentStoryTests_usingNewFramework {
 
     #region Overhead
 
-    private readonly string baseUrl = "http://nakedfunctionstest.azurewebsites.net/";
-    private Helper helper;
+    protected override string BaseUrl => "http://nakedfunctionstest.azurewebsites.net/";
 
-    [ClassInitialize]
-    public static void InitialiseClass(TestContext context) {
-        Helper.FilePath(@"drivers.chromedriver.exe");
+    [AssemblyInitialize]
+    public static void InitialiseAssembly(TestContext context) {
+        FilePath(@"drivers.chromedriver.exe");
+        InitChromeDriver();
     }
+
+    [AssemblyCleanup]
+    public static void CleanUpAssembly() {
+        CleanupChromeDriver();
+    }
+
+    private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(baseUrl);
+        helper = new Helper(BaseUrl, br, wait);
     }
-
-    [TestCleanup]
-    public virtual void CleanUpTest() => helper.CleanUp();
 
     #endregion
 }

@@ -7,7 +7,7 @@
 
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework.Selenium.Helpers.Tests;
+using NakedFrameworkClient.TestFramework.Tests;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 

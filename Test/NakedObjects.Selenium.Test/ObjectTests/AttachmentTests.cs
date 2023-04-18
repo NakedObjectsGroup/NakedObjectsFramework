@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework.Selenium.Helpers.Tests;
+using NakedFrameworkClient.TestFramework.Tests;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;

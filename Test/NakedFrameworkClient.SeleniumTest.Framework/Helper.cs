@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework.Selenium.Helpers.Helpers;
+using NakedFrameworkClient.TestFramework.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
@@ -32,6 +32,15 @@ public class Helper {
         wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
         br.Manage().Window.Maximize();
     }
+
+    public Helper(string baseUrl, IWebDriver webDriver, SafeWebDriverWait safeWebDriverWait) {
+        GeminiBaseUrl = baseUrl + "gemini/";
+        br = webDriver;
+        wait = safeWebDriverWait;
+       // br.Manage().Window.Maximize();
+    }
+
+
 
     #region chrome helper
 
