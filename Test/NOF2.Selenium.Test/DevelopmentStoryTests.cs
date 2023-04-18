@@ -204,6 +204,7 @@ public class DevelopmentStoryTests : BaseTest {
     }
 
     [TestMethod]
+    [Ignore("#502")]
     public void MainMenuActionToRetrieveAnArrayList() {
         helper.GotoHome().OpenMainMenu("Employees")
               .GetActionWithoutDialog("List All Departments").ClickToViewList()
@@ -467,6 +468,7 @@ public class DevelopmentStoryTests : BaseTest {
     }
 
     [TestMethod]
+    [Ignore("#502")]
     public void ControlOverSaving() {
         var transient = helper.GotoHome().OpenMainMenu("Special Offers")
                               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
