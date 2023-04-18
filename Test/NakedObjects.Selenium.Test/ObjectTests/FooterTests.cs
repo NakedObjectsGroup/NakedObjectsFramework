@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
@@ -17,7 +16,6 @@ public abstract class FooterTests : AWTest {
 
     [TestMethod]
     public virtual void Home() {
-        Debug.WriteLine(nameof(Home));
         GeminiUrl("object?o1=___1.Product--968");
         WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
         Click(br.FindElement(By.CssSelector(".icon.home")));
@@ -26,7 +24,6 @@ public abstract class FooterTests : AWTest {
 
     [TestMethod]
     public virtual void BackAndForward() {
-        Debug.WriteLine(nameof(BackAndForward));
         Url(BaseUrl);
         GoToMenuFromHomePage("Orders");
         Click(GetObjectEnabledAction("Random Order"));
@@ -68,7 +65,6 @@ public abstract class FooterTests : AWTest {
 
     [TestMethod]
     public virtual void RecentObjects() {
-        Debug.WriteLine(nameof(RecentObjects));
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
         ClearFieldThenType("#accountnumber1", "AW00000042");
         Click(OKButton());
@@ -126,7 +122,6 @@ public abstract class FooterTests : AWTest {
     [TestMethod]
     public virtual void ApplicationProperties() {
         var lastPropertyText = "Client version:";
-        Debug.WriteLine(nameof(ApplicationProperties));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         ClickPropertiesButton();
@@ -145,7 +140,6 @@ public abstract class FooterTests : AWTest {
 
     [TestMethod]
     public virtual void LogOff() {
-        Debug.WriteLine(nameof(LogOff));
         GeminiUrl("home");
         ClickLogOffButton();
         wait.Until(d => br.FindElement(By.CssSelector(".title")).Text.StartsWith("Log Off"));
@@ -158,7 +152,6 @@ public abstract class FooterTests : AWTest {
 
     [TestMethod]
     public virtual void ExplicitWarningsAndInfo() {
-        Debug.WriteLine(nameof(ExplicitWarningsAndInfo));
         GeminiUrl("home?m1=WorkOrderRepository");
         Click(GetObjectEnabledAction("Generate Info And Warning"));
         var warn = WaitForCss(".footer .warnings");
@@ -174,7 +167,6 @@ public abstract class FooterTests : AWTest {
 
     [TestMethod]
     public virtual void ZeroParamActionReturningNullGeneratesGenericWarning() {
-        Debug.WriteLine(nameof(ZeroParamActionReturningNullGeneratesGenericWarning));
         GeminiUrl("home?m1=EmployeeRepository");
         Click(GetObjectEnabledAction("Me"));
         WaitForTextEquals(".footer .warnings", "no result found");

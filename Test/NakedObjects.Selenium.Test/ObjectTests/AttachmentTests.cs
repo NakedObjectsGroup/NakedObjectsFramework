@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
@@ -17,7 +16,6 @@ public abstract class AttachmentTests : AWTest {
 
     [TestMethod]
     public virtual void ImageAsProperty() {
-        Debug.WriteLine(nameof(ImageAsProperty));
         GeminiUrl("object?o1=___1.Product--968");
         wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
         wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
@@ -25,14 +23,12 @@ public abstract class AttachmentTests : AWTest {
 
     [TestMethod]
     public virtual void EmptyImageProperty() {
-        Debug.WriteLine(nameof(EmptyImageProperty));
         GeminiUrl("object?i1=View&o1=___1.Person--13742");
         wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
     }
 
     [TestMethod]
     public virtual void ClickOnImage() {
-        Debug.WriteLine(nameof(ClickOnImage));
         GeminiUrl("object?o1=___1.Product--779");
         Click(WaitForCss(".property img"));
         WaitForView(Pane.Single, PaneType.Attachment);
@@ -41,7 +37,6 @@ public abstract class AttachmentTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickOnImage() {
-        Debug.WriteLine(nameof(RightClickOnImage));
         GeminiUrl("object?o1=___1.Product--780");
         RightClick(WaitForCss(".property img"));
         WaitForView(Pane.Left, PaneType.Object);

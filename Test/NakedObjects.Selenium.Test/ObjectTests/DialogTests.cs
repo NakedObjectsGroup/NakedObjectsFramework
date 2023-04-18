@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,7 +25,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void PasswordParam() {
-        Debug.WriteLine(nameof(PasswordParam));
         GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
         //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
         wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "password") == 3);
@@ -34,7 +32,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ScalarChoicesParm() {
-        Debug.WriteLine(nameof(ScalarChoicesParm));
         Url(OrdersMenuUrl);
         OpenActionDialog("Orders By Value");
         SelectDropDownOnField("#ordering1", "Descending");
@@ -45,7 +42,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void TestCancelDialog() {
-        Debug.WriteLine(nameof(TestCancelDialog));
         Url(OrdersMenuUrl);
         OpenActionDialog("Orders By Value");
         CancelDialog();
@@ -54,7 +50,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void FieldsRetainedWhenNavigatingAwayAndBack() {
-        Debug.WriteLine(nameof(FieldsRetainedWhenNavigatingAwayAndBack));
         GeminiUrl("home?m1=CustomerRepository&d1=FindIndividualCustomerByName");
         ClearFieldThenType("#firstname1", "arthur");
         ClearFieldThenType("#lastname1", "brent");
@@ -69,7 +64,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ReopeningADialogThatWasntCancelledDoesNotRetainFields() {
-        Debug.WriteLine(nameof(ReopeningADialogThatWasntCancelledDoesNotRetainFields));
         ClickRecentButton();
         WaitForView(Pane.Single, PaneType.Recent);
         Click(HomeIcon());
@@ -83,7 +77,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ScalarParmShowsDefaultValue() {
-        Debug.WriteLine(nameof(ScalarParmShowsDefaultValue));
         Url(CustomersMenuUrl);
         GetObjectActions(CustomerServiceActions);
         OpenActionDialog("Find Customer By Account Number");
@@ -93,7 +86,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void DateTimeParmKeepsValue() {
-        Debug.WriteLine(nameof(DateTimeParmKeepsValue));
         GeminiUrl("object?o1=___1.Customer--29923&as1=open");
         OpenSubMenu("Orders");
         OpenActionDialog("Search For Orders");
@@ -110,7 +102,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void TimeSpanParm() {
-        Debug.WriteLine(nameof(TimeSpanParm));
         GeminiUrl("object?i1=View&o1=___1.Shift--1&as1=open");
         OpenActionDialog("Change Times");
 
@@ -130,7 +121,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void RefChoicesParmKeepsValue() {
-        Debug.WriteLine(nameof(RefChoicesParmKeepsValue));
         Url(ProductServiceUrl);
         OpenActionDialog("List Products By Sub Category");
         Thread.Sleep(500);
@@ -142,7 +132,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void MultipleRefChoicesDefaults() {
-        Debug.WriteLine(nameof(MultipleRefChoicesDefaults));
         Url(ProductServiceUrl);
         OpenActionDialog("List Products By Sub Categories");
 
@@ -156,7 +145,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void MultipleRefChoicesChangeDefaults() {
-        Debug.WriteLine(nameof(MultipleRefChoicesChangeDefaults));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         Url(ProductServiceUrl);
@@ -191,7 +179,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ChoicesDefaults() {
-        Debug.WriteLine(nameof(ChoicesDefaults));
         Url(ProductServiceUrl);
         OpenActionDialog("Find By Product Line And Class");
 
@@ -208,7 +195,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ChoicesOptional() {
-        Debug.WriteLine(nameof(ChoicesOptional));
         //Test that a field with choices that is optional can be left blank
         GeminiUrl("home?m1=ProductRepository&d1=FindByOptionalProductLinesAndClasses&f1_productLine=%5B%5D&f1_productClass=%5B%5D");
         Click(OKButton());
@@ -217,7 +203,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ChoicesChangeDefaults() {
-        Debug.WriteLine(nameof(ChoicesChangeDefaults));
         Url(ProductServiceUrl);
         OpenActionDialog("Find By Product Line And Class");
 
@@ -231,7 +216,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ConditionalChoices() {
-        Debug.WriteLine(nameof(ConditionalChoices));
         GeminiUrl("home?m1=ProductRepository");
         WaitForView(Pane.Single, PaneType.Home);
         OpenActionDialog("List Products");
@@ -255,7 +239,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ConditionalChoicesDefaults() {
-        Debug.WriteLine(nameof(ConditionalChoicesDefaults));
         Url(ProductServiceUrl);
         OpenActionDialog("Find Products By Category");
         var slctCs = new SelectElement(WaitForCss("select#categories1"));
@@ -277,7 +260,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ConditionalChoicesMultiple() {
-        Debug.WriteLine(nameof(ConditionalChoicesMultiple));
         Url(ProductServiceUrl);
 
         OpenActionDialog("Find Products By Category");
@@ -300,7 +282,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ParameterDescriptionRenderedAsPlaceholder() {
-        Debug.WriteLine(nameof(ParameterDescriptionRenderedAsPlaceholder));
         GeminiUrl("home?m1=CustomerRepository&d1=FindStoreByName");
         var name = WaitForCss("input#name1");
         Assert.AreEqual("* partial match", name.GetAttribute("placeholder"));
@@ -308,7 +289,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void BooleanParams() {
-        Debug.WriteLine(nameof(BooleanParams));
         GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees2");
         //None of the fields should have a mandatory indicator
         var prams = WaitForCss(".parameter .value", 4);
@@ -332,7 +312,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void NullableBooleanParams() {
-        Debug.WriteLine(nameof(NullableBooleanParams));
         GeminiUrl("home?m1=EmployeeRepository&d1=ListEmployees");
 
         //Test for visibility of the * mandatory indicator. Should only be on the first one
@@ -375,7 +354,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void WarningShownWithinDialogAndInFooter() {
-        Debug.WriteLine(nameof(WarningShownWithinDialogAndInFooter));
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
         ClearFieldThenType("#accountnumber1", "AW1");
         Click(OKButton());
@@ -385,7 +363,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void DefaultReferenceParamRendersCorrectly() {
-        Debug.WriteLine(nameof(DefaultReferenceParamRendersCorrectly));
         //To test a previous bug, where reference was beign rendered as a Url, not its title
         GeminiUrl("object?i1=View&o1=___1.Person--18542&as1=open");
         OpenActionDialog("Create Letter");
@@ -394,7 +371,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void QueryOnlyActionDialogPersists() {
-        Debug.WriteLine(nameof(QueryOnlyActionDialogPersists));
         //To test:
         //Query only action OK, left click & go back, right click & remains open
         GeminiUrl("home?m1=ProductRepository");
@@ -418,7 +394,6 @@ public abstract class DialogTests : AWTest {
     [TestMethod]
     [Ignore("#502")]
     public virtual void PotentActionDialogDisappearsAndFieldsNotRemembered() {
-        Debug.WriteLine(nameof(PotentActionDialogDisappearsAndFieldsNotRemembered));
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--57732&as1=open");
         OpenActionDialog("Add Multi Line Comment");
         ClearFieldThenType("#comment1", "foo");
@@ -433,7 +408,6 @@ public abstract class DialogTests : AWTest {
     [TestMethod]
     //Test for #49
     public virtual void NoResultFoundMessageLeavesDialogOpen() {
-        Debug.WriteLine(nameof(NoResultFoundMessageLeavesDialogOpen));
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber");
         ClearFieldThenType("#accountnumber1", "AW66666");
         Click(OKButton());
@@ -448,7 +422,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompleteParm() {
-        Debug.WriteLine(nameof(AutoCompleteParm));
         Url(SalesServiceUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
         OpenActionDialog("List Accounts For Sales Person");
@@ -475,7 +448,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompleteParmDefault() {
-        Debug.WriteLine(nameof(AutoCompleteParmDefault));
         Url(ProductServiceUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
         OpenActionDialog("Find Product");
@@ -486,7 +458,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ClearingAutoCompleteTextClearsUnderlyingReference() {
-        Debug.WriteLine(nameof(ClearingAutoCompleteTextClearsUnderlyingReference));
         Url(ProductServiceUrl);
         OpenActionDialog("Find Product");
         Assert.AreEqual("Adjustable Race", WaitForCss(".value input[type='text']").GetAttribute("value"));
@@ -500,7 +471,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompleteParmShowSingleItem() {
-        Debug.WriteLine(nameof(AutoCompleteParmShowSingleItem));
         Url(ProductServiceUrl);
         OpenActionDialog("Find Product");
         // for some reason "BB" doesn't work in test - works OK manually - "BB Ball" seems to work
@@ -522,7 +492,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompleteScalarField() {
-        Debug.WriteLine(nameof(AutoCompleteScalarField));
         GeminiUrl("object?i1=View&o1=___1.SalesOrderHeader--54461&as1=open&d1=AddComment&f1_comment=%22%22");
         WaitForView(Pane.Single, PaneType.Object, "SO54461");
 
@@ -537,7 +506,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompleteOptionalParamNotSelected() {
-        Debug.WriteLine(nameof(AutoCompleteOptionalParamNotSelected));
         //Test written against a bug in 8.0.0-beta9
         GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
         OKButton().AssertIsEnabled();
@@ -563,7 +531,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void MandatoryParameterEnforced() {
-        Debug.WriteLine(nameof(MandatoryParameterEnforced));
         GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
         wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
         wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
@@ -576,7 +543,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompleteMandatoryParmWithoutSelectionFails() {
-        Debug.WriteLine(nameof(AutoCompleteMandatoryParmWithoutSelectionFails));
         //To test  -  enter valid text but don't select from drop-down
         //Assuming parm is mandatory, hitting Ok should give validation message
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
@@ -587,7 +553,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ValidateSingleValueParameter() {
-        Debug.WriteLine(nameof(ValidateSingleValueParameter));
         GeminiUrl("object?o1=___1.Product--342&as1=open&d1=BestSpecialOffer");
 
         ClearFieldThenType("#quantity1", "0");
@@ -604,7 +569,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ValidateSingleRefParamFromChoices() {
-        Debug.WriteLine(nameof(ValidateSingleRefParamFromChoices));
         GeminiUrl("object?o1=___1.SalesOrderHeader--71742&c1_SalesOrderHeaderSalesReason=List&as1=open");
 
         WaitForView(Pane.Single, PaneType.Object);
@@ -626,7 +590,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void CoValidationOfMultipleParameters() {
-        Debug.WriteLine(nameof(CoValidationOfMultipleParameters));
         GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
         wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
         wait.Until(dr => dr.FindElement(By.CssSelector("#qtyintostock1")).GetAttribute("value") == "550");
@@ -640,7 +603,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void OptionalReferenceParamCanBeNull() {
-        Debug.WriteLine(nameof(OptionalReferenceParamCanBeNull));
         //Test written against specific bug in 8.0Beta9
         GeminiUrl("home?m1=OrderRepository&d1=FindOrders");
         Click(OKButton());
@@ -649,7 +611,6 @@ public abstract class DialogTests : AWTest {
 
     [TestMethod]
     public virtual void ValidationOfContributeeParameter() {
-        Debug.WriteLine(nameof(ValidationOfContributeeParameter));
         GeminiUrl("object?r1=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
         Click(OKButton());
         //Test written against #37 where message is preceded by '199 Restful Objects'

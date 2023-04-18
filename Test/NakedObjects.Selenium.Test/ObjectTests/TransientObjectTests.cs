@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +19,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void CreateAndSaveTransientObject() {
-        Debug.WriteLine(nameof(CreateAndSaveTransientObject));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         wait.Until(d => d.FindElements(By.CssSelector("select#cardtype1 option")).First(el => el.Text == "*"));
@@ -39,7 +37,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void SaveAndClose() {
-        Debug.WriteLine(nameof(SaveAndClose));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         SelectDropDownOnField("#cardtype1", "Vista");
@@ -61,7 +58,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void MissingMandatoryFieldsNotified() {
-        Debug.WriteLine(nameof(MissingMandatoryFieldsNotified));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         SelectDropDownOnField("#cardtype1", "Vista");
@@ -74,7 +70,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void IndividualFieldValidation() {
-        Debug.WriteLine(nameof(IndividualFieldValidation));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         SelectDropDownOnField("#cardtype1", "Vista");
@@ -92,7 +87,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void MultiFieldValidation() {
-        Debug.WriteLine(nameof(MultiFieldValidation));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         SelectDropDownOnField("#cardtype1", "Vista");
@@ -108,7 +102,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void PropertyDescriptionAndRequiredRenderedAsPlaceholder() {
-        Debug.WriteLine(nameof(PropertyDescriptionAndRequiredRenderedAsPlaceholder));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         var name = WaitForCss("input#cardnumber1");
@@ -117,7 +110,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void CancelTransientObject() {
-        Debug.WriteLine(nameof(CancelTransientObject));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         Click(GetObjectEnabledAction("Create New Credit Card"));
@@ -127,7 +119,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void SwapPanesWithTransients() {
-        Debug.WriteLine(nameof(SwapPanesWithTransients));
         GeminiUrl("object/object?o1=___1.Product--738&as1=open&o2=___1.Person--20774&as2=open");
         WaitForView(Pane.Left, PaneType.Object, "LL Road Frame - Black, 52");
         WaitForView(Pane.Right, PaneType.Object, "Isabella Richardson");
@@ -150,7 +141,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void BackAndForwardOverTransient() {
-        Debug.WriteLine(nameof(BackAndForwardOverTransient));
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         Click(GetObjectEnabledAction("Create New Credit Card"));
@@ -163,14 +153,12 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void RequestForExpiredTransient() {
-        Debug.WriteLine(nameof(RequestForExpiredTransient));
         GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
         wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
     }
 
     [TestMethod]
     public virtual void ConditionalChoicesOnTransient() {
-        Debug.WriteLine(nameof(ConditionalChoicesOnTransient));
         GeminiUrl("home?m1=ProductRepository");
         WaitForView(Pane.Single, PaneType.Home);
         Thread.Sleep(1000); // no idea why this keeps failing on server 
@@ -196,7 +184,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void TransientWithHiddenNonOptionalFields() {
-        Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
         GeminiUrl("object?i1=View&o1=___1.Product--380&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Hex Nut 8");
         Click(GetObjectEnabledAction("Create New Work Order", Pane.Single, "Work Orders"));
@@ -209,7 +196,6 @@ public abstract class TransientObjectTests : AWTest {
     [TestMethod]
     //Test for a previous bug  -  where Etag error was resulting
     public virtual void CanInvokeActionOnASavedTransient() {
-        Debug.WriteLine(nameof(CanInvokeActionOnASavedTransient));
         GeminiUrl("object?i1=View&o1=___1.Customer--11783&as1=open&d1=CreateNewOrder&f1_copyHeaderFromLastOrder=true");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -223,7 +209,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void TransientCreatedFromDialogClosesDialog() {
-        Debug.WriteLine(nameof(TransientCreatedFromDialogClosesDialog));
         GeminiUrl("object?i1=View&o1=___1.Customer--30107&as1=open");
         OpenSubMenu("Orders");
         OpenActionDialog("Create New Order");
@@ -239,7 +224,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void CreateAndSaveNotPersistedObject() {
-        Debug.WriteLine(nameof(CreateAndSaveNotPersistedObject));
         GeminiUrl("home?m1=EmployeeRepository");
         Click(GetObjectEnabledAction("Create Staff Summary"));
         WaitForView(Pane.Single, PaneType.Object, "Staff Summary");
@@ -249,7 +233,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void ValuePropOnTransientEmptyIfNoDefault() {
-        Debug.WriteLine(nameof(ValuePropOnTransientEmptyIfNoDefault));
         GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
         OpenSubMenu("Work Orders");
         Click(GetObjectEnabledAction("Create New Work Order"));
@@ -261,7 +244,6 @@ public abstract class TransientObjectTests : AWTest {
     [TestMethod]
     //Test written against a specific failure scenario
     public virtual void InvalidPropOnTransientClearedAndReentered() {
-        Debug.WriteLine(nameof(InvalidPropOnTransientClearedAndReentered));
         GeminiUrl("object?i1=View&o1=___1.Product--497&as1=open");
         OpenSubMenu("Work Orders");
         Click(GetObjectEnabledAction("Create New Work Order"));
@@ -278,7 +260,6 @@ public abstract class TransientObjectTests : AWTest {
 
     [TestMethod]
     public virtual void AutoCompletePropOnTransient() {
-        Debug.WriteLine(nameof(AutoCompletePropOnTransient));
         GeminiUrl("object?i1=View&o1=___1.Customer--635&as1=open&d1=CreateNewOrder");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -296,7 +277,6 @@ public abstract class TransientObjectTests : AWTest {
     // test for bug #104
     // add modified date visibility checks for bug #195
     public virtual void TransientWithHiddenUntilPersistedFields() {
-        Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
         GeminiUrl("object?i1=View&o1=___1.Product--390&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Hex Nut 20");
         Click(GetObjectEnabledAction("Create New Work Order", Pane.Single, "Work Orders"));
@@ -327,7 +307,6 @@ public abstract class TransientObjectTests : AWTest {
     [TestMethod]
     // test for bug #128
     public virtual void PersistentWithHiddenUntilPersistedFields() {
-        Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
         GeminiUrl("object?i1=View&o1=___1.Product--390&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Hex Nut 20");
 
@@ -346,7 +325,6 @@ public abstract class TransientObjectTests : AWTest {
     [TestMethod]
     // test for bug #137
     public virtual void TransientWithOtherPaneChanges() {
-        Debug.WriteLine(nameof(TransientWithOtherPaneChanges));
         GeminiUrl("home/home");
 
         WaitForCss("#pane1 nof-menu-bar nof-action input", MainMenusCount);

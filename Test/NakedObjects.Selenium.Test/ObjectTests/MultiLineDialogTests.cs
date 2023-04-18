@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
@@ -19,7 +18,6 @@ public abstract class MultiLineDialogTests : AWTest {
 
     [TestMethod]
     public virtual void MultiLineMenuAction() {
-        Debug.WriteLine(nameof(MultiLineMenuAction));
         GeminiUrl("home?m1=SpecialOfferRepository");
         Click(GetObjectEnabledAction("Create Multiple Special Offers"));
         WaitForView(Pane.Single, PaneType.MultiLineDialog, "Create Multiple Special Offers");
@@ -87,7 +85,6 @@ public abstract class MultiLineDialogTests : AWTest {
 
     [TestMethod]
     public virtual void MultiLineObjectAction() {
-        Debug.WriteLine(nameof(MultiLineObjectAction));
         GeminiUrl("object?i1=View&r1=1&o1=___1.Vendor--1504&as1=open");
         OpenSubMenu("Purchase Orders");
         Click(GetObjectEnabledAction("Create New Purchase Order"));
@@ -140,7 +137,6 @@ public abstract class MultiLineDialogTests : AWTest {
 
     [TestMethod]
     public virtual void MultiLineObjectActionInCollection() {
-        Debug.WriteLine(nameof(MultiLineObjectActionInCollection));
         GeminiUrl("object?i1=View&r1=1&o1=___1.Customer--29562&as1=open&d1=CreateNewOrder");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
@@ -210,7 +206,6 @@ public abstract class MultiLineDialogTests : AWTest {
     [TestMethod]
     //#53
     public virtual void InvokeMLDFromObjectInRightPane() {
-        Debug.WriteLine(nameof(InvokeMLDFromObjectInRightPane));
         GeminiUrl("home/object?i2=View&r2=1&o2=___1.PurchaseOrderHeader--300&as2=open");
         Click(GetObjectEnabledAction("Add New Details", Pane.Right));
         WaitForView(Pane.Single, PaneType.MultiLineDialog);

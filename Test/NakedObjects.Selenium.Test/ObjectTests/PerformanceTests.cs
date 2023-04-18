@@ -16,7 +16,6 @@ public abstract class PerformanceTests : AWTest {
 
     [TestMethod]
     public virtual void RetrieveRandomEmployees() {
-        Debug.WriteLine(nameof(RetrieveRandomEmployees));
         var stopWatch = new Stopwatch();
         stopWatch.Start();
         GeminiUrl("home?m1=EmployeeRepository");

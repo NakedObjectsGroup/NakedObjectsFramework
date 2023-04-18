@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
@@ -21,7 +20,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void UnrecognisedUrlGoesToHome() {
-        Debug.WriteLine(nameof(UnrecognisedUrlGoesToHome));
         GeminiUrl("unrecognised");
         WaitForView(Pane.Single, PaneType.Home, "Home");
         Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
@@ -31,7 +29,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void Home() {
-        Debug.WriteLine(nameof(Home));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home, "Home");
         Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
@@ -39,7 +36,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void HomeWithMenu() {
-        Debug.WriteLine(nameof(HomeWithMenu));
         GeminiUrl("home?m1=CustomerRepository");
         WaitForView(Pane.Single, PaneType.Home, "Home");
         wait.Until(d => d.FindElement(By.CssSelector("nof-action-list")));
@@ -58,7 +54,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void Object() {
-        Debug.WriteLine(nameof(Object));
         GeminiUrl("object?o1=___1.Store--350");
         wait.Until(d => d.FindElement(By.CssSelector(".object")));
         wait.Until(d => d.FindElement(By.CssSelector(".view")));
@@ -80,14 +75,12 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void ObjectWithNoSuchObject() {
-        Debug.WriteLine(nameof(ObjectWithNoSuchObject));
         GeminiUrl("object?o1=___1.Foo--555");
         wait.Until(d => d.FindElement(By.CssSelector(".error")));
     }
 
     [TestMethod]
     public virtual void ObjectWithActions() {
-        Debug.WriteLine(nameof(ObjectWithActions));
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         GetObjectEnabledAction("Create New Address");
         AssertObjectElementsPresent();
@@ -96,7 +89,6 @@ public abstract class UrlTests : AWTest {
     [TestMethod]
     //TODO:  Need to add tests for object & home (later, list) with action (dialog) open
     public virtual void ObjectWithCollections() {
-        Debug.WriteLine(nameof(ObjectWithCollections));
         GeminiUrl("object?o1=___1.Store--350&&c1_Addresses=List&c1_Contacts=Table");
         wait.Until(d => d.FindElement(By.CssSelector(".collections")));
         AssertObjectElementsPresent();
@@ -117,7 +109,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void ObjectInEditMode() {
-        Debug.WriteLine(nameof(ObjectInEditMode));
         GeminiUrl("object?o1=___1.Store--350&i1=Edit");
         wait.Until(d => d.FindElement(By.CssSelector(".object")));
         wait.Until(d => d.FindElement(By.CssSelector(".edit")));
@@ -128,7 +119,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void ListZeroParameterAction() {
-        Debug.WriteLine(nameof(ListZeroParameterAction));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders");
         Reload();
         wait.Until(d => d.FindElement(By.CssSelector(".list")));
@@ -141,7 +131,6 @@ public abstract class UrlTests : AWTest {
 
     [TestMethod]
     public virtual void SplitHomeHome() {
-        Debug.WriteLine(nameof(ListZeroParameterAction));
         GeminiUrl("home/home");
         WaitForView(Pane.Left, PaneType.Home, "Home");
         WaitForView(Pane.Right, PaneType.Home, "Home");

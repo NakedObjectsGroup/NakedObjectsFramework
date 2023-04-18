@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,7 +22,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void ListViewWithParmDialogAlreadyOpen() {
-        Debug.WriteLine(nameof(ListViewWithParmDialogAlreadyOpen));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&d1=ChangeMaxQuantity&f1_newMax=%22%22");
@@ -51,7 +49,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void ListViewWithParmDialogNotOpen() {
-        Debug.WriteLine(nameof(ListViewWithParmDialogNotOpen));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open");
@@ -80,7 +77,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void DateParam() {
-        Debug.WriteLine(nameof(DateParam));
         GeminiUrl("home");
 
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
@@ -117,7 +113,6 @@ public abstract class CCATests : AWTest {
     //To test an error that was previously being thrown by the RO server
     [TestMethod]
     public virtual void EmptyParam() {
-        Debug.WriteLine(nameof(EmptyParam));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
@@ -136,7 +131,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void TestSelectAll() {
-        Debug.WriteLine(nameof(TestSelectAll));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
@@ -157,7 +151,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void SelectAllTableView() {
-        Debug.WriteLine(nameof(SelectAllTableView));
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table");
         Reload();
         WaitForCss("td", 64);
@@ -176,7 +169,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void IfNoCCAs() {
-        Debug.WriteLine(nameof(IfNoCCAs));
         //test that Actions is disabled & no checkboxes appear
         GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1_=0&c1=List");
         Reload();
@@ -188,7 +180,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void SelectionRetainedWhenNavigatingAwayAndBack() {
-        Debug.WriteLine(nameof(SelectionRetainedWhenNavigatingAwayAndBack));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
         Reload();
         WaitForSelectedCheckboxes(3);
@@ -201,7 +192,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void SelectionClearedWhenPageChanged() {
-        Debug.WriteLine(nameof(SelectionClearedWhenPageChanged));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=1&ps1=20&s1_=152&c1=List");
         Reload();
         WaitForTextStarting(".details", "Page 1 of ");
@@ -228,7 +218,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void TableViewWithParmDialogNotOpen() {
-        Debug.WriteLine(nameof(TableViewWithParmDialogNotOpen));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open&c1=Table");
@@ -269,7 +258,6 @@ public abstract class CCATests : AWTest {
     [TestMethod]
     [Ignore("#499")]
     public virtual void TableViewWithParmDialogAlreadyOpen() {
-        Debug.WriteLine(nameof(TableViewWithParmDialogAlreadyOpen));
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&c1=Table&as1=open&d1=ChangeDiscount");
@@ -306,7 +294,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void ReloadingAQueryableClearsSelection() {
-        Debug.WriteLine(nameof(ReloadingAQueryableClearsSelection));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
         Reload();
         wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
@@ -319,7 +306,6 @@ public abstract class CCATests : AWTest {
 
     [TestMethod]
     public virtual void ZeroParamAction() {
-        Debug.WriteLine(nameof(ZeroParamAction));
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
         Reload();
         wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);

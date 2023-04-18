@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
@@ -18,7 +17,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void ListInSplitPaneUpdatesWhenSearchParamsChange() {
-        Debug.WriteLine(nameof(ListInSplitPaneUpdatesWhenSearchParamsChange));
         GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
         ClearFieldThenType("#searchstring1", "a");
         RightClick(OKButton());
@@ -31,7 +29,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void TwoListsCanBothBeReloaded() {
-        Debug.WriteLine(nameof(TwoListsCanBothBeReloaded));
         GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
         ClearFieldThenType("#searchstring1", "x");
         RightClick(OKButton());
@@ -62,7 +59,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickActionReturningObjectFromHomeSingle() {
-        Debug.WriteLine(nameof(RightClickActionReturningObjectFromHomeSingle));
         Url(CustomersMenuUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
         wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action")).Count == CustomerServiceActions);
@@ -77,7 +73,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickActionReturningListFromHomeSingle() {
-        Debug.WriteLine(nameof(RightClickActionReturningListFromHomeSingle));
         Url(OrdersMenuUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
         RightClick(GetObjectEnabledAction("Highest Value Orders"));
@@ -87,7 +82,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickReferenceFromListSingle() {
-        Debug.WriteLine(nameof(RightClickReferenceFromListSingle));
         Url(OrdersMenuUrl);
         Click(GetObjectEnabledAction("Highest Value Orders"));
         WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
@@ -100,7 +94,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickReferencePropertyFromObjectSingle() {
-        Debug.WriteLine(nameof(RightClickReferencePropertyFromObjectSingle));
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
         var reference = GetReferenceProperty("Sales Person", "Lynn Tsoflias");
@@ -111,7 +104,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickActionFromObjectSingle() {
-        Debug.WriteLine(nameof(RightClickActionFromObjectSingle));
         GeminiUrl("object?o1=___1.Customer--30116&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Technical Parts Manufacturing, AW00030116");
         OpenSubMenu("Orders");
@@ -122,7 +114,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickHomeIconFromObjectSingle() {
-        Debug.WriteLine(nameof(RightClickHomeIconFromObjectSingle));
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
         RightClick(HomeIcon());
@@ -132,7 +123,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void SwapPanesIconFromSingleOpensHomeOnLeft() {
-        Debug.WriteLine(nameof(SwapPanesIconFromSingleOpensHomeOnLeft));
         GeminiUrl("object?o1=___1.Store--350&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");
         Click(SwapIcon());
@@ -149,7 +139,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickReferenceInLeftPaneObject() {
-        Debug.WriteLine(nameof(RightClickReferenceInLeftPaneObject));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -161,7 +150,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void ClickReferenceInLeftPaneObject() {
-        Debug.WriteLine(nameof(ClickReferenceInLeftPaneObject));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -175,7 +163,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void ClickReferenceInRightPaneObject() {
-        Debug.WriteLine(nameof(ClickReferenceInRightPaneObject));
         Url(TwoObjectsB);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -189,7 +176,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickReferenceInRightPaneObject() {
-        Debug.WriteLine(nameof(RightClickReferenceInRightPaneObject));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -202,7 +188,6 @@ public abstract class SplitPaneTests : AWTest {
     [TestMethod]
     //Behaviour modified with #61 - assuming config option set to true
     public virtual void LeftClickHomeIconFromSplitObjectObject() {
-        Debug.WriteLine(nameof(LeftClickHomeIconFromSplitObjectObject));
         Url(TwoObjects);
         Click(HomeIcon());
         WaitForView(Pane.Single, PaneType.Home);
@@ -210,7 +195,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickHomeIconFromSplitObjectObject() {
-        Debug.WriteLine(nameof(RightClickHomeIconFromSplitObjectObject));
         Url(TwoObjects);
         RightClick(HomeIcon());
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
@@ -219,7 +203,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void ActionDialogOpensInCorrectPane() {
-        Debug.WriteLine(nameof(ActionDialogOpensInCorrectPane));
         GeminiUrl("object/object?i1=View&o1=___1.Customer--543&i2=View&o2=___1.SalesOrderHeader--56672&as1=open&as2=open");
         WaitForView(Pane.Left, PaneType.Object, "Friendly Neighborhood Bikes, AW00000543");
         WaitForView(Pane.Right, PaneType.Object, "SO56672");
@@ -234,7 +217,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void RightClickIsSameAsLeftClickForOpeningDialog() {
-        Debug.WriteLine(nameof(RightClickIsSameAsLeftClickForOpeningDialog));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -246,7 +228,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void SwapPanes() {
-        Debug.WriteLine(nameof(SwapPanes));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -257,7 +238,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void FullPaneFromLeft() {
-        Debug.WriteLine(nameof(FullPaneFromLeft));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");
@@ -267,7 +247,6 @@ public abstract class SplitPaneTests : AWTest {
 
     [TestMethod]
     public virtual void FullPaneFromRight() {
-        Debug.WriteLine(nameof(FullPaneFromRight));
         Url(TwoObjects);
         WaitForView(Pane.Left, PaneType.Object, "Twin Cycles, AW00000555");
         WaitForView(Pane.Right, PaneType.Object, "SO71926");

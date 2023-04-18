@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.Selenium.Helpers.Tests;
 using OpenQA.Selenium;
@@ -17,8 +16,6 @@ public abstract class ViewModelTests : AWTest {
 
     [TestMethod]
     public virtual void CreateVM() {
-        Debug.WriteLine(nameof(CreateVM));
-
         GeminiUrl("object?i1=View&o1=___1.CustomerDashboard--20071&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Sean Campbell - Dashboard");
         //TODO: test for no Edit button?
@@ -26,8 +23,6 @@ public abstract class ViewModelTests : AWTest {
 
     [TestMethod]
     public virtual void CreateEditableVM() {
-        Debug.WriteLine(nameof(CreateEditableVM));
-
         GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
         Click(GetObjectEnabledAction("Create Email"));
         WaitForView(Pane.Single, PaneType.Object, "New email");
@@ -50,8 +45,6 @@ public abstract class ViewModelTests : AWTest {
     [TestMethod]
     //Test for #46
     public virtual void EditableVMWithEmptyLeadingKeys() {
-        Debug.WriteLine(nameof(EditableVMWithEmptyLeadingKeys));
-
         GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
         Click(GetObjectEnabledAction("Create Email"));
         WaitForView(Pane.Single, PaneType.Object, "New email");
@@ -69,8 +62,6 @@ public abstract class ViewModelTests : AWTest {
 
     [TestMethod]
     public virtual void CreateSwitchableVM() {
-        Debug.WriteLine(nameof(CreateSwitchableVM));
-
         GeminiUrl("object?i1=View&o1=___1.StoreSalesInfo--AW00000293--False&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Sales Info for: Fashionable Bikes and Accessories");
         Click(GetObjectEnabledAction("Edit")); //Note: not same as the generic (object) Edit button

@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +19,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void CopyTitleOrPropertyIntoClipboard() {
-        Debug.WriteLine(nameof(CopyTitleOrPropertyIntoClipboard));
         GeminiUrl("object/object?o1=___1.Product--990&o2=___1.Customer--13179");
         WaitForView(Pane.Left, PaneType.Object, "Mountain-500 Black, 42");
         WaitForView(Pane.Right, PaneType.Object, "Adrian Sanchez, AW00013179");
@@ -54,7 +52,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void CopyListItemIntoClipboard() {
-        Debug.WriteLine(nameof(CopyListItemIntoClipboard));
         GeminiUrl("list/list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&m2=PersonRepository&a2=ValidCountries&p2=1&ps2=20");
         Reload(Pane.Left);
         var item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
@@ -70,7 +67,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void PasteIntoReferenceField() {
-        Debug.WriteLine(nameof(PasteIntoReferenceField));
         GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Employee--161");
         WaitForView(Pane.Left, PaneType.Object);
         Assert.AreEqual("Annette Hill", WaitForCss("#pane1 .property:nth-child(4) .value.droppable").GetAttribute("value"));
@@ -85,7 +81,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu() {
-        Debug.WriteLine(nameof(PasteIntoReferenceFieldThatAlsoHasAutoCompleteAndFindMenu));
         GeminiUrl("object/object?o2=___1.SalesPerson--284&o1=___1.Store--740&i1=Edit");
         WaitForView(Pane.Left, PaneType.Object, "Editing - Touring Services");
         Assert.AreEqual("Tsvi Reiter", WaitForCss("input#salesperson1").GetAttribute("value"));
@@ -114,7 +109,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void PasteIntoDialog() {
-        Debug.WriteLine(nameof(PasteIntoDialog));
         GeminiUrl("home/object?m1=SalesRepository&d1=CreateNewSalesPerson&o2=___1.Employee--206");
         var title = WaitForCss("#pane2 .header .title");
         Assert.AreEqual("Stuart Munson", title.Text);
@@ -131,7 +125,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void PasteAnImplementationOfAnInterface() {
-        Debug.WriteLine(nameof(PasteAnImplementationOfAnInterface));
         GeminiUrl("object/object?i1=View&o1=___1.Employee--88&i2=View&o2=___1.Employee--203&as1=open&d1=SpecifyManager&f1_manager=null");
         var title = WaitForCss("#pane2 .header .title");
         Assert.AreEqual("Ken Myer", title.Text);
@@ -145,7 +138,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void PasteIntoAutoCompleteField() {
-        Debug.WriteLine(nameof(PasteIntoAutoCompleteField));
         GeminiUrl("home/object?m1=CustomerRepository&i2=View&o2=___1.Customer--29929&d1=FindCustomer&f1_customer=null");
         var title = WaitForCss("#pane2 .header .title");
         Assert.AreEqual("Many Bikes Store, AW00029929", title.Text);
@@ -158,7 +150,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void DroppableReferenceFieldWithoutAutoComplete() {
-        Debug.WriteLine(nameof(DroppableReferenceFieldWithoutAutoComplete));
         GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
         GetReferenceProperty("Order Placed By", "Sheela Word");
         EditObject();
@@ -172,7 +163,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void CannotPasteWrongTypeIntoReferenceField() {
-        Debug.WriteLine(nameof(CannotPasteWrongTypeIntoReferenceField));
         GeminiUrl("object/object?o1=___1.PurchaseOrderHeader--1372&i1=Edit&o2=___1.Product--771");
         WaitForView(Pane.Left, PaneType.Object);
         var fieldCss = "#pane1 .property:nth-child(4) .value.droppable";
@@ -194,7 +184,6 @@ public abstract class CopyAndPasteTests : AWTest {
 
     [TestMethod]
     public virtual void DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed() {
-        Debug.WriteLine(nameof(DroppingRefIntoDialogIsKeptWhenRightPaneIsClosed));
         GeminiUrl("home/object?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null&o2=___1.Person--10895");
         var title = WaitForCss("#pane2 .header .title");
         Assert.AreEqual("Arthur Kapoor", title.Text);
@@ -221,7 +210,7 @@ public abstract class CopyAndPasteTests : AWTest {
         GeminiUrl("home?m1=EmployeeRepository&d1=CreateNewEmployeeFromContact&f1_contactDetails=null");
         WaitForView(Pane.Single, PaneType.Home);
         var home = WaitForCss(".title");
-        
+
         var action = new Actions(br);
         action.MoveToElement(home);
         action.DoubleClick(); //Should put "Home"into browser clipboard
