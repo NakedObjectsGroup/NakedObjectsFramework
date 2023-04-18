@@ -536,6 +536,7 @@ public class DevelopmentStoryTests : BaseTest {
     }
 
     [TestMethod]
+    [Ignore("#502")]
     public void WithMultipleDeletes() {
         //Build an order
         var main = helper.GotoUrlViaHome(@"object/list?i1=View&o1=AW.Types.Customer--29861&m2=Product_MenuFunctions&a2=ListProductsByCategory&pg2=1&ps2=20&s2_=0&c2=List&pm2_category=%7B""href"":""___0%2Fobjects%2FAW.Types.ProductCategory%2F1""%7D&pm2_subCategory=null");
@@ -717,17 +718,6 @@ public class DevelopmentStoryTests : BaseTest {
     #region Overhead
 
     protected override string BaseUrl => "http://nakedfunctionstest.azurewebsites.net/";
-
-    [AssemblyInitialize]
-    public static void InitialiseAssembly(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-        InitChromeDriver();
-    }
-
-    [AssemblyCleanup]
-    public static void CleanUpAssembly() {
-        CleanupChromeDriver();
-    }
 
     private Helper helper;
 

@@ -48,16 +48,6 @@ public abstract class AttachmentTests : AWTest {
 
 [TestClass]
 public class AttachmentTestsChrome : AttachmentTests {
-    [AssemblyInitialize]
-    public static void InitialiseAssembly(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-        InitChromeDriver();
-    }
-
-    [AssemblyCleanup]
-    public static void CleanUpAssembly() {
-        CleanupChromeDriver();
-    }
 
     [TestInitialize]
     public virtual void InitializeTest() {

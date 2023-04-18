@@ -46,17 +46,6 @@ public class DevelopmentStoryTests : BaseTest {
 
     protected override string BaseUrl => "http://nakedlegacytest.azurewebsites.net/";
 
-    [AssemblyInitialize]
-    public static void InitialiseAssembly(TestContext context) {
-        FilePath(@"drivers.chromedriver.exe");
-        InitChromeDriver();
-    }
-
-    [AssemblyCleanup]
-    public static void CleanUpAssembly() {
-        CleanupChromeDriver();
-    }
-
     private Helper helper;
 
     [TestInitialize]
