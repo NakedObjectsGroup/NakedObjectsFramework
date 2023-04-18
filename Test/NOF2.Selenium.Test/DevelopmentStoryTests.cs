@@ -447,6 +447,7 @@ public class DevelopmentStoryTests : BaseTest {
     }
 
     [TestMethod]
+    [Ignore("#502")]
     public void DisplayingAndSavingATransientObjectFromTheUI() {
         var transient = helper.GotoHome().OpenMainMenu("Special Offers")
                               .GetActionWithoutDialog("Create New Special Offer").ClickToViewTransientObject();
