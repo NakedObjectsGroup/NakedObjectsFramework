@@ -21,7 +21,7 @@ public class ObjectEdit : ObjectPresentation {
 
     public ObjectEdit AttemptUnsuccessfulSave() {
         helper.WaitForCss("nof-action-bar nof-action input[value=\"Save\"]").Click();
-        helper.wait.Until(e => e.FindElement(By.CssSelector(".messages")).Text != "");
+        helper.Wait.Until(e => e.FindElement(By.CssSelector(".messages")).Text != "");
         return this;
     }
 
@@ -32,7 +32,7 @@ public class ObjectEdit : ObjectPresentation {
 
     private IWebElement GetEditableProperty(string propertyName) {
         helper.WaitForChildElement(element, "nof-properties");
-        return helper.wait.Until(e => element.FindElements(By.CssSelector("nof-edit-property"))
+        return helper.Wait.Until(e => element.FindElements(By.CssSelector("nof-edit-property"))
                                              .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":"));
     }
 

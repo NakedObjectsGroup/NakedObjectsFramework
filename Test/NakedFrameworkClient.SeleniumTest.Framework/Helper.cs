@@ -15,23 +15,22 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework.Helpers;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedFrameworkClient.TestFramework;
 
 public class Helper {
-    internal readonly IWebDriver br;
-    private readonly string GeminiBaseUrl;
-    internal readonly SafeWebDriverWait wait;
+    private readonly string geminiBaseUrl;
 
     public Helper(string baseUrl, IWebDriver webDriver, SafeWebDriverWait safeWebDriverWait) {
-        GeminiBaseUrl = baseUrl + "gemini/";
-        br = webDriver;
-        wait = safeWebDriverWait;
-        // br.Manage().Window.Maximize();
+        geminiBaseUrl = baseUrl + "gemini/";
+        WebDriver = webDriver;
+        Wait = safeWebDriverWait;
     }
+
+    private IWebDriver WebDriver { get; }
+    internal SafeWebDriverWait Wait { get; }
 
     #region chrome helper
 
@@ -62,7 +61,7 @@ public class Helper {
     #region CCAs
 
     private void WaitForSelectedCheckboxes(int number) {
-        wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
     }
 
     #endregion
@@ -71,8 +70,8 @@ public class Helper {
         ClickHomeButton();
         WaitForView(Pane.Single, PaneType.Home, "Home");
         var menuSelector = $"nof-menu-bar nof-action input[title=\"{menuName}\"";
-        wait.Until(dr => dr.FindElement(By.CssSelector(menuSelector)));
-        var menu = br.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title=\"{menuName}\"]"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(menuSelector)));
+        var menu = WebDriver.FindElement(By.CssSelector($"nof-menu-bar nof-action input[title=\"{menuName}\"]"));
         Click(menu);
     }
 
@@ -86,15 +85,15 @@ public class Helper {
         WaitForTextEquals(CssSelectorFor(pane) + " .title", title);
 
     private void AssertElementExists(string cssSelector) {
-        wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count >= 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count >= 1);
     }
 
     private void WaitUntilElementDoesNotExist(string cssSelector) {
-        wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == 0);
     }
 
     private void AssertElementCountIs(string cssSelector, int count) {
-        wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == count);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == count);
     }
 
     #region overhead
@@ -113,12 +112,11 @@ public class Helper {
     }
 
     public void CleanUp() {
-        if (br != null) {
+        if (WebDriver != null) {
             try {
-                br.Manage().Cookies.DeleteAllCookies();
-                br.Quit();
-                br.Dispose();
-                //br = null;
+                WebDriver.Manage().Cookies.DeleteAllCookies();
+                WebDriver.Quit();
+                WebDriver.Dispose();
             }
             catch {
                 // to suppress error 
@@ -131,7 +129,7 @@ public class Helper {
     #region Helpers
 
     private void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition) {
-        wait.Until(d => {
+        Wait.Until(d => {
             try {
                 condition(d);
                 return false;
@@ -144,16 +142,12 @@ public class Helper {
 
     private void Maximize() {
         const string script = "window.moveTo(0, 0); window.resizeTo(screen.availWidth, screen.availHeight);";
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
+        ((IJavaScriptExecutor)WebDriver).ExecuteScript(script);
     }
 
     private void ScrollTo(IWebElement element) {
-        //string script = string.Format("window.scrollTo({0}, {1});return true;", element.Location.X, element.Location.Y);
-        //((IJavaScriptExecutor) br).ExecuteScript(script);
-
-        var actions = new Actions(br);
+        var actions = new Actions(WebDriver);
         actions.MoveToElement(element);
-        //actions.click();
         actions.Perform();
     }
 
@@ -164,41 +158,37 @@ public class Helper {
     }
 
     private void WaitUntilEnabled(IWebElement element) {
-        wait.Until(dr => element.GetAttribute("disabled") == null);
+        Wait.Until(dr => element.GetAttribute("disabled") == null);
     }
 
-    internal void RightClick(IWebElement element) {
-        var webDriver = wait.Driver;
+    private void RightClick(IWebElement element) {
+        var webDriver = Wait.Driver;
         ScrollTo(element);
-        //var loc = (ILocatable) element;
-        //var mouse = ((IHasInputDevices) webDriver).Mouse;
-        //mouse.ContextClick(loc.Coordinates);
-
         var actions = new Actions(webDriver);
         actions.ContextClick(element);
         actions.Perform();
     }
 
     internal IWebElement WaitForCss(string cssSelector) {
-        return wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
+        return Wait.Until(d => d.FindElement(By.CssSelector(cssSelector)));
     }
 
     internal IWebElement WaitForChildElement(IWebElement parent, string cssSelector) {
-        return wait.Until(d => parent.FindElement(By.CssSelector(cssSelector)));
+        return Wait.Until(d => parent.FindElement(By.CssSelector(cssSelector)));
     }
 
     private IWebElement WaitForTextEquals(string cssSelector, string text) {
-        wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.Trim() == text.Trim());
+        Wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.Trim() == text.Trim());
         return WaitForCss(cssSelector);
     }
 
     private IWebElement WaitForTextEquals(string cssSelector, int index, string text) {
-        wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector))[index].Text == text);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector))[index].Text == text);
         return WaitForCss(cssSelector);
     }
 
     private IWebElement WaitForTextStarting(string cssSelector, string startOftext) {
-        wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.StartsWith(startOftext));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).Text.StartsWith(startOftext));
         return WaitForCss(cssSelector);
     }
 
@@ -206,8 +196,8 @@ public class Helper {
     ///     Waits until there are AT LEAST the specified count of matches & returns ALL matches
     /// </summary>
     private ReadOnlyCollection<IWebElement> WaitForCss(string cssSelector, int count) {
-        wait.Until(d => d.FindElements(By.CssSelector(cssSelector)).Count >= count);
-        return br.FindElements(By.CssSelector(cssSelector));
+        Wait.Until(d => d.FindElements(By.CssSelector(cssSelector)).Count >= count);
+        return WebDriver.FindElements(By.CssSelector(cssSelector));
     }
 
     /// <summary>
@@ -217,7 +207,7 @@ public class Helper {
 
     private void WaitForMessage(string message, Pane pane = Pane.Single) {
         var p = CssSelectorFor(pane);
-        wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(p + ".header .messages")).Text == message);
     }
 
     internal void ClearFieldThenType(string cssFieldId, string characters) {
@@ -227,7 +217,7 @@ public class Helper {
             Thread.Sleep(100);
             input.SendKeys(Keys.Delete);
             Thread.Sleep(100);
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
+            Wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
         }
 
         input.SendKeys(characters);
@@ -245,7 +235,7 @@ public class Helper {
 
             input.SendKeys(Keys.Shift + Keys.Tab);
             input.SendKeys(Keys.Shift + Keys.Tab);
-            wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
+            Wait.Until(dr => dr.FindElement(By.CssSelector(cssFieldId)).GetAttribute("value") == "");
         }
 
         input.SendKeys(characters);
@@ -257,10 +247,10 @@ public class Helper {
     }
 
     internal void SelectCheckBox(string css, bool alreadySelected = false) {
-        wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == alreadySelected);
-        var checkbox = br.FindElement(By.CssSelector(css));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == alreadySelected);
+        var checkbox = WebDriver.FindElement(By.CssSelector(css));
         checkbox.Click();
-        wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == !alreadySelected);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == !alreadySelected);
     }
 
     /// <summary>
@@ -278,7 +268,7 @@ public class Helper {
     internal void SelectDropDownOnField(string cssFieldId, string characters) {
         var selected = new SelectElement(WaitForCss(cssFieldId));
         selected.SelectByText(characters);
-        wait.Until(dr => selected.SelectedOption.Text == characters);
+        Wait.Until(dr => selected.SelectedOption.Text == characters);
     }
 
     internal void SelectDropDownOnField(string cssFieldId, int index) {
@@ -287,7 +277,7 @@ public class Helper {
     }
 
     private void WaitForMenus() {
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu-bar nof-action")).Count > 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-menu-bar nof-action")).Count > 1);
     }
 
     private void GoToMenuFromHomePage(string menuName) {
@@ -295,11 +285,11 @@ public class Helper {
 
         WaitForMenus();
 
-        var menus = br.FindElements(By.CssSelector("nof-action input"));
+        var menus = WebDriver.FindElements(By.CssSelector("nof-action input"));
         var menu = menus.FirstOrDefault(s => s.GetAttribute("value") == menuName);
         if (menu != null) {
             Click(menu);
-            wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
+            Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
         else {
             throw new NotFoundException(string.Format("menu not found {0}", menuName));
@@ -308,25 +298,25 @@ public class Helper {
 
     internal void OpenObjectActions(Pane pane = Pane.Single) {
         var paneSelector = CssSelectorFor(pane);
-        var actions = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
+        var actions = Wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == "Actions"));
         Click(actions);
-        wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
     }
 
     internal void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
         var paneSelector = CssSelectorFor(pane);
-        var sub = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .submenu")).Single(el => el.Text == menuName));
+        var sub = Wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .submenu")).Single(el => el.Text == menuName));
         var expand = sub.FindElement(By.CssSelector(".icon-expand"));
         Click(expand);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".icon-collapse")).Count > 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".icon-collapse")).Count > 0);
     }
 
     private void OpenMenu(string menuName, Pane pane = Pane.Single) {
         var paneSelector = CssSelectorFor(pane);
-        var menu = wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == menuName));
+        var menu = Wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + "input")).Single(el => el.GetAttribute("value") == menuName));
         if (menu != null) {
             Click(menu);
-            wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
+            Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
         else {
             throw new NotFoundException(string.Format("menu not found {0}", menuName));
@@ -334,7 +324,7 @@ public class Helper {
     }
 
     private void CloseSubMenu(string menuName) {
-        var sub = wait.Until(dr => dr.FindElements(By.CssSelector(".submenu")).Single(el => el.Text == menuName));
+        var sub = Wait.Until(dr => dr.FindElements(By.CssSelector(".submenu")).Single(el => el.Text == menuName));
         var expand = sub.FindElement(By.CssSelector(".icon-collapse"));
         Click(expand);
         Assert.IsNotNull(sub.FindElement(By.CssSelector(".icon-expand")));
@@ -360,7 +350,7 @@ public class Helper {
 
     internal IWebElement GetProperty(string propertyName, Pane pane = Pane.Single) {
         var propCss = CssSelectorFor(pane) + " " + "nof-view-property";
-        return wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
+        return Wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
                                   .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single());
     }
 
@@ -371,7 +361,7 @@ public class Helper {
 
     private IWebElement GetReferenceProperty(string propertyName, string refTitle, Pane pane = Pane.Single) {
         var propCss = CssSelectorFor(pane) + " " + ".property";
-        var prop = wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
+        var prop = Wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
                                       .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":" &&
                                                    we.FindElement(By.CssSelector(".reference")).Text == refTitle).Single()
         );
@@ -399,7 +389,7 @@ public class Helper {
 
         if (title != null) {
             selector += " .header .title";
-            wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
+            Wait.Until(dr => dr.FindElement(By.CssSelector(selector)).Text == title);
         }
         else {
             WaitForCss(selector);
@@ -416,10 +406,10 @@ public class Helper {
     }
 
     private void AssertFooterExists() {
-        wait.Until(d => d.FindElement(By.CssSelector(".footer")));
-        wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.home")).Displayed);
-        wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.back")).Displayed);
-        wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.forward")).Displayed);
+        Wait.Until(d => d.FindElement(By.CssSelector(".footer")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.home")).Displayed);
+        Wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.back")).Displayed);
+        Wait.Until(d => d.FindElement(By.CssSelector(".footer .icon.forward")).Displayed);
     }
 
     internal void AssertTopItemInListIs(string title) {
@@ -436,32 +426,32 @@ public class Helper {
         Click(EditButton());
         SaveButton();
         GetCancelEditButton();
-        var title = br.FindElement(By.CssSelector(".header .title")).Text;
+        var title = WebDriver.FindElement(By.CssSelector(".header .title")).Text;
         Assert.IsTrue(title.StartsWith("Editing"));
     }
 
     private void SaveObject(Pane pane = Pane.Single) {
         Click(SaveButton(pane));
-        EditButton(pane); //To wait for save completed
-        var title = br.FindElement(By.CssSelector(".header .title")).Text;
+        EditButton(pane); //To Wait for save completed
+        var title = WebDriver.FindElement(By.CssSelector(".header .title")).Text;
         Assert.IsFalse(title.StartsWith("Editing"));
     }
 
     private void CancelObject(Pane pane = Pane.Single) {
         Click(GetCancelEditButton(pane));
-        EditButton(pane); //To wait for cancel completed
-        var title = br.FindElement(By.CssSelector(".header .title")).Text;
+        EditButton(pane); //To Wait for cancel completed
+        var title = WebDriver.FindElement(By.CssSelector(".header .title")).Text;
         Assert.IsFalse(title.StartsWith("Editing"));
     }
 
     private IWebElement GetButton(string text, Pane pane = Pane.Single) {
         var selector = CssSelectorFor(pane) + ".header .action";
-        return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
+        return Wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.Text == text));
     }
 
     private IWebElement GetInputButton(string text, Pane pane = Pane.Single) {
         var selector = CssSelectorFor(pane) + "input";
-        return wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.GetAttribute("value") == text));
+        return Wait.Until(dr => dr.FindElements(By.CssSelector(selector)).Single(e => e.GetAttribute("value") == text));
     }
 
     private IWebElement EditButton(Pane pane = Pane.Single) => GetInputButton("Edit", pane);
@@ -473,8 +463,6 @@ public class Helper {
     private IWebElement SaveAndCloseButton(Pane pane = Pane.Single) => GetInputButton("Save & Close", pane);
 
     private IWebElement GetCancelEditButton(Pane pane = Pane.Single) =>
-        //string p = CssSelectorFor(pane);
-        //return wait.Until(d => d.FindElements(By.CssSelector(p + ".header .action")).Single(el => el.Text == "Cancel"));
         GetInputButton("Cancel", pane);
 
     private void ClickHomeButton() {
@@ -507,16 +495,16 @@ public class Helper {
 
     private ReadOnlyCollection<IWebElement> GetObjectActions(int totalNumber, Pane pane = Pane.Single) {
         var selector = CssSelectorFor(pane) + "nof-action-list nof-action > input";
-        wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
-        return br.FindElements(By.CssSelector(selector));
+        Wait.Until(d => d.FindElements(By.CssSelector(selector)).Count == totalNumber);
+        return WebDriver.FindElements(By.CssSelector(selector));
     }
 
     private void AssertAction(int number, string actionName) {
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-action-list nof-action > input"))[number].GetAttribute("value") == actionName);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-action-list nof-action > input"))[number].GetAttribute("value") == actionName);
     }
 
     private void AssertActionNotDisplayed(string action) {
-        wait.Until(dr => dr.FindElements(By.CssSelector($"nof-action-list nof-action inputinput[type='{action}']")).FirstOrDefault() == null);
+        Wait.Until(dr => dr.FindElements(By.CssSelector($"nof-action-list nof-action inputinput[type='{action}']")).FirstOrDefault() == null);
     }
 
     internal IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
@@ -525,12 +513,12 @@ public class Helper {
         }
 
         var selector = CssSelectorFor(pane) + $"nof-action-list nof-action input[value='{actionName}']";
-        return wait.Until(d => d.FindElement(By.CssSelector(selector)));
+        return Wait.Until(d => d.FindElement(By.CssSelector(selector)));
     }
 
     private IWebElement GetLCA(string actionName, Pane pane = Pane.Single) {
         var selector = CssSelectorFor(pane) + $"nof-collection nof-action input[value='{actionName}']";
-        return wait.Until(d => d.FindElement(By.CssSelector(selector)));
+        return Wait.Until(d => d.FindElement(By.CssSelector(selector)));
     }
 
     private IWebElement GetObjectEnabledAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
@@ -555,20 +543,20 @@ public class Helper {
         Click(GetObjectEnabledAction(actionName, pane));
 
         var dialogSelector = CssSelectorFor(pane) + " .dialog ";
-        wait.Until(d => d.FindElement(By.CssSelector(dialogSelector + "> .title")).Text == actionName);
+        Wait.Until(d => d.FindElement(By.CssSelector(dialogSelector + "> .title")).Text == actionName);
         //Check it has OK & cancel buttons
-        wait.Until(d => br.FindElement(By.CssSelector(dialogSelector + ".ok")));
-        wait.Until(d => br.FindElement(By.CssSelector(dialogSelector + ".cancel")));
+        Wait.Until(d => WebDriver.FindElement(By.CssSelector(dialogSelector + ".ok")));
+        Wait.Until(d => WebDriver.FindElement(By.CssSelector(dialogSelector + ".cancel")));
         //Wait for params if required
         if (noOfParams != null) {
-            wait.Until(dr => dr.FindElements(By.CssSelector(dialogSelector + " .parameter")).Count == noOfParams.Value);
+            Wait.Until(dr => dr.FindElements(By.CssSelector(dialogSelector + " .parameter")).Count == noOfParams.Value);
         }
 
         return WaitForCss(dialogSelector);
     }
 
     private IWebElement GetInputNumber(IWebElement dialog, int no) {
-        wait.Until(dr => dialog.FindElements(By.CssSelector(".parameter .value input")).Count >= no + 1);
+        Wait.Until(dr => dialog.FindElements(By.CssSelector(".parameter .value input")).Count >= no + 1);
         return dialog.FindElements(By.CssSelector(".parameter .value input"))[no];
     }
 
@@ -576,25 +564,25 @@ public class Helper {
 
     //For use with multi-line dialogs, lineNo starts from zero
     private IWebElement OKButtonOnLine(int lineNo) {
-        return wait.Until(dr => dr.FindElements(By.CssSelector(".lineDialog"))[lineNo].FindElement(By.CssSelector(".ok")));
+        return Wait.Until(dr => dr.FindElements(By.CssSelector(".lineDialog"))[lineNo].FindElement(By.CssSelector(".ok")));
     }
 
     private void WaitForOKButtonToDisappear(int lineNo) {
         var line = WaitForCssNo(".lineDialog", lineNo);
-        wait.Until(dr => line.FindElements(By.CssSelector(".ok")).Count == 0);
+        Wait.Until(dr => line.FindElements(By.CssSelector(".ok")).Count == 0);
     }
 
     private void WaitForReadOnlyEnteredParam(int lineNo, int paramNo, string value) {
         var line = WaitForCssNo(".lineDialog", lineNo);
 
-        wait.Until(dr => line.FindElements(By.CssSelector(".parameter .value"))[paramNo].Text == value);
+        Wait.Until(dr => line.FindElements(By.CssSelector(".parameter .value"))[paramNo].Text == value);
     }
 
     private void CancelDialog(Pane pane = Pane.Single) {
         var selector = CssSelectorFor(pane) + ".dialog ";
         Click(WaitForCss(selector + ".cancel"));
 
-        wait.Until(dr => {
+        Wait.Until(dr => {
             try {
                 dr.FindElement(By.CssSelector(selector));
                 return false;
@@ -606,7 +594,7 @@ public class Helper {
     }
 
     private void AssertHasFocus(IWebElement el) {
-        wait.Until(dr => dr.SwitchTo().ActiveElement() == el);
+        Wait.Until(dr => dr.SwitchTo().ActiveElement() == el);
     }
 
     internal void Reload(Pane pane = Pane.Single) {
@@ -614,15 +602,15 @@ public class Helper {
     }
 
     private void CancelDatePicker(string cssForInput) {
-        var dp = br.FindElement(By.CssSelector(".ui-datepicker"));
+        var dp = WebDriver.FindElement(By.CssSelector(".ui-datepicker"));
         if (dp.Displayed) {
             WaitForCss(cssForInput).SendKeys(Keys.Escape);
-            wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
+            Wait.Until(br => !br.FindElement(By.CssSelector(".ui-datepicker")).Displayed);
         }
     }
 
     private void PageDownAndWait() {
-        br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown);
+        WebDriver.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown);
         Thread.Sleep(1000);
     }
 
@@ -638,7 +626,7 @@ public class Helper {
 
     private void GoBack(int clicks = 1) {
         for (var i = 1; i <= clicks; i++) {
-            Click(br.FindElement(By.CssSelector(".icon.back")));
+            Click(WebDriver.FindElement(By.CssSelector(".icon.back")));
         }
     }
 
@@ -649,7 +637,7 @@ public class Helper {
     internal void CopyToClipboard(IWebElement element) {
         var title = element.Text;
         element.SendKeys(Keys.Control + "c");
-        wait.Until(dr => dr.FindElement(By.CssSelector(".footer .currentcopy .reference")).Text == title);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".footer .currentcopy .reference")).Text == title);
     }
 
     internal IWebElement PasteIntoInputField(string cssSelector) {
@@ -657,7 +645,7 @@ public class Helper {
         var copying = WaitForCss(".footer .currentcopy .reference").Text;
         target.Click();
         target.SendKeys(Keys.Control + "v");
-        wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).GetAttribute("value") == copying);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(cssSelector)).GetAttribute("value") == copying);
         return WaitForCss(cssSelector);
     }
 
@@ -665,16 +653,16 @@ public class Helper {
         var copying = WaitForCss(".footer .currentcopy .reference").Text;
         target.Click();
         target.SendKeys(Keys.Control + "v");
-        wait.Until(dr => target.GetAttribute("value") == copying);
+        Wait.Until(dr => target.GetAttribute("value") == copying);
         return target;
     }
 
     private IWebElement Tab(int numberIfTabs = 1) {
         for (var i = 1; i <= numberIfTabs; i++) {
-            br.SwitchTo().ActiveElement().SendKeys(Keys.Tab);
+            WebDriver.SwitchTo().ActiveElement().SendKeys(Keys.Tab);
         }
 
-        return br.SwitchTo().ActiveElement();
+        return WebDriver.SwitchTo().ActiveElement();
     }
 
     #endregion
@@ -683,7 +671,7 @@ public class Helper {
 
     //Goes to a single-pane view of home
     public HomeView GotoHome() {
-        br.Navigate().GoToUrl(GeminiBaseUrl + "home");
+        WebDriver.Navigate().GoToUrl(geminiBaseUrl + "home");
         WaitForView(Pane.Single, PaneType.Home);
         var el = WaitForCss(".home");
         WaitForMenus();
@@ -694,12 +682,12 @@ public class Helper {
     //going to new URL
     public Helper GotoUrlViaHome(string url) {
         GotoHome(); //This is to ensure that the view has changed from any existing object/list view
-        br.Navigate().GoToUrl(GeminiBaseUrl + url);
+        WebDriver.Navigate().GoToUrl(geminiBaseUrl + url);
         return this;
     }
 
     public Helper GotoUrlDirectly(string url) {
-        br.Navigate().GoToUrl(GeminiBaseUrl + url);
+        WebDriver.Navigate().GoToUrl(geminiBaseUrl + url);
         return this;
     }
 
@@ -764,7 +752,7 @@ public class Helper {
         if (!enclosingView.element.IsStale()) {
             var css = CssSelectorFor(newPane, PaneType.List) + " table";
             var original = enclosingView.element.FindElement(By.CssSelector("table"));
-            wait.Until(dr => dr.FindElement(By.CssSelector(css)) != original);
+            Wait.Until(dr => dr.FindElement(By.CssSelector(css)) != original);
         }
 
         return GetListView(newPane);
@@ -783,7 +771,7 @@ public class Helper {
     internal ListView WaitForUpdatedListView(View enclosingView, MouseClick button) {
         var newPane = GetNewPane(enclosingView.pane, button);
         var css = CssSelectorFor(newPane, PaneType.List) + " table";
-        wait.Until(dr => dr.FindElements(By.CssSelector(css)).Count() == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(css)).Count() == 0);
         Reload();
         return GetListView(newPane);
     }
@@ -797,7 +785,7 @@ public class Helper {
         if (!enclosingView.element.IsStale()) {
             var css = CssSelectorFor(newPane, PaneType.Object);
             var original = PropsAndColls(enclosingView.element);
-            wait.Until(dr => PropsAndColls(dr.FindElement(By.CssSelector(css))) != original);
+            Wait.Until(dr => PropsAndColls(dr.FindElement(By.CssSelector(css))) != original);
         }
 
         return GetObjectView(newPane);

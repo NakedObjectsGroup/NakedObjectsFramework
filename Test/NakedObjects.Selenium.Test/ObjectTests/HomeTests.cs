@@ -158,7 +158,7 @@ public abstract class HomeTests : AWTest {
         ClearFieldThenType("#lastname1", "zzz");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.List, "Find Individual Customer By Name");
-        var rows = br.FindElements(By.CssSelector("td"));
+        var rows = Driver.FindElements(By.CssSelector("td"));
         Assert.AreEqual(0, rows.Count);
     }
 

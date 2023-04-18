@@ -25,7 +25,7 @@ public class ReferenceInputField : InputField {
     public override ReferenceInputField Enter(string characters) {
         var input = Input();
         input.SendKeys(characters);
-        helper.wait.Until(dr => input.GetAttribute("value") == characters);
+        helper.Wait.Until(dr => input.GetAttribute("value") == characters);
         return this;
     }
 
@@ -43,13 +43,13 @@ public class ReferenceInputField : InputField {
     }
 
     public ReferenceInputField AssertHasAutoCompleteOption(int index, string optionText) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector(".suggestions li")).Count > index);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector(".suggestions li")).Count > index);
         Assert.AreEqual(optionText, element.FindElements(By.CssSelector(".suggestions li")).ElementAt(index).Text);
         return this;
     }
 
     public ReferenceInputField SelectAutoCompleteOption(int index) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector(".suggestions li")).Count > index);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector(".suggestions li")).Count > index);
         var option = element.FindElements(By.CssSelector(".suggestions li")).ElementAt(index).FindElement(By.CssSelector("a"));
         option.Click();
         return this;

@@ -29,14 +29,14 @@ public class CreateNewView : ActionResult {
     }
 
     public ObjectView ClickSaveToViewSavedObject() {
-        helper.wait.Until(el => GetSaveButton().GetAttribute("disabled") is null);
+        helper.Wait.Until(el => GetSaveButton().GetAttribute("disabled") is null);
         var save = GetSaveButton();
         save.Click();
         return helper.GetObjectView(pane);
     }
 
     public CreateNewView AssertSaveIsDisabled(string withMessage = null) {
-        helper.wait.Until(el => GetSaveButton().GetAttribute("disabled") is not null);
+        helper.Wait.Until(el => GetSaveButton().GetAttribute("disabled") is not null);
         var save = GetSaveButton();
         Assert.AreEqual(withMessage.Trim(), save.GetAttribute("title").Trim());
         return this;

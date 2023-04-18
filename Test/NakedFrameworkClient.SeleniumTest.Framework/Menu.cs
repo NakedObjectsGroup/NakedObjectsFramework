@@ -46,7 +46,7 @@ public class Menu : SubView {
 
     public ActionWithDialog GetActionWithDialog(string actionName) {
         var actionSelector = $"nof-action input[value=\"{actionName}\"]";
-        var act = helper.wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
+        var act = helper.Wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
         //TODO: test that it generates a dialog - information not currently available in HTML see #292
         return new ActionWithDialog(act, helper, enclosingView);
     }
@@ -54,7 +54,7 @@ public class Menu : SubView {
     public ActionWithoutDialog GetActionWithoutDialog(string actionName) {
         var actionSelector = $"nof-action input[value=\"{actionName}\"]";
 
-        var act = helper.wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
+        var act = helper.Wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
         //TODO: test that it does not generate a dialog - information not currently available in HTML see #292
         Thread.Sleep(300);
         return new ActionWithoutDialog(act, helper, enclosingView);

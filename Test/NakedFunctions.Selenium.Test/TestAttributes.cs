@@ -160,13 +160,13 @@ public class TestAttributes : BaseTest {
 
     #region Overhead
 
-    protected override string BaseUrl => "http://nakedfunctionstest.azurewebsites.net/";
+    protected override string BaseUrl => TestConfig.BaseFunctionalUrl;
 
     private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(BaseUrl, br, wait);
+        helper = new Helper(BaseUrl, Driver, Wait);
     }
 
     #endregion

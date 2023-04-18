@@ -23,7 +23,7 @@ public class AAStartupTests : BaseTest {
 
     #region Overhead
 
-    protected override string BaseUrl => "http://nakedlegacytest.azurewebsites.net/";
+    protected override string BaseUrl => TestConfig.BaseLegacyUrl;
 
     [AssemblyInitialize]
     public static void InitialiseAssembly(TestContext context) {
@@ -40,13 +40,13 @@ public class AAStartupTests : BaseTest {
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        wait.Timeout = new TimeSpan(0, 0, 40);
-        helper = new Helper(BaseUrl, br, wait);
+        Wait.Timeout = new TimeSpan(0, 0, 40);
+        helper = new Helper(BaseUrl, Driver, Wait);
     }
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        wait.Timeout = new TimeSpan(0, 0, 10);
+        Wait.Timeout = new TimeSpan(0, 0, 10);
     }
 
     #endregion

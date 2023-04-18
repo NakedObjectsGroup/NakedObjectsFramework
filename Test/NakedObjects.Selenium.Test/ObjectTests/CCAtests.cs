@@ -53,7 +53,7 @@ public abstract class CCATests : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0&as1=open");
         Reload();
-        wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
         PageDownAndWait();
         SelectCheckBox("#item1-2");
         SelectCheckBox("#item1-3");
@@ -82,7 +82,7 @@ public abstract class CCATests : AWTest {
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&pg1=1&ps1=20&s1_=0&as1=open&c1=Table");
         Reload();
 
-        wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("tbody tr .checkbox")).Count >= 16);
         PageDownAndWait();
 
         SelectCheckBox("#item1-6");
@@ -136,8 +136,8 @@ public abstract class CCATests : AWTest {
         GeminiUrl("list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&s1_=0");
         WaitForView(Pane.Single, PaneType.List);
         Reload();
-        wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") > 10);
-        var count = br.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox") > 10);
+        var count = Driver.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "checkbox");
         WaitForSelectedCheckboxes(0);
 
         //Select all
@@ -172,7 +172,7 @@ public abstract class CCATests : AWTest {
         //test that Actions is disabled & no checkboxes appear
         GeminiUrl("list?m1=PersonRepository&a1=RandomContacts&pg1=1&ps1=20&s1_=0&c1=List");
         Reload();
-        var actions = wait.Until(dr => dr.FindElements(By.CssSelector("input")).Single(el => el.GetAttribute("value") == "Actions"));
+        var actions = Wait.Until(dr => dr.FindElements(By.CssSelector("input")).Single(el => el.GetAttribute("value") == "Actions"));
         Assert.AreEqual("true", actions.GetAttribute("disabled"));
         actions.AssertHasTooltip("No actions available");
         WaitUntilElementDoesNotExist("input[type='checkbox']");
@@ -296,26 +296,26 @@ public abstract class CCATests : AWTest {
     public virtual void ReloadingAQueryableClearsSelection() {
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open");
         Reload();
-        wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
         SelectCheckBox("#item1-4");
         SelectCheckBox("#item1-7");
-        wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
         Reload();
-        wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
+        Wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
     }
 
     [TestMethod]
     public virtual void ZeroParamAction() {
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders&pg1=20&ps1=5&s1_=0&as1=open&c1=Table");
         Reload();
-        wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
 
         SelectCheckBox("#item1-all"); //To clear
 
         Click(GetObjectEnabledAction("Clear Comments"));
 
         Reload();
-        wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
 
         //Now add comments
         SelectCheckBox("#item1-1");
@@ -323,25 +323,25 @@ public abstract class CCATests : AWTest {
         SelectCheckBox("#item1-3");
 
         Click(GetObjectEnabledAction("Comment As Users Unhappy"));
-        Thread.Sleep(2000); //Because there is no visible change to wait for
+        Thread.Sleep(2000); //Because there is no visible change to Wait for
         Reload();
 
-        wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
 
-        wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 3);
 
         //Confirm that the three checkboxes have now been cleared
-        wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
+        Wait.Until(dr => !dr.FindElements(By.CssSelector("input")).Where(el => el.GetAttribute("type") == "checkbox").Any(el => el.Selected));
 
         SelectCheckBox("#item1-all"); //To clear
 
         Click(GetObjectEnabledAction("Clear Comments"));
         Thread.Sleep(1000);
         Reload();
-        wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td")).Count > 30);
 
-        wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
-        wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("span.loading:empty")));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td:nth-child(7)")).Count(el => el.Text.Contains("User unhappy")) == 0);
     }
 }
 
@@ -354,6 +354,6 @@ public class CCATestsChrome : CCATests {
 
     protected override void ScrollTo(IWebElement element) {
         var script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
+        ((IJavaScriptExecutor)Driver).ExecuteScript(script);
     }
 }

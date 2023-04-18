@@ -48,7 +48,7 @@ public abstract class ObjectEditTests : AWTest {
         Click(pencil);
         ClearFieldThenType("nof-edit-parameter input", "0");
         Click(WaitForCss(".form-row input.ok"));
-        wait.Until(el => el.FindElement(By.CssSelector(".parameter .validation")).Text == "Min Qty must be > 0");
+        Wait.Until(el => el.FindElement(By.CssSelector(".parameter .validation")).Text == "Min Qty must be > 0");
     }
 
     [TestMethod]
@@ -63,7 +63,7 @@ public abstract class ObjectEditTests : AWTest {
         Thread.Sleep(1000);
         Click(WaitForCss(".form-row input.ok"));
         Thread.Sleep(1000);
-        wait.Until(el => el.FindElement(By.CssSelector(".co-validation")).Text == "Due date is before start date");
+        Wait.Until(el => el.FindElement(By.CssSelector(".co-validation")).Text == "Due date is before start date");
     }
 
     [TestMethod]
@@ -81,7 +81,7 @@ public abstract class ObjectEditTests : AWTest {
         ClearFieldThenType("#daystomanufacture1", newDays);
         SaveObject();
 
-        var properties = br.FindElements(By.CssSelector(".property"));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
         var currency = "£" + newPrice.ToString("c").Substring(1);
         Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
         Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
@@ -120,8 +120,8 @@ public abstract class ObjectEditTests : AWTest {
 
         var currency = "£" + int.Parse(oldPrice).ToString("c").Substring(1);
 
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[5].Text == "List Price:\r\n" + currency);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[17].Text == "Days To Manufacture:\r\n" + oldDays);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[5].Text == "List Price:\r\n" + currency);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[17].Text == "Days To Manufacture:\r\n" + oldDays);
     }
 
     [TestMethod]
@@ -143,11 +143,11 @@ public abstract class ObjectEditTests : AWTest {
     public virtual void LocalValidationOfMaxLength() {
         GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
         ClearFieldThenType("#title1", "Generalis");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 1);
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Title; ");
 
         TypeIntoFieldWithoutClearing("#title1", Keys.Backspace);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
         SaveButton().AssertIsEnabled();
     }
 
@@ -155,11 +155,11 @@ public abstract class ObjectEditTests : AWTest {
     public virtual void LocalValidationOfRegex() {
         GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
         ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Email Address; ");
 
         TypeIntoFieldWithoutClearing("#emailaddress11", ".com");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
         SaveButton().AssertIsEnabled();
     }
 
@@ -167,22 +167,22 @@ public abstract class ObjectEditTests : AWTest {
     public virtual void RangeValidationOnNumber() {
         GeminiUrl("object?i1=Edit&o1=___1.Product--817");
         WaitForView(Pane.Single, PaneType.Object, "Editing - HL Mountain Front Wheel");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == "1");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == "1");
         Thread.Sleep(500);
         ClearFieldThenType("#daystomanufacture1", "0");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
                            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
         //Confirm that the save button is disabled & has helper tooltip
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
 
         ClearFieldThenType("#daystomanufacture1", "1");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
                            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 0);
         //Confirm that the save button is disabled & has helper tooltip
         SaveButton().AssertIsEnabled();
 
         ClearFieldThenType("#daystomanufacture1", "91");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
                            .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
         //Confirm that the save button is disabled & has helper tooltip
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
@@ -202,31 +202,31 @@ public abstract class ObjectEditTests : AWTest {
         var ind11 = DateTime.Today.AddDays(11).ToString(inmask);
         var message = $"Value is outside the range {outtoday} to {outd10}";
         ClearDateFieldThenType("#discontinueddate1", inyesterday);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
-        //Assert.AreEqual(message, br.FindElements(By.CssSelector(".property .validation"))[20].Text);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
+        //Assert.AreEqual(message, WebDriver.FindElements(By.CssSelector(".property .validation"))[20].Text);
 
-        //wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
+        //Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[17].Text == message);
         ClearFieldThenType("#discontinueddate1", intoday);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
         ClearFieldThenType("#discontinueddate1", ind11);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation")).Count == 23);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == message);
         ClearFieldThenType("#discontinueddate1", ind10);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))[20].Text == "");
     }
 
     [TestMethod]
     public virtual void ObjectEditChangeEnum() {
         GeminiUrl("object?i1=View&o1=___1.Person--6748");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
         EditObject();
         SelectDropDownOnField("#emailpromotion1", "Adventureworks Only");
         SaveObject();
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nAdventureworks Only");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nAdventureworks Only");
         EditObject();
         SelectDropDownOnField("#emailpromotion1", "No Promotions");
         SaveObject();
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text == "Email Promotion:\r\nNo Promotions");
     }
 
     [TestMethod]
@@ -252,7 +252,7 @@ public abstract class ObjectEditTests : AWTest {
         Thread.Sleep(2000);
         SaveObject();
 
-        var properties = br.FindElements(By.CssSelector(".property"));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Days To Manufacture:\r\n1", properties[17].Text);
         Assert.AreEqual("Sell Start Date:\r\n" + sellStart.ToString("d MMM yyyy", CultureInfo.InvariantCulture), properties[18].Text);
@@ -312,7 +312,7 @@ public abstract class ObjectEditTests : AWTest {
         ClearFieldThenType(".parameter:nth-child(1) textarea", "comment");
         Click(OKButton());
 
-        wait.Until(d => d.FindElement(By.CssSelector(".property .value.multiline")).Text == "comment");
+        Wait.Until(d => d.FindElement(By.CssSelector(".property .value.multiline")).Text == "comment");
 
         EditObject();
         var ta = WaitForCss("textarea#comment1");
@@ -324,7 +324,7 @@ public abstract class ObjectEditTests : AWTest {
         ClearFieldThenType("#comment1", ran1 + Keys.Enter + ran2 + Keys.Enter + ran3);
         Click(SaveButton());
 
-        wait.Until(d => br.FindElement(By.CssSelector(".property .value.multiline")).Text ==
+        Wait.Until(d => Driver.FindElement(By.CssSelector(".property .value.multiline")).Text ==
                         $"{ran1}\r\n{ran2}\r\n{ran3}");
     }
 
@@ -340,7 +340,7 @@ public abstract class ObjectEditTests : AWTest {
         ClearFieldThenType("#daystomanufacture1", "1");
         SaveObject();
 
-        var properties = br.FindElements(By.CssSelector(".property"));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Product Line:\r\nS", properties[8].Text);
     }
@@ -352,7 +352,7 @@ public abstract class ObjectEditTests : AWTest {
         // set product category and sub category
         SelectDropDownOnField("#productcategory1", "Clothing");
 
-        wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
+        Wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
 
         SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
 
@@ -360,7 +360,7 @@ public abstract class ObjectEditTests : AWTest {
 
         SaveObject();
 
-        var properties = br.FindElements(By.CssSelector(".property"));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Product Category:\r\nClothing", properties[6].Text);
         Assert.AreEqual("Product Subcategory:\r\nBib-Shorts", properties[7].Text);
@@ -368,26 +368,26 @@ public abstract class ObjectEditTests : AWTest {
         EditObject();
 
         // set product category and sub category
-        wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
-        var slctd = new SelectElement(br.FindElement(By.CssSelector("select#productcategory1")));
+        Wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
+        var slctd = new SelectElement(Driver.FindElement(By.CssSelector("select#productcategory1")));
 
         Assert.AreEqual("Clothing", slctd.SelectedOption.Text);
 
-        Assert.AreEqual(5, br.FindElements(By.CssSelector("select#productcategory1 option")).Count);
+        Assert.AreEqual(5, Driver.FindElements(By.CssSelector("select#productcategory1 option")).Count);
 
-        wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 9);
+        Wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 9);
 
-        Assert.AreEqual(9, br.FindElements(By.CssSelector("select#productsubcategory1 option")).Count);
+        Assert.AreEqual(9, Driver.FindElements(By.CssSelector("select#productsubcategory1 option")).Count);
 
         SelectDropDownOnField("#productcategory1", "Bikes");
 
-        wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
+        Wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
 
         SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
 
         SaveObject();
 
-        properties = br.FindElements(By.CssSelector(".property"));
+        properties = Driver.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Product Category:\r\nBikes", properties[6].Text);
         Assert.AreEqual("Product Subcategory:\r\nMountain Bikes", properties[7].Text);
@@ -396,16 +396,16 @@ public abstract class ObjectEditTests : AWTest {
 
         EditObject();
 
-        wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
+        Wait.Until(d => d.FindElement(By.CssSelector("select#productcategory1")));
         SelectDropDownOnField("select#productcategory1", "Accessories");
-        wait.Until(d => d.FindElement(By.CssSelector("select#productsubcategory1")));
-        var slpsc = new SelectElement(br.FindElement(By.CssSelector("select#productsubcategory1")));
-        wait.Until(d => slpsc.Options.Count == 13);
+        Wait.Until(d => d.FindElement(By.CssSelector("select#productsubcategory1")));
+        var slpsc = new SelectElement(Driver.FindElement(By.CssSelector("select#productsubcategory1")));
+        Wait.Until(d => slpsc.Options.Count == 13);
 
         SelectDropDownOnField("#productsubcategory1", "Bottles and Cages");
         SaveObject();
 
-        properties = br.FindElements(By.CssSelector(".property"));
+        properties = Driver.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Product Category:\r\nAccessories", properties[6].Text);
         Assert.AreEqual("Product Subcategory:\r\nBottles and Cages", properties[7].Text);
@@ -428,7 +428,7 @@ public abstract class ObjectEditTests : AWTest {
         GeminiUrl("object?i1=Edit&o1=___1.Vendor--1686");
         WaitForView(Pane.Single, PaneType.Object);
         // autocomplete is rendered
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[5].Text.StartsWith("Purchasing Web Service URL:"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[5].Text.StartsWith("Purchasing Web Service URL:"));
     }
 }
 

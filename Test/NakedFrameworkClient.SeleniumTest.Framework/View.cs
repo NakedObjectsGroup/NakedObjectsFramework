@@ -20,14 +20,14 @@ public abstract class View {
     }
 
     public void WaitForMessage(string msg) {
-        helper.wait.Until(e => e.FindElement(By.CssSelector(".header .messages")).Text == msg);
+        helper.Wait.Until(e => e.FindElement(By.CssSelector(".header .messages")).Text == msg);
     }
 
     public void WaitForFooterMessage(string msg) {
-        helper.wait.Until(e => e.FindElement(By.CssSelector(".footer .messages")).Text == msg);
+        helper.Wait.Until(e => e.FindElement(By.CssSelector(".footer .messages")).Text == msg);
     }
 
     public void WaitForFooterWarning(string msg) {
-        helper.wait.Until(e => e.FindElement(By.CssSelector(".footer .warnings")).Text == msg);
+        helper.Wait.Until(e => e.FindElement(By.CssSelector(".footer .warnings")).Text == msg);
     }
 }

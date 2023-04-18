@@ -22,7 +22,7 @@ public abstract class ObjectViewTests : AWTest {
     public virtual void ActionsAlreadyOpen() {
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
         WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");
-        wait.Until(d => br.FindElements(By.CssSelector(".submenu")).Count >= 1);
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".submenu")).Count >= 1);
         OpenSubMenu("Orders");
         var actions = GetObjectActions(7);
         Assert.AreEqual("Review Sales Responsibility", actions[0].GetAttribute("value"));
@@ -80,16 +80,16 @@ public abstract class ObjectViewTests : AWTest {
     [TestMethod]
     public virtual void Properties() {
         GeminiUrl("object?o1=___1.Store--350&as1=open");
-        wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 4);
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".property")).Count >= 4);
 
-        var properties = br.FindElements(By.CssSelector(".property"));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
         // failing because of stale properties
         Assert.AreEqual("Store Name:\r\nTwin Cycles", properties[0].Text);
-        properties = br.FindElements(By.CssSelector(".property"));
+        properties = Driver.FindElements(By.CssSelector(".property"));
         Assert.AreEqual("Demographics:\r\nAnnualSales: 800000\r\nAnnualRevenue: 80000\r\nBankName: International Security\r\nBusinessType: BM\r\nYearOpened: 1988\r\nSpecialty: Touring\r\nSquareFeet: 21000\r\nBrands: AW\r\nInternet: T1\r\nNumberEmployees: 11", properties[1].Text);
-        properties = br.FindElements(By.CssSelector(".property"));
+        properties = Driver.FindElements(By.CssSelector(".property"));
         Assert.AreEqual("Sales Person:\r\nLynn Tsoflias", properties[2].Text);
-        properties = br.FindElements(By.CssSelector(".property"));
+        properties = Driver.FindElements(By.CssSelector(".property"));
         Assert.IsTrue(properties[3].Text.StartsWith("Modified Date:\r\n13 Oct 2008"), properties[3].Text);
     }
 
@@ -104,15 +104,15 @@ public abstract class ObjectViewTests : AWTest {
     [TestMethod]
     public virtual void Collections() {
         GeminiUrl("object?i1=View&o1=___1.Product--821");
-        wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
-        wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text.StartsWith("Product Reviews:\r\nEmpty"));
-        wait.Until(d => br.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n2 Items"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".collection"))[1].Text.StartsWith("Product Reviews:\r\nEmpty"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".collection"))[2].Text.StartsWith("Special Offers:\r\n1 Item"));
     }
 
     [TestMethod]
     public virtual void CollectionEagerlyRendered() {
         GeminiUrl("object?r1=0&i1=View&o1=___1.Product--464");
-        wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Product Inventory:\r\n3 Items"));
         var cols = WaitForCss("th", 4).ToArray();
         Assert.AreEqual("Quantity", cols[0].Text);
         Assert.AreEqual("Location", cols[1].Text);
@@ -145,8 +145,8 @@ public abstract class ObjectViewTests : AWTest {
     [TestMethod]
     public virtual void DateAndCurrencyProperties() {
         GeminiUrl("object?o1=___1.SalesOrderHeader--68389");
-        wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
-        var properties = br.FindElements(By.CssSelector(".property"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".property")).Count >= 23);
+        var properties = Driver.FindElements(By.CssSelector(".property"));
 
         //By default a DateTime property is rendered as date only:
         Assert.AreEqual("Order Date:\r\n16 Apr 2008", properties[8].Text);
@@ -162,8 +162,8 @@ public abstract class ObjectViewTests : AWTest {
     [TestMethod]
     public virtual void ConcurrencyProperties() {
         GeminiUrl("object?i1=View&o1=___1.Product--355");
-        wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 23);
-        var properties = br.FindElements(By.CssSelector(".property"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".property")).Count >= 23);
+        var properties = Driver.FindElements(By.CssSelector(".property"));
 
         //By default a DateTime property is rendered as date only:
         Assert.AreEqual("Sell Start Date:\r\n1 Jun 2002", properties[18].Text);
@@ -221,7 +221,7 @@ public abstract class ObjectViewTests : AWTest {
     public virtual void ContributedCollection_UsingDisplayAsProperty() {
         GeminiUrl("object?o1=___1.SpecialOffer--8");
         WaitForCss(".collection", 1);
-        wait.Until(d => br.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Products:\r\n3 Items"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".collection"))[0].Text.StartsWith("Products:\r\n3 Items"));
     }
 
     [TestMethod]
@@ -229,16 +229,16 @@ public abstract class ObjectViewTests : AWTest {
         //Test NotCounted collection
         GeminiUrl("object?i1=View&o1=___1.Vendor--1662");
         WaitForView(Pane.Single, PaneType.Object, "Northern Bike Travel");
-        wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
         var iconList = WaitForCssNo(".collection .icon.list", 0);
         Click(iconList);
         WaitForCss("table");
-        wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("1 Item"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text.Contains("1 Item"));
         // cancel table view 
         Click(WaitForCss(".icon.summary"));
         WaitUntilGone(dr => dr.FindElement(By.CssSelector("table")));
 
-        wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".collection")).Text == "Product - Order Info:");
     }
 
     [TestMethod]
@@ -255,12 +255,12 @@ public abstract class ObjectViewTests : AWTest {
         WaitUntilElementDoesNotExist("table");
         //Add a new reason from menu action
         OpenActionDialog("Add New Sales Reasons");
-        br.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
-        wait.Until(dr => new SelectElement(WaitForCss("select#reasons1")).AllSelectedOptions.Count == 1);
+        Driver.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
+        Wait.Until(dr => new SelectElement(WaitForCss("select#reasons1")).AllSelectedOptions.Count == 1);
         Thread.Sleep(1000);
         Click(OKButton());
         Thread.Sleep(1000);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "2 Items");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "2 Items");
         //Open table view and confirm that there are indeed 2 rows
         Click(WaitForCssNo(".collection .icon.table", 1));
         Thread.Sleep(1000);
@@ -269,9 +269,9 @@ public abstract class ObjectViewTests : AWTest {
 
         //Attempt to leave object as we found it
         OpenActionDialog("Remove Sales Reason");
-        br.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
+        Driver.FindElement(By.CssSelector(".value  select option[label='Review']")).Click();
         Click(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection .summary .details"))[1].Text == "1 Item");
     }
 
     [TestMethod]
@@ -286,10 +286,10 @@ public abstract class ObjectViewTests : AWTest {
         Click(OKButton());
         Click(WaitForCssNo(".collection .icon.list", 2));
 
-        wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == title));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == title));
         Click(WaitForCssNo(".collection .icon.table", 0));
 
-        wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("table tbody tr td")).Any(el => el.Text == num));
     }
 
     [TestMethod]
@@ -305,8 +305,8 @@ public abstract class ObjectViewTests : AWTest {
     public virtual void ClickOnLineItemWithCollectionAsTable() {
         var testUrl = GeminiBaseUrl + "object?o1=___1.Store--350&as1=open" + "&c1_Addresses=Table&c1_Contacts=Summary";
         Url(testUrl);
-        var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
-        wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
+        var row = Wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
+        Wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 2);
 
         var type = row.FindElements(By.CssSelector(".cell"))[0].Text;
         var addr = row.FindElements(By.CssSelector(".cell"))[1].Text;
@@ -318,8 +318,8 @@ public abstract class ObjectViewTests : AWTest {
     public virtual void CanClickOnTitleInTableView() {
         GeminiUrl("object?i1=View&r1=1&o1=___1.Employee--56&c1_DepartmentHistory=Summary&c1_PayHistory=Table");
         WaitForView(Pane.Single, PaneType.Object, "Denise Smith");
-        var row = wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
-        wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 3);
+        var row = Wait.Until(dr => dr.FindElement(By.CssSelector("table tbody tr")));
+        Wait.Until(dr => row.FindElements(By.CssSelector(".cell")).Count >= 3);
 
         var title = row.FindElements(By.CssSelector(".cell"))[0];
         Click(title);
@@ -340,14 +340,14 @@ public abstract class ObjectViewTests : AWTest {
         ClearFieldThenType(".parameter:nth-child(1) input", newValue);
         Click(OKButton()); //This will have updated server, but not client-cached object
         //Go and do something else, so screen changes, then back again
-        wait.Until(dr => dr.FindElements(By.CssSelector(".dialog")).Count == 0);
-        Click(br.FindElement(By.CssSelector(".icon.home")));
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".dialog")).Count == 0);
+        Click(Driver.FindElement(By.CssSelector(".icon.home")));
         WaitForView(Pane.Single, PaneType.Home, "Home");
-        Click(br.FindElement(By.CssSelector(".icon.back")));
+        Click(Driver.FindElement(By.CssSelector(".icon.back")));
         WaitForView(Pane.Single, PaneType.Object);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == original);
         Reload();
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(6) .value")).Text == newValue);
     }
 
     [TestMethod]
@@ -360,7 +360,7 @@ public abstract class ObjectViewTests : AWTest {
         var newValue = DateTime.Now.Millisecond.ToString();
         ClearFieldThenType(".parameter:nth-child(1) input", newValue);
         Click(OKButton());
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(3) .value")).Text == newValue);
     }
 
     [TestMethod]
@@ -378,7 +378,7 @@ public abstract class ObjectViewTests : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "SO59289");
         WaitForCss(".object.object-color2");
         WaitForCss("tr", 2);
-        wait.Until(dr => dr.FindElements(By.CssSelector("td.link-color2")).Count == 2);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td.link-color2")).Count == 2);
         GeminiUrl("object?i1=View&o1=___1.SalesOrderDetail--59289--71041");
         WaitForView(Pane.Single, PaneType.Object, "1 x Mountain-400-W Silver, 46");
         WaitForCss(".object.object-color2");
@@ -394,16 +394,16 @@ public abstract class ObjectViewTests : AWTest {
         //Default
         GeminiUrl("object?i1=View&o1=___1.PersonCreditCard--10768--6875");
         WaitForCss(".object");
-        wait.Until(dr => dr.FindElements(By.CssSelector("div .reference")).Count >= 2);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("div .reference")).Count >= 2);
         var cc = GetReferenceFromProperty("Credit Card");
-        wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color"));
+        Wait.Until(dr => GetReferenceFromProperty("Credit Card").GetAttribute("class").Contains("link-color"));
     }
 
     [TestMethod]
     public virtual void ZeroIntValues() {
         GeminiUrl("object?i1=View&o1=___1.SpecialOffer--13");
         WaitForView(Pane.Single, PaneType.Object, "Touring-3000 Promotion");
-        var properties = br.FindElements(By.CssSelector(".property"));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
 
         Assert.AreEqual("Max Qty:", properties[8].Text);
         Assert.AreEqual("Min Qty:\r\n0", properties[7].Text);
@@ -416,11 +416,11 @@ public abstract class ObjectViewTests : AWTest {
         Assert.IsTrue(details.Contains("Item"));
         var rowCount = int.Parse(details.Split(' ')[0]);
         WaitForCss("tbody tr", rowCount);
-        Assert.AreEqual(rowCount, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
+        Assert.AreEqual(rowCount, Driver.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
         ClearFieldThenType("#newquota1", "345");
         Click(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count >= rowCount + 1);
-        Assert.AreEqual(rowCount + 1, br.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count >= rowCount + 1);
+        Assert.AreEqual(rowCount + 1, Driver.FindElements(By.CssSelector("tbody"))[0].FindElements(By.CssSelector("tr")).Count);
     }
 
     [TestMethod]
@@ -474,7 +474,7 @@ public abstract class ObjectViewTests : AWTest {
         GeminiUrl("object?o1=___1.Customer--555&as1=open");
         OpenSubMenu("Orders");
         Click(GetObjectEnabledAction("Last Order"));
-        wait.Until(d => d.FindElement(By.CssSelector(".object")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".object")));
     }
 
     [TestMethod]
@@ -507,7 +507,7 @@ public abstract class ObjectViewTests : AWTest {
     public virtual void ActionsMenuDisabledOnObjectWithNoActions() {
         GeminiUrl("object?o1=___1.Address--21467");
         WaitForView(Pane.Single, PaneType.Object, "3022 Terra Calitina ...");
-        var actions = wait.Until(dr => dr.FindElement(By.CssSelector(".header input[value='Actions']")));
+        var actions = Wait.Until(dr => dr.FindElement(By.CssSelector(".header input[value='Actions']")));
         Assert.AreEqual("true", actions.GetAttribute("disabled"));
     }
 
@@ -517,20 +517,20 @@ public abstract class ObjectViewTests : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "SO72079");
         // clear any existing comments to make test more robust
 
-        if (!br.FindElements(By.CssSelector(".property"))[20].Text.StartsWith("Sales")) {
-            var rn = br.FindElements(By.CssSelector(".property"))[19].Text;
+        if (!Driver.FindElements(By.CssSelector(".property"))[20].Text.StartsWith("Sales")) {
+            var rn = Driver.FindElements(By.CssSelector(".property"))[19].Text;
 
             Click(GetObjectEnabledAction("Clear Comment"));
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text != rn);
+            Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[19].Text != rn);
         }
 
         //First set up some comments
         OpenActionDialog("Add Standard Comments");
         Click(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
         //Now clear them
         Click(GetObjectEnabledAction("Clear Comment"));
-        // wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
+        // Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text == "Comment:");
     }
 
     #endregion
@@ -545,7 +545,7 @@ public abstract class ObjectViewTests : AWTest {
     [TestMethod]
     public virtual void CanInvokeOneNonPotentActionBeforePreviousHasCompleted() {
         GeminiUrl("object?i1=View&o1=___1.Customer--389&as1=open");
-        wait.Until(d => br.FindElements(By.CssSelector(".submenu")).Count >= 1);
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".submenu")).Count >= 1);
         OpenSubMenu("Orders");
         var open = GetObjectEnabledAction("Open Orders");
         var recent = GetObjectEnabledAction("Recent Orders");
@@ -561,13 +561,13 @@ public abstract class ObjectViewTests : AWTest {
         //Set up a comment
         OpenActionDialog("Add Standard Comments");
         Click(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
 
         Thread.Sleep(1000); // sleep here because otherwise clear button may be still disabled from OK
         var clear = GetObjectEnabledAction("Clear Comment");
         Click(clear);
         Click(clear); //i.e. twice in rapid succession
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
     }
 
     [TestMethod]
@@ -579,19 +579,19 @@ public abstract class ObjectViewTests : AWTest {
         OpenActionDialog("Add Standard Comments");
         Thread.Sleep(1000);
         Click(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
 
         OpenActionDialog("Add Standard Comments");
 
         Click(GetObjectEnabledAction("Clear Comment"));
 
         WaitForCss("nof-action .tempdisabled");
-        //wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
+        //Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Sales Person")); //i.e. Comments property has disappeared
 
         Click(OKButton()); //On dialog that has remained open
 
         // ie comment was not cleared 
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[20].Text.Contains("Payment on delivery"));
     }
 
     #endregion

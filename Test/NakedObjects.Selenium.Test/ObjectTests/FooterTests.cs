@@ -18,7 +18,7 @@ public abstract class FooterTests : AWTest {
     public virtual void Home() {
         GeminiUrl("object?o1=___1.Product--968");
         WaitForView(Pane.Single, PaneType.Object, "Touring-1000 Blue, 54");
-        Click(br.FindElement(By.CssSelector(".icon.home")));
+        Click(Driver.FindElement(By.CssSelector(".icon.home")));
         WaitForView(Pane.Single, PaneType.Home, "Home");
     }
 
@@ -126,9 +126,9 @@ public abstract class FooterTests : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
         ClickPropertiesButton();
         WaitForView(Pane.Single, PaneType.ApplicationProperties, "Application Properties");
-        wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 7);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text.StartsWith(lastPropertyText));
-        var properties = br.FindElements(By.CssSelector(".property"));
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".property")).Count >= 7);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[6].Text.StartsWith(lastPropertyText));
+        var properties = Driver.FindElements(By.CssSelector(".property"));
         Assert.IsTrue(properties[0].Text.StartsWith("Application Name:"), properties[0].Text);
         Assert.IsTrue(properties[1].Text.StartsWith("User Name:"), properties[1].Text);
         Assert.IsTrue(properties[2].Text.StartsWith("Server Url: http"), properties[2].Text); // maybe https
@@ -142,8 +142,8 @@ public abstract class FooterTests : AWTest {
     public virtual void LogOff() {
         GeminiUrl("home");
         ClickLogOffButton();
-        wait.Until(d => br.FindElement(By.CssSelector(".title")).Text.StartsWith("Log Off"));
-        var cancel = wait.Until(dr => dr.FindElement(By.CssSelector("button[value='Cancel']")));
+        Wait.Until(d => Driver.FindElement(By.CssSelector(".title")).Text.StartsWith("Log Off"));
+        var cancel = Wait.Until(dr => dr.FindElement(By.CssSelector("button[value='Cancel']")));
         Click(cancel);
         WaitForView(Pane.Single, PaneType.Home);
     }

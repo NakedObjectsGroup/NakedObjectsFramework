@@ -27,7 +27,7 @@ public abstract class DialogTests : AWTest {
     public virtual void PasswordParam() {
         GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");
         //Check that params marked with DataType.Password show up as input type="password" for browser to obscure
-        wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "password") == 3);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("input")).Count(el => el.GetAttribute("type") == "password") == 3);
     }
 
     [TestMethod]
@@ -58,8 +58,8 @@ public abstract class DialogTests : AWTest {
         WaitForView(Pane.Single, PaneType.Recent);
         ClickBackButton();
         WaitForView(Pane.Single, PaneType.Home);
-        wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
-        wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
+        Wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "arthur");
+        Wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "brent");
     }
 
     [TestMethod]
@@ -71,8 +71,8 @@ public abstract class DialogTests : AWTest {
         GoToMenuFromHomePage("Customers");
         OpenSubMenu("Individuals");
         OpenActionDialog("Find Individual Customer By Name");
-        wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
-        wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
+        Wait.Until(d => d.FindElement(By.CssSelector("#firstname1")).GetAttribute("value") == "");
+        Wait.Until(d => d.FindElement(By.CssSelector("#lastname1")).GetAttribute("value") == "");
     }
 
     [TestMethod]
@@ -127,7 +127,7 @@ public abstract class DialogTests : AWTest {
         SelectDropDownOnField("#subcategory1", "Forks");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.List, "List Products By Sub Category");
-        wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("td.reference"))[0].Text == "HL Fork");
     }
 
     [TestMethod]
@@ -135,8 +135,8 @@ public abstract class DialogTests : AWTest {
         Url(ProductServiceUrl);
         OpenActionDialog("List Products By Sub Categories");
 
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(0).Text == "Mountain Bikes");
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(1).Text == "Touring Bikes");
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(0).Text == "Mountain Bikes");
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(1).Text == "Touring Bikes");
 
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
@@ -149,31 +149,28 @@ public abstract class DialogTests : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
         Url(ProductServiceUrl);
         OpenActionDialog("List Products By Sub Categories");
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(0).Text == "Mountain Bikes");
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(1).Text == "Touring Bikes");
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(0).Text == "Mountain Bikes");
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.ElementAt(1).Text == "Touring Bikes");
 
-        br.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
+        Driver.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
 
-        //IKeyboard kb = ((IHasInputDevices) br).Keyboard;
-        //kb.PressKey(Keys.Control);
-
-        var actions = new Actions(br);
+        var actions = new Actions(Driver);
         actions.KeyDown(Keys.Control);
         actions.Perform();
 
-        br.FindElement(By.CssSelector(".value  select option[label='Road Bikes']")).Click();
+        Driver.FindElement(By.CssSelector(".value  select option[label='Road Bikes']")).Click();
 
-        actions = new Actions(br);
+        actions = new Actions(Driver);
         actions.KeyUp(Keys.Control);
         actions.Perform();
 
         //kb.ReleaseKey(Keys.Control);
-        wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+        Wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");
-        wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".summary .details")).Text == "Page 1 of 4; viewing 20 of 65 items");
         AssertTopItemInListIs("Road-150 Red, 44");
     }
 
@@ -222,12 +219,12 @@ public abstract class DialogTests : AWTest {
         SelectDropDownOnField("#category1", "Clothing");
         WaitForCss("#subcategory1");
 
-        wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "*");
+        Wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(0).Text == "*");
 
-        wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
+        Wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bib-Shorts");
 
         SelectDropDownOnField("#category1", "Accessories");
-        wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
+        Wait.Until(d => new SelectElement(WaitForCss("#subcategory1")).Options.ElementAt(1).Text == "Bike Racks");
 
         var msg = OKButton().AssertIsDisabled().GetAttribute("title");
         Assert.AreEqual("Missing mandatory fields: Sub Category; ", msg);
@@ -268,7 +265,7 @@ public abstract class DialogTests : AWTest {
 
         Assert.AreEqual("Bikes", slctCs.SelectedOption.Text);
 
-        wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
+        Wait.Until(d => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
 
         var slct = new SelectElement(WaitForCss("select#subcategories1"));
 
@@ -357,8 +354,8 @@ public abstract class DialogTests : AWTest {
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomerByAccountNumber&f1_accountNumber=%22AW%22");
         ClearFieldThenType("#accountnumber1", "AW1");
         Click(OKButton());
-        wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text.Contains("No matching object found"));
-        wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text.Contains("No matching object found"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".footer .warnings")).Text.Contains("No matching object found"));
     }
 
     [TestMethod]
@@ -366,7 +363,7 @@ public abstract class DialogTests : AWTest {
         //To test a previous bug, where reference was beign rendered as a Url, not its title
         GeminiUrl("object?i1=View&o1=___1.Person--18542&as1=open");
         OpenActionDialog("Create Letter");
-        wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).GetAttribute("value").StartsWith("Zeiter Weg 9922"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".droppable")).GetAttribute("value").StartsWith("Zeiter Weg 9922"));
     }
 
     [TestMethod]
@@ -425,21 +422,16 @@ public abstract class DialogTests : AWTest {
         Url(SalesServiceUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
         OpenActionDialog("List Accounts For Sales Person");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#sp1")).GetAttribute("placeholder") == "* (auto-complete or drop)");
         ClearFieldThenType("#sp1", "Valdez");
 
-        // nof custom autocomplete
-        wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
-        // angular/material autocomplete
-        //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
-        //As the match has not yet been selected,the field is invalid, so...
+        Wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+
         WaitForTextEquals(".validation", "Pending auto-complete...");
         OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Sp; ");
 
-        // nof custom autocomplete
         Click(WaitForCss(".suggestions a"));
-        // angular/material autocomplete
-        //Click(WaitForCss("md-option"));
+
         WaitForCss("#sp1.link-color6");
         OKButton().AssertIsEnabled();
         Click(OKButton());
@@ -477,12 +469,9 @@ public abstract class DialogTests : AWTest {
         ClearFieldThenType("#product1", "BB Ball");
 
         // nof custom 
-        wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
-        var item = br.FindElement(By.CssSelector("ul li a"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "BB Ball Bearing");
+        var item = Driver.FindElement(By.CssSelector("ul li a"));
 
-        // angular/material
-        //wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "BB Ball Bearing");
-        //var item = br.FindElement(By.CssSelector("md-option"));
         //As the match has not yet been selected,the field is invalid, so...
         WaitForTextEquals(".validation", "Pending auto-complete...");
         Click(item);
@@ -497,11 +486,7 @@ public abstract class DialogTests : AWTest {
 
         // "parc" doesn't work in test (ok manually) "parcel" works
         ClearFieldThenType("#comment1", "parcel");
-
-        // nof custom
-        wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
-        // angular/material
-        //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count == 2);
+        Wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 2);
     }
 
     [TestMethod]
@@ -515,12 +500,8 @@ public abstract class DialogTests : AWTest {
         OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
         ClearFieldThenType("#customer1", "AW00000456");
 
-        // nof custom
-        wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "Riding Excursions, AW00000456");
-        var item = br.FindElement(By.CssSelector("ul li a"));
-        // angular/material
-        //wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "Riding Excursions, AW00000456");
-        //var item = br.FindElement(By.CssSelector("md-option"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector("ul li a")).Text == "Riding Excursions, AW00000456");
+        var item = Driver.FindElement(By.CssSelector("ul li a"));
         Click(item);
         OKButton().AssertIsEnabled();
     }
@@ -532,8 +513,8 @@ public abstract class DialogTests : AWTest {
     [TestMethod]
     public virtual void MandatoryParameterEnforced() {
         GeminiUrl("home?m1=SalesRepository&d1=FindSalesPersonByName");
-        wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
-        wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input#firstname1")).GetAttribute("placeholder") == "");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input#lastname1")).GetAttribute("placeholder") == "* ");
         OKButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Last Name; ");
         ClearFieldThenType("input#lastname1", "a");
         OKButton().AssertIsEnabled();
@@ -547,7 +528,7 @@ public abstract class DialogTests : AWTest {
         //Assuming parm is mandatory, hitting Ok should give validation message
         GeminiUrl("home?m1=CustomerRepository&d1=FindCustomer");
         ClearFieldThenType("#customer1", "AW000");
-        wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 10);
+        Wait.Until(d => d.FindElements(By.CssSelector("ul li a")).Count == 10);
         OKButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Customer; ");
     }
 
@@ -557,7 +538,7 @@ public abstract class DialogTests : AWTest {
 
         ClearFieldThenType("#quantity1", "0");
         Click(OKButton());
-        wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
         var validation = WaitForCss(".parameter .validation");
         Assert.AreEqual("Quantity must be > 0", validation.Text);
 
@@ -575,15 +556,15 @@ public abstract class DialogTests : AWTest {
 
         Thread.Sleep(2000);
 
-        var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason']")));
+        var action = Wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Sales Reason']")));
 
         Click(action);
 
-        wait.Until(dr => dr.FindElement(By.CssSelector("select#reason1")));
-        wait.Until(dr => dr.FindElements(By.CssSelector("select#reason1 option")).Count >= 10);
+        Wait.Until(dr => dr.FindElement(By.CssSelector("select#reason1")));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("select#reason1 option")).Count >= 10);
         SelectDropDownOnField("select#reason1", "Price");
         Click(OKButton());
-        wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".parameter .validation")).Text.Length > 0);
         var validation = WaitForCss(".parameter .validation");
         Assert.AreEqual("Price already exists in Sales Reasons", validation.Text);
     }
@@ -591,13 +572,13 @@ public abstract class DialogTests : AWTest {
     [TestMethod]
     public virtual void CoValidationOfMultipleParameters() {
         GeminiUrl("object?o1=___1.PurchaseOrderDetail--1632--3660&as1=open&d1=ReceiveGoods");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#qtyintostock1")).GetAttribute("value") == "550");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#qtyreceived1")).GetAttribute("value") == "550");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#qtyintostock1")).GetAttribute("value") == "550");
         ClearFieldThenType("#qtyreceived1", "100");
         ClearFieldThenType("#qtyrejected1", "50");
         ClearFieldThenType("#qtyintostock1", "49");
         Click(OKButton());
-        wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
                          "Qty Into Stock + Qty Rejected must add up to Qty Received");
     }
 
@@ -614,7 +595,7 @@ public abstract class DialogTests : AWTest {
         GeminiUrl("object?r1=0&i1=View&o1=___1.Customer--10&as1=open&d1=CreateNewOrder");
         Click(OKButton());
         //Test written against #37 where message is preceded by '199 Restful Objects'
-        wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".co-validation")).Text ==
                          "Customers in Canada may not place orders directly.");
     }
 

@@ -24,12 +24,12 @@ public abstract class InputField : SubView {
     public virtual InputField AssertDefaultValueIs(string value) => throw new NotImplementedException();
 
     public virtual InputField AssertNoValidationError() {
-        helper.wait.Until(dr => element.FindElement(By.CssSelector(".validation")).Text == "");
+        helper.Wait.Until(dr => element.FindElement(By.CssSelector(".validation")).Text == "");
         return this;
     }
 
     public virtual InputField AssertHasValidationError(string message) {
-        helper.wait.Until(dr => element.FindElement(By.CssSelector(".validation")).Text != "");
+        helper.Wait.Until(dr => element.FindElement(By.CssSelector(".validation")).Text != "");
         Assert.AreEqual(message, element.FindElement(By.CssSelector(".validation")).Text);
         return this;
     }

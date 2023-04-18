@@ -52,7 +52,7 @@ public class ObjectCollection : SubView {
 
     //Row number counts from zero
     public TableRow GetRowFromTable(int rowNumber) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
         var row = element.FindElements(By.CssSelector("tbody tr")).ElementAt(rowNumber);
         return new TableRow(row, helper, enclosingView);
     }
@@ -64,7 +64,7 @@ public class ObjectCollection : SubView {
 
     //Row number counts from zero
     public Reference GetRowFromList(int rowNumber) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr td.reference")).Count > rowNumber);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector("tbody tr td.reference")).Count > rowNumber);
         var row = element.FindElements(By.CssSelector("tbody tr td.reference"))[rowNumber];
         return new Reference(row, helper, enclosingView);
     }
@@ -76,24 +76,24 @@ public class ObjectCollection : SubView {
 
     public ActionWithDialog GetActionWithDialog(string actionName) {
         var actionSelector = $"nof-action input[value=\"{actionName}\"]";
-        var act = helper.wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
+        var act = helper.Wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
         //TODO: test that it generates a dialog - information not currently available in HTML see #292
         return new ActionWithDialog(act, helper, enclosingView);
     }
 
     public ActionWithoutDialog GetActionWithoutDialog(string actionName) {
         var actionSelector = $"nof-action input[value=\"{actionName}\"]";
-        var act = helper.wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
+        var act = helper.Wait.Until(d => element.FindElement(By.CssSelector(actionSelector)));
         //TODO: test that it does not generate a dialog - information not currently available in HTML see #292
         return new ActionWithoutDialog(act, helper, enclosingView);
     }
 
     public ObjectCollection SelectCheckBoxOnRow(int rowNumber) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
         var row = element.FindElements(By.CssSelector("tbody tr")).ElementAt(rowNumber);
         var checkbox = row.FindElement(By.CssSelector("td.checkbox input"));
         checkbox.Click();
-        helper.wait.Until(dr => checkbox.Selected);
+        helper.Wait.Until(dr => checkbox.Selected);
         return this;
     }
 }

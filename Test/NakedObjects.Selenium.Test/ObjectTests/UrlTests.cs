@@ -22,7 +22,7 @@ public abstract class UrlTests : AWTest {
     public virtual void UnrecognisedUrlGoesToHome() {
         GeminiUrl("unrecognised");
         WaitForView(Pane.Single, PaneType.Home, "Home");
-        Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
+        Assert.IsTrue(Driver.FindElements(By.CssSelector(".actions")).Count == 0);
     }
 
     #region Single pane Urls
@@ -31,15 +31,15 @@ public abstract class UrlTests : AWTest {
     public virtual void Home() {
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home, "Home");
-        Assert.IsTrue(br.FindElements(By.CssSelector(".actions")).Count == 0);
+        Assert.IsTrue(Driver.FindElements(By.CssSelector(".actions")).Count == 0);
     }
 
     [TestMethod]
     public virtual void HomeWithMenu() {
         GeminiUrl("home?m1=CustomerRepository");
         WaitForView(Pane.Single, PaneType.Home, "Home");
-        wait.Until(d => d.FindElement(By.CssSelector("nof-action-list")));
-        var actions = br.FindElements(By.CssSelector("nof-action-list nof-action"));
+        Wait.Until(d => d.FindElement(By.CssSelector("nof-action-list")));
+        var actions = Driver.FindElements(By.CssSelector("nof-action-list nof-action"));
         Assert.AreEqual(CustomerServiceActions, actions.Count);
         //Assert.AreEqual("Find Customer By Account Number", actions[0].Text);
         //Assert.AreEqual("Find Store By Name", actions[1].Text);
@@ -55,28 +55,28 @@ public abstract class UrlTests : AWTest {
     [TestMethod]
     public virtual void Object() {
         GeminiUrl("object?o1=___1.Store--350");
-        wait.Until(d => d.FindElement(By.CssSelector(".object")));
-        wait.Until(d => d.FindElement(By.CssSelector(".view")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".object")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".view")));
         AssertObjectElementsPresent();
     }
 
     [TestMethod]
     private void AssertObjectElementsPresent() {
-        wait.Until(d => d.FindElement(By.CssSelector(".single")));
-        wait.Until(d => d.FindElement(By.CssSelector(".object")));
-        wait.Until(d => d.FindElement(By.CssSelector(".view")));
-        wait.Until(d => d.FindElement(By.CssSelector(".header")));
-        wait.Until(d => d.FindElement(By.CssSelector("input[value='Actions']")));
-        wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
-        wait.Until(d => d.FindElement(By.CssSelector(".collections")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".single")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".object")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".view")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".header")));
+        Wait.Until(d => d.FindElement(By.CssSelector("input[value='Actions']")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".main-column")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".collections")));
 
-        Assert.IsTrue(br.FindElements(By.CssSelector(".error")).Count == 0);
+        Assert.IsTrue(Driver.FindElements(By.CssSelector(".error")).Count == 0);
     }
 
     [TestMethod]
     public virtual void ObjectWithNoSuchObject() {
         GeminiUrl("object?o1=___1.Foo--555");
-        wait.Until(d => d.FindElement(By.CssSelector(".error")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".error")));
     }
 
     [TestMethod]
@@ -90,19 +90,19 @@ public abstract class UrlTests : AWTest {
     //TODO:  Need to add tests for object & home (later, list) with action (dialog) open
     public virtual void ObjectWithCollections() {
         GeminiUrl("object?o1=___1.Store--350&&c1_Addresses=List&c1_Contacts=Table");
-        wait.Until(d => d.FindElement(By.CssSelector(".collections")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".collections")));
         AssertObjectElementsPresent();
-        wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
-        var collections = br.FindElements(By.CssSelector(".collection"));
-        wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.TagName("table")));
+        Wait.Until(d => d.FindElements(By.CssSelector(".collection")).Count == 2);
+        var collections = Driver.FindElements(By.CssSelector(".collection"));
+        Wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.TagName("table")));
         //Assert.IsNotNull(collections[0].FindElement(By.TagName("table")));
 
-        wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.table")));
+        Wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.table")));
         //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.table")));
-        wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.summary")));
+        Wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElement(By.CssSelector(".icon.summary")));
 
         //Assert.IsNotNull(collections[0].FindElement(By.CssSelector(".icon.summary")));
-        wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElements(By.CssSelector(".icon.list")).Count == 0);
+        Wait.Until(d => d.FindElements(By.CssSelector(".collection")).First().FindElements(By.CssSelector(".icon.list")).Count == 0);
 
         //Assert.IsTrue(collections[0].FindElements(By.CssSelector(".icon.list")).Count == 0);
     }
@@ -110,8 +110,8 @@ public abstract class UrlTests : AWTest {
     [TestMethod]
     public virtual void ObjectInEditMode() {
         GeminiUrl("object?o1=___1.Store--350&i1=Edit");
-        wait.Until(d => d.FindElement(By.CssSelector(".object")));
-        wait.Until(d => d.FindElement(By.CssSelector(".edit")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".object")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".edit")));
         SaveButton();
         GetCancelEditButton();
         // AssertObjectElementsPresent();
@@ -121,7 +121,7 @@ public abstract class UrlTests : AWTest {
     public virtual void ListZeroParameterAction() {
         GeminiUrl("list?m1=OrderRepository&a1=HighestValueOrders");
         Reload();
-        wait.Until(d => d.FindElement(By.CssSelector(".list")));
+        Wait.Until(d => d.FindElement(By.CssSelector(".list")));
         WaitForView(Pane.Single, PaneType.List, "Highest Value Orders");
     }
 

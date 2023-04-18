@@ -10,10 +10,10 @@ public class ActionWithDialog : MenuAction {
     public override ActionWithDialog AssertHasTooltip(string tooltip) => (ActionWithDialog)base.AssertHasTooltip(tooltip);
 
     public Dialog Open() {
-        helper.wait.Until(el => element.GetAttribute("value") != null);
+        helper.Wait.Until(el => element.GetAttribute("value") != null);
         var actionName = element.GetAttribute("value");
         helper.Click(element);
-        helper.wait.Until(dr => enclosingView.element.FindElement(By.CssSelector(".dialog .title")).Text == actionName);
+        helper.Wait.Until(dr => enclosingView.element.FindElement(By.CssSelector(".dialog .title")).Text == actionName);
         var dialogEl = enclosingView.element.FindElement(By.CssSelector(".dialog"));
         return new Dialog(dialogEl, helper, enclosingView);
     }

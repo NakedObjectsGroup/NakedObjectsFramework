@@ -755,7 +755,7 @@ public abstract class CiceroTests : AWTest {
         CiceroUrl("list?m1=OrderRepository&a1=HighestValueOrders&p1=1&ps1=20&s1_=0");
         WaitForOutputStarting("Result from Highest Value Orders:\r\nPage 1 of 157");
 
-        var lastPage = br.FindElement(By.CssSelector(".output")).Text.Split(' ')[7];
+        var lastPage = Driver.FindElement(By.CssSelector(".output")).Text.Split(' ')[7];
         var lastPagePlusOne = (int.Parse(lastPage) + 1).ToString();
         var lastPageLessOne = (int.Parse(lastPage) - 1).ToString();
 
@@ -1046,13 +1046,13 @@ public abstract class CiceroTests : AWTest {
         CiceroUrl("home");
         WaitForOutputStarting("Welcome to Cicero");
         TypeIntoFieldWithoutClearing("input", "sel" + Keys.Space);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
         CiceroUrl("object?o1=___1.Product--968");
         WaitForOutput("Product: Touring-1000 Blue, 54");
         //Hitting Tab with no entry has no effect
         TypeIntoFieldWithoutClearing("input", Keys.Space);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         WaitForOutput("Product: Touring-1000 Blue, 54");
 
         //Unrecognised two chars
@@ -1069,15 +1069,15 @@ public abstract class CiceroTests : AWTest {
         CiceroUrl("object?o1=___1.Product--968");
         WaitForOutput("Product: Touring-1000 Blue, 54");
         TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Space);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
 
         //chained commands
         ClearFieldThenType("input", "me pr;ac rand;ok " + Keys.Space);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
 
         //Space bar before command eventually removed
         ClearFieldThenType("input", " me pr; ac rand; ok " + Keys.Space);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
     }
 
     [TestMethod]
@@ -1085,13 +1085,13 @@ public abstract class CiceroTests : AWTest {
         CiceroUrl("home");
         WaitForOutputStarting("Welcome to Cicero");
         TypeIntoFieldWithoutClearing("input", "sel" + Keys.Tab);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "selection ");
 
         CiceroUrl("object?o1=___1.Product--968");
         WaitForOutput("Product: Touring-1000 Blue, 54");
         //Hitting Tab with no entry has no effect
         TypeIntoFieldWithoutClearing("input", Keys.Tab);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         WaitForOutput("Product: Touring-1000 Blue, 54");
 
         //Unrecognised two chars
@@ -1108,15 +1108,15 @@ public abstract class CiceroTests : AWTest {
         CiceroUrl("object?o1=___1.Product--968");
         WaitForOutput("Product: Touring-1000 Blue, 54");
         TypeIntoFieldWithoutClearing("input", "he menu" + Keys.Tab);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help menu ");
 
         //chained commands
         ClearFieldThenType("input", "me pr;ac rand;ok " + Keys.Tab);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
 
         //Space bar before command eventually removed
         ClearFieldThenType("input", " me pr; ac rand; ok " + Keys.Tab);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "menu pr;action rand;ok ");
     }
 
     [TestMethod]
@@ -1138,14 +1138,14 @@ public abstract class CiceroTests : AWTest {
         Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
         TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
 
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help");
         TypeIntoFieldWithoutClearing("input", " gem" + Keys.Enter);
         WaitForOutputStarting("gemini command");
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
         TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help gem");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "help gem");
         TypeIntoFieldWithoutClearing("input", Keys.ArrowDown);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value") == "");
 
         //TODO
         //CiceroUrl("home");
@@ -1155,7 +1155,7 @@ public abstract class CiceroTests : AWTest {
         ////Test that the up arrow produces full string
         //Assert.AreEqual("", WaitForCss("input").GetAttribute("value"));
         //TypeIntoFieldWithoutClearing("input", Keys.ArrowUp);
-        //wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value")
+        //Wait.Until(dr => dr.FindElement(By.CssSelector("input")).GetAttribute("value")
         //== "menu pr;action rand;ok;show 1");
     }
 

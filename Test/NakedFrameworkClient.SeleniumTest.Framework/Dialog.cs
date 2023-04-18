@@ -20,7 +20,7 @@ public class Dialog : SubView {
         AssertHasValidationError(string.Empty);
 
     public virtual Dialog AssertHasValidationError(string message) {
-        helper.wait.Until(dr => element.FindElement(By.CssSelector(".co-validation")).Text != "");
+        helper.Wait.Until(dr => element.FindElement(By.CssSelector(".co-validation")).Text != "");
         Assert.AreEqual(message, element.FindElement(By.CssSelector(".co-validation")).Text);
         return this;
     }
@@ -71,7 +71,7 @@ public class Dialog : SubView {
 
     private IWebElement GetEnabledOKButton() {
         try {
-            helper.wait.Until(dr => GetOKButton().GetAttribute("disabled") == null);
+            helper.Wait.Until(dr => GetOKButton().GetAttribute("disabled") == null);
         }
         catch (Exception) {
             Assert.Fail("OK button was disabled");

@@ -21,7 +21,7 @@ public abstract class TransientObjectTests : AWTest {
     public virtual void CreateAndSaveTransientObject() {
         GeminiUrl("object?o1=___1.Person--12043&as1=open");
         Click(GetObjectEnabledAction("Create New Credit Card"));
-        wait.Until(d => d.FindElements(By.CssSelector("select#cardtype1 option")).First(el => el.Text == "*"));
+        Wait.Until(d => d.FindElements(By.CssSelector("select#cardtype1 option")).First(el => el.Text == "*"));
         SelectDropDownOnField("#cardtype1", "Vista");
         var number = DateTime.Now.Ticks.ToString(); //pseudo-random string
         var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
@@ -53,7 +53,7 @@ public abstract class TransientObjectTests : AWTest {
         //But check that credit card was saved nonetheless
         GetObjectEnabledAction("Recent Credit Cards").Click();
         WaitForView(Pane.Single, PaneType.List, "Recent Credit Cards");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr td.reference")).First().Text == obfuscated);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr td.reference")).First().Text == obfuscated);
     }
 
     [TestMethod]
@@ -80,7 +80,7 @@ public abstract class TransientObjectTests : AWTest {
 
         SelectDropDownOnField("#expyear1", year);
         Click(SaveButton());
-        wait.Until(dr => dr.FindElements(
+        Wait.Until(dr => dr.FindElements(
                        By.CssSelector(".validation")).Any(el => el.Text == "card number too short"));
         WaitForMessage("See field validation message(s).");
     }
@@ -134,9 +134,9 @@ public abstract class TransientObjectTests : AWTest {
 
         Click(SwapIcon());
         WaitForView(Pane.Left, PaneType.Object, "Editing - Unsaved Credit Card");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#cardnumber1")).GetAttribute("value") == "1111222233334444");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#cardnumber1")).GetAttribute("value") == "1111222233334444");
         WaitForView(Pane.Right, PaneType.Object, "Editing - Unsaved Work Order");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#orderqty2")).GetAttribute("value") == "4");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#orderqty2")).GetAttribute("value") == "4");
     }
 
     [TestMethod]
@@ -145,16 +145,16 @@ public abstract class TransientObjectTests : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
         Click(GetObjectEnabledAction("Create New Credit Card"));
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
-        Click(br.FindElement(By.CssSelector(".icon.back")));
+        Click(Driver.FindElement(By.CssSelector(".icon.back")));
         WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
-        Click(br.FindElement(By.CssSelector(".icon.forward")));
+        Click(Driver.FindElement(By.CssSelector(".icon.forward")));
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Credit Card");
     }
 
     [TestMethod]
     public virtual void RequestForExpiredTransient() {
         GeminiUrl("object?i1=Transient&o1=___1.CreditCard--100");
-        wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text == "The requested view of unsaved object details has expired.");
     }
 
     [TestMethod]
@@ -165,19 +165,19 @@ public abstract class TransientObjectTests : AWTest {
         Click(GetObjectEnabledAction("New Product"));
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Product");
 
-        var sellStartDate = br.FindElement(By.CssSelector("#sellstartdate1"));
+        var sellStartDate = Driver.FindElement(By.CssSelector("#sellstartdate1"));
         Assert.AreEqual("* ", sellStartDate.GetAttribute("placeholder"));
 
         // set product category and sub category
         SelectDropDownOnField("#productcategory1", "Clothing");
 
-        wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
+        Wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Any(el => el.Text == "Bib-Shorts"));
 
         SelectDropDownOnField("#productsubcategory1", "Bib-Shorts");
 
         SelectDropDownOnField("#productcategory1", "Bikes");
 
-        wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
+        Wait.Until(d => d.FindElements(By.CssSelector("select#productsubcategory1 option")).Count == 4);
 
         SelectDropDownOnField("#productsubcategory1", "Mountain Bikes");
     }
@@ -204,7 +204,7 @@ public abstract class TransientObjectTests : AWTest {
         OpenActionDialog("Add New Sales Reasons");
         SelectDropDownOnField("#reasons1", 1);
         Click(OKButton());
-        wait.Until(d => br.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
+        Wait.Until(d => Driver.FindElements(By.CssSelector(".collection"))[1].Text == "Reasons:\r\n1 Item");
     }
 
     [TestMethod]
@@ -251,7 +251,7 @@ public abstract class TransientObjectTests : AWTest {
         ClearFieldThenType("#scrappedqty1", "0");
         ClearFieldThenType("#orderqty1", "0");
         Click(SaveButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector(".validation"))
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation"))
                            .Any(el => el.Text == "Order Quantity must be > 0"));
         ClearFieldThenType("#orderqty1", "1");
         Click(SaveButton());
@@ -263,14 +263,14 @@ public abstract class TransientObjectTests : AWTest {
         GeminiUrl("object?i1=View&o1=___1.Customer--635&as1=open&d1=CreateNewOrder");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.Object, "Editing - Unsaved Sales Order");
-        wait.Until(dr => dr.FindElement(By.CssSelector("#salesperson1")).GetAttribute("placeholder") == "(auto-complete or drop)");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#salesperson1")).GetAttribute("placeholder") == "(auto-complete or drop)");
         ClearFieldThenType("#salesperson1", "Va");
 
         // nof custom 
-        wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+        Wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
 
         // anagular/material
-        //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
+        //Wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
     }
 
     [TestMethod]
@@ -285,19 +285,19 @@ public abstract class TransientObjectTests : AWTest {
         ClearFieldThenType("#orderqty1", "1");
 
         // no end date or routings 
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[6].Text.StartsWith("Due Date:"));
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-collection .name")).Count == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[6].Text.StartsWith("Due Date:"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-collection .name")).Count == 0);
         // visible modified date 
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[7].Text.StartsWith("Modified Date:"));
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[7].Text.StartsWith("Modified Date:"));
 
         SaveObject();
 
         // visible end date and routings
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name")).Count == 8);
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
-        wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name")).Count == 8);
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
         // no modified date
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[7].Text == "Due Date:");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[7].Text == "Due Date:");
 
         // visible add routing action
         OpenObjectActions();
@@ -315,8 +315,8 @@ public abstract class TransientObjectTests : AWTest {
         Click(OKButton());
 
         // visible end date and routings
-        wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
-        wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
         // visible add routing action
         OpenObjectActions();
         GetObjectEnabledAction("Add New Routing");

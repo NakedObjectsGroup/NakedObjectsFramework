@@ -21,10 +21,10 @@ public abstract class SplitPaneTests : AWTest {
         ClearFieldThenType("#searchstring1", "a");
         RightClick(OKButton());
         WaitForView(Pane.Right, PaneType.List);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Adjustable Race");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Adjustable Race");
         ClearFieldThenType("#searchstring1", "z");
         RightClick(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Hydration Pack - 70 oz.");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".reference"))[0].Text == "Hydration Pack - 70 oz.");
     }
 
     [TestMethod]
@@ -33,10 +33,10 @@ public abstract class SplitPaneTests : AWTest {
         ClearFieldThenType("#searchstring1", "x");
         RightClick(OKButton());
         WaitForView(Pane.Right, PaneType.List);
-        wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "External Lock Washer 1");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "External Lock Washer 1");
         ClearFieldThenType("#searchstring1", "n");
         Click(OKButton());
-        wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "All-Purpose Bike Stand");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "All-Purpose Bike Stand");
         Reload(Pane.Left);
         Reload(Pane.Right);
 
@@ -45,14 +45,14 @@ public abstract class SplitPaneTests : AWTest {
         WaitForView(Pane.Left, PaneType.List);
         WaitForView(Pane.Right, PaneType.List);
         Reload(Pane.Left);
-        wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "Chain Stays");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 .reference"))[0].Text == "Chain Stays");
         Reload(Pane.Right);
-        wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "Fender Set - Mountain");
+        Wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 .reference"))[0].Text == "Fender Set - Mountain");
     }
 
     protected override void ScrollTo(IWebElement element) {
         var script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
+        ((IJavaScriptExecutor)Driver).ExecuteScript(script);
     }
 
     #region Actions that go from single to split panes
@@ -61,7 +61,7 @@ public abstract class SplitPaneTests : AWTest {
     public virtual void RightClickActionReturningObjectFromHomeSingle() {
         Url(CustomersMenuUrl);
         WaitForView(Pane.Single, PaneType.Home, "Home");
-        wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action")).Count == CustomerServiceActions);
+        Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action")).Count == CustomerServiceActions);
         OpenActionDialog("Find Customer By Account Number");
         ClearFieldThenType(".value  input", "AW00022262");
         RightClick(OKButton());
@@ -223,7 +223,7 @@ public abstract class SplitPaneTests : AWTest {
         OpenSubMenu("Orders", Pane.Left);
         RightClick(GetObjectEnabledAction("Create New Order", Pane.Left));
         var selector = CssSelectorFor(Pane.Left) + " .dialog ";
-        wait.Until(d => d.FindElement(By.CssSelector(selector)));
+        Wait.Until(d => d.FindElement(By.CssSelector(selector)));
     }
 
     [TestMethod]

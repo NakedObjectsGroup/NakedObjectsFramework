@@ -55,17 +55,17 @@ public class ListView : ActionResult {
 
     //Row number counts from zero
     public ListView SelectCheckBoxOnRow(int rowNumber) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
         var row = element.FindElements(By.CssSelector("tbody tr")).ElementAt(rowNumber);
         var checkbox = row.FindElement(By.CssSelector("td.checkbox input"));
         checkbox.Click();
-        helper.wait.Until(dr => checkbox.Selected);
+        helper.Wait.Until(dr => checkbox.Selected);
         return this;
     }
 
     //Row number counts from zero
     public TableRow GetRowFromTable(int rowNumber) {
-        helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector("tbody tr")).Count > rowNumber);
         var row = element.FindElements(By.CssSelector("tbody tr"))[rowNumber];
         return new TableRow(row, helper, this);
     }
@@ -78,7 +78,7 @@ public class ListView : ActionResult {
     //Row number counts from zero
     public Reference GetRowFromList(int rowNumber) {
         //TODO: First assert that it is in display as list mode
-        helper.wait.Until(dr => element.FindElements(By.CssSelector("tbody tr td.reference")).Count > rowNumber);
+        helper.Wait.Until(dr => element.FindElements(By.CssSelector("tbody tr td.reference")).Count > rowNumber);
         var row = element.FindElements(By.CssSelector("tbody tr td.reference"))[rowNumber];
         return new Reference(row, helper, this);
     }
@@ -90,7 +90,7 @@ public class ListView : ActionResult {
 
     public ListView Reload() {
         var css = helper.CssSelectorFor(pane) + " .list nof-action input";
-        helper.wait.Until(dr => dr.FindElement(By.CssSelector(css)).GetAttribute("value") == "Reload");
+        helper.Wait.Until(dr => dr.FindElement(By.CssSelector(css)).GetAttribute("value") == "Reload");
         var reload = element.FindElements(By.CssSelector(css)).Single(el => el.GetAttribute("value") == "Reload");
         helper.Click(reload, MouseClick.MainButton);
         helper.WaitForNewListView(this, MouseClick.MainButton);

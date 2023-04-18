@@ -44,13 +44,13 @@ public class DevelopmentStoryTests : BaseTest {
 
     #region Overhead
 
-    protected override string BaseUrl => "http://nakedlegacytest.azurewebsites.net/";
+    protected override string BaseUrl => TestConfig.BaseLegacyUrl;
 
     private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(BaseUrl, br, wait);
+        helper = new Helper(BaseUrl, Driver, Wait);
     }
 
     #endregion

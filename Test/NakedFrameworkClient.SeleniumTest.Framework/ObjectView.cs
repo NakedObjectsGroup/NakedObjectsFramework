@@ -25,7 +25,7 @@ public class ObjectView : ObjectPresentation {
 
     public Property GetProperty(string propertyName) {
         helper.WaitForChildElement(element, "nof-properties");
-        var prop = helper.wait.Until(e => element.FindElements(By.CssSelector("nof-view-property"))
+        var prop = helper.Wait.Until(e => element.FindElements(By.CssSelector("nof-view-property"))
                                                  .Single(el => el.FindElement(By.CssSelector(".name")).Text == propertyName + ":"));
         return new Property(prop, helper, this);
     }
@@ -37,7 +37,7 @@ public class ObjectView : ObjectPresentation {
     }
 
     public ObjectCollection GetCollection(string collectionName) {
-        helper.wait.Until(dr => FindCollection(collectionName) != null);
+        helper.Wait.Until(dr => FindCollection(collectionName) != null);
         var coll = FindCollection(collectionName);
         return new ObjectCollection(coll, helper, this);
     }
@@ -60,7 +60,7 @@ public class ObjectView : ObjectPresentation {
 
     public ObjectView AssertIsNotEditable() {
         helper.WaitForChildElement(element, "nof-action-bar nof-action");
-        helper.wait.Until(dr => element.FindElement(By.CssSelector("nof-action-bar nof-action input")).GetAttribute("value") != "");
+        helper.Wait.Until(dr => element.FindElement(By.CssSelector("nof-action-bar nof-action input")).GetAttribute("value") != "");
         var buttons = element.FindElements(By.CssSelector("nof-action-bar nof-action input")).Select(el => el.GetAttribute("value"));
         Assert.IsTrue(buttons.Contains("Actions"));
         Assert.IsFalse(IsEditable());

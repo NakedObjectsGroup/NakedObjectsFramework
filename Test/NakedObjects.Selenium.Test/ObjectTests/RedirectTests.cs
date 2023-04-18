@@ -23,7 +23,7 @@ public abstract class RedirectTests : AWTest {
         Click(GetObjectEnabledAction("Random Sales Tax Rate"));
         WaitForView(Pane.Single, PaneType.Object);
         //Redirected from a SalesTaxRate to corresponding StateProvice
-        wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".properties")).Text.Contains("Is Only State Province"));
     }
 
     [TestMethod]

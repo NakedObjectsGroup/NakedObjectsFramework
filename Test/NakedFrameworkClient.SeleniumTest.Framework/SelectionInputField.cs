@@ -23,21 +23,21 @@ public class SelectionInputField : InputField {
 
     public override SelectionInputField Enter(string selection) {
         SelectElement.SelectByText(selection);
-        helper.wait.Until(dr => SelectElement.SelectedOption.Text == selection);
+        helper.Wait.Until(dr => SelectElement.SelectedOption.Text == selection);
         return this;
     }
 
     //OptionNumber counts from zero
     public SelectionInputField Select(int optionNumber) {
         SelectElement.SelectByIndex(optionNumber);
-        helper.wait.Until(dr => SelectElement.SelectedOption.Text == SelectElement.Options[optionNumber].Text);
+        helper.Wait.Until(dr => SelectElement.SelectedOption.Text == SelectElement.Options[optionNumber].Text);
         return this;
     }
 
     public SelectionInputField SelectMultiple(params int[] options) => throw new NotImplementedException();
 
     public SelectionInputField AssertNoOfOptionsIs(int number) {
-        helper.wait.Until(dr => number == 0 || SelectElement.Options.Count > 0);
+        helper.Wait.Until(dr => number == 0 || SelectElement.Options.Count > 0);
         Assert.AreEqual(number, SelectElement.Options.Count);
         return this;
     }

@@ -26,7 +26,7 @@ public abstract class ViewModelTests : AWTest {
         GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
         Click(GetObjectEnabledAction("Create Email"));
         WaitForView(Pane.Single, PaneType.Object, "New email");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
 
         ClearFieldThenType("#to1", "Stef");
         ClearFieldThenType("#from1", "Richard");
@@ -34,7 +34,7 @@ public abstract class ViewModelTests : AWTest {
         ClearFieldThenType("#message1", "Hello");
 
         Click(GetInputButton("Send"));
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
         Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
         var title = WaitForCss(".title");
         Assert.AreEqual("Sent email", title.Text);
@@ -48,13 +48,13 @@ public abstract class ViewModelTests : AWTest {
         GeminiUrl("object?i1=View&o1=___1.Person--9169&as1=open");
         Click(GetObjectEnabledAction("Create Email"));
         WaitForView(Pane.Single, PaneType.Object, "New email");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text == "Status:\r\nNew");
 
         //leave 3/4 of the optional fields empty
         ClearFieldThenType("#subject1", "Test2");
 
         Click(GetInputButton("Send"));
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(5)")).Text == "Status:\r\nSent");
         Assert.AreEqual("To:", WaitForCss(".property:nth-child(1)").Text);
         var title = WaitForCss(".title");
         Assert.AreEqual("Sent email", title.Text);

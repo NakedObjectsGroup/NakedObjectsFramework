@@ -39,14 +39,14 @@ public class TextInputField : InputField {
             input.SendKeys(Keys.Delete);
         }
 
-        helper.wait.Until(dr => input.GetAttribute("value") == "");
+        helper.Wait.Until(dr => input.GetAttribute("value") == "");
         return this;
     }
 
     public override TextInputField Enter(string characters) {
         var input = Input();
         input.SendKeys(characters);
-        helper.wait.Until(dr => input.GetAttribute("value") == characters);
+        helper.Wait.Until(dr => input.GetAttribute("value") == characters);
         return this;
     }
 

@@ -18,11 +18,11 @@ public abstract class LocalCollectionActionsTests : AWTest {
     [TestMethod]
     public virtual void LocalCollectionActionsHonourMemberOrder() {
         GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--71105&c1_Details=Table");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action")).Count >= 2);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Details");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Add New Detail");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[2].GetAttribute("value") == "Remove Details");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[3].GetAttribute("value") == "Adjust Quantities");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action")).Count >= 2);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Details");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Add New Detail");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[2].GetAttribute("value") == "Remove Details");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action input"))[3].GetAttribute("value") == "Adjust Quantities");
     }
 
     [TestMethod]
@@ -31,7 +31,7 @@ public abstract class LocalCollectionActionsTests : AWTest {
         WaitForCss("input[type='checkbox']", 17); // 16 lines plus all
         WaitForSelectedCheckboxes(0);
 
-        //br.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
+        //WebDriver.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown);
         SelectCheckBox("input[type = 'checkbox']#details1-0");
         SelectCheckBox("input[type = 'checkbox']#details1-2");
         SelectCheckBox("input[type = 'checkbox']#details1-7");
@@ -73,8 +73,8 @@ public abstract class LocalCollectionActionsTests : AWTest {
         Click(WaitForCssNo(".icon.list", 1));
 
         //Add new sales reason;  remove sales reasons
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Sales Reason");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[0].GetAttribute("value") == "Add New Sales Reason");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action-bar nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
         Click(WaitForCss(".icon.summary"));
         WaitUntilElementDoesNotExist(".collection .actions");
     }
@@ -83,7 +83,7 @@ public abstract class LocalCollectionActionsTests : AWTest {
     public virtual void CannotInvokeZeroParamSelectionActionWithNothingSelected() {
         GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=List");
         Thread.Sleep(1000);
-        wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[1].FindElements(By.CssSelector("nof-action input"))[1].GetAttribute("value") == "Remove Sales Reasons");
         Thread.Sleep(1000);
         Click(GetLCA("Remove Sales Reasons"));
         WaitForTextEquals(".messages", 2, "Must select items for collection contributed action");
@@ -94,7 +94,7 @@ public abstract class LocalCollectionActionsTests : AWTest {
         GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--63023&c1_SalesOrderHeaderSalesReason=Summary&c1_Details=List");
 
         Thread.Sleep(4000);
-        var action = wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Adjust Quantities'")));
+        var action = Wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Adjust Quantities'")));
 
         Click(action);
 

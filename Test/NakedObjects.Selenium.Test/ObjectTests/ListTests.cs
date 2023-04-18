@@ -36,9 +36,9 @@ public abstract class ListTests : AWTest {
         WaitForCss(".icon.table");
         WaitUntilElementDoesNotExist(".icon.list");
         WaitUntilElementDoesNotExist(".icon.summary");
-        Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.reference")).Count);
-        Assert.AreEqual(20, br.FindElements(By.CssSelector(".list table tbody tr td.checkbox")).Count);
-        Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
+        Assert.AreEqual(20, Driver.FindElements(By.CssSelector(".list table tbody tr td.reference")).Count);
+        Assert.AreEqual(20, Driver.FindElements(By.CssSelector(".list table tbody tr td.checkbox")).Count);
+        Assert.AreEqual(0, Driver.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
     }
 
     [TestMethod]
@@ -102,7 +102,7 @@ public abstract class ListTests : AWTest {
         Url(SpecialOffersMenuUrl);
         Click(GetObjectEnabledAction("Current Special Offers"));
         WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
         var iconTable = WaitForCss(".icon.table");
         Click(iconTable);
 
@@ -110,15 +110,15 @@ public abstract class ListTests : AWTest {
         WaitUntilElementDoesNotExist(".icon.table");
         WaitUntilElementDoesNotExist(".icon.summary");
 
-        wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
 
         //Switch back to List view
         Click(iconList);
         WaitForCss(".icon.table");
         WaitUntilElementDoesNotExist(".icon.list");
         WaitUntilElementDoesNotExist(".icon.summary");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
-        Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
+        Assert.AreEqual(0, Driver.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
     }
 
     [TestMethod]
@@ -129,7 +129,7 @@ public abstract class ListTests : AWTest {
         OpenActionDialog("Locations By Availability");
         Click(OKButton());
         WaitForView(Pane.Single, PaneType.List, "Locations By Availability");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
         var iconTable = WaitForCss(".icon.table");
         Click(iconTable);
 
@@ -137,7 +137,7 @@ public abstract class ListTests : AWTest {
         WaitUntilElementDoesNotExist(".icon.table");
         WaitUntilElementDoesNotExist(".icon.summary");
 
-        wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
     }
 
     [TestMethod]
@@ -155,12 +155,12 @@ public abstract class ListTests : AWTest {
         Url(SpecialOffersMenuUrl);
         Click(GetObjectEnabledAction("Current Special Offers"));
         WaitForView(Pane.Single, PaneType.List, "Current Special Offers");
-        wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
         var iconTable = WaitForCss(".icon.table");
         Click(iconTable);
         Thread.Sleep(500);
-        wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
-        var row = br.FindElement(By.CssSelector("tbody tr:nth-child(1) div"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector("tbody tr:nth-child(1) td:nth-child(2)")).Text == "No Discount");
+        var row = Driver.FindElement(By.CssSelector("tbody tr:nth-child(1) div"));
         Click(row);
         WaitForView(Pane.Single, PaneType.Object, "No Discount");
     }
@@ -172,7 +172,7 @@ public abstract class ListTests : AWTest {
         Reload();
 
         //Test content of collection
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 1 of 45"));
         GetInputButton("First").AssertIsDisabled();
         GetInputButton("Previous").AssertIsDisabled();
@@ -180,28 +180,28 @@ public abstract class ListTests : AWTest {
         GetInputButton("Last").AssertIsEnabled();
         //Go to next page
         Click(next);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 2 of 45"));
         GetInputButton("First").AssertIsEnabled();
         GetInputButton("Previous").AssertIsEnabled();
         GetInputButton("Next").AssertIsEnabled();
         var last = GetInputButton("Last").AssertIsEnabled();
         Click(last);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 45 of 45"));
         GetInputButton("First").AssertIsEnabled();
         var prev = GetInputButton("Previous").AssertIsEnabled();
         GetInputButton("Next").AssertIsDisabled();
         GetInputButton("Last").AssertIsDisabled();
         Click(prev);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 44 of 45"));
         var first = GetInputButton("First").AssertIsEnabled();
         GetInputButton("Previous").AssertIsEnabled();
         GetInputButton("Next").AssertIsEnabled();
         GetInputButton("Last").AssertIsEnabled();
         Click(first);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 1 of 45"));
     }
 
@@ -216,7 +216,7 @@ public abstract class ListTests : AWTest {
         Assert.AreEqual("Page 1 of 177; viewing 2 of 353 items", summary.Text);
         var next = GetInputButton("Next").AssertIsEnabled();
         Click(next);
-        wait.Until(dr => dr.FindElement(
+        Wait.Until(dr => dr.FindElement(
                                By.CssSelector(".list .summary .details"))
                            .Text == "Page 2 of 177; viewing 2 of 353 items");
     }
@@ -225,7 +225,7 @@ public abstract class ListTests : AWTest {
     public virtual void ListDoesNotRefreshWithoutReload() {
         GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
         Reload();
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                            .StartsWith("Page 1 of 1;"));
         Click(HomeIcon());
         WaitForView(Pane.Single, PaneType.Home, "Home");
@@ -233,12 +233,12 @@ public abstract class ListTests : AWTest {
         Click(GetObjectEnabledAction("Special Offers With No Minimum Qty"));
         WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
 
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                          == "Page 1 of 1; viewing 11 of 11 items");
 
         WaitForCss("tbody tr:nth-child(2) td:nth-child(2)");
 
-        var row = br.FindElement(By.CssSelector("tbody tr:nth-child(2) td:nth-child(2)"));
+        var row = Driver.FindElement(By.CssSelector("tbody tr:nth-child(2) td:nth-child(2)"));
         Click(row);
         WaitForView(Pane.Single, PaneType.Object, "Mountain-100 Clearance Sale");
         //GeminiUrl("object?o1=___1.SpecialOffer--7");
@@ -251,10 +251,10 @@ public abstract class ListTests : AWTest {
 
         WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
 
-        //wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+        //Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
         //                 == "Page 1 of 1; viewing 11 of 11 items");
         Reload();
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                          == "Page 1 of 1; viewing 10 of 10 items");
 
         //Undo to leave in original state
@@ -265,7 +265,7 @@ public abstract class ListTests : AWTest {
         GeminiUrl("list?m1=SpecialOfferRepository&a1=SpecialOffersWithNoMinimumQty&p1=1&ps1=20");
         WaitForView(Pane.Single, PaneType.List, "Special Offers With No Minimum Qty");
         Reload();
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details")).Text
                          == "Page 1 of 1; viewing 11 of 11 items");
     }
 
@@ -293,7 +293,7 @@ public abstract class ListTests : AWTest {
         row = WaitForCssNo(".reference", 6);
         Click(row);
         WaitForView(Pane.Single, PaneType.Object);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(1)")).Text.EndsWith(suffix));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property:nth-child(1)")).Text.EndsWith(suffix));
 
         //Now revert
         EditObject();
@@ -323,7 +323,7 @@ public abstract class ListTests : AWTest {
         WaitForCss(".icon.list");
         WaitUntilElementDoesNotExist(".icon.table");
         //Test content of collection
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 1 of"));
         GetInputButton("First").AssertIsDisabled();
         GetInputButton("Previous").AssertIsDisabled();
@@ -331,7 +331,7 @@ public abstract class ListTests : AWTest {
         GetInputButton("Last").AssertIsEnabled();
         //Go to next page
         Click(next);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 2 of"));
         //Confirm in Table view
         WaitForCss("thead tr th");
@@ -343,7 +343,7 @@ public abstract class ListTests : AWTest {
         GetInputButton("Next").AssertIsEnabled();
         var last = GetInputButton("Last").AssertIsEnabled();
         Click(last);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 45 of 45"));
         //Confirm in Table view
         WaitForCss("thead tr th");
@@ -355,7 +355,7 @@ public abstract class ListTests : AWTest {
         GetInputButton("Next").AssertIsDisabled();
         GetInputButton("Last").AssertIsDisabled();
         Click(prev);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 44 of 45"));
         //Confirm in Table view
         WaitForCss("thead tr th");
@@ -366,7 +366,7 @@ public abstract class ListTests : AWTest {
         GetInputButton("Next").AssertIsEnabled();
         GetInputButton("Last").AssertIsEnabled();
         Click(first);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".list .summary .details"))
                            .Text.StartsWith("Page 1 of 45"));
         //Confirm in Table view
         WaitForCss("thead tr th");
@@ -384,6 +384,6 @@ public class ListTestsChrome : ListTests {
 
     protected override void ScrollTo(IWebElement element) {
         var script = $"window.scrollTo({element.Location.X}, {element.Location.Y});return true;";
-        ((IJavaScriptExecutor)br).ExecuteScript(script);
+        ((IJavaScriptExecutor)Driver).ExecuteScript(script);
     }
 }

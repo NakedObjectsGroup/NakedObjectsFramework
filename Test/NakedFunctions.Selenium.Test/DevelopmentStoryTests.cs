@@ -82,7 +82,7 @@ public class DevelopmentStoryTests : BaseTest {
         dialog.ClickOKWithNoResultExpected();
         helper.GetFooter().AssertHasMessage("Mountain Tire Sale is already associated with LL Mountain Tire");
 
-        //wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");
+        //Wait.Until(d => d.FindElement(By.CssSelector(".footer .messages")).Text != "");
         //var msg = WaitForCss(".footer .messages").Text;
         //Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
     }
@@ -402,8 +402,6 @@ public class DevelopmentStoryTests : BaseTest {
         var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
         endDate = endDate.StartsWith("0") ? endDate.Substring(1) : endDate;
 
-        //Assert.IsFalse(br.FindElements(By.CssSelector("tbody tr td")).Any(el => el.Text == endDate));
-
         var dialog = offers.OpenActions().GetActionWithDialog("Extend Offers").Open();
         dialog.GetTextField("To Date").Enter(endDate);
 
@@ -631,18 +629,18 @@ public class DevelopmentStoryTests : BaseTest {
         //TypeIntoFieldWithoutClearing("input#discountpct0", "15");
         //var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
         //TypeIntoFieldWithoutClearing("input#enddate0", endDate);
-        //wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+        //Wait.Until(d => ok0.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
         //Assert.AreEqual("", val0.Text);
         //Click(ok0);
-        //wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
+        //Wait.Until(WebDriver => WebDriver.FindElements(By.CssSelector(".co-validation")).First().Text == "Submitted");
         ////Second line
         //TypeIntoFieldWithoutClearing("input#description1", "Manager's Special II");
         //TypeIntoFieldWithoutClearing("input#discountpct1", "12.5");
         //TypeIntoFieldWithoutClearing("input#enddate1", endDate);
-        //wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
+        //Wait.Until(d => ok1.GetAttribute("disabled") is null || OKButton().GetAttribute("disabled") == "");
         //Assert.AreEqual("", val1.Text);
         //Click(ok1);
-        //wait.Until(br => br.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
+        //Wait.Until(WebDriver => WebDriver.FindElements(By.CssSelector(".co-validation")).ElementAt(1).Text == "Submitted");
 
         ////Check third line has now appeared
         //WaitForCssNo(".lineDialog", 2);
@@ -717,13 +715,13 @@ public class DevelopmentStoryTests : BaseTest {
 
     #region Overhead
 
-    protected override string BaseUrl => "http://nakedfunctionstest.azurewebsites.net/";
+    protected override string BaseUrl => TestConfig.BaseFunctionalUrl;
 
     private Helper helper;
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(BaseUrl, br, wait);
+        helper = new Helper(BaseUrl, Driver, Wait);
     }
 
     #endregion

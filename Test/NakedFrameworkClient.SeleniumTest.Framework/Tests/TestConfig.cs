@@ -11,4 +11,6 @@ public static class TestConfig {
     public const string BaseObjectUrl = "http://nakedobjectstest2.azurewebsites.net/";
 
     public const string BaseFunctionalUrl = "http://nakedfunctionstest.azurewebsites.net/";
+
+    public const string BaseLegacyUrl = "http://nakedlegacytest.azurewebsites.net/";
 }

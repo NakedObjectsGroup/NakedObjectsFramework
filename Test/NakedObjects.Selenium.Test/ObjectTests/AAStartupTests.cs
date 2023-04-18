@@ -5,10 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFrameworkClient.TestFramework;
-using NakedFrameworkClient.TestFramework.Tests;
 using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFrameworkClient.TestFramework.Tests;
 
 namespace NakedObjects.Selenium.Test.ObjectTests;
 
@@ -39,12 +38,12 @@ public class AAStartupTestsChrome : AAStartupTests {
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        wait.Timeout = new TimeSpan(0, 0, 40);
+        Wait.Timeout = new TimeSpan(0, 0, 40);
         Url(BaseUrl);
     }
 
     [TestCleanup]
     public virtual void CleanupTest() {
-        wait.Timeout = new TimeSpan(0, 0, 10);
+        Wait.Timeout = new TimeSpan(0, 0, 10);
     }
 }

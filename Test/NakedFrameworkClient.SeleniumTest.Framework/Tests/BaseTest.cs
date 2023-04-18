@@ -17,6 +17,11 @@ using OpenQA.Selenium.IE;
 namespace NakedFrameworkClient.TestFramework.Tests;
 
 public abstract class BaseTest {
+    protected abstract string BaseUrl { get; }
+    protected static IWebDriver Driver { get; private set; }
+    protected static SafeWebDriverWait Wait { get; private set; }
+    private static int TimeOut => 10;
+
     protected static void FilePath(string resourcename, int attempt = 0) {
         var assembly = Assembly.GetExecutingAssembly();
         var fileName = resourcename.Remove(0, resourcename.IndexOf(".") + 1);
@@ -29,40 +34,28 @@ public abstract class BaseTest {
         fileStream.Write(bytesInStream, 0, bytesInStream.Length);
     }
 
-    #region overhead
-
-    protected abstract string BaseUrl { get; }
-    protected string GeminiBaseUrl => BaseUrl + "gemini/";
-
-    protected static IWebDriver br;
-    protected static SafeWebDriverWait wait;
-
-    protected static int TimeOut => 10;
-
     protected static void CleanupChromeDriver() {
-        br?.Manage().Cookies.DeleteAllCookies();
-        br?.Quit();
-        br?.Dispose();
-        br = null;
+        Driver?.Manage().Cookies.DeleteAllCookies();
+        Driver?.Quit();
+        Driver?.Dispose();
+        Driver = null;
     }
 
     protected void InitFirefoxDriver() {
-        br = new FirefoxDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
+        Driver = new FirefoxDriver();
+        Wait = new SafeWebDriverWait(Driver, TimeSpan.FromSeconds(TimeOut));
+        Driver.Manage().Window.Maximize();
     }
 
     protected void InitIeDriver() {
-        br = new InternetExplorerDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
+        Driver = new InternetExplorerDriver();
+        Wait = new SafeWebDriverWait(Driver, TimeSpan.FromSeconds(TimeOut));
+        Driver.Manage().Window.Maximize();
     }
 
     protected static void InitChromeDriver() {
-        br = new ChromeDriver();
-        wait = new SafeWebDriverWait(br, TimeSpan.FromSeconds(TimeOut));
-        br.Manage().Window.Maximize();
+        Driver = new ChromeDriver();
+        Wait = new SafeWebDriverWait(Driver, TimeSpan.FromSeconds(TimeOut));
+        Driver.Manage().Window.Maximize();
     }
-
-    #endregion
 }

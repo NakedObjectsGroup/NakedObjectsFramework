@@ -54,13 +54,13 @@ public abstract class CopyAndPasteTests : AWTest {
     public virtual void CopyListItemIntoClipboard() {
         GeminiUrl("list/list?m1=SpecialOfferRepository&a1=CurrentSpecialOffers&p1=1&ps1=20&m2=PersonRepository&a2=ValidCountries&p2=1&ps2=20");
         Reload(Pane.Left);
-        var item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
+        var item = Wait.Until(dr => dr.FindElements(By.CssSelector("#pane1 td"))[1]);
         Assert.AreEqual("No Discount", item.Text);
         CopyToClipboard(item);
 
         //Copy item from list, right pane
         Reload(Pane.Right);
-        item = wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[1]);
+        item = Wait.Until(dr => dr.FindElements(By.CssSelector("#pane2 td"))[1]);
         Assert.AreEqual("Australia", item.Text);
         CopyToClipboard(item);
     }
@@ -94,14 +94,11 @@ public abstract class CopyAndPasteTests : AWTest {
         WaitForCss("input#salesperson1").Clear();
         ClearFieldThenType("input#salesperson1", "Ito");
 
-        // for nof custom auto-complete
-        wait.Until(dr => dr.FindElement(By.CssSelector("div ul:nth-child(1) li a")).Text == "Shu Ito");
-        var item = br.FindElement(By.CssSelector("div ul:nth-child(1) li a"));
-        // for angular/material autocomplete
-        //wait.Until(dr => dr.FindElement(By.CssSelector("md-option")).Text == "Shu Ito");
-        //var item = br.FindElement(By.CssSelector("md-option"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector("div ul:nth-child(1) li a")).Text == "Shu Ito");
+        var item = Driver.FindElement(By.CssSelector("div ul:nth-child(1) li a"));
+
         Click(item);
-        wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
+        Wait.Until(dr => dr.FindElement(By.CssSelector("input#salesperson1")).GetAttribute("value") == "Shu Ito");
         //Finish somewhere else
         GeminiUrl("home");
         WaitForView(Pane.Single, PaneType.Home);
@@ -153,7 +150,7 @@ public abstract class CopyAndPasteTests : AWTest {
         GeminiUrl("object?o1=___1.PurchaseOrderHeader--121");
         GetReferenceProperty("Order Placed By", "Sheela Word");
         EditObject();
-        wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".property")).Single(we => we.FindElement(By.CssSelector(".name")).Text == "Order Placed By" + ":" &&
                                                                                    we.FindElement(By.CssSelector(".value.droppable")).GetAttribute("value") == "Sheela Word")
         );
         //Finish somewhere else
@@ -211,7 +208,7 @@ public abstract class CopyAndPasteTests : AWTest {
         WaitForView(Pane.Single, PaneType.Home);
         var home = WaitForCss(".title");
 
-        var action = new Actions(br);
+        var action = new Actions(Driver);
         action.MoveToElement(home);
         action.DoubleClick(); //Should put "Home"into browser clipboard
         action.SendKeys(Keys.Control + "c");
@@ -228,7 +225,7 @@ public abstract class CopyAndPasteTests : AWTest {
 
         Thread.Sleep(1000);
 
-        var test = br.FindElement(By.CssSelector(selector)).GetAttribute("value");
+        var test = Driver.FindElement(By.CssSelector(selector)).GetAttribute("value");
 
         Assert.AreEqual("Home", target.GetAttribute("value"));
     }
@@ -246,8 +243,8 @@ public abstract class CopyAndPasteTests : AWTest {
         fieldBeforeCss.SendKeys(Keys.Tab);
         field.SendKeys(Keys.Delete);
 
-        wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).GetAttribute("value") == "");
-        wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).GetAttribute("placeholder") == "* (drop here)");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).GetAttribute("value") == "");
+        Wait.Until(dr => dr.FindElement(By.CssSelector(fieldCss)).GetAttribute("placeholder") == "* (drop here)");
     }
 }
 

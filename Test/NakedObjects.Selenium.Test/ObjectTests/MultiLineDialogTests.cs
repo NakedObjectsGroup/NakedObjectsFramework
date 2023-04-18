@@ -97,12 +97,9 @@ public abstract class MultiLineDialogTests : AWTest {
         //Line 0
         ClearFieldThenType("#prod0", "Dissolver");
 
-        // nof custom autocomplete
-        wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+        Wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
         Click(WaitForCss(".suggestions a"));
-        // for angular2/material
-        //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 0);
-        //Click(WaitForCss("md-option"));
+
         WaitForCss("#prod0.link-color4");
         ClearFieldThenType("#qty0", "4");
         ClearFieldThenType("#unitprice0", "2.54");
@@ -113,14 +110,8 @@ public abstract class MultiLineDialogTests : AWTest {
         //line 1
         ClearFieldThenType("#prod1", "bottle");
 
-        // nof custom 
-        wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 2);
+        Wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 2);
         Click(WaitForCss(".suggestions a"));
-
-        // anagular/material
-        //wait.Until(d => d.FindElements(By.CssSelector("md-option")).Count > 2);
-        //Thread.Sleep(1000);
-        //Click(WaitForCss("md-option"));
 
         WaitForCss("#prod1.link-color4");
         ClearFieldThenType("#qty1", "5");
@@ -147,13 +138,13 @@ public abstract class MultiLineDialogTests : AWTest {
         var iconList = WaitForCssNo(".collection .icon.list", 0);
         Click(iconList);
         WaitForCss("table");
-        wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Details']")));
+        Wait.Until(dr => dr.FindElement(By.CssSelector("nof-action input[value='Add New Details']")));
         Thread.Sleep(1000);
         var action = GetLCA("Add New Details");
         Click(action);
 
         WaitForView(Pane.Single, PaneType.MultiLineDialog);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text.Contains("Add New Details"));
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".title")).Text.Contains("Add New Details"));
         WaitForCss(".lineDialog", 6);
         WaitForTextEquals(".count", "with 0 lines submitted.");
 
@@ -161,7 +152,7 @@ public abstract class MultiLineDialogTests : AWTest {
         OKButtonOnLine(0).AssertIsDisabled("Missing mandatory fields: Product; ");
         //Auto-complete
         ClearFieldThenType("#product0", "Dissolver");
-        wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+        Wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
         //As the match has not yet been selected,the field is invalid, so...
         WaitForTextEquals(".validation", 0, "Pending auto-complete...");
         OKButtonOnLine(0).AssertIsDisabled().AssertHasTooltip("Invalid fields: Product; ");
@@ -185,7 +176,7 @@ public abstract class MultiLineDialogTests : AWTest {
         OKButtonOnLine(1).AssertIsDisabled("Missing mandatory fields: Product; ");
         //Auto-complete
         ClearFieldThenType("#product1", "vest, S");
-        wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
+        Wait.Until(d => d.FindElements(By.CssSelector(".suggestions a")).Count > 0);
         Click(WaitForCss(".suggestions a"));
         WaitForCss("#product1.link-color4");
         Click(OKButtonOnLine(1));

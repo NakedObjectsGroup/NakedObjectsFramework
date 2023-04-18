@@ -17,14 +17,14 @@ public abstract class AttachmentTests : AWTest {
     [TestMethod]
     public virtual void ImageAsProperty() {
         GeminiUrl("object?o1=___1.Product--968");
-        wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
+        Wait.Until(d => d.FindElements(By.CssSelector(".property")).Count == 23);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".property img")).GetAttribute("src").Length > 0);
     }
 
     [TestMethod]
     public virtual void EmptyImageProperty() {
         GeminiUrl("object?i1=View&o1=___1.Person--13742");
-        wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
+        Wait.Until(d => d.FindElements(By.CssSelector(".property"))[9].Text == "Photo:\r\nNo image");
     }
 
     [TestMethod]
@@ -32,7 +32,7 @@ public abstract class AttachmentTests : AWTest {
         GeminiUrl("object?o1=___1.Product--779");
         Click(WaitForCss(".property img"));
         WaitForView(Pane.Single, PaneType.Attachment);
-        wait.Until(dr => dr.FindElement(By.CssSelector(".attachment .reference img")).GetAttribute("src").Length > 0);
+        Wait.Until(dr => dr.FindElement(By.CssSelector(".attachment .reference img")).GetAttribute("src").Length > 0);
     }
 
     [TestMethod]
@@ -40,15 +40,14 @@ public abstract class AttachmentTests : AWTest {
         GeminiUrl("object?o1=___1.Product--780");
         RightClick(WaitForCss(".property img"));
         WaitForView(Pane.Left, PaneType.Object);
-        wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 .property img")).GetAttribute("src").Length > 0);
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#pane1 .property img")).GetAttribute("src").Length > 0);
         WaitForView(Pane.Right, PaneType.Attachment);
-        wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .attachment .reference img")).GetAttribute("src").Length > 0);
+        Wait.Until(dr => dr.FindElement(By.CssSelector("#pane2 .attachment .reference img")).GetAttribute("src").Length > 0);
     }
 }
 
 [TestClass]
 public class AttachmentTestsChrome : AttachmentTests {
-
     [TestInitialize]
     public virtual void InitializeTest() {
         Url(BaseUrl);
