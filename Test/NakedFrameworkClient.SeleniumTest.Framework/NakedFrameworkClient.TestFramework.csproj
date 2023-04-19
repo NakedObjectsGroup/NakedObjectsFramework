@@ -2,26 +2,29 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Internal Selenium Helpers</Title>
+		<Authors>Naked Objects Group</Authors>
+		<Company>Naked Objects Group</Company>
+		<Product>Naked Objects</Product>
+		<Description>Internal Selenium Helpers</Description>
+		<OutputType>Library</OutputType>
+		<IsPublishable>True</IsPublishable>
+		<Copyright>Naked Objects Group</Copyright>
+		<PackageProjectUrl>https://github.com/NakedObjectsGroup</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/NakedObjectsGroup</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="drivers\chromedriver.exe" />
-		<None Remove="drivers\IEDriverServer.exe" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="drivers\chromedriver.exe" />
-		<EmbeddedResource Include="drivers\IEDriverServer.exe" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
-		<PackageReference Include="coverlet.collector" Version="3.2.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Selenium.Support" Version="4.8.2" />
 		<PackageReference Include="Selenium.WebDriver" Version="4.8.2" />
 	</ItemGroup>
