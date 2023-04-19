@@ -61,7 +61,7 @@ public class Menu : SubView {
     }
 
     public Menu OpenSubMenu(string subMenuName) {
-        var sub = element.FindElements(By.CssSelector(".submenu")).Single(element => element.Text == subMenuName);
+        var sub = element.FindElements(By.CssSelector(".submenu")).Single(e => e.Text == subMenuName);
         helper.Click(sub);
         var el = helper.WaitForChildElement(element, ".menuitem.open");
         return this;

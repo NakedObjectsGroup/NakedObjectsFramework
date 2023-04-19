@@ -10,7 +10,7 @@ public abstract class ActionResult : View {
     public virtual ActionResult AssertTitleIs(string title) => throw new NotImplementedException();
 
     public Menu OpenActions() {
-        IWebElement menu = null;
+        IWebElement menu;
         //test that actions are not already open
         if (element.FindElements(By.CssSelector("nof-action-list")).Any()) {
             menu = element.FindElement(By.CssSelector("nof-action-list"));

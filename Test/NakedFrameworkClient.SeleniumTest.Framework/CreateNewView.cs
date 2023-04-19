@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedFrameworkClient.TestFramework;
@@ -14,7 +13,7 @@ public class CreateNewView : ActionResult {
 
     public CreateNewView AssertHasEmptyProperties(params string[] propertyNames) {
         var props = element.FindElements(By.CssSelector("nof-view-property"));
-        Assert.AreEqual(propertyNames.Count(), props.Count, "Number of properties specified does not match the view");
+        Assert.AreEqual(propertyNames.Length, props.Count, "Number of properties specified does not match the view");
         for (var i = 0; i < props.Count; i++) {
             Assert.AreEqual("", props[i].FindElement(By.CssSelector(".value")).Text);
             Assert.AreEqual(propertyNames[i] + ":", props[i].FindElement(By.CssSelector(".name")).Text);

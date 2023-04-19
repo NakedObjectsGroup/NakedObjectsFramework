@@ -12,9 +12,9 @@ public class ObjectEdit : ObjectPresentation {
         return helper.GetObjectView();
     }
 
-    public ObjectView Save(Pane pane = Pane.Single) {
+    public ObjectView Save(Pane p = Pane.Single) {
         GetSaveButton().Click();
-        return helper.GetObjectView(pane);
+        return helper.GetObjectView(p);
     }
 
     private IWebElement GetSaveButton() => helper.WaitForCss("nof-action-bar nof-action input[value=\"Save\"]");
@@ -62,7 +62,7 @@ public class ObjectEdit : ObjectPresentation {
     //Properties. The list of names should be specified in display order
     public ObjectEdit AssertPropertiesAre(params string[] propertyNames) {
         var props = element.FindElements(By.CssSelector("nof-edit-property"));
-        Assert.AreEqual(propertyNames.Count(), props.Count, "Number of properties specified does not match the view");
+        Assert.AreEqual(propertyNames.Length, props.Count, "Number of properties specified does not match the view");
         for (var i = 0; i < props.Count; i++) {
             Assert.AreEqual(propertyNames[i] + ":", props[i].FindElement(By.CssSelector(".name")).Text);
         }

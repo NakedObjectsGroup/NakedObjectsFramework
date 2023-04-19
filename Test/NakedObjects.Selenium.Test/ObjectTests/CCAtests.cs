@@ -38,7 +38,7 @@ public abstract class CCATests : AWTest {
         SelectCheckBox("#item1-9");
         Click(OKButton());
         WaitUntilElementDoesNotExist(".dialog");
-        var maxQty = "Max Qty:";
+        const string maxQty = "Max Qty:";
         CheckIndividualItem(5, maxQty, newMax);
         CheckIndividualItem(7, maxQty, newMax);
         CheckIndividualItem(9, maxQty, newMax);
@@ -65,7 +65,7 @@ public abstract class CCATests : AWTest {
         Click(OKButton());
         WaitUntilElementDoesNotExist(".dialog");
         Thread.Sleep(1000);
-        var maxQty = "Max Qty:";
+        const string maxQty = "Max Qty:";
         PageDownAndWait();
         CheckIndividualItem(2, maxQty, newMax);
         CheckIndividualItem(3, maxQty, newMax);

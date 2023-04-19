@@ -25,7 +25,7 @@ public abstract class GeminiTest : BaseTest {
         Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count >= 1);
     }
 
-    protected void WaitUntilElementDoesNotExist(string cssSelector) {
+    protected static void WaitUntilElementDoesNotExist(string cssSelector) {
         Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == 0);
     }
 
@@ -61,7 +61,7 @@ public abstract class GeminiTest : BaseTest {
         Url(GeminiBaseUrl + url);
     }
 
-    protected void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition) {
+    protected static void WaitUntilGone<TResult>(Func<IWebDriver, TResult> condition) {
         Wait.Until(d => {
             try {
                 condition(d);
@@ -90,7 +90,7 @@ public abstract class GeminiTest : BaseTest {
         element.Click();
     }
 
-    protected void WaitUntilEnabled(IWebElement element) {
+    protected static void WaitUntilEnabled(IWebElement element) {
         Wait.Until(dr => element.GetAttribute("disabled") == null);
     }
 
@@ -175,7 +175,7 @@ public abstract class GeminiTest : BaseTest {
         input.SendKeys(characters);
     }
 
-    protected void SelectCheckBox(string css, bool alreadySelected = false) {
+    protected static void SelectCheckBox(string css, bool alreadySelected = false) {
         Wait.Until(dr => dr.FindElement(By.CssSelector(css)).Selected == alreadySelected);
         var checkbox = Driver.FindElement(By.CssSelector(css));
         checkbox.Click();
@@ -221,7 +221,7 @@ public abstract class GeminiTest : BaseTest {
             Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
         else {
-            throw new NotFoundException(string.Format("menu not found {0}", menuName));
+            throw new NotFoundException($"menu not found {menuName}");
         }
     }
 
@@ -248,7 +248,7 @@ public abstract class GeminiTest : BaseTest {
             Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
         else {
-            throw new NotFoundException(string.Format("menu not found {0}", menuName));
+            throw new NotFoundException($"menu not found {menuName}");
         }
     }
 
@@ -313,18 +313,13 @@ public abstract class GeminiTest : BaseTest {
         return prop.FindElement(By.CssSelector(".reference"));
     }
 
-    protected string CssSelectorFor(Pane pane) {
-        switch (pane) {
-            case Pane.Single:
-                return ".single ";
-            case Pane.Left:
-                return "#pane1 ";
-            case Pane.Right:
-                return "#pane2 ";
-            default:
-                throw new NotImplementedException();
-        }
-    }
+    protected static string CssSelectorFor(Pane pane) =>
+        pane switch {
+            Pane.Single => ".single ",
+            Pane.Left => "#pane1 ",
+            Pane.Right => "#pane2 ",
+            _ => throw new NotImplementedException()
+        };
 
     protected virtual void WaitForView(Pane pane, PaneType type, string title = null) {
         var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower();
@@ -337,12 +332,7 @@ public abstract class GeminiTest : BaseTest {
             WaitForCss(selector);
         }
 
-        if (pane == Pane.Single) {
-            WaitUntilElementDoesNotExist(".split");
-        }
-        else {
-            WaitUntilElementDoesNotExist(".single");
-        }
+        WaitUntilElementDoesNotExist(pane == Pane.Single ? ".split" : ".single");
 
         AssertFooterExists();
     }
@@ -441,7 +431,7 @@ public abstract class GeminiTest : BaseTest {
         return Driver.FindElements(By.CssSelector(selector));
     }
 
-    protected void AssertAction(int number, string actionName) {
+    protected static void AssertAction(int number, string actionName) {
         Wait.Until(dr => dr.FindElements(By.CssSelector("nof-action-list nof-action > input"))[number].GetAttribute("value") == actionName);
     }
 
@@ -497,7 +487,7 @@ public abstract class GeminiTest : BaseTest {
         return WaitForCss(dialogSelector);
     }
 
-    protected IWebElement GetInputNumber(IWebElement dialog, int no) {
+    protected static IWebElement GetInputNumber(IWebElement dialog, int no) {
         Wait.Until(dr => dialog.FindElements(By.CssSelector(".parameter .value input")).Count >= no + 1);
         return dialog.FindElements(By.CssSelector(".parameter .value input"))[no];
     }
@@ -505,7 +495,7 @@ public abstract class GeminiTest : BaseTest {
     protected IWebElement OKButton() => WaitForCss(".dialog .ok");
 
     //For use with multi-line dialogs, lineNo starts from zero
-    protected IWebElement OKButtonOnLine(int lineNo) {
+    protected static IWebElement OKButtonOnLine(int lineNo) {
         return Wait.Until(dr => dr.FindElements(By.CssSelector(".lineDialog"))[lineNo].FindElement(By.CssSelector(".ok")));
     }
 
@@ -551,7 +541,7 @@ public abstract class GeminiTest : BaseTest {
         }
     }
 
-    protected void PageDownAndWait() {
+    protected static void PageDownAndWait() {
         Driver.SwitchTo().ActiveElement().SendKeys(Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown + Keys.PageDown);
         Thread.Sleep(1000);
     }
@@ -575,13 +565,9 @@ public abstract class GeminiTest : BaseTest {
         }
     }
 
-    protected void WaitForSelectedCheckboxes(int number) {
-        Wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
-    }
+    protected void WaitForSelectedCheckboxes(int number) => Wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) == number);
 
-    protected void WaitForSelectedCheckboxesAtLeast(int number) {
-        Wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) >= number);
-    }
+    protected void WaitForSelectedCheckboxesAtLeast(int number) => Wait.Until(dr => dr.FindElements(By.CssSelector("input[type='checkbox']")).Count(el => el.Selected && el.Enabled) >= number);
 
     #endregion
 

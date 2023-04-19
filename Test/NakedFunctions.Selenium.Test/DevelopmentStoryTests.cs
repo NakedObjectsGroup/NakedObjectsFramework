@@ -265,10 +265,10 @@ public class DevelopmentStoryTests : BaseTest {
         var endDate = DateTime.Today.AddDays(7).ToString("d MMM yyyy");
         dialog.GetTextField("End Date").Clear().Enter(endDate);
 
-        var now = DateTime.UtcNow.ToString("d MMM yyyy HH:mm:").Substring(0, 16);
+        var now = DateTime.UtcNow.ToString("d MMM yyyy HH:mm:")[..16];
         var modified = dialog.ClickOKToViewObject().AssertTitleIs("Manager's Special")
                              .GetProperty("Modified Date").GetValue();
-        Assert.AreEqual(now, modified.Substring(0, 16));
+        Assert.AreEqual(now, modified[..16]);
     }
 
     [TestMethod]
@@ -400,7 +400,7 @@ public class DevelopmentStoryTests : BaseTest {
 
         var rand = new Random().Next(1000);
         var endDate = DateTime.Today.AddDays(rand).ToString("dd MMM yyyy");
-        endDate = endDate.StartsWith("0") ? endDate.Substring(1) : endDate;
+        endDate = endDate.StartsWith("0") ? endDate[1..] : endDate;
 
         var dialog = offers.OpenActions().GetActionWithDialog("Extend Offers").Open();
         dialog.GetTextField("To Date").Enter(endDate);
@@ -659,7 +659,7 @@ public class DevelopmentStoryTests : BaseTest {
         dialog = jt.ClickOnEditIcon();
         dialog.GetTextField("Job Title").AssertDefaultValueIs("Sales Executive").Clear().Enter("Sales Representative");
         emp = dialog.ClickOKToViewObject();
-        jt = emp.GetProperty("Job Title").AssertValueIs("Sales Representative");
+        emp.GetProperty("Job Title").AssertValueIs("Sales Representative");
     }
 
     [TestMethod]

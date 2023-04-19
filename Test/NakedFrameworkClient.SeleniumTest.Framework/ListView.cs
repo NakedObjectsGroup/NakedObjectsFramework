@@ -45,8 +45,8 @@ public class ListView : ActionResult {
 
     public ListView AssertTableHeaderHasColumns(params string[] columnNames) {
         var cols = element.FindElements(By.CssSelector("thead th"));
-        Assert.AreEqual(columnNames.Count(), cols.Count);
-        for (var i = 0; i < columnNames.Count(); i++) {
+        Assert.AreEqual(columnNames.Length, cols.Count);
+        for (var i = 0; i < columnNames.Length; i++) {
             Assert.AreEqual(columnNames[i], cols[i].Text);
         }
 
@@ -89,7 +89,7 @@ public class ListView : ActionResult {
     }
 
     public ListView Reload() {
-        var css = helper.CssSelectorFor(pane) + " .list nof-action input";
+        var css = Helper.CssSelectorFor(pane) + " .list nof-action input";
         helper.Wait.Until(dr => dr.FindElement(By.CssSelector(css)).GetAttribute("value") == "Reload");
         var reload = element.FindElements(By.CssSelector(css)).Single(el => el.GetAttribute("value") == "Reload");
         helper.Click(reload, MouseClick.MainButton);

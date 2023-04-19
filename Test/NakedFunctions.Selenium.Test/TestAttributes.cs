@@ -72,7 +72,7 @@ public class TestAttributes : BaseTest {
 
         desc.Enter(longText).AssertHasValidationError("Too long");
 
-        desc.Clear().Enter(longText.Substring(0, 50)).AssertNoValidationError();
+        desc.Clear().Enter(longText[..50]).AssertNoValidationError();
     }
 
     [TestMethod]

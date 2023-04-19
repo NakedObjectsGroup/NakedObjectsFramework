@@ -20,7 +20,7 @@ public abstract class BaseTest {
     protected abstract string BaseUrl { get; }
     protected static IWebDriver Driver { get; private set; }
     protected static SafeWebDriverWait Wait { get; private set; }
-    private static int TimeOut => 10;
+    private static int TimeOut => 15;
 
     protected static void FilePath(string resourcename, int attempt = 0) {
         var assembly = Assembly.GetExecutingAssembly();

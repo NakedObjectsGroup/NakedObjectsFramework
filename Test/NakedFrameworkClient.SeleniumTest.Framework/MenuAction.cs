@@ -4,7 +4,7 @@ using OpenQA.Selenium;
 namespace NakedFrameworkClient.TestFramework;
 
 public abstract class MenuAction : SubView {
-    public MenuAction(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
+    protected MenuAction(IWebElement element, Helper helper, View enclosingView) : base(element, helper, enclosingView) { }
 
     public virtual MenuAction AssertIsEnabled() {
         element.AssertIsEnabled();

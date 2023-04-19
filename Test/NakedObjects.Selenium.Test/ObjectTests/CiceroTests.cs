@@ -1173,7 +1173,7 @@ public abstract class CiceroTests : AWTest {
         WaitForOutput("Editing Product: HL Road Frame - Black, 44");
         var rand = new Random();
         var newPrice = rand.Next(50, 150);
-        var currency = "£" + newPrice.ToString("c").Substring(1);
+        var currency = "£" + newPrice.ToString("c")[1..];
         EnterCommand("Enter list price, " + newPrice);
         WaitForOutput("Editing Product: HL Road Frame - Black, 44\r\n" +
                       "Modified properties:\r\n" +
@@ -1278,7 +1278,7 @@ public abstract class CiceroTests : AWTest {
         EnterCommand("enter card type, Vista");
         WaitForOutputContaining("Card Type: Vista");
         var number = DateTime.Now.Ticks.ToString(); //pseudo-random string
-        var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
+        var obfuscated = number[^4..].PadLeft(number.Length, '*');
         EnterCommand(" enter number," + number);
         WaitForOutputContaining("Card Number: " + number);
         EnterCommand("enter month,12");

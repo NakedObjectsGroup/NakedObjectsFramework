@@ -15,7 +15,7 @@ public class ObjectView : ObjectPresentation {
     //Properties. The list of names should be specified in display order
     public ObjectView AssertPropertiesAre(params string[] propertyNames) {
         var props = element.FindElements(By.CssSelector("nof-view-property"));
-        Assert.AreEqual(propertyNames.Count(), props.Count, "Number of properties specified does not match the view");
+        Assert.AreEqual(propertyNames.Length, props.Count, "Number of properties specified does not match the view");
         for (var i = 0; i < props.Count; i++) {
             Assert.AreEqual(propertyNames[i] + ":", props[i].FindElement(By.CssSelector(".name")).Text);
         }

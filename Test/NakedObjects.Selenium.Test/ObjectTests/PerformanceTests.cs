@@ -29,7 +29,7 @@ public abstract class PerformanceTests : AWTest {
 
         stopWatch.Stop();
         var time = stopWatch.ElapsedMilliseconds;
-        var limit = 200000;
+        const int limit = 200000;
         Assert.IsTrue(time < limit, $"Elapsed time was {time} milliseconds limit {limit}");
     }
 }

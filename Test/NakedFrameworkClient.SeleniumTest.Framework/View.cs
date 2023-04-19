@@ -7,7 +7,7 @@ public abstract class View {
     internal readonly Helper helper;
     internal readonly Pane pane;
 
-    public View(IWebElement element, Helper helper, Pane pane = Pane.Single) {
+    protected View(IWebElement element, Helper helper, Pane pane = Pane.Single) {
         this.element = element;
         this.helper = helper;
         this.pane = pane;

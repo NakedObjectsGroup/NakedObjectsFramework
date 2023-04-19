@@ -82,7 +82,7 @@ public abstract class ObjectEditTests : AWTest {
         SaveObject();
 
         var properties = Driver.FindElements(By.CssSelector(".property"));
-        var currency = "£" + newPrice.ToString("c").Substring(1);
+        var currency = "£" + newPrice.ToString("c")[1..];
         Assert.AreEqual("List Price:\r\n" + currency, properties[5].Text);
         Assert.AreEqual("Days To Manufacture:\r\n" + newDays, properties[17].Text);
     }
@@ -118,7 +118,7 @@ public abstract class ObjectEditTests : AWTest {
 
         CancelObject();
 
-        var currency = "£" + int.Parse(oldPrice).ToString("c").Substring(1);
+        var currency = "£" + int.Parse(oldPrice).ToString("c")[1..];
 
         Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[5].Text == "List Price:\r\n" + currency);
         Wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[17].Text == "Days To Manufacture:\r\n" + oldDays);
@@ -143,11 +143,11 @@ public abstract class ObjectEditTests : AWTest {
     public virtual void LocalValidationOfMaxLength() {
         GeminiUrl("object?i1=Edit&o1=___1.Person--12125&c1_Addresses=List&c1_EmailAddresses=List");
         ClearFieldThenType("#title1", "Generalis");
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Count(el => el.Text == "Too long") == 1);
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Title; ");
 
         TypeIntoFieldWithoutClearing("#title1", Keys.Backspace);
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Too long").Count() == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Count(el => el.Text == "Too long") == 0);
         SaveButton().AssertIsEnabled();
     }
 
@@ -155,11 +155,11 @@ public abstract class ObjectEditTests : AWTest {
     public virtual void LocalValidationOfRegex() {
         GeminiUrl("object?i1=Edit&o1=___1.EmailAddress--12043--11238");
         ClearFieldThenType("#emailaddress11", "arthur44@adventure-works");
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 1);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Count(el => el.Text == "Invalid entry") == 1);
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Email Address; ");
 
         TypeIntoFieldWithoutClearing("#emailaddress11", ".com");
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Where(el => el.Text == "Invalid entry").Count() == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(".validation")).Count(el => el.Text == "Invalid entry") == 0);
         SaveButton().AssertIsEnabled();
     }
 
@@ -170,20 +170,20 @@ public abstract class ObjectEditTests : AWTest {
         Wait.Until(dr => dr.FindElement(By.CssSelector("#daystomanufacture1")).GetAttribute("value") == "1");
         Thread.Sleep(500);
         ClearFieldThenType("#daystomanufacture1", "0");
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-                           .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+        Wait.Until(dr => dr
+                         .FindElements(By.CssSelector(".property .validation")).Count(el => el.Text == "Value is outside the range 1 to 90") == 1);
         //Confirm that the save button is disabled & has helper tooltip
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
 
         ClearFieldThenType("#daystomanufacture1", "1");
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-                           .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 0);
+        Wait.Until(dr => dr
+                         .FindElements(By.CssSelector(".property .validation")).Count(el => el.Text == "Value is outside the range 1 to 90") == 0);
         //Confirm that the save button is disabled & has helper tooltip
         SaveButton().AssertIsEnabled();
 
         ClearFieldThenType("#daystomanufacture1", "91");
-        Wait.Until(dr => dr.FindElements(By.CssSelector(".property .validation"))
-                           .Where(el => el.Text == "Value is outside the range 1 to 90").Count() == 1);
+        Wait.Until(dr => dr
+                         .FindElements(By.CssSelector(".property .validation")).Count(el => el.Text == "Value is outside the range 1 to 90") == 1);
         //Confirm that the save button is disabled & has helper tooltip
         SaveButton().AssertIsDisabled().AssertHasTooltip("Invalid fields: Days To Manufacture; ");
     }

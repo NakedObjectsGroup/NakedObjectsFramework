@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
 namespace NakedFrameworkClient.TestFramework;
@@ -18,7 +17,7 @@ public class HomeView : View {
 
     public HomeView AssertMainMenusAre(params string[] menuNames) {
         var menus = element.FindElements(By.CssSelector("nof-menu-bar nof-action"));
-        Assert.AreEqual(menus.Count(), menuNames.Count(), "Number of menus specified does not match the view");
+        Assert.AreEqual(menus.Count, menuNames.Length, "Number of menus specified does not match the view");
         for (var i = 0; i < menus.Count; i++) {
             Assert.AreEqual(menuNames[i], menus[i].FindElement(By.CssSelector("input")).GetAttribute("value"));
         }

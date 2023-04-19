@@ -7,9 +7,7 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,32 +29,6 @@ public class Helper {
 
     private IWebDriver WebDriver { get; }
     internal SafeWebDriverWait Wait { get; }
-
-    #region chrome helper
-
-    public static string FilePath(string resourcename) {
-        var fileName = resourcename.Remove(0, resourcename.IndexOf(".") + 1);
-
-        var newFile = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-
-        if (File.Exists(newFile)) {
-            File.Delete(newFile);
-        }
-
-        var assembly = Assembly.GetExecutingAssembly();
-
-        using (var stream = assembly.GetManifestResourceStream("NakedFrameworkClient.TestFramework." + resourcename)) {
-            using (var fileStream = File.Create(newFile, (int)stream.Length)) {
-                var bytesInStream = new byte[stream.Length];
-                stream.Read(bytesInStream, 0, bytesInStream.Length);
-                fileStream.Write(bytesInStream, 0, bytesInStream.Length);
-            }
-        }
-
-        return newFile;
-    }
-
-    #endregion
 
     #region CCAs
 
@@ -95,36 +67,6 @@ public class Helper {
     private void AssertElementCountIs(string cssSelector, int count) {
         Wait.Until(dr => dr.FindElements(By.CssSelector(cssSelector)).Count == count);
     }
-
-    #region overhead
-
-    private static int timeOut;
-
-    private static int TimeOut {
-        get {
-            if (timeOut != 0) {
-                return timeOut;
-            }
-
-            timeOut = 20;
-            return 40;
-        }
-    }
-
-    public void CleanUp() {
-        if (WebDriver != null) {
-            try {
-                WebDriver.Manage().Cookies.DeleteAllCookies();
-                WebDriver.Quit();
-                WebDriver.Dispose();
-            }
-            catch {
-                // to suppress error 
-            }
-        }
-    }
-
-    #endregion
 
     #region Helpers
 
@@ -203,7 +145,7 @@ public class Helper {
     /// <summary>
     ///     Waits for the Nth match and returns it (counting from zero).
     /// </summary>
-    internal IWebElement WaitForCssNo(string cssSelector, int number) => WaitForCss(cssSelector, number + 1)[number];
+    private IWebElement WaitForCssNo(string cssSelector, int number) => WaitForCss(cssSelector, number + 1)[number];
 
     private void WaitForMessage(string message, Pane pane = Pane.Single) {
         var p = CssSelectorFor(pane);
@@ -292,7 +234,7 @@ public class Helper {
             Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
         else {
-            throw new NotFoundException(string.Format("menu not found {0}", menuName));
+            throw new NotFoundException($"menu not found {menuName}");
         }
     }
 
@@ -303,7 +245,7 @@ public class Helper {
         Wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
     }
 
-    internal void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
+    private void OpenSubMenu(string menuName, Pane pane = Pane.Single) {
         var paneSelector = CssSelectorFor(pane);
         var sub = Wait.Until(dr => dr.FindElements(By.CssSelector(paneSelector + " .submenu")).Single(el => el.Text == menuName));
         var expand = sub.FindElement(By.CssSelector(".icon-expand"));
@@ -319,7 +261,7 @@ public class Helper {
             Wait.Until(d => d.FindElements(By.CssSelector("nof-action-list nof-action, nof-action-list div.submenu")).Count > 0);
         }
         else {
-            throw new NotFoundException(string.Format("menu not found {0}", menuName));
+            throw new NotFoundException($"menu not found {menuName}");
         }
     }
 
@@ -348,10 +290,10 @@ public class Helper {
         return prop.FindElement(By.CssSelector(".value")).Text.Trim();
     }
 
-    internal IWebElement GetProperty(string propertyName, Pane pane = Pane.Single) {
+    private IWebElement GetProperty(string propertyName, Pane pane = Pane.Single) {
         var propCss = CssSelectorFor(pane) + " " + "nof-view-property";
-        return Wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
-                                  .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":").Single());
+        return Wait.Until(dr => dr
+                                .FindElements(By.CssSelector(propCss)).Single(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":"));
     }
 
     internal IWebElement GetReferenceFromProperty(string propertyName, Pane pane = Pane.Single) {
@@ -361,30 +303,25 @@ public class Helper {
 
     private IWebElement GetReferenceProperty(string propertyName, string refTitle, Pane pane = Pane.Single) {
         var propCss = CssSelectorFor(pane) + " " + ".property";
-        var prop = Wait.Until(dr => dr.FindElements(By.CssSelector(propCss))
-                                      .Where(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":" &&
-                                                   we.FindElement(By.CssSelector(".reference")).Text == refTitle).Single()
+        var prop = Wait.Until(dr => dr
+                                    .FindElements(By.CssSelector(propCss)).Single(we => we.FindElement(By.CssSelector(".name")).Text == propertyName + ":" &&
+                                                                                        we.FindElement(By.CssSelector(".reference")).Text == refTitle)
         );
         return prop.FindElement(By.CssSelector(".reference"));
     }
 
-    internal string CssSelectorFor(Pane pane) {
-        switch (pane) {
-            case Pane.Single:
-                return ".single ";
-            case Pane.Left:
-                return "#pane1 ";
-            case Pane.Right:
-                return "#pane2 ";
-            default:
-                throw new NotImplementedException();
-        }
-    }
+    internal static string CssSelectorFor(Pane pane) =>
+        pane switch {
+            Pane.Single => ".single ",
+            Pane.Left => "#pane1 ",
+            Pane.Right => "#pane2 ",
+            _ => throw new NotImplementedException()
+        };
 
-    internal string CssSelectorFor(Pane pane, PaneType type) =>
+    private string CssSelectorFor(Pane pane, PaneType type) =>
         CssSelectorFor(pane) + " ." + type.ToString().ToLower();
 
-    internal void WaitForView(Pane pane, PaneType type, string title = null) {
+    private void WaitForView(Pane pane, PaneType type, string title = null) {
         var selector = CssSelectorFor(pane) + " ." + type.ToString().ToLower();
 
         if (title != null) {
@@ -395,12 +332,7 @@ public class Helper {
             WaitForCss(selector);
         }
 
-        if (pane == Pane.Single) {
-            WaitUntilElementDoesNotExist(".split");
-        }
-        else {
-            WaitUntilElementDoesNotExist(".single");
-        }
+        WaitUntilElementDoesNotExist(pane == Pane.Single ? ".split" : ".single");
 
         AssertFooterExists();
     }
@@ -507,7 +439,7 @@ public class Helper {
         Wait.Until(dr => dr.FindElements(By.CssSelector($"nof-action-list nof-action inputinput[type='{action}']")).FirstOrDefault() == null);
     }
 
-    internal IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
+    private IWebElement GetObjectAction(string actionName, Pane pane = Pane.Single, string subMenuName = null) {
         if (subMenuName != null) {
             OpenSubMenu(subMenuName);
         }
@@ -771,7 +703,7 @@ public class Helper {
     internal ListView WaitForUpdatedListView(View enclosingView, MouseClick button) {
         var newPane = GetNewPane(enclosingView.pane, button);
         var css = CssSelectorFor(newPane, PaneType.List) + " table";
-        Wait.Until(dr => dr.FindElements(By.CssSelector(css)).Count() == 0);
+        Wait.Until(dr => dr.FindElements(By.CssSelector(css)).Count == 0);
         Reload();
         return GetListView(newPane);
     }

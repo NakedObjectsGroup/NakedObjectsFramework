@@ -24,7 +24,7 @@ public abstract class TransientObjectTests : AWTest {
         Wait.Until(d => d.FindElements(By.CssSelector("select#cardtype1 option")).First(el => el.Text == "*"));
         SelectDropDownOnField("#cardtype1", "Vista");
         var number = DateTime.Now.Ticks.ToString(); //pseudo-random string
-        var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
+        var obfuscated = number[^4..].PadLeft(number.Length, '*');
         ClearFieldThenType("#cardnumber1", number);
         SelectDropDownOnField("#expmonth1", "12");
 
@@ -41,7 +41,7 @@ public abstract class TransientObjectTests : AWTest {
         Click(GetObjectEnabledAction("Create New Credit Card"));
         SelectDropDownOnField("#cardtype1", "Vista");
         var number = DateTime.Now.Ticks.ToString(); //pseudo-random string
-        var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
+        var obfuscated = number[^4..].PadLeft(number.Length, '*');
         ClearFieldThenType("#cardnumber1", number);
         SelectDropDownOnField("#expmonth1", "12");
 

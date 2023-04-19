@@ -7,7 +7,7 @@ public abstract class SubView {
     internal readonly View enclosingView;
     internal readonly Helper helper;
 
-    public SubView(IWebElement element, Helper helper, View enclosingView) {
+    protected SubView(IWebElement element, Helper helper, View enclosingView) {
         this.element = element;
         this.helper = helper;
         this.enclosingView = enclosingView;
