@@ -8,6 +8,7 @@
     "doUrlValidation": true,
     "applicationName" : "Adventureworks Demo",
     "clearCacheOnChange": true,
+    "clickAlwaysGoesToSameSide": false,
     "colors": {
         "regexArray": [
             {

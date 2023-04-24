@@ -49,6 +49,9 @@ export interface IAppConfig {
     // flag for configurable home button behaviour
     leftClickHomeAlwaysGoesToSinglePane: boolean;
 
+    // left click goes left, right click goes right
+    clickAlwaysGoesToSameSide: boolean;
+
     logLevel: 'error' | 'warn' | 'info' | 'debug' | 'none';
 
     dateInputFormat: string;
@@ -132,7 +135,8 @@ export class ConfigService {
         doUrlValidation: false,
         leftClickHomeAlwaysGoesToSinglePane: true,
         logLevel: 'error',
-        dateInputFormat: defaultDateFormat
+        dateInputFormat: defaultDateFormat,
+        clickAlwaysGoesToSameSide: true,
     };
 
     constructor(private readonly http: HttpClient) {
