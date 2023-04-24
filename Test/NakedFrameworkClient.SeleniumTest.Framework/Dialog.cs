@@ -39,7 +39,7 @@ public class Dialog : SubView {
     }
 
     public ObjectView ClickOKToViewObject(MouseClick button = MouseClick.MainButton) {
-        var pane = helper.GetNewPane(enclosingView.pane, button);
+        var pane = Helper.GetNewPane(enclosingView.pane, button);
         var waitForNewContent = enclosingView is ObjectView && button == MouseClick.MainButton;
 
         helper.Click(GetEnabledOKButton());

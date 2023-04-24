@@ -20,7 +20,7 @@ public class ActionWithoutDialog : MenuAction {
     public ObjectEdit ClickToViewTransientObject(MouseClick button = MouseClick.MainButton) {
         element.AssertIsEnabled();
         helper.Click(element, button);
-        var pane = helper.GetNewPane(enclosingView.pane, button);
+        var pane = Helper.GetNewPane(enclosingView.pane, button);
         return helper.GetObjectEdit(pane);
     }
 
