@@ -29,8 +29,8 @@ public class Helper {
     public string ProductBaseUrl { get; }
     public string BaseUrl { get; }
 
-    internal IWebDriver WebDriver { get; }
-    internal SafeWebDriverWait Wait { get; }
+    public IWebDriver WebDriver { get; }
+    public SafeWebDriverWait Wait { get; }
 
     #region CCAs
 
