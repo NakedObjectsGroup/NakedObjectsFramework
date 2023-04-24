@@ -19,10 +19,12 @@ using OpenQA.Selenium.Support.UI;
 namespace NakedFrameworkClient.TestFramework;
 
 public class Helper {
-    private readonly string geminiBaseUrl;
+    private readonly string productBaseUrl;
+    private readonly string baseUrl;
 
-    public Helper(string baseUrl, IWebDriver webDriver, SafeWebDriverWait safeWebDriverWait) {
-        geminiBaseUrl = baseUrl + "gemini/";
+    public Helper(string baseUrl, string product, IWebDriver webDriver, SafeWebDriverWait safeWebDriverWait) {
+        this.baseUrl = baseUrl;
+        productBaseUrl = $"{baseUrl}{product}/";
         WebDriver = webDriver;
         Wait = safeWebDriverWait;
     }
@@ -603,7 +605,7 @@ public class Helper {
 
     //Goes to a single-pane view of home
     public HomeView GotoHome() {
-        WebDriver.Navigate().GoToUrl(geminiBaseUrl + "home");
+        WebDriver.Navigate().GoToUrl(productBaseUrl + "home");
         WaitForView(Pane.Single, PaneType.Home);
         var el = WaitForCss(".home");
         WaitForMenus();
@@ -614,12 +616,12 @@ public class Helper {
     //going to new URL
     public Helper GotoUrlViaHome(string url) {
         GotoHome(); //This is to ensure that the view has changed from any existing object/list view
-        WebDriver.Navigate().GoToUrl(geminiBaseUrl + url);
+        WebDriver.Navigate().GoToUrl(productBaseUrl + url);
         return this;
     }
 
     public Helper GotoUrlDirectly(string url) {
-        WebDriver.Navigate().GoToUrl(geminiBaseUrl + url);
+        WebDriver.Navigate().GoToUrl(productBaseUrl + url);
         return this;
     }
 

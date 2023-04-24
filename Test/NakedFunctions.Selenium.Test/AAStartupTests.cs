@@ -41,7 +41,7 @@ public class AAStartupTests : BaseTest {
     [TestInitialize]
     public virtual void InitializeTest() {
         Wait.Timeout = new TimeSpan(0, 0, 40);
-        helper = new Helper(BaseUrl, Driver, Wait);
+        helper = new Helper(BaseUrl, "gemini", Driver, Wait);
     }
 
     [TestCleanup]

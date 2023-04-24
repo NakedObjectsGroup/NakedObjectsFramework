@@ -166,7 +166,7 @@ public class TestAttributes : BaseTest {
 
     [TestInitialize]
     public virtual void InitializeTest() {
-        helper = new Helper(BaseUrl, Driver, Wait);
+        helper = new Helper(BaseUrl, "gemini", Driver, Wait);
     }
 
     #endregion
