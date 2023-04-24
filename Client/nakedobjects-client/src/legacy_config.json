@@ -8,6 +8,7 @@
     "doUrlValidation": true,
     "applicationName" : "Adventureworks Legacy Demo",
     "clearCacheOnChange": true,
+    "clickAlwaysGoesToSameSide": false,
     "colors": {
         "typeMap": {
             "AW.Types.Customer": 1,
