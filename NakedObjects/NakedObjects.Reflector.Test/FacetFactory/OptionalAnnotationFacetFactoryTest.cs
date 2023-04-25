@@ -43,7 +43,7 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOptionalAnnotationIgnoredForPrimitiveOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer4), "SomeAction", new[] { typeof(int) });
+        var method = FindMethod(typeof(Customer4), nameof(Customer4.SomeAction), new[] { typeof(int) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         Assert.IsNull(Specification.GetFacet(typeof(IMandatoryFacet)));
         Assert.IsNotNull(metamodel);
@@ -53,7 +53,7 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOptionalAnnotationIgnoredForPrimitiveOnProperty() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var property = FindProperty(typeof(Customer3), "NumberOfOrders");
+        var property = FindProperty(typeof(Customer3), nameof(Customer3.NumberOfOrders));
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         Assert.IsNull(Specification.GetFacet(typeof(IMandatoryFacet)));
         Assert.IsNotNull(metamodel);
@@ -63,7 +63,7 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOptionalAnnotationPickedUpOnActionParameter() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var method = FindMethod(typeof(Customer2), "SomeAction", new[] { typeof(string) });
+        var method = FindMethod(typeof(Customer2), nameof(Customer2.SomeAction), new[] { typeof(string) });
         metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMandatoryFacet));
         Assert.IsNotNull(facet);
@@ -75,11 +75,58 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public void TestOptionalAnnotationPickedUpOnProperty() {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-        var property = FindProperty(typeof(Customer1), "FirstName");
+        var property = FindProperty(typeof(Customer1), nameof(Customer1.FirstName));
         metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMandatoryFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is OptionalFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnProperty1() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property1 = FindProperty(typeof(Customer11), nameof(Customer11.FirstName));
+        metamodel = facetFactory.Process(Reflector, property1, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is OptionalFacet);
+        Assert.IsNotNull(metamodel);
+
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnProperty2() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property1 = FindProperty(typeof(Customer11), nameof(Customer11.SecondName));
+        metamodel = facetFactory.Process(Reflector, property1, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnProperty3() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property1 = FindProperty(typeof(Customer11), nameof(Customer12.FirstName));
+        metamodel = facetFactory.Process(Reflector, property1, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is OptionalFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnProperty4() {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+        var property2 = FindProperty(typeof(Customer11), nameof(Customer13.SecondName));
+        metamodel = facetFactory.Process(Reflector, property2, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNull(facet);
         Assert.IsNotNull(metamodel);
     }
 
@@ -119,6 +166,32 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     }
 
     #endregion
+
+
+    #region Nullable types
+    #nullable enable
+
+    private class Customer11 {
+        public string? FirstName => null;
+        public string SecondName => "";
+    }
+
+    private class Customer12 {
+        public string? FirstName => null;
+    }
+
+    private class Customer13 {
+        public string SecondName => "";
+    }
+
+
+    #nullable restore
+    #endregion
+   
+
+
+
+
 
     #region Setup/Teardown
 
