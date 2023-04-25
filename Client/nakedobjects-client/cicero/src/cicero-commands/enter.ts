@@ -51,10 +51,11 @@ export class Enter extends Command {
             const fields = this.matchingProperties(obj, fieldName);
 
             switch (fields.length) {
-                case 0:
+                case 0: {
                     const s = Usermessages.doesNotMatchProperties(fieldName);
                     return this.returnResult('', s);
-                case 1:
+                }
+                case 1: {
                     const field = fields[0];
                     if (fieldEntry === '?') {
                         // TODO: does this work in edit mode i.e. show entered value
@@ -64,9 +65,11 @@ export class Enter extends Command {
                         this.findAndClearAnyDependentFields(field.id(), obj.propertyMembers());
                         return this.setField(field, fieldEntry);
                     }
-                default:
+                }
+                default: {
                     const ss = reduce(fields, (str, prop) => str + prop.extensions().friendlyName() + '\n', `${fieldName} ${Usermessages.matchesMultiple}`);
                     return this.returnResult('', ss);
+                }
             }
         });
     }
@@ -291,10 +294,11 @@ export class Enter extends Command {
             case 1:
                 // TODO fix "!""
                 return this.setFieldAndCheckDependencies(field, allFields, matches[0]).then((crs: CommandResult[]) => last(crs)!);
-            default:
+            default: {
                 let msg = Usermessages.multipleMatches;
                 forEach(matches, m => msg += m.toString() + '\n');
                 return this.returnResult('', msg);
+            }
         }
     }
 
@@ -315,10 +319,11 @@ export class Enter extends Command {
     private updateOnMatches(field: Ro.IField, allFields: Ro.IField[], fieldEntry: string, matches: Ro.Value[]) {
         switch (matches.length) {
             case 0:
-            case 1:
+            case 1: {
                 const match = matches.length === 0 ? new Ro.Value(null) : matches[0];
                 // TODO fix "!""
                 return this.setFieldAndCheckDependencies(field, allFields, match).then((crs: CommandResult[]) => last(crs)!);
+            }
             default:
                 // shouldn't happen - ignore
                 return this.returnResult('', '');

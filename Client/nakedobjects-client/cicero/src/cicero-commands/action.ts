@@ -47,7 +47,7 @@ export class Action extends Command {
         switch (actions.length) {
             case 0:
                 return this.returnResult('', Usermessages.doesNotMatchActions(match));
-            case 1:
+            case 1: {
                 const action = actions[0];
                 if (details) {
                     return this.returnResult('', this.renderActionDetails(action));
@@ -56,10 +56,12 @@ export class Action extends Command {
                 } else {
                     return this.openActionDialog(action);
                 }
-            default:
+            }
+            default: {
                 let output = match ? Usermessages.matchingActions : Usermessages.actionsMessage;
                 output += this.listActions(actions);
                 return this.returnResult('', output);
+            }
         }
     }
 

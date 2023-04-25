@@ -87,7 +87,7 @@ export abstract class Command {
 
     abstract isAvailableInCurrentContext(): boolean;
 
-    protected mayNotBeChained(rider: string = '') {
+    protected mayNotBeChained(rider = '') {
         return Usermessages.mayNotbeChainedMessage(this.fullCommand, rider);
     }
 
@@ -99,7 +99,7 @@ export abstract class Command {
 
     // argNo starts from 0.
     // If argument does not parse correctly, message will be passed to UI and command aborted.
-    protected argumentAsString(argString: string | null, argNo: number, optional: boolean = false, toLower: boolean = true): string | undefined {
+    protected argumentAsString(argString: string | null, argNo: number, optional = false, toLower = true): string | undefined {
         if (!argString) { return undefined; }
         if (!optional && argString.split(',').length < argNo + 1) {
             throw new Error(Usermessages.tooFewArguments);
@@ -116,7 +116,7 @@ export abstract class Command {
     }
 
     // argNo starts from 0.
-    protected argumentAsNumber(args: string | null, argNo: number, optional: boolean = false): number | null {
+    protected argumentAsNumber(args: string | null, argNo: number, optional = false): number | null {
         const arg = this.argumentAsString(args, argNo, optional);
         if (!arg && optional) { return null; }
         const number = parseInt(arg!, 10);

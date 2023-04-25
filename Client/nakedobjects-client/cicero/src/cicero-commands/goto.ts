@@ -68,11 +68,12 @@ export class Goto extends Command {
                                 return this.returnResult('', '', () => this.openCollection(matchingColls[0]));
                             }
 
-                        default:
+                        default: {
                             const props = reduce(matchingRefProps, (str, prop) => str + prop.extensions().friendlyName() + '\n', '');
                             const colls = reduce(matchingColls, (str, coll) => str + coll.extensions().friendlyName() + '\n', '');
                             const s = `Multiple matches for ${arg0}:\n${props}${colls}`;
                             return this.returnResult('', s);
+                        }
                     }
 
                 }

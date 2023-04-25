@@ -94,7 +94,7 @@ export class CiceroCommandFactoryService {
         command.argString = this.getArgs(input);
         command.chained = chained;
         return command;
-    }
+    };
 
     // TODO:  could do more than auto complete e.g. reject unrecognised action or one not available in context.
     preParse = (input: string): Result => {
@@ -114,7 +114,7 @@ export class CiceroCommandFactoryService {
         } catch (e) {
             return Result.create('', e.message);
         }
-    }
+    };
 
     getCommand = (commandWord: string) => {
         if (commandWord.length < 2) {
@@ -128,10 +128,10 @@ export class CiceroCommandFactoryService {
         }
         command.checkMatch(commandWord);
         return command;
-    }
+    };
 
     allCommandsForCurrentContext = () => {
         const commandsInContext = filter(this.commands, c => c.isAvailableInCurrentContext());
         return reduce<Command, string>(commandsInContext, (r, c) => `${r}${c.fullCommand}\n`, Msg.commandsAvailable);
-    }
+    };
 }
