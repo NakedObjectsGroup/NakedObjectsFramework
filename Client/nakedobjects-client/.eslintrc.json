@@ -32,7 +32,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "app",
+            "prefix": "nof",
             "style": "camelCase"
           }
         ],
@@ -40,7 +40,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "app",
+            "prefix": "nof",
             "style": "kebab-case"
           }
         ]

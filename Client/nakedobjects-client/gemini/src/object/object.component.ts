@@ -222,17 +222,17 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     disableActions = () => {
         const obj = this.object;
         return obj && obj.noActions() ? true : null;
-    }
+    };
 
     actionsTooltip = () => {
         const obj = this.object;
         return obj ? obj.actionsTooltip() : '';
-    }
+    };
 
     unsaved = () => {
         const obj = this.object;
         return !!obj && obj.unsaved;
-    }
+    };
 
     private do(f: (o: DomainObjectViewModel) => void) {
         const obj = this.object;
@@ -243,39 +243,39 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     toggleActionMenu = () => {
         this.do((o) => o.toggleActionMenu());
-    }
+    };
 
     doEdit = () => {
         this.do((o) => o.doEdit());
-    }
+    };
 
     doEditCancel = () => {
         this.do((o) => o.doEditCancel());
-    }
+    };
 
     showEdit = () => {
         const obj = this.object;
         return !!obj && !obj.hideEdit();
-    }
+    };
 
     doReload = () => {
         this.do((o) => o.doReload());
-    }
+    };
 
     message = () => {
         const obj = this.object;
         return obj ? obj.getMessage() : '';
-    }
+    };
 
     showActions = () => {
         const obj = this.object;
         return !!obj && obj.showActions();
-    }
+    };
 
     menuItems = () => {
         const obj = this.object;
         return obj ? obj.menuItems : [];
-    }
+    };
 
     get actionHolders() {
         if (this.mode === InteractionMode.View) {

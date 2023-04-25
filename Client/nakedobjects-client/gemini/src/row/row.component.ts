@@ -1,9 +1,9 @@
 ﻿import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
-import { copy, DragAndDropService, IDraggableViewModel, ItemViewModel, PropertyViewModel, RecentItemViewModel, TableRowColumnViewModel } from '@nakedobjects/view-models';
+import { copy, DragAndDropService, IDraggableViewModel, ItemViewModel, RecentItemViewModel, TableRowColumnViewModel } from '@nakedobjects/view-models';
 import { focus } from '../helpers-components';
 
 @Component({
-    // tslint:disable-next-line:component-selector
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[nof-row]',
     templateUrl: 'row.component.html',
     styleUrls: ['row.component.css']

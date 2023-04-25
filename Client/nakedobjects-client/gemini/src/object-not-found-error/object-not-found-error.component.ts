@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-    // tslint:disable-next-line:component-selector
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'object-not-found-error',
     templateUrl: 'object-not-found-error.component.html',
     styleUrls: ['object-not-found-error.component.css']

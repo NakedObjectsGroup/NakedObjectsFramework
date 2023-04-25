@@ -45,7 +45,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
     form = (i: number) => {
         const rowData = this.rowData[i];
         return rowData.form;
-    }
+    };
 
     get objectFriendlyName() {
         return this.dialog.objectFriendlyName;
@@ -75,11 +75,11 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
 
     rowMessage = (row: DialogViewModel) => {
         return row.getMessageOrSubmitted();
-    }
+    };
 
     rowDisabled = (row: DialogViewModel) => {
         return !row.clientValid() || row.submitted;
-    }
+    };
 
     get count() {
         return this.dialog.submittedCountMsg();
@@ -103,7 +103,7 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
 
     close = () => {
         this.urlManager.popUrlState();
-    }
+    };
 
     private createForm(dialog: DialogViewModel) {
         return createForm(dialog, this.formBuilder);

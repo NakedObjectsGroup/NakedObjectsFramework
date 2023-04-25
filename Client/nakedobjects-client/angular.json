@@ -159,8 +159,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
+              "gemini/src/**/*.ts",
+              "gemini/src/**/*.html"
             ]
           }
         }
@@ -267,8 +267,8 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
+              "src/app/**/*.ts",
+              "src/app/**/*.html"
             ]
           }
         }

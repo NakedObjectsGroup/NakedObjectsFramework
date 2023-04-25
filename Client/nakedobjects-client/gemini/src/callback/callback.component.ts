@@ -5,10 +5,8 @@ import { Component, OnInit } from '@angular/core';
     templateUrl: './callback.component.html',
     styleUrls: ['./callback.component.css']
 })
-export class CallbackComponent implements OnInit {
+export class CallbackComponent {
 
     constructor() { }
-
-    ngOnInit() { }
 
 }

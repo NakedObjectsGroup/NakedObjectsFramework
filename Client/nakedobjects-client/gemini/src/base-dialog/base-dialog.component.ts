@@ -97,7 +97,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
             this.dialog.doCloseReplaceHistory();
             this.dialog = null;
         }
-    }
+    };
 
     private createForm(dialog: DialogViewModel) {
         safeUnsubscribe(this.formSub);

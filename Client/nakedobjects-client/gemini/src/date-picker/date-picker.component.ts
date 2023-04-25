@@ -8,11 +8,10 @@ import {
     Output,
     ViewChild
 } from '@angular/core';
-import * as Ro from '@nakedobjects/restful-objects';
 import { validateDate } from '@nakedobjects/view-models';
 import concat from 'lodash-es/concat';
 import { DateTime }  from 'luxon';
-import { BehaviorSubject, Observable, SubscriptionLike as ISubscription } from 'rxjs';
+import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';
 import { Dictionary } from 'lodash';
@@ -133,10 +132,6 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return this.modelValue;
     }
 
-    get dateModel(): DateTime | null {
-        return this.dateModelValue;
-    }
-
     get currentDate(): DateTime {
         return this.dateModelValue || DateTime.now();
     }
@@ -149,6 +144,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
             this.dateModelValue = null;
             this.outputEvents.emit({ type: 'dateCleared', data: '' });
         }
+    }
+
+    get dateModel(): DateTime | null {
+        return this.dateModelValue;
     }
 
     private eventsSub: ISubscription;
@@ -226,7 +225,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         const month = this.currentDate.month;
         const year = this.currentDate.year;
         let n = 1;
-        let firstdow = this.currentDate.startOf("month").weekday;
+        const firstdow = this.currentDate.startOf("month").weekday;
         let firstWeekDay = firstdow + 1;
 
         if (firstWeekDay === 8) {
@@ -322,12 +321,12 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.generateCalendar();
         this.opened = true;
         this.outputEvents.emit({ type: 'default', data: 'opened' } as IDatePickerOutputDefaultEvent);
-    }
+    };
 
     private close = () => {
         this.opened = false;
         this.outputEvents.emit({ type: 'default', data: 'closed' } as IDatePickerOutputDefaultEvent);
-    }
+    };
 
     clear() {
         this.selectDate(null);

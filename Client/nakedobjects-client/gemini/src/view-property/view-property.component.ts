@@ -127,7 +127,7 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
         if (!this.property.isEditActionDisabled) {
           this.property.doEditByAction();
         }
-    }
+    };
 
     copy(event: KeyboardEvent) {
         const prop = this.property;

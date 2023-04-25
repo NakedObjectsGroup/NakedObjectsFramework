@@ -108,6 +108,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     get accept() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const _this = this;
         return (cdkDrag: CdkDrag<IDraggableViewModel>, cdkDropList: CdkDropList) => {
             return accept(_this.model, _this, cdkDrag.data);
@@ -324,7 +325,7 @@ export abstract class FieldComponent implements OnDestroy {
             default: // null
                 return false;
         }
-    }
+    };
 
     protected handleClick(event: Event) {
         if (this.isBoolean && this.model.optional) {

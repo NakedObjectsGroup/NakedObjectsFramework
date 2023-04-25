@@ -3,7 +3,7 @@ import { CollectionViewState } from '@nakedobjects/services';
 import { CollectionViewModel, ListViewModel } from '@nakedobjects/view-models';
 
 @Component({
-    // tslint:disable-next-line:component-selector
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[nof-header]',
     templateUrl: 'header.component.html',
     styleUrls: ['header.component.css']

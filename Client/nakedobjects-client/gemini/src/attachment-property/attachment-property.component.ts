@@ -47,7 +47,7 @@ export class AttachmentPropertyComponent {
                 })
                 .catch((reject: ErrorWrapper) => this.error.handleError(reject));
         }
-    }
+    };
 
     private setup() {
         if (this.attachment.displayInline()) {

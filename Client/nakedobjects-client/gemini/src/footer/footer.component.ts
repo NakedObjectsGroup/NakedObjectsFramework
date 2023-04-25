@@ -55,30 +55,30 @@ export class FooterComponent implements OnInit, OnDestroy {
         } else {
             this.urlManager.setHome(newPane);
         }
-    }
+    };
 
     goBack = () => {
         this.location.back();
-    }
+    };
 
     goForward = () => {
         this.location.forward();
-    }
+    };
 
     swapPanes = () => {
         if (!this.swapDisabled()) {
             this.context.swapCurrentObjects();
             this.urlManager.swapPanes();
         }
-    }
+    };
 
     swapDisabled = () => {
         return this.urlManager.isMultiLineDialog() ? true : null;
-    }
+    };
 
     singlePane = (right?: boolean) => {
         this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1, right));
-    }
+    };
 
     logOff = () => this.urlManager.logoff();
 
@@ -86,12 +86,12 @@ export class FooterComponent implements OnInit, OnDestroy {
 
     recent = (right?: boolean) => {
         this.urlManager.setRecent(this.clickHandler.pane(Pane.Pane1, right));
-    }
+    };
 
     cicero = () => {
         this.urlManager.singlePane(this.clickHandler.pane(Pane.Pane1));
         this.urlManager.cicero();
-    }
+    };
 
     get currentCopyColor() {
         return this.copyViewModel.color;

@@ -32,12 +32,13 @@ export class AutoCompleteComponent implements OnDestroy {
         this.dragAndDrop.setDropZoneId(this.modelPaneId);
     }
 
-    @Input()
-    form: FormGroup;
-
     get model() {
         return this.fieldViewModel;
     }
+
+    @Input()
+    form: FormGroup;
+
 
     get modelPaneId() {
         return this.model.paneArgId;
@@ -56,6 +57,7 @@ export class AutoCompleteComponent implements OnDestroy {
     }
 
     get accept() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const _this = this;
         return (cdkDrag: CdkDrag<IDraggableViewModel>, cdkDropList: CdkDropList) => {
             return accept(_this.model, _this, cdkDrag.data);

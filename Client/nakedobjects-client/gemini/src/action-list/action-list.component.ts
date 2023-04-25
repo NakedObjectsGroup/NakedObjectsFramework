@@ -47,12 +47,12 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
     hasActions = (menuItem: MenuItemViewModel) => {
         const actions = menuItem.actions;
         return actions && actions.length > 0;
-    }
+    };
 
     hasItems = (menuItem: MenuItemViewModel) => {
         const items = menuItem.menuItems;
         return items && items.length > 0;
-    }
+    };
 
     menuName = (menuItem: MenuItemViewModel) => menuItem.name;
 
@@ -63,7 +63,7 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
             this.actionHolders[index] = this.getActionHolders(menuItem);
         }
         return this.actionHolders[index];
-    }
+    };
 
     toggleCollapsed = (menuItem: MenuItemViewModel) => menuItem.toggleCollapsed();
 
