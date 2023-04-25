@@ -4,7 +4,7 @@ import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import reduce from 'lodash-es/reduce';
-import { Subject } from 'rxjs';
+import { Subject, lastValueFrom } from 'rxjs';
 import { ConfigService } from './config.service';
 import { ErrorWrapper, ClientErrorCode, ErrorCategory, HttpStatusCode } from './error.wrapper';
 import { SimpleLruCache } from './simple-lru-cache';
@@ -165,9 +165,9 @@ export class RepLoaderService {
 
     private httpValidate(options: RequestOptions): Promise<boolean> {
         this.loadingCountSource.next(++(this.loadingCount));
+        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache));
 
-        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
-            .toPromise()
+        return lastValueFrom(request$)
             .then(() => {
                 this.loadingCountSource.next(--(this.loadingCount));
                 return Promise.resolve(true);
@@ -225,9 +225,9 @@ export class RepLoaderService {
         }
 
         this.loadingCountSource.next(++(this.loadingCount));
+        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache));
 
-        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
-            .toPromise()
+        return lastValueFrom(request$)
             .then((r: HttpResponse<Ro.IRepresentation>) => {
                 this.allowBrowserCache = true;
                 this.loadingCountSource.next(--(this.loadingCount));
@@ -307,9 +307,9 @@ export class RepLoaderService {
         }
 
         const options = RequestOptions.fromFile(url, 'GET', mt);
+        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache));
 
-        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
-            .toPromise()
+        return lastValueFrom(request$)
             .then((r: HttpResponse<Blob>) => {
                 this.allowBrowserCache = true;
                 const blob = r.body!;
@@ -325,9 +325,9 @@ export class RepLoaderService {
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
 
         const options = RequestOptions.fromFile(url, 'POST', mt, file);
+        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache));
 
-        return this.http.request(options.toHttpRequest(this.allowBrowserCache))
-            .toPromise()
+        return lastValueFrom(request$)
             .then(() => {
                 this.allowBrowserCache = true;
                 return Promise.resolve(true);

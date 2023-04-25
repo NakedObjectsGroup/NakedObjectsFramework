@@ -1608,48 +1608,6 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v14.1.0.tgz":
-  version "14.1.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v14.1.0.tgz#51c4b063f9874b5bcfc74448c06afaabae5e91e9"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.5.0"
-
-"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v14.1.0.tgz":
-  version "14.1.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v14.1.0.tgz#0cbc85688a585b72bc14f595aac6d54ea02017ec"
-  dependencies:
-    auth0-js "^9.20.2"
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.5.0"
-
-"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v14.1.0.tgz":
-  version "14.1.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v14.1.0.tgz#59dbf75eeb1b59b37d0821f8271c0e87ccfd3ff7"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "^2.3.0"
-
-"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v14.1.0.tgz":
-  version "14.1.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v14.1.0.tgz#03b96265be716a9344d797124fbe8118b796d1cf"
-  dependencies:
-    auth0-js "^9.20.2"
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.5.0"
-
-"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v14.1.0.tgz":
-  version "14.1.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v14.1.0.tgz#e711db659c2aa9bb529a98c85a88c7598d18f4ab"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.5.0"
-
 "@ngtools/webpack@15.2.2":
   version "15.2.2"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-15.2.2.tgz#0dc4d7722e8e657840d831c9c82862da989a811f"
@@ -2472,7 +2430,7 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-auth0-js@^9.20.2, auth0-js@~9.20.2:
+auth0-js@~9.20.2:
   version "9.20.2"
   resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-9.20.2.tgz#c76f4bfda771105dcb735d8222588b08c0f25b70"
   integrity sha512-a6tFTYYK2+DQA3+A/mTKAWt/XOaMeiGWu644SnyAL5P84K79G53QOwtn/ok3DbM9MRfRp+2jYE6U4czTLJnj/g==

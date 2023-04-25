@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import assign from 'lodash-es/assign';
 import { defaultDateFormat } from './date-constants';
+import { lastValueFrom } from 'rxjs';
 
 export enum ConfigState {
     pending,
@@ -171,8 +172,9 @@ export class ConfigService {
             withCredentials: true
         };
 
-        return this.http.get<IAppConfig>('config.json', options).
-            toPromise().
+        const appConfig$ = this.http.get<IAppConfig>('config.json', options);
+
+        return lastValueFrom(appConfig$).
             then((r) => {
                 if (r) {
                     this.config = r;
