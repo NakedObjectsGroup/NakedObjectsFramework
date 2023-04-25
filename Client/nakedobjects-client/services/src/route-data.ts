@@ -62,7 +62,7 @@ export class RouteData {
         if (pane === Pane.Pane1) { return this.pane1; }
         if (pane === Pane.Pane2) { return this.pane2; }
         return this.loggerService.throw('RouteData:pane ${pane} is not a valid pane index on RouteData');
-    }
+    };
 }
 
 interface ICondition {
@@ -132,7 +132,7 @@ export class PaneRouteData {
     };
 
     isValid(name: string) {
-        if (!this.hasOwnProperty(name)) {
+        if (!Object.prototype.hasOwnProperty.call(this, name)) {
             this.loggerService.throw(`PaneRouteData:isValid ${name} is not a valid property on PaneRouteData`);
         }
     }

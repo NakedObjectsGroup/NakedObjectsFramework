@@ -39,7 +39,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     toColorNumberFromHref = (href: string) => {
         const type = this.typeFromUrl(href);
         return this.toColorNumberFromType(type);
-    }
+    };
 
     toColorNumberFromType = (type: string | null) => this.getResult(type);
 

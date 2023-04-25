@@ -27,7 +27,7 @@
     "start": "ng serve nakedobjects-client --port 49998",
     "build": "ng build",
     "test": "ng test --watch false --progress false",
-    "lint": "ng --help",
+    "lint": "ng lint",
     "e2e": "ng e2e",
     "prepackage": "node prepackage.js",
     "compile:restful-objects": "yarn && rimraf dist/nakedobjects-restful-objects && ng-packagr -p restful-objects/ng-package.json",

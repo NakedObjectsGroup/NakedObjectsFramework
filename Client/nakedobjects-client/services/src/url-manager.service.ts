@@ -325,22 +325,23 @@ export class UrlManagerService {
         const path = this.getPath();
         const segments = path.split('/');
         // tslint:disable-next-line:prefer-const
-        let [, mode, pane1Type, pane2Type] = segments;
+        const [, mode, pane1Type, pane2Type] = segments;
         let changeMode = false;
         let mayReplace = true;
         let newPath = path;
+        let updateMode = mode;
 
         if (newMode) {
             const newModeString = newMode.toString().toLowerCase();
             changeMode = mode !== newModeString;
-            mode = newModeString;
+            updateMode = newModeString;
         }
 
         // changing item on pane 1
         // make sure pane is of correct type
         if (pane === Pane.Pane1 && pane1Type !== newPaneType) {
             const single = this.isSinglePane() || this.paneIsAlwaysSingle(newPaneType);
-            newPath = `/${mode}/${newPaneType}${single ? '' : `/${pane2Type}`}`;
+            newPath = `/${updateMode}/${newPaneType}${single ? '' : `/${pane2Type}`}`;
             changeMode = false;
             mayReplace = false;
         }
@@ -349,13 +350,13 @@ export class UrlManagerService {
         // either single pane so need to add new pane of appropriate type
         // or double pane with second pane of wrong type.
         if (pane === Pane.Pane2 && (this.isSinglePane() || pane2Type !== newPaneType)) {
-            newPath = `/${mode}/${pane1Type}/${newPaneType}`;
+            newPath = `/${updateMode}/${pane1Type}/${newPaneType}`;
             changeMode = false;
             mayReplace = false;
         }
 
         if (changeMode) {
-            newPath = `/${mode}/${pane1Type}/${pane2Type}`;
+            newPath = `/${updateMode}/${pane1Type}/${pane2Type}`;
             mayReplace = false;
         }
 
@@ -547,41 +548,41 @@ export class UrlManagerService {
 
     setHome = (paneId: Pane = Pane.Pane1) => {
         this.executeTransition({}, paneId, Transition.ToHome, () => true);
-    }
+    };
 
     setRecent = (paneId: Pane = Pane.Pane1) => {
         this.executeTransition({}, paneId, Transition.ToRecent, () => true);
-    }
+    };
 
     setMenu = (menuId: string, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.menu}${paneId}`;
         const newValues = zipObject([key], [menuId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToMenu, search => this.getId(key, search) !== menuId);
-    }
+    };
 
     setDialog = (dialogId: string, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.dialog}${paneId}`;
         const newValues = zipObject([key], [dialogId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToDialog, search => this.getId(key, search) !== dialogId);
-    }
+    };
 
     setCreateNewDialog = (dialogId: string, returnType: string, paneId: Pane = Pane.Pane1) => {
         const dKey = `${akm.dialog}${paneId}`;
         const oKey = `${akm.toCreate}${paneId}`;
         const newValues = zipObject([dKey, oKey], [dialogId, returnType]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToCreateNewDialog, search => this.getId(dKey, search) !== dialogId);
-    }
+    };
 
     setMultiLineDialog = (dialogId: string, paneId: Pane) => {
         this.pushUrlState();
         const key = `${akm.dialog}${Pane.Pane1}`; // always on 1
         const newValues = zipObject([key], [dialogId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToMultiLineDialog, search => this.getId(key, search) !== dialogId);
-    }
+    };
 
     openCreateNewDialog = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
         this.setCreateNewDialog(actionRep.actionId(), actionRep.extensions().returnType(), paneId);
-    }
+    };
 
     setDialogOrMultiLineDialog = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, paneId: Pane = Pane.Pane1) => {
         if (actionRep.extensions().multipleLines()) {
@@ -589,7 +590,7 @@ export class UrlManagerService {
         } else {
             this.setDialog(actionRep.actionId(), paneId);
         }
-    }
+    };
 
     private closeOrCancelDialog(id: string, paneId: Pane, transition: Transition) {
         const dKey = `${akm.dialog}${paneId}`;
@@ -606,18 +607,18 @@ export class UrlManagerService {
 
     closeDialogKeepHistory = (id: string, paneId: Pane = Pane.Pane1) => {
         this.closeOrCancelDialog(id, paneId, Transition.FromDialogKeepHistory);
-    }
+    };
 
     closeDialogReplaceHistory = (id: string, paneId: Pane = Pane.Pane1) => {
         this.closeOrCancelDialog(id, paneId, Transition.FromDialog);
-    }
+    };
 
     setObject = (resultObject: Ro.DomainObjectRepresentation, paneId: Pane = Pane.Pane1) => {
         const oid = this.obfuscate(resultObject.id());
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
-    }
+    };
 
     setObjectWithMode = (resultObject: Ro.DomainObjectRepresentation, newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
         const oid =  this.obfuscate(resultObject.id());
@@ -626,7 +627,7 @@ export class UrlManagerService {
         const newValues = zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as Dictionary<string>;
 
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
-    }
+    };
 
     setList = (actionMember: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
         const newValues = {} as Dictionary<string>;
@@ -653,14 +654,14 @@ export class UrlManagerService {
 
         this.executeTransition(newValues, toPaneId, Transition.ToList, () => true);
         return newValues;
-    }
+    };
 
     setProperty = (href: string, paneId: Pane = Pane.Pane1) => {
         const oid = this.obfuscate(this.getOidFromHref(href));
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
-    }
+    };
 
     setItem = (link: Ro.Link, paneId: Pane = Pane.Pane1) => {
         const href = link.href();
@@ -668,7 +669,7 @@ export class UrlManagerService {
         const key = `${akm.object}${paneId}`;
         const newValues = zipObject([key], [oid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToObjectView, () => true);
-    }
+    };
 
     setAttachment = (attachmentlink: Ro.Link, paneId: Pane = Pane.Pane1) => {
         const href = attachmentlink.href();
@@ -679,14 +680,14 @@ export class UrlManagerService {
 
         const newValues = zipObject([okey, akey], [oid, pid]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.ToAttachment, () => true);
-    }
+    };
 
     toggleObjectMenu = (paneId: Pane = Pane.Pane1) => {
         const key = akm.actions + paneId;
         const actionsId = this.getSearch()[key] ? null : 'open';
         const newValues = zipObject([key], [actionsId]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
-    }
+    };
 
     private checkAndSetValue(paneId: Pane, check: (search: any) => boolean, set: (search: any) => void) {
         this.currentPaneId = paneId;
@@ -703,19 +704,19 @@ export class UrlManagerService {
     setParameterValue = (actionId: string, p: Ro.Parameter, pv: Ro.Value, paneId: Pane = Pane.Pane1) =>
         this.checkAndSetValue(paneId,
             search => this.getId(`${akm.action}${paneId}`, search) === actionId,
-            search => this.setParameter(paneId, search, p, pv))
+            search => this.setParameter(paneId, search, p, pv));
 
     setCollectionMemberState = (collectionMemberId: string, state: CollectionViewState, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.collection}${paneId}_${collectionMemberId}`;
         const newValues = zipObject([key], [CollectionViewState[state]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
-    }
+    };
 
     setListState = (state: CollectionViewState, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.collection}${paneId}`;
         const newValues = zipObject([key], [CollectionViewState[state]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
-    }
+    };
 
     setInteractionMode = (newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
         const key = `${akm.interactionMode}${paneId}`;
@@ -733,7 +734,7 @@ export class UrlManagerService {
 
         const newValues = zipObject([key], [InteractionMode[newMode]]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, transition, () => true);
-    }
+    };
 
     setItemSelected = (item: number, isSelected: boolean, collectionId: string, paneId: Pane = Pane.Pane1) => {
 
@@ -744,7 +745,7 @@ export class UrlManagerService {
         const currentSelectedAsString = (this.createMask(selectedArray)).toString();
         const newValues = zipObject([key], [currentSelectedAsString]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
-    }
+    };
 
     setAllItemsSelected = (isSelected: boolean, collectionId: string, paneId: Pane = Pane.Pane1) => {
 
@@ -755,7 +756,7 @@ export class UrlManagerService {
         const currentSelectedAsString = (this.createMask(selectedArray)).toString();
         const newValues = zipObject([key], [currentSelectedAsString]) as Dictionary<string>;
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
-    }
+    };
 
     setListPaging = (newPage: number, newPageSize: number, state: CollectionViewState, paneId: Pane = Pane.Pane1) => {
         const pageValues = {} as Dictionary<string>;
@@ -766,7 +767,7 @@ export class UrlManagerService {
         pageValues[`${akm.selected}${paneId}_`] = '0'; // clear selection
 
         this.executeTransition(pageValues, paneId, Transition.Page, () => true);
-    }
+    };
 
     setError = (errorCategory: ErrorCategory, ec?: ClientErrorCode | HttpStatusCode) => {
         const path = this.getPath();
@@ -785,7 +786,7 @@ export class UrlManagerService {
             result.replace = true;
         }
         this.setNewSearch(result);
-    }
+    };
 
     getRouteData = () => {
         const routeData = new RouteData(this.configService, this.loggerService);
@@ -794,7 +795,7 @@ export class UrlManagerService {
         this.setPaneRouteData(routeData.pane2, Pane.Pane2);
 
         return routeData;
-    }
+    };
 
     getViewType(view: string) {
         switch (view) {
@@ -819,11 +820,11 @@ export class UrlManagerService {
             paneRouteData.location = this.getViewType(this.getLocation(paneId))!;
             return paneRouteData;
         }));
-    }
+    };
 
     pushUrlState = (paneId: Pane = Pane.Pane1) => {
         this.capturedPanes[paneId] = this.getUrlState(paneId);
-    }
+    };
 
     getUrlState = (paneId: Pane = Pane.Pane1) => {
         this.currentPaneId = paneId;
@@ -839,7 +840,7 @@ export class UrlManagerService {
         paneSearch = omit(paneSearch, `${akm.dialog}${paneId}`);
 
         return { paneType: paneType, search: paneSearch };
-    }
+    };
 
     getListCacheIndexFromSearch = (search: Dictionary<string>, paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
 
@@ -860,12 +861,12 @@ export class UrlManagerService {
         const ss = [s1, s2, s3, s4, s5, s6, s7] as string[];
 
         return reduce(ss, (r, n) => r + this.keySeparator + n, '');
-    }
+    };
 
     getListCacheIndex = (paneId: Pane, newPage: number, newPageSize: number, format?: CollectionViewState) => {
         const search = this.getSearch();
         return this.getListCacheIndexFromSearch(search, paneId, newPage, newPageSize, format);
-    }
+    };
 
     popUrlState = (paneId: Pane = Pane.Pane1) => {
         this.currentPaneId = paneId;
@@ -876,10 +877,7 @@ export class UrlManagerService {
             this.capturedPanes[paneId] = null;
             let search = this.clearPane(this.getSearch(), paneId);
             search = merge(search, capturedPane.search);
-            let path: string;
-            let replace: boolean;
-            ({ path, replace } = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType));
-
+            const { path, replace } = this.setupPaneNumberAndTypes(paneId, capturedPane.paneType);
             const result = { path: path, search: search, replace: replace };
             this.setNewSearch(result);
         } else {
@@ -887,12 +885,12 @@ export class UrlManagerService {
             // just go home
             this.setHome(paneId);
         }
-    }
+    };
 
     clearUrlState = (paneId: Pane) => {
         this.currentPaneId = paneId;
         this.capturedPanes[paneId] = null;
-    }
+    };
 
     private swapSearchIds(search: any) {
         return mapKeys(search,
@@ -915,7 +913,7 @@ export class UrlManagerService {
         const tree = this.router.createUrlTree([newPath], { queryParams: search });
 
         this.router.navigateByUrl(tree);
-    }
+    };
 
     private setMode(newMode: string) {
         const path = this.getPath();
@@ -945,13 +943,13 @@ export class UrlManagerService {
         const mode = this.getMode() || geminiPath;
         const newPath = `/${mode}/${applicationPropertiesPath}`;
         this.router.navigateByUrl(newPath);
-    }
+    };
 
     logoff = () => {
         const mode = this.getMode() || geminiPath;
         const newPath = `/${mode}/${logoffPath}`;
         this.router.navigateByUrl(newPath);
-    }
+    };
 
     currentpane = () => this.currentPaneId;
 
@@ -964,7 +962,7 @@ export class UrlManagerService {
         const tree = this.router.createUrlTree([newPath]);
 
         this.router.navigateByUrl(tree);
-    }
+    };
 
     singlePane = (paneId: Pane = Pane.Pane1) => {
         this.currentPaneId = Pane.Pane1;
@@ -997,7 +995,7 @@ export class UrlManagerService {
 
             this.router.navigateByUrl(tree);
         }
-    }
+    };
 
     private getLocation(paneId: Pane) {
         const path = this.getPath();
@@ -1038,5 +1036,5 @@ export class UrlManagerService {
         this.toggleReloadFlag(search, paneId);
         const result = { path: this.getPath(), search: search, replace: true };
         this.setNewSearch(result);
-    }
+    };
 }

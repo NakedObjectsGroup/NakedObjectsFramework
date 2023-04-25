@@ -253,18 +253,18 @@ export class RepLoaderService {
         const response = model;
         const options = RequestOptions.fromMap(model);
         return this.httpPopulate(options, !!ignoreCache, response) as Promise<T>;
-    }
+    };
 
     retrieve = <T extends Ro.IHateoasModel>(map: Ro.IHateoasModel, rc: new() => Ro.IHateoasModel, digest?: string | null): Promise<T> => {
         const response = new rc();
         const options = RequestOptions.fromMap(map, digest);
         return this.httpPopulate(options, true, response) as Promise<T>;
-    }
+    };
 
     validate = (map: Ro.IHateoasModel, digest?: string): Promise<boolean> => {
         const options = RequestOptions.fromMap(map, digest);
         return this.httpValidate(options);
-    }
+    };
 
     retrieveFromLink = <T extends Ro.IHateoasModel>(link: Ro.Link | null, parms?: Dictionary<Object>): Promise<T> => {
 
@@ -274,7 +274,7 @@ export class RepLoaderService {
             return this.httpPopulate(options, true, response) as Promise<T>;
         }
         return Promise.reject('link must not be null');
-    }
+    };
 
     invoke = (action: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, urlParms: Dictionary<Object>): Promise<Ro.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
@@ -284,15 +284,15 @@ export class RepLoaderService {
             return this.retrieve(invokeMap, Ro.ActionResultRepresentation);
         }
         return Promise.reject(`attempting to invoke uninvokable action ${action.actionId()}`);
-    }
+    };
 
     clearCache = (url: string) => {
         this.cache.remove(url);
-    }
+    };
 
     addToCache = (url: string, m: Ro.IResourceRepresentation) => {
         this.cache.add(url, m);
-    }
+    };
 
     getFile = (url: string, mt: string, ignoreCache: boolean): Promise<Blob> => {
 
@@ -320,7 +320,7 @@ export class RepLoaderService {
                 const originalUrl = options.url || 'Unknown url';
                 return this.handleError(r, originalUrl);
             });
-    }
+    };
 
     uploadFile = (url: string, mt: string, file: Blob): Promise<boolean> => {
 
@@ -335,7 +335,7 @@ export class RepLoaderService {
             .catch(() => {
                 return Promise.resolve(false);
             });
-    }
+    };
 
     private logoff() {
         this.cache.removeAll();

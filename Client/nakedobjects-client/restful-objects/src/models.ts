@@ -870,7 +870,7 @@ export class ErrorMap {
         } else {
             return temp;
         }
-    }
+    };
 
     constructor(private readonly valueMap: Ro.IValueMap | Ro.IObjectOfType, public statusCode: number, public warningMessage: string) {
 
@@ -1420,7 +1420,7 @@ export class CollectionRepresentation extends ResourceRepresentation<RoCustom.IC
     hasTableData = () => {
         const valueLinks = this.value();
         return valueLinks && some(valueLinks, (i: Link) => i.members());
-    }
+    };
 
     actionMembers() {
         this.actionMemberMap = this.actionMemberMap || mapValues(this.wrapped().members, (m, id) => Member.wrapMember(m, this, id)) as Dictionary<ActionMember>;
@@ -1769,7 +1769,7 @@ export class CollectionMember
     hasTableData = () => {
         const valueLinks = this.value();
         return valueLinks && some(valueLinks, (i: Link) => i.members());
-    }
+    };
 
     actionMembers(): Dictionary<ActionMember> {
         const members = this.wrapped().members;
@@ -2145,7 +2145,7 @@ export class ListRepresentation
     hasTableData = () => {
         const valueLinks = this.value();
         return valueLinks && some(valueLinks, (i: Link) => i.members());
-    }
+    };
 }
 
 export interface IErrorDetails {
