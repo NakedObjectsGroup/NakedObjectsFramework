@@ -53,7 +53,7 @@ export class RecentItemsViewModel {
         this.context.clearRecentlyViewed();
         this.recentItems = [];
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
-    }
+    };
 
     getRecentMessage(disabled: boolean) {
         return disabled ? Msg.recentDisabledMessage : Msg.recentMessage;

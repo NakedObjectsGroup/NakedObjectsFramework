@@ -80,12 +80,12 @@ export class DialogViewModel extends MessageViewModel {
     private readonly execute = (right?: boolean) => {
         const pps = this.parameters;
         return this.actionViewModel.execute(pps, right);
-    }
+    };
 
     readonly refresh = () => {
         const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
         forEach(this.parameters, p => p.refresh(fields[p.id]));
-    }
+    };
 
     readonly clientValid = () => every(this.parameters, p => p.clientValid);
 
@@ -116,7 +116,7 @@ export class DialogViewModel extends MessageViewModel {
             .catch((reject: ErrorWrapper) => {
                 const display = (em: Ro.ErrorMap) => Helpers.handleErrorResponse(em, this, this.parameters);
                 this.error.handleErrorAndDisplayMessages(reject, display);
-            })
+            });
 
     private submit() {
         if (this.isMultiLineDialogRow) {
@@ -126,17 +126,17 @@ export class DialogViewModel extends MessageViewModel {
 
     doCloseKeepUrl = () => {
         this.doComplete();
-    }
+    };
 
     doCloseKeepHistory = () => {
         this.urlManager.closeDialogKeepHistory(this.id, this.onPaneId);
         this.doComplete();
-    }
+    };
 
     doCloseReplaceHistory = () => {
         this.urlManager.closeDialogReplaceHistory(this.id, this.onPaneId);
         this.doComplete();
-    }
+    };
 
     private doComplete() {
         this.decrementPendingPotentAction();
@@ -146,9 +146,9 @@ export class DialogViewModel extends MessageViewModel {
     clearMessages = () => {
         this.resetMessage();
         this.actionViewModel.parameters().then(pp => each(pp, p => p.clearMessage()));
-    }
+    };
 
     getMessageOrSubmitted = () => {
         return this.submitted ? Msg.submittedMessage : this.getMessage();
-    }
+    };
 }

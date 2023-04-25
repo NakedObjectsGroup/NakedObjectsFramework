@@ -85,7 +85,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
     readonly validate = (modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, mandatoryOnly: boolean) =>
-        Helpers.validate(this.rep, this, modelValue, viewValue, mandatoryOnly)
+        Helpers.validate(this.rep, this, modelValue, viewValue, mandatoryOnly);
 
     get choices(): ChoiceViewModel[] {
         return this.choiceOptions;
@@ -179,19 +179,19 @@ export abstract class FieldViewModel extends MessageViewModel {
         const viewValue = c.value as string | ChoiceViewModel | string[] | ChoiceViewModel[];
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: 'invalid entry' };
-    }
+    };
 
     readonly setNewValue = (newValue: IDraggableViewModel) => {
         this.selectedChoice = newValue.selectedChoice;
         this.value = newValue.value;
         this.reference = newValue.reference;
-    }
+    };
 
     readonly clear = () => {
         this.selectedChoice = null;
         this.value = null;
         this.reference = '';
-    }
+    };
 
     protected update() {
         this.setColor();
@@ -265,7 +265,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         } else {
             this.value = newValue;
         }
-    }
+    };
 
     readonly getValueForControl = () => this.selectedMultiChoices || this.selectedChoice || this.value;
 
@@ -325,7 +325,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
         // reference
         return new Ro.Value(this.reference ? { href: this.reference, title: this.value!.toString() } : null);
-    }
+    };
 
     public friendlyTypeName() {
         return Ro.friendlyTypeName(this.returnType);

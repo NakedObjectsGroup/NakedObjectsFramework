@@ -26,7 +26,7 @@ export class AttachmentViewModel {
     readonly displayInline = () =>
         this.mimeType === 'image/jpeg' ||
         this.mimeType === 'image/gif' ||
-        this.mimeType === 'application/octet-stream'
+        this.mimeType === 'application/octet-stream';
 
     setImage(setImageOn: { image?: string, title: string }) {
         this.downloadFile().then(blob => {

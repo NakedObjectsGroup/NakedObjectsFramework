@@ -41,7 +41,7 @@ export class MultiLineDialogViewModel {
 
     private readonly createRow = (i: number) => {
         return this.viewModelFactory.dialogViewModel(this.routeData, this.action as Ro.ActionRepresentation | Ro.InvokableActionMember, null, true, i);
-    }
+    };
 
     readonly header = () => this.dialogs.length === 0 ? [] : map(this.dialogs[0].parameters, p => p.title);
 
@@ -49,7 +49,7 @@ export class MultiLineDialogViewModel {
         this.dialogs[index].doInvoke();
         this.context.clearDialogCachedValues();
         return this.add(index);
-    }
+    };
 
     private readonly pushNewDialog = () => this.dialogs.push(this.createRow(this.dialogs.length)) - 1;
 
@@ -62,11 +62,11 @@ export class MultiLineDialogViewModel {
             return this.pushNewDialog();
         }
         return 0;
-    }
+    };
 
     readonly submittedCount = () => filter(this.dialogs, d => d.submitted).length;
 
     readonly submittedCountMsg = () => {
         return Msg.submittedCount(this.submittedCount());
-    }
+    };
 }

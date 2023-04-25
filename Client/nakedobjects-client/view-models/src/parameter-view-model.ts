@@ -104,6 +104,7 @@ export class ParameterViewModel extends FieldViewModel {
     private setupParameterSelectedChoices() {
         const parmRep = this.parameterRep;
         const fieldEntryType = this.entryType;
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const parmViewModel = this;
         function setCurrentChoices(vals: Ro.Value) {
             const list = vals.list()!;
@@ -185,7 +186,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     readonly setAsRow = (i: number) => this.paneArgId = `${this.argId}${i}`;
 
-    protected update() {
+    protected override update() {
         super.update();
 
         switch (this.entryType) {
@@ -199,17 +200,17 @@ export class ParameterViewModel extends FieldViewModel {
                     break;
                 }
             // fall through
-            // tslint:disable-next-line:no-switch-case-fall-through
             case (Ro.EntryType.AutoComplete):
             case (Ro.EntryType.Choices):
             case (Ro.EntryType.ConditionalChoices):
                 this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : '';
                 break;
             case (Ro.EntryType.MultipleChoices):
-            case (Ro.EntryType.MultipleConditionalChoices):
+            case (Ro.EntryType.MultipleConditionalChoices): {
                 const selectedChoices = this.selectedMultiChoices?.map((c) => c.toString());
                 this.formattedValue = selectedChoices ? selectedChoices.join() : '';
                 break;
+            }
             default:
                 this.formattedValue = this.value ? this.value.toString() : '';
         }

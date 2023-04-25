@@ -159,5 +159,5 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     readonly selectAll = () => {
         const newState = !this.allSelected();
         this.setItems(newState);
-    }
+    };
 }

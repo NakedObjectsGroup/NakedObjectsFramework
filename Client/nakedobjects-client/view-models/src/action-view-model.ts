@@ -65,11 +65,11 @@ export class ActionViewModel {
 
     private readonly incrementPendingPotentAction = () => {
         Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
-    }
+    };
 
     private readonly decrementPendingPotentAction = () => {
         Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
-    }
+    };
 
     readonly invokeWithDialog = (right?: boolean) => {
         // clear any previous dialog so we don't pick up values from it
@@ -89,14 +89,14 @@ export class ActionViewModel {
         } else {
             this.urlManager.setDialogOrMultiLineDialog(this.actionRep, this.paneId);
         }
-    }
+    };
 
     readonly invokeWithoutDialogWithParameters = (parameters: Promise<ParameterViewModel[]>, right?: boolean) => {
         return parameters
             .then((pps: ParameterViewModel[]) => {
                 return this.execute(pps, right);
             });
-    }
+    };
 
     private readonly invokeWithoutDialog = (right?: boolean) => {
         this.incrementPendingPotentAction();
@@ -114,7 +114,7 @@ export class ActionViewModel {
                 const display = (em: Ro.ErrorMap) => this.vm.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
-    }
+    };
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
     // note this can be modified by decorators
@@ -139,7 +139,7 @@ export class ActionViewModel {
         forEach(pps, p => this.urlManager.setParameterValue(this.actionRep.actionId(), p.parameterRep, p.getValue(), this.paneId));
         return this.getInvokable()
             .then((details: Ro.ActionRepresentation | Ro.InvokableActionMember) => this.context.invokeAction(details, parmMap, this.paneId, this.clickHandler.pane(this.paneId, right), this.gotoResult));
-    }
+    };
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 
@@ -147,7 +147,7 @@ export class ActionViewModel {
 
     readonly tempDisabled = () => this.invokableActionRep &&
         this.invokableActionRep.isPotent() &&
-        this.context.isPendingPotentActionOrReload(this.paneId)
+        this.context.isPendingPotentActionOrReload(this.paneId);
 
     private getParameters(invokableAction: Ro.ActionRepresentation | Ro.InvokableActionMember) {
         const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Ro.Parameter>;
@@ -167,7 +167,7 @@ export class ActionViewModel {
                 this.invokableActionRep = details;
                 return this.getParameters(details);
             });
-    }
+    };
 
     readonly makeInvokable = (details: Ro.ActionRepresentation | Ro.InvokableActionMember) => this.invokableActionRep = details;
 }

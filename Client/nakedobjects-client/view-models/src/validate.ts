@@ -121,12 +121,13 @@ export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewV
     const returnType = model.extensions().returnType();
 
     switch (returnType) {
-        case ('number'):
+        case ('number'): {
             const valueAsNumber = parseFloat(viewValue);
             if (Number.isFinite(valueAsNumber)) {
                 return validateNumber(model, valueAsNumber, filter);
             }
             return Msg.notANumber;
+        }
         case ('string'):
             return validateString(model, viewValue, filter);
         case ('boolean'):

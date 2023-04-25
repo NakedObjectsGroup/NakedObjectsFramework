@@ -86,7 +86,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     private readonly cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
     private readonly saveHandler = (): (object: Ro.DomainObjectRepresentation, props: Object, paneId: Pane, viewSavedObject: boolean) => Promise<Ro.DomainObjectRepresentation> =>
-        this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject
+        this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
     private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
 
@@ -99,7 +99,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     private propertyMap = () => {
         const pps = filter(this.properties, property => property.isEditable);
         return zipObject(map(pps, p => p.id), map(pps, p => p.getValue())) as Dictionary<Ro.Value>;
-    }
+    };
 
     private wrapAction(a: ActionViewModel) {
         const wrappedInvoke = a.execute;
@@ -205,16 +205,16 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     readonly toggleActionMenu = () => {
         this.urlManager.toggleObjectMenu(this.onPaneId);
-    }
+    };
 
     readonly setProperties = () => forEach(this.editProperties(),
-        p => this.contextService.cachePropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId))
+        p => this.contextService.cachePropertyValue(this.domainObject, p.propertyRep, p.getValue(), this.onPaneId));
 
     readonly doEditCancel = () => {
 
         this.contextService.clearObjectCachedValues(this.onPaneId);
         this.cancelHandler()();
-    }
+    };
 
     readonly clearCachedFiles = () => forEach(this.properties, p => p.attachment ? p.attachment.clearCachedFile() : null);
 
@@ -227,7 +227,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 this.reset(obj, this.urlManager.getRouteData().pane(this.onPaneId)!, true);
             })
             .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
-    }
+    };
 
     readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
 
@@ -243,7 +243,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 this.handleWrappedError(reject);
                 return Promise.reject(false);
             });
-    }
+    };
 
     readonly doEdit = () => {
         this.clearCachedFiles();
@@ -255,14 +255,14 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
                 this.urlManager.setInteractionMode(InteractionMode.Edit, this.onPaneId);
             })
             .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
-    }
+    };
 
     readonly doReload = () => {
         this.clearCachedFiles();
         this.contextService.reloadObject(this.onPaneId, this.domainObject)
             .then((updatedObject: Ro.DomainObjectRepresentation) => this.reset(updatedObject, this.currentPaneData(), true))
             .catch((reject: ErrorWrapper) => this.handleWrappedError(reject));
-    }
+    };
 
     readonly hideEdit = () => this.isFormOrTransient() || every(this.properties, p => !p.isEditable);
 
@@ -275,7 +275,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
     readonly getTitle = (mode: InteractionMode) => {
         const prefix = mode === InteractionMode.Edit || mode === InteractionMode.Transient ? `${Msg.editing} - ` : '';
         return `${prefix}${this.title}`;
-    }
+    };
 
     public friendTypeName() {
         return Ro.friendlyTypeName(this.domainType);

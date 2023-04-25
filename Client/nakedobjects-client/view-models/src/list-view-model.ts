@@ -64,7 +64,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         return this.routeData.objectId
             ? this.context.getListFromObject(this.routeData, page, pageSize)
             : this.context.getListFromMenu(this.routeData, page, pageSize);
-    }
+    };
 
     readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
 
@@ -79,11 +79,11 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
                 const display = (em: Ro.ErrorMap) => this.setMessage(em.invalidReason() || em.warningMessage);
                 this.error.handleErrorAndDisplayMessages(reject, display);
             });
-    }
+    };
 
     private readonly setPage = (newPage: number, newState: CollectionViewState) => {
         this.pageOrRecreate(newPage, this.pageSize, newState);
-    }
+    };
 
     private readonly updateItems = (value: Ro.Link[]) => {
         this.items = this.viewModelFactory.getItems(value,
@@ -99,7 +99,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         } else {
             this.description = () => Msg.noItemsFound;
         }
-    }
+    };
 
     readonly hasTableData = () => this.listRep.hasTableData();
 
@@ -122,7 +122,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
                 this.updateItems(this.listRep.value());
             }
         }
-    }
+    };
 
     readonly reset = (list: Ro.ListRepresentation, routeData: PaneRouteData) => {
         this.listRep = list;
@@ -136,49 +136,49 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
 
         this.state = this.listRep.hasTableData() ? CollectionViewState.Table : CollectionViewState.List;
         this.updateItems(list.value());
-    }
+    };
 
     readonly toggleActionMenu = () => {
         if (this.noActions()) { return; }
         this.urlManager.toggleObjectMenu(this.onPaneId);
-    }
+    };
 
     readonly pageNext = () => {
         if (this.pageNextDisabled()) { return; }
         this.setPage(this.page < this.numPages ? this.page + 1 : this.page, this.state);
-    }
+    };
 
     readonly pagePrevious = () => {
         if (this.pagePreviousDisabled()) { return; }
         this.setPage(this.page > 1 ? this.page - 1 : this.page, this.state);
-    }
+    };
 
     readonly pageFirst = () => {
         if (this.pageFirstDisabled()) { return; }
         this.setPage(1, this.state);
-    }
+    };
 
     readonly pageLast = () => {
         if (this.pageLastDisabled()) { return; }
         this.setPage(this.numPages, this.state);
-    }
+    };
 
     readonly doSummary = () => {
         this.urlManager.setListState(CollectionViewState.Summary, this.onPaneId);
-    }
+    };
 
     readonly doList = () => {
         this.urlManager.setListState(CollectionViewState.List, this.onPaneId);
-    }
+    };
 
     readonly doTable = () => {
         this.urlManager.setListState(CollectionViewState.Table, this.onPaneId);
-    }
+    };
 
     readonly reload = () => {
         this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
         this.setPage(this.page, this.state);
-    }
+    };
 
     readonly noActions = () => !this.actions || this.actions.length === 0 || !this.items || this.items.length === 0;
 
@@ -191,9 +191,9 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
             return actionViewModel.actionRep;
         }
         return this.loggerService.throw(`no actionviewmodel ${id} on ${this.id}`);
-    }
+    };
 
     readonly showActions = () => {
         return !!this.currentPaneData().actionsOpen;
-    }
+    };
 }

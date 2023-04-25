@@ -114,7 +114,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             }
             this.currentState = state;
         }
-    }
+    };
 
     readonly doSummary = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Summary, this.onPaneId);
     readonly doList = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.List, this.onPaneId);
@@ -131,7 +131,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             return actionViewModel.actionRep;
         }
         return this.loggerService.throw(`CollectionViewModel:actionMember no member ${id} on ${this.name}`);
-    }
+    };
 
     private hasActionMember(id: string) {
         return !!find(this.actions, a => a.actionRep.actionId() === id);
@@ -139,5 +139,5 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
 
     readonly hasMatchingLocallyContributedAction = (id: string) => {
         return id && this.actions && this.actions.length > 0 && this.hasActionMember(id);
-    }
+    };
 }

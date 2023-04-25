@@ -28,5 +28,5 @@ export class TableRowViewModel {
         if (columns) {
             this.properties = map(columns, c => find(this.properties, tp => tp.id === c) || this.getPlaceHolderTableRowColumnViewModel(c));
         }
-    }
+    };
 }

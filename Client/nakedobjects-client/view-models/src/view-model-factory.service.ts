@@ -56,7 +56,7 @@ export class ViewModelFactoryService {
 
     errorViewModel = (error: ErrorWrapper | null) => {
         return new ErrorViewModel(error);
-    }
+    };
 
     attachmentViewModel = (propertyRep: Ro.PropertyMember, paneId: Pane): AttachmentViewModel | null => {
         const link = propertyRep.attachmentLink();
@@ -65,27 +65,27 @@ export class ViewModelFactoryService {
             return new AttachmentViewModel(link, parent, this.context, this.error, paneId);
         }
         return null;
-    }
+    };
 
     linkViewModel = (linkRep: Ro.Link, paneId: Pane) => {
         return new LinkViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId);
-    }
+    };
 
     itemViewModel = (linkRep: Ro.Link, paneId: Pane, selected: boolean, index: number, id: string) => {
         return new ItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, id);
-    }
+    };
 
     recentItemViewModel = (obj: Ro.DomainObjectRepresentation, linkRep: Ro.Link, paneId: Pane, selected: boolean, index: number) => {
         return new RecentItemViewModel(this.context, this.color, this.error, this.urlManager, this.configService, linkRep, paneId, this.clickHandler, this, index, selected, obj.extensions().friendlyName());
-    }
+    };
 
     actionViewModel = (actionRep: Ro.ActionMember | Ro.ActionRepresentation, vm: IMessageViewModel, routeData: PaneRouteData) => {
         return new ActionViewModel(this, this.context, this.urlManager, this.error, this.clickHandler, actionRep, vm, routeData, this.router);
-    }
+    };
 
     propertyTableViewModel = (id: string, propertyRep?: Ro.PropertyMember | Ro.CollectionMember) => {
         return propertyRep ? new TableRowColumnViewModel(id, propertyRep, this.mask) : new TableRowColumnViewModel(id);
-    }
+    };
 
     propertyViewModel = (propertyRep: Ro.PropertyMember, id: string, previousValue: Ro.Value, paneId: Pane, parentValues: () => Dictionary<Ro.Value>, editActionTuples: [ActionViewModel, string[]][]) => {
         return new PropertyViewModel(propertyRep,
@@ -102,7 +102,7 @@ export class ViewModelFactoryService {
             paneId,
             parentValues,
             editActionTuples);
-    }
+    };
 
     dialogViewModel = (routeData: PaneRouteData, action: Ro.ActionRepresentation | Ro.InvokableActionMember, actionViewModel: ActionViewModel | null, isRow: boolean, row?: number) => {
 
@@ -117,7 +117,7 @@ export class ViewModelFactoryService {
             actionViewModel,
             isRow,
             row);
-    }
+    };
 
     multiLineDialogViewModel = (routeData: PaneRouteData,
         action: Ro.ActionRepresentation | Ro.InvokableActionMember,
@@ -131,7 +131,7 @@ export class ViewModelFactoryService {
             routeData,
             action,
             holder);
-    }
+    };
 
     domainObjectViewModel = (obj: Ro.DomainObjectRepresentation, routeData: PaneRouteData, forceReload: boolean) => {
         const ovm = new DomainObjectViewModel(this.color, this.context, this, this.urlManager, this.error, this.configService, obj, routeData, forceReload);
@@ -139,7 +139,7 @@ export class ViewModelFactoryService {
             ovm.clearCachedFiles();
         }
         return ovm;
-    }
+    };
 
     listViewModel = (list: Ro.ListRepresentation, routeData: PaneRouteData) => {
         return new ListViewModel(
@@ -152,31 +152,31 @@ export class ViewModelFactoryService {
             list,
             routeData
         );
-    }
+    };
 
     parameterViewModel = (parmRep: Ro.Parameter, previousValue: Ro.Value, paneId: Pane) => {
         return new ParameterViewModel(parmRep, paneId, this.color, this.error, this.mask, previousValue, this, this.context, this.configService);
-    }
+    };
 
     collectionViewModel = (collectionRep: Ro.CollectionMember, routeData: PaneRouteData, forceReload: boolean) => {
         return new CollectionViewModel(this, this.color, this.error, this.context, this.urlManager, this.configService, this.loggerService, collectionRep, routeData, forceReload);
-    }
+    };
 
     menuViewModel = (menuRep: Ro.MenuRepresentation, routeData: PaneRouteData) => {
         return new MenuViewModel(this, menuRep, routeData);
-    }
+    };
 
     menusViewModel = (menusRep: Ro.MenusRepresentation, routeData: PaneRouteData) => {
         return new MenusViewModel(this, menusRep, routeData.paneId);
-    }
+    };
 
     recentItemsViewModel = (paneId: Pane) => {
         return new RecentItemsViewModel(this, this.context, this.urlManager, paneId);
-    }
+    };
 
     tableRowViewModel = (properties: Dictionary<Ro.PropertyMember | Ro.CollectionMember>, paneId: Pane, title: string): TableRowViewModel => {
         return new TableRowViewModel(this, properties, paneId, title);
-    }
+    };
 
     applicationPropertiesViewModel = () => new ApplicationPropertiesViewModel(this.context, this.error, this.configService);
 
@@ -223,5 +223,5 @@ export class ViewModelFactoryService {
         }
 
         return items;
-    }
+    };
 }
