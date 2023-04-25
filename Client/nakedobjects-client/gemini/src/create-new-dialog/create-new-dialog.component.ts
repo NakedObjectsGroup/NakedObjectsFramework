@@ -5,7 +5,6 @@ import {
     DomainObjectViewModel,
     MenuViewModel,
     ParameterViewModel,
-    PropertyViewModel,
     ViewModelFactoryService
 } from '@nakedobjects/view-models';
 import { BaseDialogComponent } from '../base-dialog/base-dialog.component';

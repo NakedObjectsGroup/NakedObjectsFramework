@@ -8,7 +8,6 @@ import {
     Output,
     ViewChild
 } from '@angular/core';
-import * as Ro from '@nakedobjects/restful-objects';
 import { DateTime } from 'luxon';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';

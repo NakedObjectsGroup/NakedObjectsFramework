@@ -7,7 +7,6 @@ import {
     DialogViewModel,
     DomainObjectViewModel,
     DragAndDropService,
-    FieldViewModel,
     IDraggableViewModel,
     MenuViewModel,
     ParameterViewModel,

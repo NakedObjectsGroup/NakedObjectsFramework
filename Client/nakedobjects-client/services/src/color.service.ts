@@ -1,7 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import forEach from 'lodash-es/forEach';
-import { basename } from 'path';
 import { ConfigService } from './config.service';
 import { ContextService } from './context.service';
 import { TypeResultCache } from './type-result-cache';
