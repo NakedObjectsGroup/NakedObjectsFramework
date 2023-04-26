@@ -150,7 +150,7 @@ public abstract class ObjectReflectorTest : AbstractReflectorTest {
     private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T)Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()), LoggerFactory);
 
     protected override IReflector Reflector(MetamodelHolder metamodel, ILoggerFactory lf) {
-        var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, Array.Empty<Type>());
+        var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, Array.Empty<Type>(), false);
         var coreConfig = new CoreConfiguration();
         var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IDomainObjectFacetFactoryProcessor>().ToArray());
         var allTypeList = new AllTypeList(new[] { config });

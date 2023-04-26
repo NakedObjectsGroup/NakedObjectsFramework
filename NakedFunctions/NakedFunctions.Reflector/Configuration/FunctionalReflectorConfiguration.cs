@@ -15,13 +15,17 @@ public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguratio
     public FunctionalReflectorConfiguration(Type[] types,
                                             Type[] functions,
                                             Type[] services,
+                                            bool useNullableReferenceTypesForOptionality,
                                             bool concurrencyChecking = true) {
         Types = types;
         Functions = functions.Union(services).ToArray();
         Services = services;
         ConcurrencyChecking = concurrencyChecking;
         IgnoreCase = false;
+        UseNullableReferenceTypesForOptionality = useNullableReferenceTypesForOptionality;
     }
+
+    public bool UseNullableReferenceTypesForOptionality { get; }
 
     public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
 

@@ -44,6 +44,8 @@ public sealed class SystemTypeReflector : AbstractParallelReflector {
             : specDictionary;
     }
 
+    public override bool UseNullableReferenceTypesForOptionality => false;
+
     public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
         var systemTypes = CoreConfiguration.SupportedSystemTypes.ToArray();
         specDictionary = IntrospectSystemTypes(systemTypes, specDictionary);

@@ -25,6 +25,7 @@ public static class Constants {
     public static readonly string CsService = @$"Data Source={Server};Initial Catalog={"ServiceRestTests"};Integrated Security=True;Encrypt=False;";
     public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;Encrypt=False;";
     public static readonly string CsAuth = @$"Data Source={Server};Initial Catalog={"AuthRestTests"};Integrated Security=True;Encrypt=False;";
+    public static readonly string CsNull = @$"Data Source={Server};Initial Catalog={"NullRestTests"};Integrated Security=True;Encrypt=False;";
 }
 
 public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {
@@ -132,6 +133,12 @@ public class ObjectDbContext : TestDbContext {
     public ObjectDbContext() : base(Constants.CsObject) { }
     public static void Delete() => Database.Delete(Constants.CsObject);
     protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<ObjectDbContext>(modelBuilder);
+}
+
+public class NullabilityDbContext : TestDbContext {
+    public NullabilityDbContext() : base(Constants.CsNull) { }
+    public static void Delete() => Database.Delete(Constants.CsNull);
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<NullabilityDbContext>(modelBuilder);
 }
 
 public class AuthDbContext : DbContext {

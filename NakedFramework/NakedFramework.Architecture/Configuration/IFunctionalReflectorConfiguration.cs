@@ -15,4 +15,5 @@ public interface IFunctionalReflectorConfiguration : ITypeList {
     public Type[] Services { get; }
     bool ConcurrencyChecking { get; }
     bool IgnoreCase { get; }
+    bool UseNullableReferenceTypesForOptionality { get; }
 }

@@ -49,6 +49,8 @@ public sealed class NOF2Reflector : AbstractParallelReflector {
             : specDictionary;
     }
 
+    public override bool UseNullableReferenceTypesForOptionality => false;
+
     public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
         var ooTypes = nof2ReflectorConfiguration.ObjectTypes;
         specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);

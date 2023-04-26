@@ -27,7 +27,7 @@ namespace NakedObjects.Reflector.Extensions;
 public static class NakedObjectsExtensions {
     private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
         ObjectReflectorConfiguration.NoValidate = options.NoValidate;
-        return new ObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.ConcurrencyCheck);
+        return new ObjectReflectorConfiguration(options.DomainModelTypes, options.DomainModelServices, options.UseNullableReferenceTypesForOptionality, options.ConcurrencyCheck);
     }
 
     public static void AddNakedObjects(this NakedFrameworkOptions frameworkOptions, Action<NakedObjectsOptions> setupAction) {

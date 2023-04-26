@@ -35,4 +35,5 @@ public interface IObjectReflectorConfiguration : ITypeList {
     bool ConcurrencyChecking { get; }
 
     Type[] ObjectTypes { get; }
+    bool UseNullableReferenceTypesForOptionality { get; }
 }

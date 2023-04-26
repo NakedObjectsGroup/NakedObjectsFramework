@@ -35,7 +35,7 @@ let ModelConfig =
     pc
 
 ObjectReflectorConfiguration.NoValidate <- true
-let config = new ObjectReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |] )
+let config = new ObjectReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |], false )
 let serviceList = new AllServiceList ([|new ServiceList(config.Services)|])
 
 let mockLoggerFactory = new Mock<ILoggerFactory>();

@@ -157,6 +157,8 @@ public abstract class AbstractParallelReflector : IReflector {
         return metamodel.ContainsKey(typeKey);
     }
 
+    public abstract bool UseNullableReferenceTypesForOptionality { get; }
+
     public virtual (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
         ITypeSpecBuilder spec;
         (spec, metamodel) = LoadSpecification(type, metamodel);

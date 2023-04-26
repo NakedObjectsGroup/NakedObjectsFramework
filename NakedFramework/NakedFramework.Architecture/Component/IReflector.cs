@@ -40,6 +40,8 @@ public interface IReflector {
     IFacetFactorySet FacetFactorySet { get; }
     ICoreConfiguration CoreConfiguration { get; }
 
+    bool UseNullableReferenceTypesForOptionality { get; }
+
     IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 
     (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);

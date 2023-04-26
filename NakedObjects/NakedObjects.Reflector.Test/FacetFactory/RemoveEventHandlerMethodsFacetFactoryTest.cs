@@ -101,7 +101,7 @@ public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTes
         var cache = new ImmutableInMemorySpecCache();
         ObjectReflectorConfiguration.NoValidate = true;
 
-        var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>());
+        var reflectorConfiguration = new ObjectReflectorConfiguration(Array.Empty<Type>(), Array.Empty<Type>(), false);
         var coreConfiguration = new CoreConfiguration();
 
         facetFactory = new RemoveEventHandlerMethodsFacetFactory(GetOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);

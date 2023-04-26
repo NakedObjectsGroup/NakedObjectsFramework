@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Facet;
@@ -60,9 +61,9 @@ public static class FactoryUtils {
 
     private static Nullability[] GetNullabilities(Attribute nAttribute) => (Nullability[])(nAttribute?.GetType().GetField("NullableFlags")?.GetValue(nAttribute) ?? Array.Empty<Nullability>());
 
-    public static bool IsOptionalByNullability(MemberInfo member) => IsOptionalByNullability(member, member.DeclaringType);
+    public static bool IsOptionalByNullability(MemberInfo member, IReflector reflector) => reflector.UseNullableReferenceTypesForOptionality && IsOptionalByNullability(member, member.DeclaringType);
 
-    public static bool IsOptionalByNullability(ParameterInfo parameter) => IsOptionalByNullability(parameter, parameter.Member);
+    public static bool IsOptionalByNullability(ParameterInfo parameter, IReflector reflector) => reflector.UseNullableReferenceTypesForOptionality && IsOptionalByNullability(parameter, parameter.Member);
 
     private static bool IsOptionalByNullability(object member, object owner) {
         var ncAttribute = GetCustomAttributes(owner).SingleOrDefault(a => a.GetType().Name is "NullableContextAttribute");

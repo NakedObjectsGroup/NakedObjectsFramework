@@ -28,9 +28,9 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
         logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
-    private void Process(MemberInfo member, ISpecificationBuilder holder) {
+    private void Process(MemberInfo member, ISpecificationBuilder holder, IReflector reflector) {
         var attribute = member.GetCustomAttribute<OptionallyAttribute>();
-        var optionalByNullability = FactoryUtils.IsOptionalByNullability(member);
+        var optionalByNullability = FactoryUtils.IsOptionalByNullability(member, reflector);
         if (attribute is not null && optionalByNullability) {
             logger.LogWarning($"Optionally annotation on nullable annotated {member.ReflectedType}.{member.Name}");
         }
@@ -44,7 +44,7 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
             return metamodel;
         }
 
-        Process(method, specification);
+        Process(method, specification, reflector);
         return metamodel;
     }
 
@@ -55,7 +55,7 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         }
 
         if (property.HasPublicGetter() && !property.PropertyType.IsPrimitive) {
-            Process(property, specification);
+            Process(property, specification, reflector);
         }
 
         return metamodel;
@@ -72,7 +72,7 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         }
 
         var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
-        var optionalByNullability = FactoryUtils.IsOptionalByNullability(parameter);
+        var optionalByNullability = FactoryUtils.IsOptionalByNullability(parameter, reflector);
         if (attribute is not null && optionalByNullability) {
             logger.LogWarning($"Optionally annotation on nullable annotated parameter {paramNum} on {method.ReflectedType}.{method.Name}");
         }

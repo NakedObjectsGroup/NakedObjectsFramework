@@ -16,4 +16,5 @@ public class NakedFunctionsOptions {
     public Type[] DomainServices { get; set; } = Array.Empty<Type>();
     public bool ConcurrencyCheck { get; set; } = true;
     public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
+    public bool UseNullableReferenceTypesForOptionality { get; set; } = false;
 }

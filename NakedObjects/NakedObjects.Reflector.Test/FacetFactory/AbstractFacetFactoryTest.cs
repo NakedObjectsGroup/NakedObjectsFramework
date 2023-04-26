@@ -29,7 +29,7 @@ public abstract class AbstractFacetFactoryTest {
     protected IMethodRemover MethodRemover;
     private Mock<IMetamodelManager> mockMetadata;
     private Mock<IMethodRemover> mockMethodRemover;
-    private Mock<IReflector> mockReflector;
+    protected Mock<IReflector> mockReflector;
 
     protected IReflector Reflector;
     protected IObjectSpecBuilder Specification;

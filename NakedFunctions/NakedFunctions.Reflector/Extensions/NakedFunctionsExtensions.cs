@@ -26,7 +26,7 @@ namespace NakedFunctions.Reflector.Extensions;
 
 public static class NakedFunctionsExtensions {
     public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-        new(options.DomainTypes, options.DomainFunctions, options.DomainServices, options.ConcurrencyCheck);
+        new(options.DomainTypes, options.DomainFunctions, options.DomainServices, options.UseNullableReferenceTypesForOptionality, options.ConcurrencyCheck);
 
     public static void AddNakedFunctions(this NakedFrameworkOptions frameworkOptions, Action<NakedFunctionsOptions> setupAction) {
         var options = new NakedFunctionsOptions();

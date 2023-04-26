@@ -16,4 +16,5 @@ public class NakedObjectsOptions {
     public bool ConcurrencyCheck { get; set; } = true;
     public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
     public bool NoValidate { get; set; }
+    public bool UseNullableReferenceTypesForOptionality { get; set; } = false;
 }

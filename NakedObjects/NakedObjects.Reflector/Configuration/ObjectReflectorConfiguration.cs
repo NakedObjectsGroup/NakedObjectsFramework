@@ -15,11 +15,13 @@ namespace NakedObjects.Reflector.Configuration;
 public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
     public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                         Type[] services,
+                                        bool useNullableReferenceTypesForOptionality,
                                         bool concurrencyChecking = true) {
         TypesToIntrospect = typesToIntrospect;
         Services = services;
         IgnoreCase = false;
         ConcurrencyChecking = concurrencyChecking;
+        UseNullableReferenceTypesForOptionality = useNullableReferenceTypesForOptionality;
 
         ValidateConfig();
     }
@@ -57,6 +59,8 @@ public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
     public Type[] TypesToIntrospect { get; }
     public bool IgnoreCase { get; }
     public bool ConcurrencyChecking { get; }
+
+    public bool UseNullableReferenceTypesForOptionality { get; }
     public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
 
     public Type[] Services { get; }

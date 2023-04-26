@@ -288,6 +288,7 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     public override void SetUp() {
         base.SetUp();
         facetFactory = new OptionalAnnotationFacetFactory(GetOrder<OptionalAnnotationFacetFactory>(), LoggerFactory);
+        mockReflector.Setup(reflector => reflector.UseNullableReferenceTypesForOptionality).Returns(true);
     }
 
     [TestCleanup]

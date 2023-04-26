@@ -155,3 +155,10 @@ public class EFCoreObjectDbContext : EFCoreTestDbContext {
 
     public void Create() => Database.EnsureCreated();
 }
+
+public class EFCoreNullabilityDbContext : EFCoreTestDbContext {
+    public EFCoreNullabilityDbContext() : base(Constants.CsNull) { }
+    public void Delete() => Database.EnsureDeleted();
+
+    public void Create() => Database.EnsureCreated();
+}

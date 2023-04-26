@@ -51,6 +51,8 @@ public sealed class FunctionalReflector : AbstractParallelReflector {
 
     protected override IIntrospector GetNewIntrospector() => new FunctionalIntrospector(this, LoggerFactory.CreateLogger<FunctionalIntrospector>());
 
+    public override bool UseNullableReferenceTypesForOptionality => functionalReflectorConfiguration.UseNullableReferenceTypesForOptionality;
+
     public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
         var records = functionalReflectorConfiguration.Types;
         var functions = functionalReflectorConfiguration.Functions;
