@@ -38,7 +38,9 @@ public class PolymorphicPayment : IHasIntegerId {
     [Disabled]
     public virtual PolymorphicPaymentPayeeLink PayeeLink { get; set; }
 
+#pragma warning disable CS0618
     [NotPersisted]
+#pragma warning restore CS0618
     [Optionally]
     public IPayee Payee {
         get => PolymorphicNavigator.RoleObjectFromLink(ref _Payee, PayeeLink, this);
@@ -68,7 +70,9 @@ public class PolymorphicPayment : IHasIntegerId {
     ///     It is more convenient for the user, but each element is resolved separately, so more
     ///     expensive in processing terms.  Use this pattern only on smaller collections.
     /// </summary>
+#pragma warning disable CS0618
     [NotPersisted]
+#pragma warning restore CS0618
     public ICollection<IPayableItem> PayableItems {
         get { return PayableItemLinks.Select(x => x.AssociatedRoleObject).ToList(); }
     }

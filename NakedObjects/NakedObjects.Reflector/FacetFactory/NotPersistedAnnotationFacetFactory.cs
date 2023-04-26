@@ -25,13 +25,17 @@ public sealed class NotPersistedAnnotationFacetFactory : DomainObjectFacetFactor
         : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+#pragma warning disable CS0618 // Type or member is obsolete
         var attribute = type.GetCustomAttribute<NotPersistedAttribute>();
+#pragma warning restore CS0618 // Type or member is obsolete
         FacetUtils.AddFacet(Create(attribute), specification);
         return metamodel;
     }
 
     private static void Process(MemberInfo member, ISpecificationBuilder holder) {
+#pragma warning disable CS0618 // Type or member is obsolete
         var attribute = member.GetCustomAttribute<NotPersistedAttribute>();
+#pragma warning restore CS0618 // Type or member is obsolete
         FacetUtils.AddFacet(Create(attribute), holder);
     }
 
@@ -40,5 +44,7 @@ public sealed class NotPersistedAnnotationFacetFactory : DomainObjectFacetFactor
         return metamodel;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     private static INotPersistedFacet Create(NotPersistedAttribute attribute) => attribute is null ? null : NotPersistedFacet.Instance;
+#pragma warning restore CS0618 // Type or member is obsolete
 }

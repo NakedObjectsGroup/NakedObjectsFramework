@@ -36,7 +36,9 @@ public class WithActionViewModel : WithAction, IViewModel {
     [QueryOnly]
     public override WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() => dt1;
 
+#pragma warning disable CS0618
     [AuthorizeAction(Users = "ViewUser")]
+#pragma warning restore CS0618
     public override MostSimple AUserDisabledAction() => ms1;
 
     public override MostSimple AnActionReturnsNull() => null;

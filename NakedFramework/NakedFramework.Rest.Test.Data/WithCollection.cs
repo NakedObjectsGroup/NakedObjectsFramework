@@ -116,7 +116,9 @@ namespace RestfulObjects.Test.Data {
         [PresentationHint("class7 class8")]
         public virtual ICollection<MostSimple> ACollection { get; set; } = new List<MostSimple>();
 
+#pragma warning disable CS0618
         [NotPersisted]
+#pragma warning restore CS0618
         public virtual ICollection<MostSimpleViewModel> ACollectionViewModels {
             get => aCollectionViewModels;
             set => aCollectionViewModels = value;
@@ -126,7 +128,9 @@ namespace RestfulObjects.Test.Data {
         public virtual ICollection<MostSimple> ASetAsCollection { get; set; } = new List<MostSimple>();
 
         [NotMapped]
+#pragma warning disable CS0618
         [NotPersisted]
+#pragma warning restore CS0618
         public virtual ISet<MostSimple> ASet {
             get => new SetWrapper<MostSimple>(ASetAsCollection);
             set => ASetAsCollection = value;
@@ -148,7 +152,9 @@ namespace RestfulObjects.Test.Data {
         [DescribedAs("an empty set for testing")]
         [MemberOrder(Sequence = "2")]
         [NotMapped]
+#pragma warning disable CS0618
         [NotPersisted]
+#pragma warning restore CS0618
         public virtual ISet<MostSimple> AnEmptySet { get; set; } = new HashSet<MostSimple>();
 
         [Eagerly(Do.Rendering)]

@@ -29,11 +29,15 @@ namespace AdventureWorksModel {
         }
 
         [Hidden(WhenTo.OncePersisted)]
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; set; }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted][Disabled]
+#pragma warning restore CS0618 // Type or member is obsolete
         public virtual BusinessEntity AddressFor { get; set; }
 
         public void Persisting() {
@@ -145,7 +149,9 @@ namespace AdventureWorksModel {
         #region CountryRegion (derived)
 
         [Disabled(WhenTo.OncePersisted)]
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted][Optionally]
+#pragma warning restore CS0618 // Type or member is obsolete
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; set; }
 

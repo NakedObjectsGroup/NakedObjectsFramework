@@ -31,8 +31,10 @@ public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryPr
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var declaringType = method.DeclaringType;
+#pragma warning disable CS0618 // Type or member is obsolete
         var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
         var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
+#pragma warning restore CS0618 // Type or member is obsolete
 
         if (classAttribute is not null && methodAttribute is not null) {
             logger.LogWarning($"Class and method level AuthorizeAttributes applied to class {declaringType.FullName} - ignoring attribute on method {method.Name}");
@@ -44,8 +46,10 @@ public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryPr
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         var declaringType = property.DeclaringType;
+#pragma warning disable CS0618 // Type or member is obsolete
         var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
         var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
+#pragma warning restore CS0618 // Type or member is obsolete
 
         if (classAttribute is not null && propertyAttribute is not null) {
             var declaringTypeName = declaringType.FullName;
@@ -57,6 +61,7 @@ public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryPr
         return metamodel;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     private static void Create(AuthorizePropertyAttribute attribute, ISpecificationBuilder holder) {
         if (attribute is not null) {
             if (attribute.ViewRoles is not null || attribute.ViewUsers is not null) {
@@ -68,7 +73,9 @@ public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryPr
             }
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 
+#pragma warning disable CS0618 // Type or member is obsolete
     private static void Create(AuthorizeActionAttribute attribute, ISpecificationBuilder holder) {
         if (attribute is not null) {
             if (attribute.Roles is not null || attribute.Users is not null) {
@@ -77,4 +84,5 @@ public sealed class AuthorizeAnnotationFacetFactory : DomainObjectFacetFactoryPr
             }
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 }

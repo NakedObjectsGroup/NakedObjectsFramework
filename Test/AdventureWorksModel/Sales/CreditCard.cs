@@ -55,7 +55,9 @@ namespace AdventureWorksModel {
         [Hidden(WhenTo.UntilPersisted)]
         [MemberOrder(2)]
         [DisplayName("Card No.")]
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         public virtual string ObfuscatedNumber {
             get {
                 if (_ObfuscatedNumber == null && CardNumber != null && CardNumber.Length > 4) {
@@ -130,10 +132,14 @@ namespace AdventureWorksModel {
         #region Logic for creating new cards
 
         [NakedObjectsIgnore]
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         public ICreditCardCreator Creator { get; set; }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         public Person ForContact { get; set; }
 
         #endregion

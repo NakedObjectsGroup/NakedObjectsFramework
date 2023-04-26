@@ -17,7 +17,9 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data;
 
+#pragma warning disable CS0618
 [NotPersisted]
+#pragma warning restore CS0618
 [NotMapped]
 public class MostSimpleViewModel : IViewModel {
     private int deriveCheck;

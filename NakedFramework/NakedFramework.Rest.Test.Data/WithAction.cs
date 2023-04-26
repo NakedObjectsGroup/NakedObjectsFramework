@@ -41,7 +41,9 @@ public abstract class WithAction {
     [QueryOnly]
     public virtual WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() => Container.Instances<WithDateTimeKey>().FirstOrDefault();
 
+#pragma warning disable CS0618
     [AuthorizeAction(Users = "ViewUser")]
+#pragma warning restore CS0618
     public virtual MostSimple AUserDisabledAction() {
         return Container.Instances<MostSimple>().Single(x => x.Id == 1);
     }

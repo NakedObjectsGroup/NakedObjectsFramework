@@ -1033,42 +1033,66 @@ public class AuthorizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     private class Customer {
         public int Property1 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property2 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(ViewRoles = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property3 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(ViewUsers = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property4 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(EditRoles = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property5 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(EditUsers = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property6 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property7 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property8 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property9 => 0;
 
         public int Action1() => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeAction]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Action2() => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeAction(Roles = "aRole")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Action3() => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeAction(Users = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Action4() => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeAction(Roles = "aRole", Users = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Action5() => 0;
     }
 
@@ -1078,97 +1102,129 @@ public class AuthorizeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer2 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(ViewRoles = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer3 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(ViewUsers = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer4 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(EditRoles = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer5 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(EditUsers = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer6 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer7 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer8 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer9 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeAction]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer10 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeAction(Roles = "aRole")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer11 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeAction(Users = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer12 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeAction(Roles = "aRole", Users = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer13 {
         public int Property1 => 0;
 
         public int Action1() => 0;
     }
 
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeAction(Roles = "aRole", Users = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
     [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
     private class Customer14 {
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeProperty(ViewRoles = "anotherRole", ViewUsers = "anotherUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Property1 => 0;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [AuthorizeAction(Roles = "anotherRole", Users = "anotherUser")]
+#pragma warning restore CS0618 // Type or member is obsolete
         public int Action1() => 0;
     }
 

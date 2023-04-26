@@ -277,7 +277,9 @@ namespace AdventureWorksModel {
         #region ProductSubcategory
         private ProductCategory productCategory;
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         [Optionally]
         [MemberOrder(12)]
         public virtual ProductCategory ProductCategory {

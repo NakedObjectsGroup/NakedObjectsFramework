@@ -60,7 +60,9 @@ namespace AdventureWorksModel {
         }
         #endregion
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [Disabled, NotPersisted, Hidden(WhenTo.OncePersisted)]
+#pragma warning restore CS0618 // Type or member is obsolete
         public bool AddItemsFromCart { get; set; }
 
         #region Properties

@@ -69,7 +69,9 @@ public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     #region Nested type: Customer
 
     private class Customer {
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
 // ReSharper disable once UnusedMember.Local
         public string FirstName => null;
     }
@@ -79,7 +81,9 @@ public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
     #region Nested type: Customer1
 
     private class Customer1 {
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
 // ReSharper disable once UnusedMember.Local
         public IList Orders => null;
     }

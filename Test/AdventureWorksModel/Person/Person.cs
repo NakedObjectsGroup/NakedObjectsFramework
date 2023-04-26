@@ -62,12 +62,16 @@ namespace AdventureWorksModel {
 
         #endregion
 
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         [NakedObjectsIgnore]
         public IBusinessEntity ForEntity { get; set; }
 
         [MemberOrder(2)]
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted][Hidden(WhenTo.OncePersisted)]
+#pragma warning restore CS0618 // Type or member is obsolete
         public virtual ContactType ContactType { get; set; }
 
         public void Persisted() {
@@ -184,7 +188,9 @@ namespace AdventureWorksModel {
         #region InitialPassword Property
 
         //See Persisting method
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         [Hidden(WhenTo.OncePersisted)]
         [MemberOrder(27)]
         [DataType(DataType.Password)]

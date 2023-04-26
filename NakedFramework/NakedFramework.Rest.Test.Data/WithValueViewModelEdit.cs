@@ -57,10 +57,14 @@ public class WithValueViewModelEdit : IViewModelEdit {
     [MemberOrder(Sequence = "5")]
     public virtual TimeSpan ATimeSpanValue { get; set; } = new(1, 2, 3, 4, 5);
 
+#pragma warning disable CS0618
     [AuthorizeProperty(ViewUsers = "viewUser")]
+#pragma warning restore CS0618
     public virtual int AUserHiddenValue { get; set; }
 
+#pragma warning disable CS0618
     [AuthorizeProperty(EditUsers = "editUser")]
+#pragma warning restore CS0618
     public virtual int AUserDisabledValue { get; set; }
 
     public virtual int[] ChoicesAChoicesValue() {

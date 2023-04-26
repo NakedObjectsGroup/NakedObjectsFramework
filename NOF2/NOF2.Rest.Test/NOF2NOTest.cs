@@ -96,8 +96,10 @@ public class NOF2NOTest : AcceptanceTestCase {
         }
     };
 
+#pragma warning disable CS0618 // Type or member is obsolete
     protected virtual Action<EFCorePersistorOptions> EFCorePersistorOptions =>
         options => { options.ContextCreators = ContextCreators; };
+#pragma warning restore CS0618 // Type or member is obsolete
 
     protected override Action<NakedFrameworkOptions> AddPersistor => builder => { builder.AddEFCorePersistor(EFCorePersistorOptions); };
 

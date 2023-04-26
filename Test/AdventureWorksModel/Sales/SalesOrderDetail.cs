@@ -56,7 +56,9 @@ namespace AdventureWorksModel {
         #endregion
 
         #region LineTotal
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         [Disabled]
         [MemberOrder(40)]
         [Mask("C")]
@@ -140,7 +142,9 @@ namespace AdventureWorksModel {
         #endregion
 
         [Disabled]
+#pragma warning disable CS0618 // Type or member is obsolete
         [NotPersisted]
+#pragma warning restore CS0618 // Type or member is obsolete
         [MemberOrder(11)]
         public virtual Product Product {
             get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; }

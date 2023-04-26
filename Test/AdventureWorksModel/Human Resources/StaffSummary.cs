@@ -6,7 +6,9 @@ namespace AdventureWorksModel
 
     //Used to test creation/rendering of NotPersisted object
     //Note, however, that recommended pattern would be to use a ViewModel for this
+#pragma warning disable CS0618 // Type or member is obsolete
     [NotPersisted, NotMapped]
+#pragma warning restore CS0618 // Type or member is obsolete
     public class StaffSummary
     {
         #region Injected services

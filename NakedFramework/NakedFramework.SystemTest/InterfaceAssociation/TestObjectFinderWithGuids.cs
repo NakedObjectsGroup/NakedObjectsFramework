@@ -168,7 +168,9 @@ public class Payment {
     [Optionally]
     public virtual string PayeeCompoundKey { get; set; }
 
+#pragma warning disable CS0618
     [NotPersisted]
+#pragma warning restore CS0618
     [Optionally]
     public IPayee Payee {
         get {
