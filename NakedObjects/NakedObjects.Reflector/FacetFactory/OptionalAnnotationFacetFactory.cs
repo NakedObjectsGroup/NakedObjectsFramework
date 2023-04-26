@@ -32,7 +32,7 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
         var attribute = member.GetCustomAttribute<OptionallyAttribute>();
         var optionalByNullability = FactoryUtils.IsOptionalByNullability(member, reflector);
         if (attribute is not null && optionalByNullability) {
-            logger.LogWarning($"Optionally annotation on nullable annotated {member.ReflectedType}.{member.Name}");
+            logger.LogInformation($"Optionally annotation on nullable annotated {member.ReflectedType}.{member.Name}");
         }
 
         FacetUtils.AddFacet(Create(attribute is not null || optionalByNullability), holder);
@@ -75,7 +75,7 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
 
         var optionalByNullability = FactoryUtils.IsOptionalByNullability(parameter, reflector);
         if (attribute is not null && optionalByNullability) {
-            logger.LogWarning($"Optionally annotation on nullable annotated parameter {paramNum} on {method.ReflectedType}.{method.Name}");
+            logger.LogInformation($"Optionally annotation on nullable annotated parameter {paramNum} on {method.ReflectedType}.{method.Name}");
         }
 
         FacetUtils.AddFacet(Create(attribute is not null || optionalByNullability), holder);
