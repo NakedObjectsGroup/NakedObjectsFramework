@@ -18,6 +18,7 @@ using NakedFramework.Menu;
 using NakedFramework.Metamodel.Authorization;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Model;
+using NakedFramework.Test;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Reflector.Authorization;
 using NakedFunctions.Rest.Test.Data;

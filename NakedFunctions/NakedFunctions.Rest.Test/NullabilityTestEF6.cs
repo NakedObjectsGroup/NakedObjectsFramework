@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Rest.API;
+using NakedFramework.Test;
 using NakedFramework.Test.TestCase;
 using NakedFunctions.Reflector.Extensions;
 using NakedFunctions.Rest.Test.Data;

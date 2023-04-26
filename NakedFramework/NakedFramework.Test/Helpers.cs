@@ -15,7 +15,7 @@ using NakedFramework.Facade.Interface;
 using NakedFramework.Rest.API;
 using NakedFramework.Rest.Configuration;
 
-namespace NakedFunctions.Rest.Test;
+namespace NakedFramework.Test;
 
 public class RestfulObjectsController : RestfulObjectsControllerBase {
     public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf, IRestfulObjectsConfiguration c) : base(ff, l, lf, c) { }
