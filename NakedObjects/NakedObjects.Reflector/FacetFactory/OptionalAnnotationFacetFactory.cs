@@ -5,10 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Immutable;
-using System.Diagnostics.Metrics;
-using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFramework;
@@ -24,13 +21,6 @@ using NakedFramework.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory;
 
-public enum Nullability : byte {
-    Oblivious = 0,
-    NotAnnotated = 1,
-    Annotated = 2
-}
-
-
 public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
     private readonly ILogger<OptionalAnnotationFacetFactory> logger;
 
@@ -40,62 +30,13 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
 
     private void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<OptionallyAttribute>();
-        var optionalByNullability = IsOptionalByNullability(member, holder);
+        var optionalByNullability = FactoryUtils.IsOptionalByNullability(member);
         if (attribute is not null && optionalByNullability) {
             logger.LogWarning($"Optionally annotation on nullable annotated {member.ReflectedType}.{member.Name}");
         }
 
         FacetUtils.AddFacet(Create(attribute is not null || optionalByNullability), holder);
     }
-
-    private static bool IsOptionalByNullability(MemberInfo member, ISpecificationBuilder holder) {
-        var owner = member.DeclaringType;
-
-        var attributes = owner?.GetCustomAttributes() ?? Array.Empty<Attribute>();
-        var ncAttribute = attributes.SingleOrDefault(a => a.GetType().Name == "NullableContextAttribute");
-        
-        var nullableContext = GetNullability(ncAttribute);
-
-        if (nullableContext == Nullability.Oblivious) {
-            return false;
-        }
-
-        var nAttribute = member.GetCustomAttributes().SingleOrDefault(a => a.GetType().Name == "NullableAttribute");
-
-        if (nAttribute == null) {
-            return nullableContext == Nullability.Annotated;
-        }
-
-        return GetNullabilities(nAttribute).FirstOrDefault() == Nullability.Annotated;
-    }
-
-    private static bool IsOptionalByNullability(ParameterInfo parameter, ISpecificationBuilder holder) {
-        var owner = parameter.Member;
-
-        var attributes = owner?.GetCustomAttributes() ?? Array.Empty<Attribute>();
-        var ncAttribute = attributes.SingleOrDefault(a => a.GetType().Name == "NullableContextAttribute");
-        
-        var nullableContext = GetNullability(ncAttribute);
-
-        if (nullableContext == Nullability.Oblivious) {
-            return false;
-        }
-
-        var nAttribute = parameter.GetCustomAttributes().SingleOrDefault(a => a.GetType().Name == "NullableAttribute");
-
-        if (nAttribute == null) {
-            return nullableContext == Nullability.Annotated;
-        }
-
-        return GetNullabilities(nAttribute).FirstOrDefault() == Nullability.Annotated;
-    }
-
-
-
-
-    private static Nullability GetNullability(Attribute ncAttribute) => (Nullability) (ncAttribute?.GetType().GetField("Flag")?.GetValue(ncAttribute) ?? (byte)0);
-
-    private static Nullability[] GetNullabilities(Attribute nAttribute) => (Nullability[]) (nAttribute?.GetType().GetField("NullableFlags")?.GetValue(nAttribute) ?? Array.Empty<Nullability>());
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
         if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<OptionallyAttribute>() is not null) {
@@ -132,13 +73,12 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
 
         var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
 
-        var optionalByNullability = IsOptionalByNullability(parameter, holder);
+        var optionalByNullability = FactoryUtils.IsOptionalByNullability(parameter);
         if (attribute is not null && optionalByNullability) {
             logger.LogWarning($"Optionally annotation on nullable annotated parameter {paramNum} on {method.ReflectedType}.{method.Name}");
         }
 
-
-        FacetUtils.AddFacet(Create(attribute is not null|| optionalByNullability), holder);
+        FacetUtils.AddFacet(Create(attribute is not null || optionalByNullability), holder);
         return metamodel;
     }
 

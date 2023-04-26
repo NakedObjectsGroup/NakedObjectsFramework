@@ -28,9 +28,14 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
         logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
-    private static void Process(MemberInfo member, ISpecificationBuilder holder) {
+    private void Process(MemberInfo member, ISpecificationBuilder holder) {
         var attribute = member.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute), holder);
+        var optionalByNullability = FactoryUtils.IsOptionalByNullability(member);
+        if (attribute is not null && optionalByNullability) {
+            logger.LogWarning($"Optionally annotation on nullable annotated {member.ReflectedType}.{member.Name}");
+        }
+
+        FacetUtils.AddFacet(Create(attribute is not null || optionalByNullability), holder);
     }
 
     public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -67,9 +72,14 @@ public sealed class OptionalAnnotationFacetFactory : FunctionalFacetFactoryProce
         }
 
         var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute), holder);
+        var optionalByNullability = FactoryUtils.IsOptionalByNullability(parameter);
+        if (attribute is not null && optionalByNullability) {
+            logger.LogWarning($"Optionally annotation on nullable annotated parameter {paramNum} on {method.ReflectedType}.{method.Name}");
+        }
+
+        FacetUtils.AddFacet(Create(attribute is not null || optionalByNullability), holder);
         return metamodel;
     }
 
-    private static IMandatoryFacet Create(OptionallyAttribute attribute) => attribute is not null ? OptionalFacet.Instance : null;
+    private static IMandatoryFacet Create(bool optional) => optional ? OptionalFacet.Instance : null;
 }
