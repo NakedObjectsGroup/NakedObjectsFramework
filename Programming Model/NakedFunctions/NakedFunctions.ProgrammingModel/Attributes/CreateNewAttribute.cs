@@ -5,15 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
-    ///     specified type
-    ///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
-    ///     further properties (see EditAttribute).
-    /// </summary>
-    public class CreateNewAttribute : AbstractCreateNewAttribute { }
-}
+namespace NakedFunctions; 
+
+/// <summary>
+///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
+///     specified type
+///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
+///     further properties (see EditAttribute).
+/// </summary>
+public class CreateNewAttribute : AbstractCreateNewAttribute { }

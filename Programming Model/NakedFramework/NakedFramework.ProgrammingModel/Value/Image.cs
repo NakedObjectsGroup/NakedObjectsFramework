@@ -8,18 +8,18 @@
 using System;
 using System.IO;
 
-namespace NakedFramework.Value {
-    /// <summary>
-    ///     Specialised version of FileAttachment for handling images.
-    /// </summary>
-    [Serializable]
-    public class Image : FileAttachment {
-        public Image() { }
+namespace NakedFramework.Value; 
 
-        public Image(byte[] resource, string name = null, string mimeType = null) : base(resource, name, mimeType) { }
+/// <summary>
+///     Specialised version of FileAttachment for handling images.
+/// </summary>
+[Serializable]
+public class Image : FileAttachment {
+    public Image() { }
 
-        public Image(Stream resource, string name = null, string mimeType = null) : base(resource, name, mimeType) { }
+    public Image(byte[] resource, string name = null, string mimeType = null) : base(resource, name, mimeType) { }
 
-        public override string ToString() => "Image";
-    }
+    public Image(Stream resource, string name = null, string mimeType = null) : base(resource, name, mimeType) { }
+
+    public override string ToString() => "Image";
 }

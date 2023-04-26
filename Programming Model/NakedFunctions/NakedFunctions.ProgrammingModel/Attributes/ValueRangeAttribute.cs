@@ -7,19 +7,19 @@
 
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Specify the minimum and maximum allowed values for a numeric parameter, or the minimum and maximum
-    ///     number of characters for a string parameter.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class ValueRangeAttribute : Attribute {
-        public ValueRangeAttribute(int minimum, int maximum = int.MaxValue) {
-            Minimum = minimum;
-            Maximum = maximum;
-        }
+namespace NakedFunctions; 
 
-        public int Minimum { get; }
-        public int Maximum { get; }
+/// <summary>
+///     Specify the minimum and maximum allowed values for a numeric parameter, or the minimum and maximum
+///     number of characters for a string parameter.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter)]
+public class ValueRangeAttribute : Attribute {
+    public ValueRangeAttribute(int minimum, int maximum = int.MaxValue) {
+        Minimum = minimum;
+        Maximum = maximum;
     }
+
+    public int Minimum { get; }
+    public int Maximum { get; }
 }

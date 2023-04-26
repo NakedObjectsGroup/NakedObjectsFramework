@@ -5,10 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFunctions.Security {
-    /// <summary>
-    ///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types
-    ///     within a namespace.
-    /// </summary>
-    public interface INamespaceAuthorizer : ITypeAuthorizer<object> { }
-}
+namespace NakedFunctions.Security; 
+
+/// <summary>
+///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types
+///     within a namespace.
+/// </summary>
+public interface INamespaceAuthorizer : ITypeAuthorizer<object> { }

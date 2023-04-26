@@ -7,32 +7,32 @@
 
 using System.Security.Principal;
 
-namespace NakedFramework.Security {
-    /// <summary>
-    ///     Implement this interface to manage authorization for a specific class of domain objects.
-    ///     The implementation should be registered via NakedObjects.Security.TypeAuthorizerInstaller in the Run class
-    /// </summary>
-    /// <typeparam name="T">
-    ///     T should be a concrete domain type for a type-specific authorizer; 'Object' for a default
-    ///     authorizer
-    /// </typeparam>
-    public interface ITypeAuthorizer<T> {
-        /// <summary>
-        ///     Called only for properties on an object when user attempts to edit the object
-        /// </summary>
-        /// <param name="principal">Representation of the user</param>
-        /// <param name="target">Domain object instance</param>
-        /// <param name="memberName">String representation of property name</param>
-        /// <returns></returns>
-        bool IsEditable(IPrincipal principal, T target, string memberName);
+namespace NakedFramework.Security; 
 
-        /// <summary>
-        ///     Called on properties and actions on an object when user attempts to view the object
-        /// </summary>
-        /// <param name="principal">Representation of the user</param>
-        /// <param name="target">Domain object instance</param>
-        /// <param name="memberName">String representation of property or action name</param>
-        /// <returns></returns>
-        bool IsVisible(IPrincipal principal, T target, string memberName);
-    }
+/// <summary>
+///     Implement this interface to manage authorization for a specific class of domain objects.
+///     The implementation should be registered via NakedObjects.Security.TypeAuthorizerInstaller in the Run class
+/// </summary>
+/// <typeparam name="T">
+///     T should be a concrete domain type for a type-specific authorizer; 'Object' for a default
+///     authorizer
+/// </typeparam>
+public interface ITypeAuthorizer<T> {
+    /// <summary>
+    ///     Called only for properties on an object when user attempts to edit the object
+    /// </summary>
+    /// <param name="principal">Representation of the user</param>
+    /// <param name="target">Domain object instance</param>
+    /// <param name="memberName">String representation of property name</param>
+    /// <returns></returns>
+    bool IsEditable(IPrincipal principal, T target, string memberName);
+
+    /// <summary>
+    ///     Called on properties and actions on an object when user attempts to view the object
+    /// </summary>
+    /// <param name="principal">Representation of the user</param>
+    /// <param name="target">Domain object instance</param>
+    /// <param name="memberName">String representation of property or action name</param>
+    /// <returns></returns>
+    bool IsVisible(IPrincipal principal, T target, string memberName);
 }

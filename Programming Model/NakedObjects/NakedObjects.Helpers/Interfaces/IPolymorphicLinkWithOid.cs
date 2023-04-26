@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects {
-    public interface IPolymorphicLinkWithOid<TRole, TOwner>
-        where TRole : class
-        where TOwner : class, IHasIntegerId {
-        string RoleObjectOid { get; set; }
+namespace NakedObjects; 
 
-        TOwner Owner { get; set; }
-    }
+public interface IPolymorphicLinkWithOid<TRole, TOwner>
+    where TRole : class
+    where TOwner : class, IHasIntegerId {
+    string RoleObjectOid { get; set; }
+
+    TOwner Owner { get; set; }
 }

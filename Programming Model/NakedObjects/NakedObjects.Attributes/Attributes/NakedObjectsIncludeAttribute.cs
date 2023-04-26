@@ -7,11 +7,11 @@
 
 using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Instructs NakedObjects to include (reflect over) a property or action. Typically used where
-    ///     the type has been marked up with [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)].
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
-    public class NakedObjectsIncludeAttribute : Attribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Instructs NakedObjects to include (reflect over) a property or action. Typically used where
+///     the type has been marked up with [NakedObjectsType(ReflectOver.ExplicitlyIncludedMembersOnly)].
+/// </summary>
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
+public class NakedObjectsIncludeAttribute : Attribute { }

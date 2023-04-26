@@ -7,21 +7,17 @@
 
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Applied at class level to e.g. MyVMType to make it a non-persisted view model.
-    ///     Initialised with a type e.g. MyVMType_Functions that must define two functions:
-    ///     - static string[] DeriveKeys(this MyVMType vm)
-    ///     - static MyVmType CreateFromKeys(string[] keys)
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public class ViewModelAttribute : Attribute {
+namespace NakedFunctions; 
 
-        public ViewModelAttribute(Type typeDefiningVMFunctions)
-        {
-            TypeDefiningVMFunctions = typeDefiningVMFunctions;
-        }
+/// <summary>
+///     Applied at class level to e.g. MyVMType to make it a non-persisted view model.
+///     Initialised with a type e.g. MyVMType_Functions that must define two functions:
+///     - static string[] DeriveKeys(this MyVMType vm)
+///     - static MyVmType CreateFromKeys(string[] keys)
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+public class ViewModelAttribute : Attribute {
+    public ViewModelAttribute(Type typeDefiningVMFunctions) => TypeDefiningVMFunctions = typeDefiningVMFunctions;
 
-        public Type TypeDefiningVMFunctions { get; }
-    }
+    public Type TypeDefiningVMFunctions { get; }
 }

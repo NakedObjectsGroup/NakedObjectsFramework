@@ -7,12 +7,11 @@
 
 using System;
 
-namespace NakedFramework {
-   
-    [AttributeUsage(AttributeTargets.Method)]
-    public abstract class AbstractPageSizeAttribute : Attribute {
-        public AbstractPageSizeAttribute(int i) => Value = i;
+namespace NakedFramework; 
 
-        public int Value { get; }
-    }
+[AttributeUsage(AttributeTargets.Method)]
+public abstract class AbstractPageSizeAttribute : Attribute {
+    public AbstractPageSizeAttribute(int i) => Value = i;
+
+    public int Value { get; }
 }

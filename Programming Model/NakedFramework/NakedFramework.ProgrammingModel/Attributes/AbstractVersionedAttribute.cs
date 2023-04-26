@@ -7,8 +7,7 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public abstract class AbstractVersionedAttribute : Attribute { }
-}
+[AttributeUsage(AttributeTargets.Property)]
+public abstract class AbstractVersionedAttribute : Attribute { }

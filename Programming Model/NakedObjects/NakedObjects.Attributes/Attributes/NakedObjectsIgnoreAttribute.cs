@@ -7,10 +7,10 @@
 
 using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
-    public class NakedObjectsIgnoreAttribute : Attribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Tell Nakedobjects to ignore this class, property or action. It will not be introspected.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
+public class NakedObjectsIgnoreAttribute : Attribute { }

@@ -7,13 +7,13 @@
 
 using System;
 
-namespace NakedFramework {
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public abstract class AbstractPresentationHintAttribute : Attribute {
-        protected const string HideInClient = "hide-in-client";
+namespace NakedFramework; 
 
-        public AbstractPresentationHintAttribute(string s) => Value = s;
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+public abstract class AbstractPresentationHintAttribute : Attribute {
+    protected const string HideInClient = "hide-in-client";
 
-        public string Value { get; }
-    }
+    public AbstractPresentationHintAttribute(string s) => Value = s;
+
+    public string Value { get; }
 }

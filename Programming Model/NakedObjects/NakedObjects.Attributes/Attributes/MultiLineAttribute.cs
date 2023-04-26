@@ -6,20 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework;
-using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Specifies that a <see cref="string" /> property or action parameter may contain carriage returns, and an optional
-    ///     default number of lines and width,
-    ///     which may be used by the display.
-    /// </summary>
-    public class MultiLineAttribute : AbstractMultiLineAttribute {
+namespace NakedObjects; 
 
-        public MultiLineAttribute() : base() { }
+/// <summary>
+///     Specifies that a <see cref="string" /> property or action parameter may contain carriage returns, and an optional
+///     default number of lines and width,
+///     which may be used by the display.
+/// </summary>
+public class MultiLineAttribute : AbstractMultiLineAttribute {
+    public MultiLineAttribute() { }
 
-        public MultiLineAttribute(int numberOfLines) : base(numberOfLines) { }
+    public MultiLineAttribute(int numberOfLines) : base(numberOfLines) { }
 
-        public MultiLineAttribute(int numberOfLines, int width) : base(numberOfLines, width) { }
-    }
+    public MultiLineAttribute(int numberOfLines, int width) : base(numberOfLines, width) { }
 }

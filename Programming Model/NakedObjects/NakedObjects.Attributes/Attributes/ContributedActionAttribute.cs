@@ -7,24 +7,24 @@
 
 using System;
 
-namespace NakedObjects {
+namespace NakedObjects; 
+
+/// <summary>
+///     Specify that an action is to be contributed to the type of the parameter on which
+///     this attribute is specified. Optionally specify the name of the subMenu under which
+///     the contributed action will be rendered.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter)]
+public class ContributedActionAttribute : Attribute {
+    public ContributedActionAttribute(string subMenu) => SubMenu = subMenu;
+
+    public ContributedActionAttribute() => SubMenu = null;
+
+    public string SubMenu { get; set; }
+
     /// <summary>
-    ///     Specify that an action is to be contributed to the type of the parameter on which
-    ///     this attribute is specified. Optionally specify the name of the subMenu under which
-    ///     the contributed action will be rendered.
+    ///     Id has been included for generating UI code that is backwards-compatible with NOF 6.
+    ///     Recommended left null if not needed.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class ContributedActionAttribute : Attribute {
-        public ContributedActionAttribute(string subMenu) => SubMenu = subMenu;
-
-        public ContributedActionAttribute() => SubMenu = null;
-
-        public string SubMenu { get; set; }
-
-        /// <summary>
-        ///     Id has been included for generating UI code that is backwards-compatible with NOF 6.
-        ///     Recommended left null if not needed.
-        /// </summary>
-        public string Id { get; set; }
-    }
+    public string Id { get; set; }
 }

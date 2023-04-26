@@ -7,31 +7,31 @@
 
 using System.Linq;
 
-namespace NakedObjects.Services {
-    public interface IPolymorphicNavigatorWithOid {
-        TLink AddLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TRole : class
-            where TOwner : class, IHasIntegerId;
+namespace NakedObjects.Services; 
 
-        IQueryable<TOwner> FindOwners<TLink, TRole, TOwner>(TRole value)
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TRole : class
-            where TOwner : class, IHasIntegerId;
+public interface IPolymorphicNavigatorWithOid {
+    TLink AddLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TRole : class
+        where TOwner : class, IHasIntegerId;
 
-        TLink NewTransientLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TRole : class
-            where TOwner : class, IHasIntegerId;
+    IQueryable<TOwner> FindOwners<TLink, TRole, TOwner>(TRole value)
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TRole : class
+        where TOwner : class, IHasIntegerId;
 
-        void RemoveLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TRole : class
-            where TOwner : class, IHasIntegerId;
+    TLink NewTransientLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TRole : class
+        where TOwner : class, IHasIntegerId;
 
-        TLink UpdateAddOrDeleteLink<TLink, TRole, TOwner>(TRole value, TLink link, TOwner owner)
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TRole : class
-            where TOwner : class, IHasIntegerId;
-    }
+    void RemoveLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TRole : class
+        where TOwner : class, IHasIntegerId;
+
+    TLink UpdateAddOrDeleteLink<TLink, TRole, TOwner>(TRole value, TLink link, TOwner owner)
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TRole : class
+        where TOwner : class, IHasIntegerId;
 }

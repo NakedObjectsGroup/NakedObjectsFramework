@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
-    <id>NakedFramework.ProgrammingModel</id>
-    <version>14.1.0</version>
-    <authors>Naked Objects Group Ltd</authors>
-    <owners>Naked Objects Group Ltd</owners>
-    <license type="expression">Apache-2.0</license>
-    <projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
-    <icon>images\icon.png</icon>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides a common core to the NakedObjects and NakedFunctions programming models</description>
-    <dependencies>
-      <group targetFramework="net6.0" />
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="icon.png" target="images\" />
-    <file src="..\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.dll" target="lib" />
-    <file src="..\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.pdb" target="lib" />
-    <file src="..\NakedFramework.Types\bin\Debug\**\NakedFramework.Types.dll" target="lib" />
-    <file src="..\NakedFramework.Types\bin\Debug\**\NakedFramework.Types.pdb" target="lib" />
-    <file src="..\NakedFramework.PMResources\bin\Debug\**\NakedFramework.PMResources.dll" target="lib" />
-    <file src="..\NakedFramework.PMResources\bin\Debug\**\NakedFramework.PMResources.pdb" target="lib" />
-  </files>
+	<metadata>
+		<id>NakedFramework.ProgrammingModel</id>
+		<version>14.1.0</version>
+		<authors>Naked Objects Group Ltd</authors>
+		<owners>Naked Objects Group Ltd</owners>
+		<license type="expression">Apache-2.0</license>
+		<projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+		<icon>images\icon.png</icon>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Provides a common core to the NakedObjects and NakedFunctions programming models</description>
+		<dependencies>
+			<group targetFramework="net6.0" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="icon.png" target="images\" />
+		<file src="..\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.dll" target="lib" />
+		<file src="..\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.pdb" target="lib" />
+		<file src="..\NakedFramework.Types\bin\Debug\**\NakedFramework.Types.dll" target="lib" />
+		<file src="..\NakedFramework.Types\bin\Debug\**\NakedFramework.Types.pdb" target="lib" />
+		<file src="..\NakedFramework.PMResources\bin\Debug\**\NakedFramework.PMResources.dll" target="lib" />
+		<file src="..\NakedFramework.PMResources\bin\Debug\**\NakedFramework.PMResources.pdb" target="lib" />
+	</files>
 </package>

@@ -5,24 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework {
+namespace NakedFramework; 
+
+/// <summary>
+///     Enum to indicate location of behaviour
+/// </summary>
+public enum Where {
     /// <summary>
-    ///     Enum to indicate location of behaviour
+    ///     Behaviour occurs at default location
     /// </summary>
-    public enum Where {
-        /// <summary>
-        ///     Behaviour occurs at default location
-        /// </summary>
-        Default,
+    Default,
 
-        /// <summary>
-        ///     Behaviour occurs at local location
-        /// </summary>
-        Locally,
+    /// <summary>
+    ///     Behaviour occurs at local location
+    /// </summary>
+    Locally,
 
-        /// <summary>
-        ///     Behaviour occurs at remote location
-        /// </summary>
-        Remotely
-    }
+    /// <summary>
+    ///     Behaviour occurs at remote location
+    /// </summary>
+    Remotely
 }

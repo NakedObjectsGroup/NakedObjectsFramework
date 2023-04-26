@@ -8,9 +8,9 @@
 using System;
 using System.Security.Principal;
 
-namespace NakedFramework.Profile {
-    public interface IProfiler {
-        void Begin(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName);
-        void End(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName);
-    }
+namespace NakedFramework.Profile; 
+
+public interface IProfiler {
+    void Begin(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName);
+    void End(IPrincipal principal, ProfileEvent profileEvent, Type onType, string memberName);
 }

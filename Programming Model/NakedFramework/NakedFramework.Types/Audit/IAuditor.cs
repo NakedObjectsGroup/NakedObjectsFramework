@@ -7,14 +7,14 @@
 
 using System.Security.Principal;
 
-namespace NakedFramework.Audit {
-    /// <summary>
-    ///     Allows domain programmers to define an auditing service.
-    /// </summary>
-    public interface IAuditor {
-        void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters);
-        void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters);
-        void ObjectUpdated(IPrincipal byPrincipal, object updatedObject);
-        void ObjectPersisted(IPrincipal byPrincipal, object updatedObject);
-    }
+namespace NakedFramework.Audit; 
+
+/// <summary>
+///     Allows domain programmers to define an auditing service.
+/// </summary>
+public interface IAuditor {
+    void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters);
+    void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters);
+    void ObjectUpdated(IPrincipal byPrincipal, object updatedObject);
+    void ObjectPersisted(IPrincipal byPrincipal, object updatedObject);
 }

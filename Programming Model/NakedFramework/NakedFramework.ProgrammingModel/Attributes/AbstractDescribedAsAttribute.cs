@@ -7,12 +7,11 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter)]
-    public abstract class AbstractDescribedAsAttribute : Attribute {
-        public AbstractDescribedAsAttribute(string s) => Value = s;
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter)]
+public abstract class AbstractDescribedAsAttribute : Attribute {
+    public AbstractDescribedAsAttribute(string s) => Value = s;
 
-        public string Value { get; }
-    }
+    public string Value { get; }
 }

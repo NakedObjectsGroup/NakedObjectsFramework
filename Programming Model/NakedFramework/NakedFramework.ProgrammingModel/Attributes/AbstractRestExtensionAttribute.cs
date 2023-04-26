@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework; 
+namespace NakedFramework;
 
 [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
 public abstract class AbstractRestExtensionAttribute : Attribute {

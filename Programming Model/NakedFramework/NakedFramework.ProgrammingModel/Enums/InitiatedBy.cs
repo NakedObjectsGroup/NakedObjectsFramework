@@ -5,19 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework {
-    /// <summary>
-    ///     Enum to indicate initiator of behaviour
-    /// </summary>
-    public enum InitiatedBy {
-        /// <summary>
-        ///     Initiated by interactive user
-        /// </summary>
-        User,
+namespace NakedFramework; 
 
-        /// <summary>
-        ///     Initiated by interactive user or programatically
-        /// </summary>
-        UserOrProgram
-    }
+/// <summary>
+///     Enum to indicate initiator of behaviour
+/// </summary>
+public enum InitiatedBy {
+    /// <summary>
+    ///     Initiated by interactive user
+    /// </summary>
+    User,
+
+    /// <summary>
+    ///     Initiated by interactive user or programatically
+    /// </summary>
+    UserOrProgram
 }

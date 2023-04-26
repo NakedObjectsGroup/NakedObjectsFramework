@@ -7,10 +7,10 @@
 
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Use on a method that would otherwise be an action, to have the result of the action
-    ///     displayed as a non-persisted read-only derived property on an object.
-    /// </summary>
-    public class DisplayAsPropertyAttribute : AbstractDisplayAsPropertyAttribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Use on a method that would otherwise be an action, to have the result of the action
+///     displayed as a non-persisted read-only derived property on an object.
+/// </summary>
+public class DisplayAsPropertyAttribute : AbstractDisplayAsPropertyAttribute { }

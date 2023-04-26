@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFunctions; 
+namespace NakedFunctions;
 
 /// <summary>
 ///     A hint added to the associated display element. For example to be rendered as a class on the html, and picked up by

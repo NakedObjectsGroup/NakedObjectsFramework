@@ -5,22 +5,22 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFunctions.Security {
+namespace NakedFunctions.Security; 
+
+/// <summary>
+///     Implement this interface to manage authorization for a specific class of domain objects.
+/// </summary>
+/// <typeparam name="T">
+///     T should be a concrete domain type for a type-specific authorizer; 'Object' for a default
+///     authorizer
+/// </typeparam>
+public interface ITypeAuthorizer<T> {
     /// <summary>
-    ///     Implement this interface to manage authorization for a specific class of domain objects.
+    ///     Called on properties and actions on an object when user attempts to view the object
     /// </summary>
-    /// <typeparam name="T">
-    ///     T should be a concrete domain type for a type-specific authorizer; 'Object' for a default
-    ///     authorizer
-    /// </typeparam>
-    public interface ITypeAuthorizer<T> {
-        /// <summary>
-        ///     Called on properties and actions on an object when user attempts to view the object
-        /// </summary>
-        /// <param name="target">Domain object instance</param>
-        /// <param name="memberName">String representation of property or action name</param>
-        /// <param name="context">IContext</param>
-        /// <returns></returns>
-        bool IsVisible(T target, string memberName, IContext context);
-    }
+    /// <param name="target">Domain object instance</param>
+    /// <param name="memberName">String representation of property or action name</param>
+    /// <param name="context">IContext</param>
+    /// <returns></returns>
+    bool IsVisible(T target, string memberName, IContext context);
 }

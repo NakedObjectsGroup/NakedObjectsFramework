@@ -7,119 +7,119 @@
 
 using System.Linq;
 
-namespace NakedObjects.Services {
+namespace NakedObjects.Services; 
+
+/// <summary>
+///     Service that provides helper methods for navigating polymorphic associations that make
+///     use of Link objects defined by IPolymorphicLinkWithOid.
+///     Delegates to an injected implementation of IObjectFinder.
+/// </summary>
+public class PolymorphicNavigatorWithOid : IPolymorphicNavigatorWithOid {
     /// <summary>
-    ///     Service that provides helper methods for navigating polymorphic associations that make
-    ///     use of Link objects defined by IPolymorphicLinkWithOid.
-    ///     Delegates to an injected implementation of IObjectFinder.
+    ///     Searches all polymorphic links of type TLink to find those associated with the value
+    ///     then returns the one (if any) that has the specified owner.  If more than one link
+    ///     associates the same value and owner an error is thrown.
     /// </summary>
-    public class PolymorphicNavigatorWithOid : IPolymorphicNavigatorWithOid {
-        /// <summary>
-        ///     Searches all polymorphic links of type TLink to find those associated with the value
-        ///     then returns the one (if any) that has the specified owner.  If more than one link
-        ///     associates the same value and owner an error is thrown.
-        /// </summary>
-        public virtual TLink FindPolymorphicLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
-            where TOwner : class, IHasIntegerId {
-            var ownerId = owner.Id;
-            var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
-            var matches = links.Where(x => x.Owner.Id == ownerId);
-            return matches.SingleOrDefault();
+    public virtual TLink FindPolymorphicLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
+        where TOwner : class, IHasIntegerId {
+        var ownerId = owner.Id;
+        var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
+        var matches = links.Where(x => x.Owner.Id == ownerId);
+        return matches.SingleOrDefault();
+    }
+
+    private IQueryable<TLink> FindPolymorphicLinks<TLink, TRole, TOwner>(TRole value)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
+        where TOwner : class, IHasIntegerId {
+        var roleOid = ObjectFinder.GetCompoundKey(value);
+        return Container.Instances<TLink>().Where(x => x.RoleObjectOid == roleOid);
+    }
+
+    #region IPolymorphicNavigatorWithOid Members
+
+    /// <summary>
+    ///     Searches all polymorphic links of type TLink to find those associated with the value
+    ///     then returns a queryable of those links' owners.
+    /// </summary>
+    public virtual IQueryable<TOwner> FindOwners<TLink, TRole, TOwner>(TRole value)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TOwner : class, IHasIntegerId {
+        var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
+        return links.Select(x => x.Owner);
+    }
+
+    public virtual TLink AddLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TOwner : class, IHasIntegerId {
+        var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
+        if (link != null) {
+            return null; //item is already associated,  so don't duplicate
         }
 
-        private IQueryable<TLink> FindPolymorphicLinks<TLink, TRole, TOwner>(TRole value)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
-            where TOwner : class, IHasIntegerId {
-            var roleOid = ObjectFinder.GetCompoundKey(value);
-            return Container.Instances<TLink>().Where(x => x.RoleObjectOid == roleOid);
+        link = NewTransientLink<TLink, TRole, TOwner>(value, owner);
+        Container.Persist(ref link);
+        return link;
+    }
+
+    public virtual void RemoveLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TOwner : class, IHasIntegerId {
+        var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
+        if (link == null) {
+            return; //item is not associated
         }
 
-        #region IPolymorphicNavigatorWithOid Members
+        Container.DisposeInstance(link);
+    }
 
-        /// <summary>
-        ///     Searches all polymorphic links of type TLink to find those associated with the value
-        ///     then returns a queryable of those links' owners.
-        /// </summary>
-        public virtual IQueryable<TOwner> FindOwners<TLink, TRole, TOwner>(TRole value)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TOwner : class, IHasIntegerId {
-            var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
-            return links.Select(x => x.Owner);
+    public virtual TLink NewTransientLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TOwner : class, IHasIntegerId {
+        if (value == null) {
+            return null;
         }
 
-        public virtual TLink AddLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TOwner : class, IHasIntegerId {
-            var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
-            if (link != null) {
-                return null; //item is already associated,  so don't duplicate
-            }
+        var link = Container.NewTransientInstance<TLink>();
+        link.Owner = owner;
+        link.RoleObjectOid = ObjectFinder.GetCompoundKey(value);
+        return link;
+    }
 
-            link = NewTransientLink<TLink, TRole, TOwner>(value, owner);
-            Container.Persist(ref link);
-            return link;
-        }
-
-        public virtual void RemoveLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TOwner : class, IHasIntegerId {
-            var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
-            if (link == null) {
-                return; //item is not associated
-            }
-
-            Container.DisposeInstance(link);
-        }
-
-        public virtual TLink NewTransientLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TOwner : class, IHasIntegerId {
+    public virtual TLink UpdateAddOrDeleteLink<TLink, TRole, TOwner>(TRole value, TLink link, TOwner owner)
+        where TRole : class
+        where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
+        where TOwner : class, IHasIntegerId {
+        if (link != null) {
             if (value == null) {
+                Container.DisposeInstance(link);
                 return null;
             }
 
-            var link = Container.NewTransientInstance<TLink>();
-            link.Owner = owner;
             link.RoleObjectOid = ObjectFinder.GetCompoundKey(value);
             return link;
         }
 
-        public virtual TLink UpdateAddOrDeleteLink<TLink, TRole, TOwner>(TRole value, TLink link, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
-            where TOwner : class, IHasIntegerId {
-            if (link != null) {
-                if (value == null) {
-                    Container.DisposeInstance(link);
-                    return null;
-                }
-
-                link.RoleObjectOid = ObjectFinder.GetCompoundKey(value);
-                return link;
-            }
-
-            if (Container.IsPersistent(this) && value != null) {
-                return AddLink<TLink, TRole, TOwner>(value, owner);
-            }
-
-            return null;
+        if (Container.IsPersistent(this) && value != null) {
+            return AddLink<TLink, TRole, TOwner>(value, owner);
         }
 
-        #endregion
-
-        #region Injected Services
-
-        public IDomainObjectContainer Container { set; protected get; }
-
-        public IObjectFinder ObjectFinder { set; protected get; }
-
-        #endregion
+        return null;
     }
+
+    #endregion
+
+    #region Injected Services
+
+    public IDomainObjectContainer Container { set; protected get; }
+
+    public IObjectFinder ObjectFinder { set; protected get; }
+
+    #endregion
 }

@@ -7,16 +7,16 @@
 
 using System;
 
-namespace NakedObjects.Security {
-    /// <summary>
-    ///     Authorizes a list of roles (comma seperated) and/or users to view and use the property. If the Roles/Users
-    ///     parameters is present then
-    ///     access is limited to those lists. If absent then no restriction is imposed.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
-    [Obsolete("Use AuthorizationManager")]
-    public class AuthorizeActionAttribute : Attribute {
-        public string Roles { get; set; }
-        public string Users { get; set; }
-    }
+namespace NakedObjects.Security; 
+
+/// <summary>
+///     Authorizes a list of roles (comma seperated) and/or users to view and use the property. If the Roles/Users
+///     parameters is present then
+///     access is limited to those lists. If absent then no restriction is imposed.
+/// </summary>
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
+[Obsolete("Use AuthorizationManager")]
+public class AuthorizeActionAttribute : Attribute {
+    public string Roles { get; set; }
+    public string Users { get; set; }
 }

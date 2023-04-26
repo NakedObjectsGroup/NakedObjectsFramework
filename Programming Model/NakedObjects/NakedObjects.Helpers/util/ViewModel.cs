@@ -6,40 +6,40 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using NakedFramework.Error;
 using NakedFramework;
+using NakedFramework.Error;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     A helper class that provides a ViewModel (implementing IViewModel) where all information
-    ///     is derived from a single persistent object of type T, where T implements IHasIntegerId.
-    /// </summary>
-    public abstract class ViewModel<T> : IViewModel where T : class, IHasIntegerId {
-        #region Injected Services
+namespace NakedObjects; 
 
-        public IDomainObjectContainer Container { set; protected get; }
+/// <summary>
+///     A helper class that provides a ViewModel (implementing IViewModel) where all information
+///     is derived from a single persistent object of type T, where T implements IHasIntegerId.
+/// </summary>
+public abstract class ViewModel<T> : IViewModel where T : class, IHasIntegerId {
+    #region Injected Services
 
-        #endregion
+    public IDomainObjectContainer Container { set; protected get; }
 
-        public T Root { get; set; }
+    #endregion
 
-        public string[] DeriveKeys() {
-            return new[] {Root.Id.ToString()};
-        }
+    public T Root { get; set; }
 
-        public void PopulateUsingKeys(string[] keys) {
-            var id = int.Parse(keys.Single());
-            try {
-                Root = Container.Instances<T>().Where(x => x.Id == id).Single();
-            }
-            catch {
-                throw new DomainException("No instance with Id: " + id);
-            }
-        }
-
-        public virtual bool HideRoot() => true;
-
-        // Virtual so that a given implementation may wish to render the Root object visible 
-        // and perhaps rename it with DisplayName
+    public string[] DeriveKeys() {
+        return new[] { Root.Id.ToString() };
     }
+
+    public void PopulateUsingKeys(string[] keys) {
+        var id = int.Parse(keys.Single());
+        try {
+            Root = Container.Instances<T>().Where(x => x.Id == id).Single();
+        }
+        catch {
+            throw new DomainException("No instance with Id: " + id);
+        }
+    }
+
+    public virtual bool HideRoot() => true;
+
+    // Virtual so that a given implementation may wish to render the Root object visible 
+    // and perhaps rename it with DisplayName
 }

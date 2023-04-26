@@ -7,16 +7,15 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
-    public abstract class AbstractTableViewAttribute : Attribute {
-        public AbstractTableViewAttribute(bool title, params string[] columns) {
-            Title = title;
-            Columns = columns;
-        }
-
-        public string[] Columns { get; }
-        public bool Title { get; }
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
+public abstract class AbstractTableViewAttribute : Attribute {
+    public AbstractTableViewAttribute(bool title, params string[] columns) {
+        Title = title;
+        Columns = columns;
     }
+
+    public string[] Columns { get; }
+    public bool Title { get; }
 }

@@ -7,29 +7,29 @@
 
 using System.Security.Principal;
 
-namespace NakedFramework.Security {
-    /// <summary>
-    ///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types
-    ///     within
-    ///     a namespace.
-    /// </summary>
-    public interface INamespaceAuthorizer {
-        /// <summary>
-        ///     Called only for properties on an object when user attempts to edit the object
-        /// </summary>
-        /// <param name="principal">Representation of the user</param>
-        /// <param name="target">Domain object instance</param>
-        /// <param name="memberName">String representation of property name</param>
-        /// <returns></returns>
-        bool IsEditable(IPrincipal principal, object target, string memberName);
+namespace NakedFramework.Security; 
 
-        /// <summary>
-        ///     Called on properties and actions on an object when user attempts to view the object
-        /// </summary>
-        /// <param name="principal">Representation of the user</param>
-        /// <param name="target">Domain object instance</param>
-        /// <param name="memberName">String representation of property or action name</param>
-        /// <returns></returns>
-        bool IsVisible(IPrincipal principal, object target, string memberName);
-    }
+/// <summary>
+///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types
+///     within
+///     a namespace.
+/// </summary>
+public interface INamespaceAuthorizer {
+    /// <summary>
+    ///     Called only for properties on an object when user attempts to edit the object
+    /// </summary>
+    /// <param name="principal">Representation of the user</param>
+    /// <param name="target">Domain object instance</param>
+    /// <param name="memberName">String representation of property name</param>
+    /// <returns></returns>
+    bool IsEditable(IPrincipal principal, object target, string memberName);
+
+    /// <summary>
+    ///     Called on properties and actions on an object when user attempts to view the object
+    /// </summary>
+    /// <param name="principal">Representation of the user</param>
+    /// <param name="target">Domain object instance</param>
+    /// <param name="memberName">String representation of property or action name</param>
+    /// <returns></returns>
+    bool IsVisible(IPrincipal principal, object target, string memberName);
 }

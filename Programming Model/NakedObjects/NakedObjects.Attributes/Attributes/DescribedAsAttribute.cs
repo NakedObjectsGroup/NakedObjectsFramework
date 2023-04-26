@@ -5,14 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Provides a user-oriented description for an item that might e.g. be displayed as a tooltip.
-    /// </summary>
-    public class DescribedAsAttribute : AbstractDescribedAsAttribute {
-        public DescribedAsAttribute(string s) : base(s) { }
-    }
+namespace NakedObjects; 
+
+/// <summary>
+///     Provides a user-oriented description for an item that might e.g. be displayed as a tooltip.
+/// </summary>
+public class DescribedAsAttribute : AbstractDescribedAsAttribute {
+    public DescribedAsAttribute(string s) : base(s) { }
 }

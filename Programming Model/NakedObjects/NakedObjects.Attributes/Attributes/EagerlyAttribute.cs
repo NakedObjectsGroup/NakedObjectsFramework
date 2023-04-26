@@ -8,15 +8,15 @@
 using System;
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Indicates that a property or all the properties of a class are to be eagerly rendered (or in the future loaded from
-    ///     the database).
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
-    public class EagerlyAttribute : Attribute {
-        private readonly Do what;
+namespace NakedObjects; 
 
-        public EagerlyAttribute(Do what) => this.what = what;
-    }
+/// <summary>
+///     Indicates that a property or all the properties of a class are to be eagerly rendered (or in the future loaded from
+///     the database).
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
+public class EagerlyAttribute : Attribute {
+    private readonly Do what;
+
+    public EagerlyAttribute(Do what) => this.what = what;
 }

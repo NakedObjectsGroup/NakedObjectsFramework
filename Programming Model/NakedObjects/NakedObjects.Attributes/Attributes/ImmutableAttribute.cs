@@ -8,17 +8,17 @@
 using System;
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Do not allow the state of annotated objects to be changed through the user interface.
-    ///     It should be considered a programmer error to  do so programmatically
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ImmutableAttribute : Attribute {
-        public ImmutableAttribute() => Value = WhenTo.Always;
+namespace NakedObjects; 
 
-        public ImmutableAttribute(WhenTo w) => Value = w;
+/// <summary>
+///     Do not allow the state of annotated objects to be changed through the user interface.
+///     It should be considered a programmer error to  do so programmatically
+/// </summary>
+[AttributeUsage(AttributeTargets.Class)]
+public class ImmutableAttribute : Attribute {
+    public ImmutableAttribute() => Value = WhenTo.Always;
 
-        public WhenTo Value { get; }
-    }
+    public ImmutableAttribute(WhenTo w) => Value = w;
+
+    public WhenTo Value { get; }
 }

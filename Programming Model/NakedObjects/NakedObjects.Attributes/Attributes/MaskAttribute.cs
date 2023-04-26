@@ -7,15 +7,15 @@
 
 using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     serves to validate, and potentially to normalise, the format of the input. The characters that can
-    ///     be used are based on Microsoft's MaskedEdit control
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class MaskAttribute : Attribute {
-        public MaskAttribute(string s) => Value = s;
+namespace NakedObjects; 
 
-        public string Value { get; }
-    }
+/// <summary>
+///     serves to validate, and potentially to normalise, the format of the input. The characters that can
+///     be used are based on Microsoft's MaskedEdit control
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+public class MaskAttribute : Attribute {
+    public MaskAttribute(string s) => Value = s;
+
+    public string Value { get; }
 }

@@ -7,12 +7,11 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public abstract class AbstractMaskAttribute : Attribute {
-        public AbstractMaskAttribute(string s) => Value = s;
+[AttributeUsage(AttributeTargets.Property)]
+public abstract class AbstractMaskAttribute : Attribute {
+    public AbstractMaskAttribute(string s) => Value = s;
 
-        public string Value { get; }
-    }
+    public string Value { get; }
 }

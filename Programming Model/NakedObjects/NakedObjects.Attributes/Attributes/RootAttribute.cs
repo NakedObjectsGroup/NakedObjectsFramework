@@ -7,12 +7,12 @@
 
 using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Experimental attribute that indicates that the annotated property should be injected
-    ///     with the aggregate root. This is currently just used for Entity Framework complex types
-    ///     - its use for other types of aggregated objects is under investigation.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class RootAttribute : Attribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Experimental attribute that indicates that the annotated property should be injected
+///     with the aggregate root. This is currently just used for Entity Framework complex types
+///     - its use for other types of aggregated objects is under investigation.
+/// </summary>
+[AttributeUsage(AttributeTargets.Property)]
+public class RootAttribute : Attribute { }

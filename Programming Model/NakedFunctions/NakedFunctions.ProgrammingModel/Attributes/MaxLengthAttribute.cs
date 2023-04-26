@@ -7,14 +7,14 @@
 
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Applied to a string parameter, specifies the maximum string length that the user may enter.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class MaxLengthAttribute : Attribute {
-        public MaxLengthAttribute(int value) => Value = value;
+namespace NakedFunctions; 
 
-        public int Value { get; }
-    }
+/// <summary>
+///     Applied to a string parameter, specifies the maximum string length that the user may enter.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter)]
+public class MaxLengthAttribute : Attribute {
+    public MaxLengthAttribute(int value) => Value = value;
+
+    public int Value { get; }
 }

@@ -5,13 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Redirect {
-    //Implemented by a 'stub' class that acts as a proxy for an object managed on another server
-    public interface IRedirectedObject {
-        //This should be a logical server name, translated to/from a physical address elsewhere.
-        string ServerName { get; set; }
+namespace NakedObjects.Redirect; 
 
-        //The Oid of the object on the other server
-        string Oid { get; set; }
-    }
+//Implemented by a 'stub' class that acts as a proxy for an object managed on another server
+public interface IRedirectedObject {
+    //This should be a logical server name, translated to/from a physical address elsewhere.
+    string ServerName { get; set; }
+
+    //The Oid of the object on the other server
+    string Oid { get; set; }
 }

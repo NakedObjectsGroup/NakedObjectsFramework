@@ -7,12 +7,12 @@
 
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Use to overide the default number of objects displayed in each page when a queryable results from the action.
-    ///     '0' will result in no paging.
-    /// </summary>
-     public class PageSizeAttribute : AbstractPageSizeAttribute {
-        public PageSizeAttribute(int i) : base(i) { }
-    }
+namespace NakedObjects; 
+
+/// <summary>
+///     Use to overide the default number of objects displayed in each page when a queryable results from the action.
+///     '0' will result in no paging.
+/// </summary>
+public class PageSizeAttribute : AbstractPageSizeAttribute {
+    public PageSizeAttribute(int i) : base(i) { }
 }

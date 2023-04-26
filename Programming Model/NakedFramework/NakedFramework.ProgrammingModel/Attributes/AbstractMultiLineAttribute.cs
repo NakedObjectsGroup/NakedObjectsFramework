@@ -7,21 +7,20 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
-    public abstract class AbstractMultiLineAttribute : Attribute {
-        public AbstractMultiLineAttribute() : this(6, 0) { }
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
+public abstract class AbstractMultiLineAttribute : Attribute {
+    public AbstractMultiLineAttribute() : this(6, 0) { }
 
-        public AbstractMultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
+    public AbstractMultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
 
-        public AbstractMultiLineAttribute(int numberOfLines, int width) {
-            NumberOfLines = numberOfLines;
-            Width = width;
-        }
-
-        public int NumberOfLines { get; set; }
-
-        public int Width { get; set; }
+    public AbstractMultiLineAttribute(int numberOfLines, int width) {
+        NumberOfLines = numberOfLines;
+        Width = width;
     }
+
+    public int NumberOfLines { get; set; }
+
+    public int Width { get; set; }
 }

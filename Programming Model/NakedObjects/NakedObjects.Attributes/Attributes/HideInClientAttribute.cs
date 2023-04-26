@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects; 
+namespace NakedObjects;
 
 /// <summary>
 ///     A hint added to the associated display element. For example a class on the html.

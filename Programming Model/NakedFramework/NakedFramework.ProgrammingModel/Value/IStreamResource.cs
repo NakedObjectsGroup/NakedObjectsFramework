@@ -7,14 +7,14 @@
 
 using System.IO;
 
-namespace NakedFramework.Value {
-    /// <summary>
-    ///     Interface implemented by both FileAttachment and Image
-    ///     (Not intended to be used directly within domain code.)
-    /// </summary>
-    public interface IStreamResource {
-        string MimeType { get; }
+namespace NakedFramework.Value; 
 
-        Stream GetResourceAsStream();
-    }
+/// <summary>
+///     Interface implemented by both FileAttachment and Image
+///     (Not intended to be used directly within domain code.)
+/// </summary>
+public interface IStreamResource {
+    string MimeType { get; }
+
+    Stream GetResourceAsStream();
 }

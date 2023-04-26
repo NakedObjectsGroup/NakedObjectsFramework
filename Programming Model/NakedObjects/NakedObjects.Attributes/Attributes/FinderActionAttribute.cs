@@ -7,21 +7,21 @@
 
 using System;
 
-namespace NakedObjects {
+namespace NakedObjects; 
+
+/// <summary>
+///     Indicates that a service action should be made available on the Find menu
+///     for a reference object property or parameter -  where the return type matches.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+public class FinderActionAttribute : Attribute {
     /// <summary>
-    ///     Indicates that a service action should be made available on the Find menu
-    ///     for a reference object property or parameter -  where the return type matches.
+    ///     The specified prefix will be renderered in front of the action name for the user
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public class FinderActionAttribute : Attribute {
-        /// <summary>
-        ///     The specified prefix will be renderered in front of the action name for the user
-        /// </summary>
-        /// <param name="prefix"></param>
-        public FinderActionAttribute(string prefix) => Prefix = prefix;
+    /// <param name="prefix"></param>
+    public FinderActionAttribute(string prefix) => Prefix = prefix;
 
-        public FinderActionAttribute() => Prefix = null;
+    public FinderActionAttribute() => Prefix = null;
 
-        public string Prefix { get; set; }
-    }
+    public string Prefix { get; set; }
 }

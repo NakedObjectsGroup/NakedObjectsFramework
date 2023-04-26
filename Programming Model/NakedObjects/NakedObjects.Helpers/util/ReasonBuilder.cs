@@ -7,48 +7,48 @@
 
 using System.Text;
 
-namespace NakedObjects {
+namespace NakedObjects; 
+
+/// <summary>
+///     Helper class for use in method that return strings with
+///     reasons. If no reasons are specified <see cref="Reason" /> will return <c>null</c>, otherwise
+///     it will return a <c>string</c> with all the valid reasons concatenated and separated by a semi-colon.
+/// </summary>
+public class ReasonBuilder {
+    private readonly StringBuilder sb;
+
+    #region Constructors
+
     /// <summary>
-    ///     Helper class for use in method that return strings with
-    ///     reasons. If no reasons are specified <see cref="Reason" /> will return <c>null</c>, otherwise
-    ///     it will return a <c>string</c> with all the valid reasons concatenated and separated by a semi-colon.
+    ///     Creates a new, empty, TitleBuilder object
     /// </summary>
-    public class ReasonBuilder {
-        private readonly StringBuilder sb;
+    public ReasonBuilder() => sb = new StringBuilder();
 
-        #region Constructors
+    #endregion
 
-        /// <summary>
-        ///     Creates a new, empty, TitleBuilder object
-        /// </summary>
-        public ReasonBuilder() => sb = new StringBuilder();
+    /// <summary>
+    ///     Return the set of appended reasons (separated by semi-colons), or <c>null</c> if there are none
+    /// </summary>
+    public string Reason => sb.Length == 0 ? null : sb.ToString();
 
-        #endregion
+    /// <summary>
+    ///     Append a reason to the list of existing reasons if the condition flag is true
+    /// </summary>
+    public void AppendOnCondition(bool condition, string reason) {
+        if (condition) {
+            Append(reason);
+        }
+    }
 
-        /// <summary>
-        ///     Return the set of appended reasons (separated by semi-colons), or <c>null</c> if there are none
-        /// </summary>
-        public string Reason => sb.Length == 0 ? null : sb.ToString();
-
-        /// <summary>
-        ///     Append a reason to the list of existing reasons if the condition flag is true
-        /// </summary>
-        public void AppendOnCondition(bool condition, string reason) {
-            if (condition) {
-                Append(reason);
-            }
+    /// <summary>
+    ///     Append a reason to the list of existing reasons if the condition flag is true.
+    ///     Multiple Appends are separated by semi-colons.
+    /// </summary>
+    public void Append(string reason) {
+        if (sb.Length > 0) {
+            sb.Append("; ");
         }
 
-        /// <summary>
-        ///     Append a reason to the list of existing reasons if the condition flag is true.
-        ///     Multiple Appends are separated by semi-colons.
-        /// </summary>
-        public void Append(string reason) {
-            if (sb.Length > 0) {
-                sb.Append("; ");
-            }
-
-            sb.Append(reason);
-        }
+        sb.Append(reason);
     }
 }

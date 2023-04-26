@@ -5,18 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework.Profile {
-    public enum ProfileEvent {
-        ActionInvocation,
-        PropertySet,
-        Created,
-        Deleted,
-        Deleting,
-        Loaded,
-        Loading,
-        Persisted,
-        Persisting,
-        Updated,
-        Updating
-    }
+namespace NakedFramework.Profile; 
+
+public enum ProfileEvent {
+    ActionInvocation,
+    PropertySet,
+    Created,
+    Deleted,
+    Deleting,
+    Loaded,
+    Loading,
+    Persisted,
+    Persisting,
+    Updated,
+    Updating
 }

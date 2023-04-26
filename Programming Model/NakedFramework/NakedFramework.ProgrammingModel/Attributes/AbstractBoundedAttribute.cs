@@ -7,8 +7,7 @@
 
 using System;
 
-namespace NakedFramework
-{
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
-    public abstract class AbstractBoundedAttribute : Attribute { }
-}
+namespace NakedFramework; 
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+public abstract class AbstractBoundedAttribute : Attribute { }

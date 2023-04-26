@@ -5,15 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Specifies that a public property, type, or action is never displayed to the user
-    /// </summary>
-    public class HiddenAttribute : AbstractHiddenAttribute {
-        public HiddenAttribute() : base() { }
-        public HiddenAttribute(WhenTo w) : base(w) { }
-    }
+namespace NakedObjects; 
+
+/// <summary>
+///     Specifies that a public property, type, or action is never displayed to the user
+/// </summary>
+public class HiddenAttribute : AbstractHiddenAttribute {
+    public HiddenAttribute() { }
+    public HiddenAttribute(WhenTo w) : base(w) { }
 }

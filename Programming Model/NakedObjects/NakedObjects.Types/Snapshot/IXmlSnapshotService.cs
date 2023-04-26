@@ -5,13 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Snapshot {
-    /// <summary>
-    ///     API for the XmlSnapshotService (defined in the Naked Objects Framework), allowing it to be injected into
-    ///     domain code without the need for a dependence on the framework. The service can generate an XML 'snapshot'
-    ///     of any domain object.
-    /// </summary>
-    public interface IXmlSnapshotService {
-        IXmlSnapshot GenerateSnapshot(object domainObject);
-    }
+namespace NakedObjects.Snapshot; 
+
+/// <summary>
+///     API for the XmlSnapshotService (defined in the Naked Objects Framework), allowing it to be injected into
+///     domain code without the need for a dependence on the framework. The service can generate an XML 'snapshot'
+///     of any domain object.
+/// </summary>
+public interface IXmlSnapshotService {
+    IXmlSnapshot GenerateSnapshot(object domainObject);
 }

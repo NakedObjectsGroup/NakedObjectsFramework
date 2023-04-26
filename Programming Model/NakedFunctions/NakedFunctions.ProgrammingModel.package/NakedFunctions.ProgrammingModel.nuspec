@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>
-    <id>NakedFunctions.ProgrammingModel</id>
-    <version>2.1.0</version>
-    <authors>Naked Objects Group Ltd</authors>
-    <owners>Naked Objects Group Ltd</owners>
-    <license type="expression">Apache-2.0</license>
-    <projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
-    <icon>images\icon.png</icon>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
-    <tags>functional programming naked functions</tags>
-    <dependencies>
-      <group targetFramework="net6.0">
-        <dependency id="NakedFramework.ProgrammingModel" version="[14.1.0, 15)" />
-      </group>
-    </dependencies>
-  </metadata>
-  <files>
-    <file src="icon.png" target="images\" />
-    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib" />
-    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib" />
-  </files>
+	<metadata>
+		<id>NakedFunctions.ProgrammingModel</id>
+		<version>2.1.0</version>
+		<authors>Naked Objects Group Ltd</authors>
+		<owners>Naked Objects Group Ltd</owners>
+		<license type="expression">Apache-2.0</license>
+		<projectUrl>https://github.com/NakedObjectsGroup/NakedObjectsFramework</projectUrl>
+		<icon>images\icon.png</icon>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
+		<tags>functional programming naked functions</tags>
+		<dependencies>
+			<group targetFramework="net6.0">
+				<dependency id="NakedFramework.ProgrammingModel" version="[14.1.0, 15)" />
+			</group>
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="icon.png" target="images\" />
+		<file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib" />
+		<file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib" />
+	</files>
 </package>

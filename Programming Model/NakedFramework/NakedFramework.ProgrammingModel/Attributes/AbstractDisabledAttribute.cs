@@ -7,8 +7,7 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public abstract class AbstractDisabledAttribute : Attribute { }
-}
+[AttributeUsage(AttributeTargets.Parameter)]
+public abstract class AbstractDisabledAttribute : Attribute { }

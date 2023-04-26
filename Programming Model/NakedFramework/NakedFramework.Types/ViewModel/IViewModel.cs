@@ -5,24 +5,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework {
-    /// <summary>
-    ///     Role interface to be implemented by an object that is not itself a persistent object, though it may contain
-    ///     references to one or more persistent objects.
-    /// </summary>
-    public interface IViewModel {
-        /// <summary>
-        ///     Return an array of string keys that may be used to re-create an identical object instance.
-        ///     Each key might be an individual value property, or the key to a referenced persistent object.
-        /// </summary>
-        /// <returns></returns>
-        string[] DeriveKeys();
+namespace NakedFramework; 
 
-        /// <summary>
-        ///     Method to re-create a view model in a given state, by being passed the same array of key strings
-        ///     that would be returned by the DeriveKeys method.
-        /// </summary>
-        /// <param name="keys"></param>
-        void PopulateUsingKeys(string[] keys);
-    }
+/// <summary>
+///     Role interface to be implemented by an object that is not itself a persistent object, though it may contain
+///     references to one or more persistent objects.
+/// </summary>
+public interface IViewModel {
+    /// <summary>
+    ///     Return an array of string keys that may be used to re-create an identical object instance.
+    ///     Each key might be an individual value property, or the key to a referenced persistent object.
+    /// </summary>
+    /// <returns></returns>
+    string[] DeriveKeys();
+
+    /// <summary>
+    ///     Method to re-create a view model in a given state, by being passed the same array of key strings
+    ///     that would be returned by the DeriveKeys method.
+    /// </summary>
+    /// <param name="keys"></param>
+    void PopulateUsingKeys(string[] keys);
 }

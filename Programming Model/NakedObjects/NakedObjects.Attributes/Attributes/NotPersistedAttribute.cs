@@ -7,13 +7,13 @@
 
 using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     This attribute indicates that transient instances of this class may be created but may not be
-    ///     persisted, or that properties within a class are not persisted.
-    ///     Attempting to persist such an object programmatically would throw an exception.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-    [Obsolete("Use EF6/EFCore")]
-    public class NotPersistedAttribute : Attribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     This attribute indicates that transient instances of this class may be created but may not be
+///     persisted, or that properties within a class are not persisted.
+///     Attempting to persist such an object programmatically would throw an exception.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
+[Obsolete("Use EF6/EFCore")]
+public class NotPersistedAttribute : Attribute { }

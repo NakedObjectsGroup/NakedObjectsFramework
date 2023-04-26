@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedObjects {
-    [AttributeUsage(AttributeTargets.Method)]
-    public class QueryOnlyAttribute : Attribute { }
-}
+namespace NakedObjects; 
+
+[AttributeUsage(AttributeTargets.Method)]
+public class QueryOnlyAttribute : Attribute { }

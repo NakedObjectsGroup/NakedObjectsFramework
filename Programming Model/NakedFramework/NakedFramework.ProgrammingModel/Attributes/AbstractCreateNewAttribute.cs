@@ -7,13 +7,13 @@
 
 using System;
 
-namespace NakedFramework {
-    /// <summary>
-    ///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
-    ///     specified type
-    ///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
-    ///     further properties (see EditAttribute).
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
-    public abstract class AbstractCreateNewAttribute : Attribute { }
-}
+namespace NakedFramework; 
+
+/// <summary>
+///     Applied to a function, indicating that the primary role of the function is to create a new persistent object of the
+///     specified type
+///     with the minimum data set, but with the expectation that the user will likely want to immediately then specify
+///     further properties (see EditAttribute).
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+public abstract class AbstractCreateNewAttribute : Attribute { }

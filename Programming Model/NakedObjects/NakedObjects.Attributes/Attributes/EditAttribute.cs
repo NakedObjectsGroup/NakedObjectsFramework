@@ -7,10 +7,11 @@
 
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Applied to a method, indicating that the function is intended to allow the user to edit the value of one or more
-    ///     properties on the object.  The method's paramaters must match properties on the type, both in type and name (except for casing).
-    /// </summary>
-    public class EditAttribute : AbstractEditAttribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Applied to a method, indicating that the function is intended to allow the user to edit the value of one or more
+///     properties on the object.  The method's paramaters must match properties on the type, both in type and name (except
+///     for casing).
+/// </summary>
+public class EditAttribute : AbstractEditAttribute { }

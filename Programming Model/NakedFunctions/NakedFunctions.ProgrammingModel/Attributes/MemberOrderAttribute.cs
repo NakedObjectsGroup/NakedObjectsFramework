@@ -7,20 +7,19 @@
 
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     For specifying the order in which properties and/or actions are presented to
-    ///     the user.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
-    public class MemberOrderAttribute : Attribute {
+namespace NakedFunctions; 
 
-        public MemberOrderAttribute(int order) => Order = order;
+/// <summary>
+///     For specifying the order in which properties and/or actions are presented to
+///     the user.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
+public class MemberOrderAttribute : Attribute {
+    public MemberOrderAttribute(int order) => Order = order;
 
-        public MemberOrderAttribute(string grouping, int order) : this(order) => Grouping = grouping;
-        
-        public int Order { get; }
+    public MemberOrderAttribute(string grouping, int order) : this(order) => Grouping = grouping;
 
-        public string Grouping { get; }
-    }
+    public int Order { get; }
+
+    public string Grouping { get; }
 }

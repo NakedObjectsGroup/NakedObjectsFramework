@@ -8,51 +8,51 @@
 using System.ComponentModel.DataAnnotations;
 using NakedObjects.Services;
 
-namespace NakedObjects {
-    public class PolymorphicLinkWithOid<TRole, TOwner> : IPolymorphicLinkWithOid<TRole, TOwner>
-        where TRole : class
-        where TOwner : class, IHasIntegerId {
-        #region Injected Services
+namespace NakedObjects; 
 
-        public IObjectFinder ObjectFinder { set; protected get; }
+public class PolymorphicLinkWithOid<TRole, TOwner> : IPolymorphicLinkWithOid<TRole, TOwner>
+    where TRole : class
+    where TOwner : class, IHasIntegerId {
+    #region Injected Services
 
-        #endregion
+    public IObjectFinder ObjectFinder { set; protected get; }
 
-        [NakedObjectsIgnore]
-        public virtual int Id { get; set; }
+    #endregion
+
+    [NakedObjectsIgnore]
+    public virtual int Id { get; set; }
 
 #pragma warning disable CS0618
-        [NotPersisted]
+    [NotPersisted]
 #pragma warning restore CS0618
-        [Disabled]
-        public virtual TRole AssociatedRoleObject {
-            get => ObjectFinder.FindObject<TRole>(RoleObjectOid);
-            set => RoleObjectOid = ObjectFinder.GetCompoundKey(value);
-        }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideRoleObjectOid() => false;
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObject() => false;
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideOwner() => false;
-
-        #region IPolymorphicLinkWithOid<TRole,TOwner> Members
-
-        [Disabled]
-        public virtual string RoleObjectOid { get; set; }
-
-        [Required]
-        public virtual TOwner Owner { get; set; }
-
-        #endregion
+    [Disabled]
+    public virtual TRole AssociatedRoleObject {
+        get => ObjectFinder.FindObject<TRole>(RoleObjectOid);
+        set => RoleObjectOid = ObjectFinder.GetCompoundKey(value);
     }
+
+    /// <summary>
+    ///     To allow sub-classes to render property visible/invisible
+    /// </summary>
+    public virtual bool HideRoleObjectOid() => false;
+
+    /// <summary>
+    ///     To allow sub-classes to render property visible/invisible
+    /// </summary>
+    public virtual bool HideAssociatedRoleObject() => false;
+
+    /// <summary>
+    ///     To allow sub-classes to render property visible/invisible
+    /// </summary>
+    public virtual bool HideOwner() => false;
+
+    #region IPolymorphicLinkWithOid<TRole,TOwner> Members
+
+    [Disabled]
+    public virtual string RoleObjectOid { get; set; }
+
+    [Required]
+    public virtual TOwner Owner { get; set; }
+
+    #endregion
 }

@@ -7,8 +7,7 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Method)]
-    public abstract class AbstractDisplayAsPropertyAttribute : Attribute { }
-}
+[AttributeUsage(AttributeTargets.Method)]
+public abstract class AbstractDisplayAsPropertyAttribute : Attribute { }

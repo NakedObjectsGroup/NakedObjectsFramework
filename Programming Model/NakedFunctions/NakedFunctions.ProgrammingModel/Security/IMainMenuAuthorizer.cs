@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFunctions.Security {
-    /// <summary>
-    ///     An implementation of this interface provides authorization for all Main Menus
-    /// </summary>
-    public interface IMainMenuAuthorizer : ITypeAuthorizer<string> { }
-}
+namespace NakedFunctions.Security; 
+
+/// <summary>
+///     An implementation of this interface provides authorization for all Main Menus
+/// </summary>
+public interface IMainMenuAuthorizer : ITypeAuthorizer<string> { }

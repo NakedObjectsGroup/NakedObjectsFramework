@@ -7,18 +7,18 @@
 
 using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Used to indicate that either a property, or an action parameter, is optional.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         By default, the system assumes that all properties of an object are required, and therefore will
-    ///         not let the user save a new object unless a value has been specified for each property. Similarly,
-    ///         by default, the system assumes that all parameters in an action are required and will not let the
-    ///         user execute that action unless values have been specified for each parameter.
-    ///     </para>
-    /// </remarks>
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
-    public class OptionallyAttribute : Attribute { }
-}
+namespace NakedObjects; 
+
+/// <summary>
+///     Used to indicate that either a property, or an action parameter, is optional.
+/// </summary>
+/// <remarks>
+///     <para>
+///         By default, the system assumes that all properties of an object are required, and therefore will
+///         not let the user save a new object unless a value has been specified for each property. Similarly,
+///         by default, the system assumes that all parameters in an action are required and will not let the
+///         user execute that action unless values have been specified for each parameter.
+///     </para>
+/// </remarks>
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
+public class OptionallyAttribute : Attribute { }

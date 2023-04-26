@@ -7,14 +7,13 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
-    public abstract class AbstractHiddenAttribute : Attribute {
-        protected AbstractHiddenAttribute(WhenTo w) => Value = w;
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
+public abstract class AbstractHiddenAttribute : Attribute {
+    protected AbstractHiddenAttribute(WhenTo w) => Value = w;
 
-        public AbstractHiddenAttribute() : this(WhenTo.Always) { }
+    public AbstractHiddenAttribute() : this(WhenTo.Always) { }
 
-        public WhenTo Value { get; protected set; }
-    }
+    public WhenTo Value { get; protected set; }
 }

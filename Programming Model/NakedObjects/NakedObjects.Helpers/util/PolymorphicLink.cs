@@ -8,57 +8,57 @@
 using System.ComponentModel.DataAnnotations;
 using NakedObjects.Services;
 
-namespace NakedObjects {
-    public class PolymorphicLink<TRole, TOwner> : IPolymorphicLink<TRole, TOwner>
-        where TRole : class, IHasIntegerId
-        where TOwner : class, IHasIntegerId {
-        #region Injected Services
+namespace NakedObjects; 
 
-        public PolymorphicNavigator PolymorphicNavigator { set; protected get; }
+public class PolymorphicLink<TRole, TOwner> : IPolymorphicLink<TRole, TOwner>
+    where TRole : class, IHasIntegerId
+    where TOwner : class, IHasIntegerId {
+    #region Injected Services
 
-        #endregion
+    public PolymorphicNavigator PolymorphicNavigator { set; protected get; }
 
-        [NakedObjectsIgnore]
-        public virtual int Id { get; set; }
+    #endregion
 
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObjectType() => false;
+    [NakedObjectsIgnore]
+    public virtual int Id { get; set; }
 
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObjectId() => false;
+    /// <summary>
+    ///     To allow sub-classes to render property visible/invisible
+    /// </summary>
+    public virtual bool HideAssociatedRoleObjectType() => false;
 
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideOwner() => false;
+    /// <summary>
+    ///     To allow sub-classes to render property visible/invisible
+    /// </summary>
+    public virtual bool HideAssociatedRoleObjectId() => false;
 
-        #region IPolymorphicLink<TRole,TOwner> Members
+    /// <summary>
+    ///     To allow sub-classes to render property visible/invisible
+    /// </summary>
+    public virtual bool HideOwner() => false;
 
-        [Disabled]
-        public virtual string AssociatedRoleObjectType { get; set; }
+    #region IPolymorphicLink<TRole,TOwner> Members
 
-        [Disabled]
-        public virtual int AssociatedRoleObjectId { get; set; }
+    [Disabled]
+    public virtual string AssociatedRoleObjectType { get; set; }
+
+    [Disabled]
+    public virtual int AssociatedRoleObjectId { get; set; }
 
 #pragma warning disable CS0618
-        [NotPersisted]
+    [NotPersisted]
 #pragma warning restore CS0618
-        [Disabled]
-        public virtual TRole AssociatedRoleObject {
-            get => PolymorphicNavigator.FindObject<TRole>(AssociatedRoleObjectType, AssociatedRoleObjectId);
-            set {
-                AssociatedRoleObjectType = PolymorphicNavigator.GetType(value);
-                AssociatedRoleObjectId = value.Id;
-            }
+    [Disabled]
+    public virtual TRole AssociatedRoleObject {
+        get => PolymorphicNavigator.FindObject<TRole>(AssociatedRoleObjectType, AssociatedRoleObjectId);
+        set {
+            AssociatedRoleObjectType = PolymorphicNavigator.GetType(value);
+            AssociatedRoleObjectId = value.Id;
         }
-
-        [Required]
-        public virtual TOwner Owner { get; set; }
-
-        #endregion
     }
+
+    [Required]
+    public virtual TOwner Owner { get; set; }
+
+    #endregion
 }

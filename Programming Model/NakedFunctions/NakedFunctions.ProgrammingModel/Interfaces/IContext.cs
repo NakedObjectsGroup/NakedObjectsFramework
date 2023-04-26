@@ -8,28 +8,28 @@
 using System;
 using System.Linq;
 
-namespace NakedFunctions {
-    public interface IContext {
-        //Obtains a queryable of a given domain type, from the persistor.
-        public IQueryable<T> Instances<T>() where T : class;
+namespace NakedFunctions; 
 
-        //Gets a service that has been configured in services configuration.
-        public T GetService<T>();
+public interface IContext {
+    //Obtains a queryable of a given domain type, from the persistor.
+    public IQueryable<T> Instances<T>() where T : class;
 
-        public IContext WithNew<T>(T newObj) where T : class;
+    //Gets a service that has been configured in services configuration.
+    public T GetService<T>();
 
-        public IContext WithUpdated<T>(T original, T updated) where T : class;
+    public IContext WithNew<T>(T newObj) where T : class;
 
-        public IContext WithDeleted<T>(T deleteObj) where T : class;
+    public IContext WithUpdated<T>(T original, T updated) where T : class;
 
-        IContext WithDeferred(Func<IContext, IContext> function);
+    public IContext WithDeleted<T>(T deleteObj) where T : class;
 
-        public T Reload<T>(T unsaved) where T : class;
+    IContext WithDeferred(Func<IContext, IContext> function);
 
-        public T Resolve<T>(T unResolved) where T : class;
+    public T Reload<T>(T unsaved) where T : class;
 
-        public IContext RaiseError(string  message);
+    public T Resolve<T>(T unResolved) where T : class;
 
-        public IContext RaiseError(Exception exception);
-    }
+    public IContext RaiseError(string message);
+
+    public IContext RaiseError(Exception exception);
 }

@@ -5,29 +5,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedFramework {
+namespace NakedFramework; 
+
+/// <summary>
+///     Enum to indicate duration of behaviour
+/// </summary>
+public enum WhenTo {
     /// <summary>
-    ///     Enum to indicate duration of behaviour
+    ///     Behaviour always happens
     /// </summary>
-    public enum WhenTo {
-        /// <summary>
-        ///     Behaviour always happens
-        /// </summary>
-        Always,
+    Always,
 
-        /// <summary>
-        ///     Behaviour never happens
-        /// </summary>
-        Never,
+    /// <summary>
+    ///     Behaviour never happens
+    /// </summary>
+    Never,
 
-        /// <summary>
-        ///     Behaviour happens once object has been persisted
-        /// </summary>
-        OncePersisted,
+    /// <summary>
+    ///     Behaviour happens once object has been persisted
+    /// </summary>
+    OncePersisted,
 
-        /// <summary>
-        ///     Behaviour happens until object has been persisted
-        /// </summary>
-        UntilPersisted
-    }
+    /// <summary>
+    ///     Behaviour happens until object has been persisted
+    /// </summary>
+    UntilPersisted
 }

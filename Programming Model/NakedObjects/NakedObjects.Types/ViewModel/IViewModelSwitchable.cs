@@ -7,14 +7,14 @@
 
 using NakedFramework;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Implementing this interface will ensure that the object will be presented to the user in either view or editable
-    ///     form
-    ///     controlled by the IsEditView flag
-    ///     (Individual properties may still be disabled.)
-    /// </summary>
-    public interface IViewModelSwitchable : IViewModel {
-        bool IsEditView();
-    }
+namespace NakedObjects; 
+
+/// <summary>
+///     Implementing this interface will ensure that the object will be presented to the user in either view or editable
+///     form
+///     controlled by the IsEditView flag
+///     (Individual properties may still be disabled.)
+/// </summary>
+public interface IViewModelSwitchable : IViewModel {
+    bool IsEditView();
 }

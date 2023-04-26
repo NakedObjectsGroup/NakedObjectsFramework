@@ -8,28 +8,28 @@
 using System;
 using NakedFramework;
 
-namespace NakedObjects.Services {
-    /// <summary>
-    ///     An implementation of IObjectFinder that will delegate the string representation of a type to an injected
-    ///     ITypeCodeMapper
-    ///     service, if one exists. (Otherwise it will default to using the fully-qualified class name).
-    /// </summary>
-    public class ObjectFinderWithTypeCodeMapper : ObjectFinder {
-        #region Injected Services
+namespace NakedObjects.Services; 
 
-        public ITypeCodeMapper TypeCodeMapper { set; protected get; }
+/// <summary>
+///     An implementation of IObjectFinder that will delegate the string representation of a type to an injected
+///     ITypeCodeMapper
+///     service, if one exists. (Otherwise it will default to using the fully-qualified class name).
+/// </summary>
+public class ObjectFinderWithTypeCodeMapper : ObjectFinder {
+    #region Injected Services
 
-        #endregion
+    public ITypeCodeMapper TypeCodeMapper { set; protected get; }
 
-        #region Convert between Type and string representation (code) for Type
+    #endregion
 
-        protected override Type TypeFromCode(string code) => TypeCodeMapper.TypeFromCode(code);
+    #region Convert between Type and string representation (code) for Type
 
-        protected override string CodeFromType(object obj) {
-            var type = obj.GetType().GetProxiedType();
-            return TypeCodeMapper.CodeFromType(type);
-        }
+    protected override Type TypeFromCode(string code) => TypeCodeMapper.TypeFromCode(code);
 
-        #endregion
+    protected override string CodeFromType(object obj) {
+        var type = obj.GetType().GetProxiedType();
+        return TypeCodeMapper.CodeFromType(type);
     }
+
+    #endregion
 }

@@ -10,78 +10,79 @@ using NakedFramework;
 using NakedFramework.Error;
 using NakedFramework.Resources;
 
-namespace NakedObjects.Services {
+namespace NakedObjects.Services; 
+
+/// <summary>
+///     As of version 7.0, the SimpleRepository is no longer recommended for use in
+///     prototyping, because its title (as rendered by the new main menu mechanism)
+///     does not reflect the type  -  it just says 'Simple Repository'.  It may still
+///     be useful for writing XAT tests, though, where it may still be retrieved by
+///     name, using the pluralised friendly-name of the type, as before.
+/// </summary>
+public class SimpleRepository<T> : AbstractFactoryAndRepository where T : class, new() {
+    private readonly string title;
+
     /// <summary>
-    ///     As of version 7.0, the SimpleRepository is no longer recommended for use in
-    ///     prototyping, because its title (as rendered by the new main menu mechanism)
-    ///     does not reflect the type  -  it just says 'Simple Repository'.  It may still
-    ///     be useful for writing XAT tests, though, where it may still be retrieved by
-    ///     name, using the pluralised friendly-name of the type, as before.
+    ///     No arg constructor with default title
     /// </summary>
-    public class SimpleRepository<T> : AbstractFactoryAndRepository where T : class, new() {
-        private readonly string title;
+    public SimpleRepository()
+        : this(NameUtils.PluralName(NameUtils.NaturalName(typeof(T).Name))) { }
 
-        /// <summary>
-        ///     No arg constructor with default title
-        /// </summary>
-        public SimpleRepository()
-            : this(NameUtils.PluralName(NameUtils.NaturalName(typeof(T).Name))) { }
+    /// <summary>
+    ///     Constructor for specifying title
+    /// </summary>
+    public SimpleRepository(string title) => this.title = title;
 
-        /// <summary>
-        ///     Constructor for specifying title
-        /// </summary>
-        public SimpleRepository(string title) => this.title = title;
+    /// <summary>
+    ///     Icon name for service will be same as T.Name
+    /// </summary>
+    public string IconName() => typeof(T).Name;
 
-        /// <summary>
-        ///     Icon name for service will be same as T.Name
-        /// </summary>
-        public string IconName() => typeof(T).Name;
+    /// <summary>
+    ///     Title of service
+    /// </summary>
+    public string Title() => title;
 
-        /// <summary>
-        ///     Title of service
-        /// </summary>
-        public string Title() => title;
+    /// <summary>
+    ///     Title of service via ToString
+    /// </summary>
+    public override string ToString() => Title();
 
-        /// <summary>
-        ///     Title of service via ToString
-        /// </summary>
-        public override string ToString() => Title();
+    #region Creators
 
-        #region Creators
+    /// <summary>
+    ///     Returns a new transient instance of T
+    /// </summary>
+    [MemberOrder(Sequence = "1")]
+    public virtual T NewInstance() => NewTransientInstance<T>();
 
-        /// <summary>
-        ///     Returns a new transient instance of T
-        /// </summary>
-        [MemberOrder(Sequence = "1")]
-        public virtual T NewInstance() => NewTransientInstance<T>();
+    #endregion
 
-        #endregion
+    #region Finders
 
-        #region Finders
+    /// <summary>
+    ///     All Instances of T
+    /// </summary>
+    [MemberOrder(Sequence = "2")]
+    public virtual IQueryable<T> AllInstances() => Container.Instances<T>();
 
-        /// <summary>
-        ///     All Instances of T
-        /// </summary>
-        [MemberOrder(Sequence = "2")]
-        public virtual IQueryable<T> AllInstances() => Container.Instances<T>();
-        [MemberOrder(Sequence = "3")]
-        public virtual T GetRandom() => Random<T>();
+    [MemberOrder(Sequence = "3")]
+    public virtual T GetRandom() => Random<T>();
 
-        [MemberOrder(Sequence = "4")]
-        public virtual T FindByKey(int key) {
-            var keyProperty = Container.GetSingleKey(typeof(T));
-            if (keyProperty.PropertyType != typeof(int)) {
-                throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof(T)));
-            }
-
-            var result = Container.FindByKey<T>(key);
-            if (result == null) {
-                WarnUser(ProgrammingModel.NoMatchSingular);
-            }
-
-            return result;
+    [MemberOrder(Sequence = "4")]
+    public virtual T FindByKey(int key) {
+        var keyProperty = Container.GetSingleKey(typeof(T));
+        if (keyProperty.PropertyType != typeof(int)) {
+            throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof(T)));
         }
 
-        #endregion
+        var result = Container.FindByKey<T>(key);
+        if (result == null) {
+            WarnUser(ProgrammingModel.NoMatchSingular);
+        }
+
+        return result;
     }
+
+    #endregion
 }

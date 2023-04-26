@@ -7,12 +7,11 @@
 
 using System;
 
-namespace NakedFramework {
-  
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
-    public abstract class AbstractPluralAttribute : Attribute {
-        public AbstractPluralAttribute(string s) => Value = s;
+namespace NakedFramework; 
 
-        public string Value { get; }
-    }
+[AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
+public abstract class AbstractPluralAttribute : Attribute {
+    public AbstractPluralAttribute(string s) => Value = s;
+
+    public string Value { get; }
 }

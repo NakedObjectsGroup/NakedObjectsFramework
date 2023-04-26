@@ -7,7 +7,6 @@
 
 using System;
 
-namespace NakedFramework {
+namespace NakedFramework; 
 
-    public abstract class AbstractOptionallyAttribute : Attribute { }
-}
+public abstract class AbstractOptionallyAttribute : Attribute { }

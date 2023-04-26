@@ -7,11 +7,11 @@
 
 using NakedFramework;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     Provides a user-oriented description for an item that might e.g. be displayed as a tooltip.
-    /// </summary>
-    public class DescribedAsAttribute : AbstractDescribedAsAttribute {
-        public DescribedAsAttribute(string s) : base(s) { }
-    }
+namespace NakedFunctions; 
+
+/// <summary>
+///     Provides a user-oriented description for an item that might e.g. be displayed as a tooltip.
+/// </summary>
+public class DescribedAsAttribute : AbstractDescribedAsAttribute {
+    public DescribedAsAttribute(string s) : base(s) { }
 }

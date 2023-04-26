@@ -7,15 +7,15 @@
 
 using System;
 
-namespace NakedFunctions {
-    /// <summary>
-    ///     When applied to the string parameter of an AutoComplete method, the Minimum specifies the number of
-    ///     characters the user must type before the method will be invoked.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter)]
-    public class MinLengthAttribute : Attribute {
-        public MinLengthAttribute(int value) => Value = value;
+namespace NakedFunctions; 
 
-        public int Value { get; }
-    }
+/// <summary>
+///     When applied to the string parameter of an AutoComplete method, the Minimum specifies the number of
+///     characters the user must type before the method will be invoked.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter)]
+public class MinLengthAttribute : Attribute {
+    public MinLengthAttribute(int value) => Value = value;
+
+    public int Value { get; }
 }

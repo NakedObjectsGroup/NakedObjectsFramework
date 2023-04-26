@@ -8,34 +8,33 @@
 using System;
 using System.Security.Principal;
 
-namespace NakedFunctions {
-    public static class ContextExtensions {
-        public static IContext WithWarnUser(this IContext context, string message)
-            => context.WithDeferred(c => {
-                c.GetService<IAlert>().WarnUser(message);
-                return c;
-            });
+namespace NakedFunctions; 
 
-        public static IContext WithInformUser(this IContext context, string message)
-            => context.WithDeferred(c => {
-                c.GetService<IAlert>().InformUser(message);
-                return c;
-            });
+public static class ContextExtensions {
+    public static IContext WithWarnUser(this IContext context, string message)
+        => context.WithDeferred(c => {
+            c.GetService<IAlert>().WarnUser(message);
+            return c;
+        });
 
-        public static DateTime Now(this IContext context)
-            => context.GetService<IClock>().Now();
+    public static IContext WithInformUser(this IContext context, string message)
+        => context.WithDeferred(c => {
+            c.GetService<IAlert>().InformUser(message);
+            return c;
+        });
 
-        public static DateTime Today(this IContext context)
-            => context.GetService<IClock>().Today();
+    public static DateTime Now(this IContext context)
+        => context.GetService<IClock>().Now();
 
-        public static IPrincipal CurrentUser(this IContext context)
-            => context.GetService<IPrincipalProvider>().CurrentUser;
+    public static DateTime Today(this IContext context)
+        => context.GetService<IClock>().Today();
 
-        public static IRandom RandomSeed(this IContext context)
-            => context.GetService<IRandomSeedGenerator>().Random;
+    public static IPrincipal CurrentUser(this IContext context)
+        => context.GetService<IPrincipalProvider>().CurrentUser;
 
-        public static Guid NewGuid(this IContext context)
-            => context.GetService<IGuidGenerator>().NewGuid();
+    public static IRandom RandomSeed(this IContext context)
+        => context.GetService<IRandomSeedGenerator>().Random;
 
-    }
+    public static Guid NewGuid(this IContext context)
+        => context.GetService<IGuidGenerator>().NewGuid();
 }

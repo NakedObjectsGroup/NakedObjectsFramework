@@ -6,23 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFramework;
-using System;
 
-namespace NakedObjects {
-    /// <summary>
-    ///     Used when you want to specify the way something is named on the user interface i.e. when you do
-    ///     not want to use the name generated automatically by the system. It can be applied to objects,
-    ///     members (properties, collections, and actions) and to parameters within an action method.
-    /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///         Instead of this may use <see cref="System.ComponentModel.DisplayNameAttribute" /> but note that it is not
-    ///         applicable to interfaces
-    ///         or parameters.
-    ///     </para>
-    /// </remarks>
-    /// <seealso cref="PluralAttribute" />
-    public class NamedAttribute : AbstractNamedAttribute {
-        public NamedAttribute(string s) : base(s) { }
-    }
+namespace NakedObjects; 
+
+/// <summary>
+///     Used when you want to specify the way something is named on the user interface i.e. when you do
+///     not want to use the name generated automatically by the system. It can be applied to objects,
+///     members (properties, collections, and actions) and to parameters within an action method.
+/// </summary>
+/// <remarks>
+///     <para>
+///         Instead of this may use <see cref="System.ComponentModel.DisplayNameAttribute" /> but note that it is not
+///         applicable to interfaces
+///         or parameters.
+///     </para>
+/// </remarks>
+/// <seealso cref="PluralAttribute" />
+public class NamedAttribute : AbstractNamedAttribute {
+    public NamedAttribute(string s) : base(s) { }
 }
