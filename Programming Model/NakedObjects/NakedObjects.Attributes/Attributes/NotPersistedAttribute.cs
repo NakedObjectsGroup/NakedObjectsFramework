@@ -14,5 +14,6 @@ namespace NakedObjects {
     ///     Attempting to persist such an object programmatically would throw an exception.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
+    [Obsolete("Use EF6/EFCore")]
     public class NotPersistedAttribute : Attribute { }
 }

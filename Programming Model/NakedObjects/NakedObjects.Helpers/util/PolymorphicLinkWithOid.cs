@@ -21,7 +21,10 @@ namespace NakedObjects {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        [NotPersisted] [Disabled]
+#pragma warning disable CS0618
+        [NotPersisted]
+#pragma warning restore CS0618
+        [Disabled]
         public virtual TRole AssociatedRoleObject {
             get => ObjectFinder.FindObject<TRole>(RoleObjectOid);
             set => RoleObjectOid = ObjectFinder.GetCompoundKey(value);

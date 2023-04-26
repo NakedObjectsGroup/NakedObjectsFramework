@@ -44,7 +44,10 @@ namespace NakedObjects {
         [Disabled]
         public virtual int AssociatedRoleObjectId { get; set; }
 
-        [NotPersisted] [Disabled]
+#pragma warning disable CS0618
+        [NotPersisted]
+#pragma warning restore CS0618
+        [Disabled]
         public virtual TRole AssociatedRoleObject {
             get => PolymorphicNavigator.FindObject<TRole>(AssociatedRoleObjectType, AssociatedRoleObjectId);
             set {

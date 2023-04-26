@@ -14,6 +14,7 @@ namespace NakedObjects.Security {
     ///     access is limited to those lists. If absent then no restriction is imposed.
     /// </summary>
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method)]
+    [Obsolete("Use AuthorizationManager")]
     public class AuthorizeActionAttribute : Attribute {
         public string Roles { get; set; }
         public string Users { get; set; }
