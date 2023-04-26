@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -68,6 +69,30 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
         return GetNullabilities(nAttribute).FirstOrDefault() == Nullability.Annotated;
     }
 
+    private static bool IsOptionalByNullability(ParameterInfo parameter, ISpecificationBuilder holder) {
+        var owner = parameter.Member;
+
+        var attributes = owner?.GetCustomAttributes() ?? Array.Empty<Attribute>();
+        var ncAttribute = attributes.SingleOrDefault(a => a.GetType().Name == "NullableContextAttribute");
+        
+        var nullableContext = GetNullability(ncAttribute);
+
+        if (nullableContext == Nullability.Oblivious) {
+            return false;
+        }
+
+        var nAttribute = parameter.GetCustomAttributes().SingleOrDefault(a => a.GetType().Name == "NullableAttribute");
+
+        if (nAttribute == null) {
+            return nullableContext == Nullability.Annotated;
+        }
+
+        return GetNullabilities(nAttribute).FirstOrDefault() == Nullability.Annotated;
+    }
+
+
+
+
     private static Nullability GetNullability(Attribute ncAttribute) => (Nullability) (ncAttribute?.GetType().GetField("Flag")?.GetValue(ncAttribute) ?? (byte)0);
 
     private static Nullability[] GetNullabilities(Attribute nAttribute) => (Nullability[]) (nAttribute?.GetType().GetField("NullableFlags")?.GetValue(nAttribute) ?? Array.Empty<Nullability>());
@@ -106,7 +131,14 @@ public sealed class OptionalAnnotationFacetFactory : DomainObjectFacetFactoryPro
         }
 
         var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
-        FacetUtils.AddFacet(Create(attribute is not null), holder);
+
+        var optionalByNullability = IsOptionalByNullability(parameter, holder);
+        if (attribute is not null && optionalByNullability) {
+            logger.LogWarning($"Optionally annotation on nullable annotated parameter {paramNum} on {method.ReflectedType}.{method.Name}");
+        }
+
+
+        FacetUtils.AddFacet(Create(attribute is not null|| optionalByNullability), holder);
         return metamodel;
     }
 

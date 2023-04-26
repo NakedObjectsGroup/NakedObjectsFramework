@@ -83,51 +83,108 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         Assert.IsNotNull(metamodel);
     }
 
-    [TestMethod]
-    public void TestNullableAnnotationPickedUpOnProperty1() {
+    private void AssertPropertyHasOptionalFacet(Type onType, string name) {
         IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        Specification = new TestSpecification();
 
-        var property1 = FindProperty(typeof(Customer11), nameof(Customer11.FirstName));
-        metamodel = facetFactory.Process(Reflector, property1, MethodRemover, Specification, metamodel);
+        var property = FindProperty(onType, name);
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
         var facet = Specification.GetFacet(typeof(IMandatoryFacet));
         Assert.IsNotNull(facet);
         Assert.IsTrue(facet is OptionalFacet);
         Assert.IsNotNull(metamodel);
+    }
 
+    private void AssertPropertyHasNotOptionalFacet(Type onType, string name) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        Specification = new TestSpecification();
+
+        var property = FindProperty(onType, name);
+        metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    private void AssertParameterHasOptionalFacet(Type onType, string name, Type[] parms, int parmNo) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        Specification = new TestSpecification();
+        var method = FindMethod(onType, name, parms);
+        metamodel = facetFactory.ProcessParams(Reflector, method, parmNo, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNotNull(facet);
+        Assert.IsTrue(facet is OptionalFacet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    private void AssertParameterHasNotOptionalFacet(Type onType, string name, Type[] parms, int parmNo) {
+        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        Specification = new TestSpecification();
+        var method = FindMethod(onType, name, parms);
+        metamodel = facetFactory.ProcessParams(Reflector, method, parmNo, Specification, metamodel);
+        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
+        Assert.IsNull(facet);
+        Assert.IsNotNull(metamodel);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnProperty1() {
+        AssertPropertyHasOptionalFacet(typeof(Customer11), nameof(Customer11.FirstName));
+        AssertPropertyHasNotOptionalFacet(typeof(Customer11), nameof(Customer11.SecondName));
     }
 
     [TestMethod]
     public void TestNullableAnnotationPickedUpOnProperty2() {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-        var property1 = FindProperty(typeof(Customer11), nameof(Customer11.SecondName));
-        metamodel = facetFactory.Process(Reflector, property1, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-        Assert.IsNull(facet);
-        Assert.IsNotNull(metamodel);
+        AssertPropertyHasOptionalFacet(typeof(Customer12), nameof(Customer12.FirstName));
     }
 
     [TestMethod]
     public void TestNullableAnnotationPickedUpOnProperty3() {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-
-        var property1 = FindProperty(typeof(Customer11), nameof(Customer12.FirstName));
-        metamodel = facetFactory.Process(Reflector, property1, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-        Assert.IsNotNull(facet);
-        Assert.IsTrue(facet is OptionalFacet);
-        Assert.IsNotNull(metamodel);
+        AssertPropertyHasNotOptionalFacet(typeof(Customer13), nameof(Customer13.SecondName));
     }
 
     [TestMethod]
     public void TestNullableAnnotationPickedUpOnProperty4() {
-        IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+        AssertPropertyHasOptionalFacet(typeof(Customer14), nameof(Customer14.FirstName));
+        AssertPropertyHasNotOptionalFacet(typeof(Customer14), nameof(Customer14.SecondName));
+        AssertPropertyHasNotOptionalFacet(typeof(Customer14), nameof(Customer14.LastName));
+    }
 
-        var property2 = FindProperty(typeof(Customer11), nameof(Customer13.SecondName));
-        metamodel = facetFactory.Process(Reflector, property2, MethodRemover, Specification, metamodel);
-        var facet = Specification.GetFacet(typeof(IMandatoryFacet));
-        Assert.IsNull(facet);
-        Assert.IsNotNull(metamodel);
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnProperty5() {
+        AssertPropertyHasOptionalFacet(typeof(Customer15), nameof(Customer15.FirstName));
+        AssertPropertyHasOptionalFacet(typeof(Customer15), nameof(Customer15.SecondName));
+        AssertPropertyHasNotOptionalFacet(typeof(Customer15), nameof(Customer15.LastName));
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnActionParameter1() {
+        AssertParameterHasOptionalFacet(typeof(Customer21), nameof(Customer21.SomeAction), new[] { typeof(string) }, 0);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnActionParameter2() {
+        AssertParameterHasNotOptionalFacet(typeof(Customer22), nameof(Customer22.SomeAction), new[] { typeof(string) }, 0);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnActionParameter3() {
+        AssertParameterHasOptionalFacet(typeof(Customer23), nameof(Customer23.SomeAction), new[] { typeof(string), typeof(string) }, 0);
+        AssertParameterHasNotOptionalFacet(typeof(Customer23), nameof(Customer23.SomeAction), new[] { typeof(string), typeof(string) }, 1);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnActionParameter4() {
+        AssertParameterHasOptionalFacet(typeof(Customer24), nameof(Customer24.SomeAction), new[] { typeof(string), typeof(string), typeof(string) }, 0);
+        AssertParameterHasNotOptionalFacet(typeof(Customer24), nameof(Customer24.SomeAction), new[] { typeof(string), typeof(string), typeof(string) }, 1);
+        AssertParameterHasOptionalFacet(typeof(Customer24), nameof(Customer24.SomeAction), new[] { typeof(string), typeof(string), typeof(string) }, 2);
+    }
+
+    [TestMethod]
+    public void TestNullableAnnotationPickedUpOnActionParameter5() {
+        AssertParameterHasOptionalFacet(typeof(Customer25), nameof(Customer25.SomeAction), new[] { typeof(string), typeof(string), typeof(string) }, 0);
+        AssertParameterHasNotOptionalFacet(typeof(Customer25), nameof(Customer25.SomeAction), new[] { typeof(string), typeof(string), typeof(string) }, 1);
+        AssertParameterHasNotOptionalFacet(typeof(Customer25), nameof(Customer25.SomeAction), new[] { typeof(string), typeof(string), typeof(string) }, 2);
     }
 
     #region Nested type: Customer1
@@ -167,9 +224,9 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
 
     #endregion
 
-
     #region Nullable types
-    #nullable enable
+
+#nullable enable
 
     private class Customer11 {
         public string? FirstName => null;
@@ -184,14 +241,46 @@ public class OptionalAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         public string SecondName => "";
     }
 
+    private class Customer14 {
+        public string? FirstName => null;
+        public string SecondName => "";
+        public string LastName => "";
+    }
 
-    #nullable restore
+    private class Customer15 {
+        public string? FirstName => null;
+        public string? SecondName => "";
+        public string LastName => "";
+    }
+
+    private class Customer21 {
+        // ReSharper disable once UnusedParameter.Local
+        public void SomeAction(string? foo) { }
+    }
+
+    private class Customer22 {
+        // ReSharper disable once UnusedParameter.Local
+        public void SomeAction(string bar) { }
+    }
+
+    private class Customer23 {
+        // ReSharper disable once UnusedParameter.Local
+        public void SomeAction(string? foo, string bar) { }
+    }
+
+    private class Customer24 {
+        // ReSharper disable once UnusedParameter.Local
+        public void SomeAction(string? foo, string bar, string? baz) { }
+    }
+
+    private class Customer25 {
+        // ReSharper disable once UnusedParameter.Local
+        public void SomeAction(string? foo, string bar, string baz) { }
+    }
+
+#nullable restore
+
     #endregion
-   
-
-
-
-
 
     #region Setup/Teardown
 
