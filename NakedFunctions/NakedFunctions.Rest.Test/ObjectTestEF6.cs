@@ -41,7 +41,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(EditRecordFunctions),
         typeof(DeleteRecordFunctions),
         typeof(ImmutableCollectionRecordFunctions),
-        typeof(UrlLinkFunctions)
+        typeof(UrlLinkFunctions),
+        typeof(NullableParameterFunctions)
     };
 
     protected override Type[] Records { get; } = {
@@ -1297,5 +1298,17 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         var result = api.PostInvoke(FullName<SimpleRecord>(), "1", nameof(SimpleRecordFunctions.Error), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.InternalServerError, sc);
+    }
+
+    [Test]
+    public void TestGetFunctionWithNullability() {
+        var api = Api();
+        var result = api.GetObject(FullName<UrlLinkRecord>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("True", parsedResult["members"]["NullableFunction"]["parameters"]["p1"]["extensions"]["optional"].ToString());
+        Assert.AreEqual("False", parsedResult["members"]["NullableFunction"]["parameters"]["p2"]["extensions"]["optional"].ToString());
     }
 }

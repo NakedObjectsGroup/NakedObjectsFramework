@@ -308,3 +308,12 @@ public static class UrlLinkFunctions {
     [UrlLink(true, "Name1")]
     public static string LinkFunction(this UrlLinkRecord er, IContext context) => "link";
 }
+
+#nullable enable
+
+public static class NullableParameterFunctions {
+  
+    public static string NullableFunction(this UrlLinkRecord er, string? p1, string p2, IContext context) => "link";
+}
+
+#nullable restore
