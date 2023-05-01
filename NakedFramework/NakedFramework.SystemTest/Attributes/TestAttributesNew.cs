@@ -599,4 +599,32 @@ public class TestAttributesNew : AcceptanceTestCase {
         var prop2 = GetMember(obj, nameof(Maxlength1.Prop2));
         Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
     }
+
+    [Test]
+    public virtual void NamedAppliedToAction() {
+        var obj = GetObject<Named1>();
+        var action = GetMember(obj, nameof(Named1.DoSomething));
+        Assert.AreEqual("Hex", action["extensions"]["friendlyName"].ToString());
+    }
+
+    [Test]
+    public virtual void NamedAppliedToObject() {
+        var obj = GetObject<Named1>();
+        Assert.AreEqual("Untitled Foo", obj["title"].ToString());
+    }
+
+    [Test]
+    public virtual void NamedAppliedToParameter() {
+        var obj = GetObject<Named1>();
+        var action = GetMember(obj, nameof(Named1.DoSomething));
+        var param = action["parameters"]["param1"];
+        Assert.AreEqual("Yop", param["extensions"]["friendlyName"].ToString());
+    }
+
+    [Test]
+    public virtual void NamedAppliedToProperty() {
+        var obj = GetObject<Named1>();
+        var prop = GetMember(obj, nameof(Named1.Prop1));
+        Assert.AreEqual("Bar", prop["extensions"]["friendlyName"].ToString());
+    }
 }

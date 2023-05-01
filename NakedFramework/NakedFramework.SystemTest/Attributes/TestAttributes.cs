@@ -224,54 +224,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
    
 
-
-        [Test]
-        public virtual void NakedObjectsMaxLengthOnParm() {
-            var obj = NewTestObject<Maxlength1>();
-            var act = obj.GetAction("Action");
-
-            act.AssertIsInvalidWithParms("123456789");
-            act.AssertIsInvalidWithParms("12345678 ");
-            act.AssertIsValidWithParms("12345678");
-        }
-
-        [Test]
-        public virtual void NakedObjectsMaxLengthOnProperty() {
-            var obj = NewTestObject<Maxlength1>();
-            var prop2 = obj.GetPropertyByName("Prop2");
-            prop2.AssertFieldEntryInvalid("12345678");
-            prop2.AssertFieldEntryInvalid("1234567 ");
-            prop2.SetValue("1234567");
-        }
-
-        [Test]
-        public virtual void NamedAppliedToAction() {
-            var named1 = NewTestObject<Named1>();
-            var hex = named1.GetAction("Hex");
-            Assert.IsNotNull(hex);
-            Equals("Hex", hex.Name);
-        }
-
-        [Test]
-        public virtual void NamedAppliedToObject() {
-            var named1 = NewTestObject<Named1>();
-            named1.AssertTitleEquals("Untitled Foo");
-        }
-
-        [Test]
-        public virtual void NamedAppliedToParameter() {
-            var named1 = NewTestObject<Named1>();
-            var hex = named1.GetAction("Hex");
-            var param = hex.Parameters[0];
-            Equals("Yop", param.Name);
-        }
-
-        [Test]
-        public virtual void NamedAppliedToProperty() {
-            var named1 = NewTestObject<Named1>();
-            var bar = named1.GetPropertyByName("Bar");
-            Assert.IsNotNull(bar);
-        }
+        
 
         [Test]
         public virtual void NullDescribedAsAppliedToAction() {
@@ -750,7 +703,7 @@ namespace NakedObjects.SystemTest.Attributes {
             //context.NakedObjectsIgnore3s.Add(new NakedObjectsIgnore3 { Id = 1 });
             //context.NakedObjectsIgnore4s.Add(new NakedObjectsIgnore4 { Id = 1 });
             //context.NakedObjectsIgnore5s.Add(new NakedObjectsIgnore5 { Id = 1 });
-            //context.Named1s.Add(new Named1 { Id = 1 });
+            context.Named1s.Add(new Named1 { Id = 1 });
             //context.Range1s.Add(new Range1 { Id = 1 });
             //context.Regex1s.Add(new Regex1 { Id = 1 });
             //context.Regex2s.Add(new Regex2 { Id = 1 });
