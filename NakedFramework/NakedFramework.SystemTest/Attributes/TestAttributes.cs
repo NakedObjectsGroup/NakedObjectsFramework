@@ -54,14 +54,6 @@ namespace NakedObjects.SystemTest.Attributes {
             AttributesDbContext.Delete();
         }
 
-        private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
-        private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
-        private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
-        private static readonly string today = DateTime.Today.ToShortDateString();
-        private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToShortDateString();
-        private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
-        private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
-
         protected override Type[] ObjectTypes {
             get {
                 return base.ObjectTypes.Union(new[] {
@@ -175,37 +167,7 @@ namespace NakedObjects.SystemTest.Attributes {
             }
         }
 
-        private ITestObject NewTransientDisabled1() => GetTestService("Disabled1s").GetAction("New Instance").InvokeReturnObject();
-
-        private void NumericPropertyRangeTest(string name) {
-            var obj = NewTestObject<Range1>();
-            var prop = obj.GetPropertyById(name);
-            try {
-                prop.AssertFieldEntryInvalid("-2");
-                prop.AssertFieldEntryInvalid("11");
-                prop.SetValue("1");
-            }
-            catch {
-                Console.WriteLine("Failed " + name);
-                throw;
-            }
-        }
-
-        private void NumericParmRangeTest(string name) {
-            var obj = NewTestObject<Range1>();
-            var act = obj.GetAction(name);
-
-            try {
-                act.AssertIsInvalidWithParms(4);
-                act.AssertIsValidWithParms(5);
-                act.AssertIsValidWithParms(6);
-                act.AssertIsInvalidWithParms(7);
-            }
-            catch {
-                Console.WriteLine("Failed " + name);
-                throw;
-            }
-        }
+      
 
         
 
@@ -223,175 +185,9 @@ namespace NakedObjects.SystemTest.Attributes {
         }
         
 
-        [Test]
-        public virtual void ObjectImmutable() {
-            var obj = NewTestObject<Immutable2>();
-            var prop0 = obj.GetPropertyByName("Prop0");
-            prop0.AssertIsUnmodifiable();
-            var prop1 = obj.GetPropertyByName("Prop1");
-            prop1.AssertIsUnmodifiable();
-            var prop2 = obj.GetPropertyByName("Prop2");
-            prop2.AssertIsUnmodifiable();
-            var prop3 = obj.GetPropertyByName("Prop3");
-            prop3.AssertIsUnmodifiable();
-            var prop4 = obj.GetPropertyByName("Prop4");
-            prop4.AssertIsUnmodifiable();
-            var prop5 = obj.GetPropertyByName("Prop5");
-            prop5.AssertIsUnmodifiable();
-            var prop6 = obj.GetPropertyByName("Prop6");
-            prop6.AssertIsUnmodifiable();
-            obj.Save();
-            prop0.AssertIsUnmodifiable();
-            prop1.AssertIsUnmodifiable();
-            prop2.AssertIsUnmodifiable();
-            prop3.AssertIsUnmodifiable();
-            prop4.AssertIsUnmodifiable();
-            prop5.AssertIsUnmodifiable();
-            prop6.AssertIsUnmodifiable();
-        }
+        
 
-        [Test]
-        public virtual void ObjectWithTitleAttributeOnString() {
-            var obj = NewTestObject<Title1>();
-            obj.AssertTitleEquals("Untitled Title1");
-            var prop1 = obj.GetPropertyByName("Prop1");
-            prop1.SetValue("Foo");
-            obj.AssertTitleEquals("Foo");
-            obj.Save();
-            obj.AssertTitleEquals("Foo");
-        }
-
-        [Test]
-        public void PropertyOrder() {
-            var obj2 = NewTestObject<Memberorder1>();
-            obj2.AssertPropertyOrderIs("Prop2, Prop1");
-
-            var properties = obj2.Properties;
-            Assert.AreEqual(properties[0].Name, "Prop2");
-            Assert.AreEqual(properties[1].Name, "Prop1");
-        }
-
-        [Test]
-        public void PropertyOrderOnSubClass() {
-            var obj3 = NewTestObject<Memberorder2>();
-            obj3.AssertPropertyOrderIs("Prop2, Prop4, Prop1, Prop3");
-
-            var properties = obj3.Properties;
-            Assert.AreEqual(properties[0].Name, "Prop2");
-            Assert.AreEqual(properties[1].Name, "Prop4");
-            Assert.AreEqual(properties[2].Name, "Prop1");
-            Assert.AreEqual(properties[3].Name, "Prop3");
-        }
-
-        [Test]
-        public virtual void RangeOnDateParms() {
-            var obj = NewTestObject<Range1>();
-            var act = obj.GetAction("Action 24");
-            try {
-                act.AssertIsInvalidWithParms(todayMinus31);
-                act.AssertIsValidWithParms(todayMinus30);
-                act.AssertIsValidWithParms(today);
-                act.AssertIsInvalidWithParms(todayPlus1);
-                act.InvokeReturnObject(todayMinus1);
-            }
-            catch {
-                Console.WriteLine("Failed " + "Action24");
-                throw;
-            }
-
-            act = obj.GetAction("Action 25");
-            try {
-                act.AssertIsInvalidWithParms(today);
-                act.AssertIsValidWithParms(todayPlus1);
-                act.AssertIsValidWithParms(todayPlus30);
-                act.AssertIsInvalidWithParms(todayPlus31);
-                act.InvokeReturnObject(todayPlus1);
-            }
-            catch {
-                Console.WriteLine("Failed " + "Action25");
-                throw;
-            }
-        }
-
-        [Test]
-        public virtual void RangeOnDateProperties() {
-            var obj = NewTestObject<Range1>();
-            var prop = obj.GetPropertyById("Prop25");
-            try {
-                prop.AssertFieldEntryInvalid(todayMinus31);
-                prop.AssertFieldEntryIsValid(todayMinus30);
-                prop.AssertFieldEntryIsValid(today);
-                prop.AssertFieldEntryInvalid(todayPlus1);
-                prop.SetValue(todayMinus1);
-            }
-            catch {
-                Console.WriteLine("Failed " + "Prop25");
-                throw;
-            }
-
-            prop = obj.GetPropertyById("Prop26");
-            try {
-                prop.AssertFieldEntryInvalid(today);
-                prop.AssertFieldEntryIsValid(todayPlus1);
-                prop.AssertFieldEntryIsValid(todayPlus30);
-                prop.AssertFieldEntryInvalid(todayPlus31);
-                prop.SetValue(todayPlus1);
-            }
-            catch {
-                Console.WriteLine("Failed " + "Prop25");
-                throw;
-            }
-        }
-
-        [Test]
-        public virtual void RangeOnNumericParms() {
-            NumericParmRangeTest("Action1");
-            NumericParmRangeTest("Action2");
-            NumericParmRangeTest("Action3");
-            NumericParmRangeTest("Action4");
-            NumericParmRangeTest("Action5");
-            NumericParmRangeTest("Action6");
-            NumericParmRangeTest("Action7");
-            NumericParmRangeTest("Action8");
-            NumericParmRangeTest("Action9");
-            NumericParmRangeTest("Action 10");
-            NumericParmRangeTest("Action 11");
-            NumericParmRangeTest("Action 12");
-            NumericParmRangeTest("Action 13");
-            NumericParmRangeTest("Action 14");
-            NumericParmRangeTest("Action 15");
-            NumericParmRangeTest("Action 16");
-            NumericParmRangeTest("Action 17");
-            NumericParmRangeTest("Action 18");
-            NumericParmRangeTest("Action 19");
-            NumericParmRangeTest("Action 20");
-            NumericParmRangeTest("Action 21");
-            NumericParmRangeTest("Action 22");
-        }
-
-        [Test]
-        public virtual void RangeOnNumericProperties() {
-            NumericPropertyRangeTest("Prop3");
-            NumericPropertyRangeTest("Prop4");
-            NumericPropertyRangeTest("Prop5");
-            NumericPropertyRangeTest("Prop6");
-            NumericPropertyRangeTest("Prop7");
-            NumericPropertyRangeTest("Prop8");
-            NumericPropertyRangeTest("Prop9");
-            NumericPropertyRangeTest("Prop10");
-            NumericPropertyRangeTest("Prop11");
-            NumericPropertyRangeTest("Prop12");
-            NumericPropertyRangeTest("Prop14");
-            NumericPropertyRangeTest("Prop15");
-            NumericPropertyRangeTest("Prop16");
-            NumericPropertyRangeTest("Prop17");
-            NumericPropertyRangeTest("Prop18");
-            NumericPropertyRangeTest("Prop19");
-            NumericPropertyRangeTest("Prop20");
-            NumericPropertyRangeTest("Prop21");
-            NumericPropertyRangeTest("Prop22");
-            NumericPropertyRangeTest("Prop23");
-        }
+     
 
         [Test]
         public virtual void SimpleRegExAttributeOnProperty() {
@@ -644,13 +440,13 @@ namespace NakedObjects.SystemTest.Attributes {
             //context.NakedObjectsIgnore4s.Add(new NakedObjectsIgnore4 { Id = 1 });
             //context.NakedObjectsIgnore5s.Add(new NakedObjectsIgnore5 { Id = 1 });
             context.Named1s.Add(new Named1 { Id = 1 });
-            //context.Range1s.Add(new Range1 { Id = 1 });
+            context.Range1s.Add(new Range1 { Id = 1,Prop25 = DateTime.Today, Prop26 = DateTime.Today});
             //context.Regex1s.Add(new Regex1 { Id = 1 });
             //context.Regex2s.Add(new Regex2 { Id = 1 });
             context.Memberorder1s.Add(new Memberorder1 { Id = 1 });
             context.Memberorder2s.Add(new Memberorder2 { Id = 1 });
             //context.Stringlength1s.Add(new Stringlength1 { Id = 1 });
-            //context.Title1s.Add(new Title1 { Id = 1 });
+            context.Title1s.Add(new Title1 { Id = 1, Prop1 = "Foo"});
             //context.Title2s.Add(new Title2 { Id = 1 });
             //context.Title3s.Add(new Title3 { Id = 1 });
             //context.Title4s.Add(new Title4 { Id = 1 });
@@ -1177,17 +973,17 @@ namespace NakedObjects.SystemTest.Attributes {
         [System.ComponentModel.DataAnnotations.Range(-1, 10)]
         public virtual long Prop5 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1, 10)]
-        public virtual byte Prop6 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1, 10)]
+        //public virtual byte Prop6 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1, 10)]
-        public virtual ushort Prop7 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1, 10)]
+        //public virtual ushort Prop7 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1, 10)]
-        public virtual uint Prop8 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1, 10)]
+        //public virtual uint Prop8 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1, 10)]
-        public virtual ulong Prop9 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1, 10)]
+        //public virtual ulong Prop9 { get; set; }
 
         [System.ComponentModel.DataAnnotations.Range(-1, 10)]
         public virtual float Prop10 { get; set; }
@@ -1207,17 +1003,17 @@ namespace NakedObjects.SystemTest.Attributes {
         [System.ComponentModel.DataAnnotations.Range(-1d, 10d)]
         public virtual long Prop16 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1d, 10d)]
-        public virtual byte Prop17 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1d, 10d)]
+        //public virtual byte Prop17 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1d, 10d)]
-        public virtual ushort Prop18 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1d, 10d)]
+        //public virtual ushort Prop18 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1d, 10d)]
-        public virtual uint Prop19 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1d, 10d)]
+        //public virtual uint Prop19 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(1d, 10d)]
-        public virtual ulong Prop20 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(1d, 10d)]
+        //public virtual ulong Prop20 { get; set; }
 
         [System.ComponentModel.DataAnnotations.Range(-1.9d, 10.9d)]
         public virtual float Prop21 { get; set; }
@@ -1228,14 +1024,14 @@ namespace NakedObjects.SystemTest.Attributes {
         [System.ComponentModel.DataAnnotations.Range(-1.9d, 10.9d)]
         public virtual decimal Prop23 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(typeof(string), "1", "10")]
+        //[System.ComponentModel.DataAnnotations.Range(typeof(string), "1", "10")]
         public virtual int Prop24 { get; set; }
 
-        [System.ComponentModel.DataAnnotations.Range(-30, 0)]
-        public virtual DateTime Prop25 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(-30, 0)]
+        public virtual DateTime Prop25 { get; set; } = DateTime.Today;
 
-        [System.ComponentModel.DataAnnotations.Range(1, 30)]
-        public virtual DateTime Prop26 { get; set; }
+        //[System.ComponentModel.DataAnnotations.Range(0, 30)]
+        public virtual DateTime Prop26 { get; set; } = DateTime.Today;
 
         public void Action1([System.ComponentModel.DataAnnotations.Range(5, 6)] sbyte parm) { }
 

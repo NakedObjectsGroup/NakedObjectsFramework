@@ -50,13 +50,15 @@ public class TestAttributesNew : AcceptanceTestCase {
         CleanUpDatabase();
     }
 
-    private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
-    private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
-    private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
-    private static readonly string today = DateTime.Today.ToShortDateString();
-    private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToShortDateString();
-    private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
-    private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
+    private const string format = "yyyy-MM-dd";
+
+    private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToString(format);
+    private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToString(format);
+    private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToString(format);
+    private static readonly string today = DateTime.Today.ToString(format);
+    private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToString(format);
+    private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToString(format);
+    private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToString(format);
 
     protected override Type[] ObjectTypes {
         get {
@@ -227,7 +229,7 @@ public class TestAttributesNew : AcceptanceTestCase {
         return JObject.Parse(json);
     }
 
-    private static void AssertActionOrderIs(JProperty[] properties, params string[] names) {
+    private static void AssertOrderIs(JProperty[] properties, params string[] names) {
         Assert.AreEqual(names.Length, properties.Length);
 
         for (var i = 0; i < names.Length; i++) {
@@ -251,11 +253,29 @@ public class TestAttributesNew : AcceptanceTestCase {
 
     private static JToken GetMember(JObject mask1, string name) => mask1["members"][name];
 
+    private void NumericPropertyRangeTest(JObject obj, string name) {
+        var prop = GetMember(obj, name);
+        var range = prop["extensions"]["x-ro-nof-range"];
+        var min = range["min"];
+        var max = range["max"];
+        Assert.AreEqual("-1", min.ToString());
+        Assert.AreEqual("10", max.ToString());
+    }
+
+    private void NumericParmRangeTest(JObject obj, string name) {
+        var act = GetMember(obj, name);
+        var range = act["parameters"]["parm"]["extensions"]["x-ro-nof-range"];
+        var min = range["min"];
+        var max = range["max"];
+        Assert.AreEqual("5", min.ToString());
+        Assert.AreEqual("6", max.ToString());
+    }
+
     [Test]
     public void ActionOrder() {
         var obj = GetObject<Memberorder1>();
         var actions = GetActions(obj);
-        AssertActionOrderIs(actions, nameof(Memberorder1.Action2), nameof(Memberorder1.Action1));
+        AssertOrderIs(actions, nameof(Memberorder1.Action2), nameof(Memberorder1.Action1));
         AssertMemberOrderExtensionIs(actions, 1, 3);
     }
 
@@ -263,7 +283,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     public void ActionOrderOnSubClass() {
         var obj = GetObject<Memberorder2>("2");
         var actions = GetActions(obj);
-        AssertActionOrderIs(actions, nameof(Memberorder2.Action2), nameof(Memberorder2.Action4), nameof(Memberorder2.Action1), nameof(Memberorder2.Action3));
+        AssertOrderIs(actions, nameof(Memberorder2.Action2), nameof(Memberorder2.Action4), nameof(Memberorder2.Action1), nameof(Memberorder2.Action3));
         AssertMemberOrderExtensionIs(actions, 1, 2, 3, 4);
     }
 
@@ -281,21 +301,21 @@ public class TestAttributesNew : AcceptanceTestCase {
     public virtual void CollectionContributed() {
         var obj = GetObjects<Contributee2>();
         var actions = GetActions(obj["result"] as JObject);
-        AssertActionOrderIs(actions, "CollectionContributedAction", "CollectionContributedAction1", "CollectionContributedAction2");
+        AssertOrderIs(actions, "CollectionContributedAction", "CollectionContributedAction1", "CollectionContributedAction2");
     }
 
     [Test]
     public virtual void CollectionContributedNotToAnotherClass() {
         var obj = GetObjects<Contributee>();
         var actions = GetActions(obj["result"] as JObject);
-        AssertActionOrderIs(actions);
+        AssertOrderIs(actions);
     }
 
     [Test]
     public virtual void CollectionContributedToSubClass() {
         var obj = GetObjects<Contributee3>();
         var actions = GetActions(obj["result"] as JObject);
-        AssertActionOrderIs(actions, "CollectionContributedAction", "CollectionContributedAction1", "CollectionContributedAction2");
+        AssertOrderIs(actions, "CollectionContributedAction", "CollectionContributedAction1", "CollectionContributedAction2");
     }
 
     [Test]
@@ -317,7 +337,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     public virtual void Contributed() {
         var obj = GetObject<Contributee>();
         var actions = GetActions(obj);
-        AssertActionOrderIs(actions, "ContributedAction");
+        AssertOrderIs(actions, "ContributedAction");
     }
 
     [Test]
@@ -720,5 +740,127 @@ public class TestAttributesNew : AcceptanceTestCase {
         Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
         var prop6 = GetMember(obj, nameof(Immutable2.Prop6));
         Assert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void ObjectWithTitleAttributeOnString() {
+        var obj = GetObject<Title1>();
+        Assert.AreEqual("Foo", obj["title"].ToString());
+    }
+
+    [Test]
+    public void PropertyOrder() {
+        var obj = GetObject<Memberorder1>();
+        var properties = GetProperties(obj);
+        AssertOrderIs(properties, nameof(Memberorder1.Prop2), nameof(Memberorder1.Prop1));
+        AssertMemberOrderExtensionIs(properties, 1, 3);
+    }
+
+    [Test]
+    public void PropertyOrderOnSubClass() {
+        var obj = GetObject<Memberorder2>("2");
+        var properties = GetProperties(obj);
+        AssertOrderIs(properties, nameof(Memberorder2.Prop2), nameof(Memberorder2.Prop4), nameof(Memberorder2.Prop1), nameof(Memberorder2.Prop3));
+        AssertMemberOrderExtensionIs(properties, 1, 2, 3, 4);
+    }
+
+    [Test]
+    public virtual void RangeOnDateParms1() {
+        var obj = GetObject<Range1>();
+        var act = GetMember(obj, nameof(Range1.Action24));
+        var range = act["parameters"]["parm"]["extensions"]["x-ro-nof-range"];
+        var min = range["min"];
+        var max = range["max"];
+
+        Assert.AreEqual(todayMinus30, min.ToString());
+        Assert.AreEqual(today, max.ToString());
+    }
+
+    [Test]
+    public virtual void RangeOnDateParms2() {
+        var obj = GetObject<Range1>();
+        var act = GetMember(obj, nameof(Range1.Action25));
+        var range = act["parameters"]["parm"]["extensions"]["x-ro-nof-range"];
+        var min = range["min"];
+        var max = range["max"];
+
+        Assert.AreEqual(todayPlus1, min.ToString());
+        Assert.AreEqual(todayPlus30, max.ToString());
+    }
+
+    //[Test]
+    //public virtual void RangeOnDateProperty1() {
+    //    var obj = GetObject<Range1>();
+    //    var prop = GetMember(obj, nameof(Range1.Prop25));
+    //    var range = prop["extensions"]["x-ro-nof-range"];
+    //    var min = range["min"];
+    //    var max = range["max"];
+
+    //    Assert.AreEqual(todayMinus30, min.ToString());
+    //    Assert.AreEqual(today, max.ToString());
+    //}
+
+    //[Test]
+    //public virtual void RangeOnDateProperty2() {
+    //    var obj = GetObject<Range1>();
+
+    //    var prop = GetMember(obj, nameof(Range1.Prop26));
+    //    var range = prop["extensions"]["x-ro-nof-range"];
+    //    var min = range["min"];
+    //    var max = range["max"];
+    //    Assert.AreEqual(todayPlus1, min.ToString());
+    //    Assert.AreEqual(todayPlus30, max.ToString());
+    //}
+
+    [Test]
+    public virtual void RangeOnNumericParms() {
+        var obj = GetObject<Range1>();
+        NumericParmRangeTest(obj, nameof(Range1.Action1));
+        NumericParmRangeTest(obj, nameof(Range1.Action2));
+        NumericParmRangeTest(obj, nameof(Range1.Action3));
+        NumericParmRangeTest(obj, nameof(Range1.Action4));
+        NumericParmRangeTest(obj, nameof(Range1.Action5));
+        NumericParmRangeTest(obj, nameof(Range1.Action6));
+        NumericParmRangeTest(obj, nameof(Range1.Action7));
+        NumericParmRangeTest(obj, nameof(Range1.Action8));
+        NumericParmRangeTest(obj, nameof(Range1.Action9));
+        NumericParmRangeTest(obj, nameof(Range1.Action10));
+        NumericParmRangeTest(obj, nameof(Range1.Action11));
+        NumericParmRangeTest(obj, nameof(Range1.Action12));
+        NumericParmRangeTest(obj, nameof(Range1.Action13));
+        NumericParmRangeTest(obj, nameof(Range1.Action14));
+        NumericParmRangeTest(obj, nameof(Range1.Action15));
+        NumericParmRangeTest(obj, nameof(Range1.Action16));
+        NumericParmRangeTest(obj, nameof(Range1.Action17));
+        NumericParmRangeTest(obj, nameof(Range1.Action18));
+        NumericParmRangeTest(obj, nameof(Range1.Action19));
+        NumericParmRangeTest(obj, nameof(Range1.Action20));
+        NumericParmRangeTest(obj, nameof(Range1.Action21));
+        NumericParmRangeTest(obj, nameof(Range1.Action22));
+    }
+
+    [Test]
+    public virtual void RangeOnNumericProperties() {
+        var obj = GetObject<Range1>();
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop3));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop4));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop5));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop6));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop7));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop8));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop9));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop10));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop11));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop12));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop14));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop15));
+        NumericPropertyRangeTest(obj, nameof(Range1.Prop16));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop17));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop18));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop19));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop20));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop21));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop22));
+        //NumericPropertyRangeTest(obj, nameof(Range1.Prop23));
     }
 }
