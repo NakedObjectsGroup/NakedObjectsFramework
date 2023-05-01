@@ -207,15 +207,15 @@ namespace NakedObjects.SystemTest.Attributes {
             }
         }
 
-        [Test]
-        public void ActionOrder() {
-            var obj2 = NewTestObject<Memberorder1>();
-            var actions = obj2.Actions;
-            Assert.AreEqual(actions[0].Name, "Action2");
-            Assert.AreEqual(actions[1].Name, "Action1");
+        //[Test]
+        //public void ActionOrder() {
+        //    var obj2 = NewTestObject<Memberorder1>();
+        //    var actions = obj2.Actions;
+        //    Assert.AreEqual(actions[0].Name, "Action2");
+        //    Assert.AreEqual(actions[1].Name, "Action1");
 
-            obj2.AssertActionOrderIs("Action2, Action1");
-        }
+        //    obj2.AssertActionOrderIs("Action2, Action1");
+        //}
 
         [Test]
         public void ActionOrderOnSubClass() {
@@ -1067,9 +1067,7 @@ namespace NakedObjects.SystemTest.Attributes {
     public class AttributesDatabaseInitializer : DropCreateDatabaseAlways<AttributesDbContext> {
         protected override void Seed(AttributesDbContext context) {
             context.Memberorder1s.Add(new Memberorder1() { Id = 1 });
-            //context.Bars.Add(new Bar { Id = 1 });
-            //context.Quxs.Add(new Qux { Id = 1 });
-            //context.FooSubs.Add(new FooSub { Id = 2 });
+            context.Memberorder2s.Add(new Memberorder2() { Id = 1 });
             context.SaveChanges();
         }
     }
@@ -1108,6 +1106,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Regex1> Regex1s { get; set; }
         public DbSet<Regex2> Regex2s { get; set; }
         public DbSet<Memberorder1> Memberorder1s { get; set; }
+        public DbSet<Memberorder2> Memberorder2s { get; set; }
         public DbSet<Stringlength1> Stringlength1s { get; set; }
         public DbSet<Title1> Title1s { get; set; }
         public DbSet<Title2> Title2s { get; set; }
@@ -1729,6 +1728,9 @@ namespace NakedObjects.SystemTest.Attributes {
     }
 
     public class Memberorder2 : Memberorder1 {
+        [NakedObjectsIgnore]
+        public override int Id { get; set; }
+
         [MemberOrder(4)]
         public virtual string Prop3 { get; set; }
 

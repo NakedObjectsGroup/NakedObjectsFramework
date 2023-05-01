@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -14,7 +13,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Rest.API;
-using NakedFramework.Rest.Model;
 using NakedFramework.Test;
 using NakedFramework.Test.TestCase;
 using NakedObjects.Reflector.Configuration;
@@ -29,6 +27,27 @@ namespace NakedFramework.SystemTest.Attributes;
 
 [TestFixture]
 public class TestAttributesNew : AcceptanceTestCase {
+    [SetUp]
+    public void SetUp() {
+        CreateDatabase();
+        StartTest();
+    }
+
+    [TearDown]
+    public void TearDown() => EndTest();
+
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        ObjectReflectorConfiguration.NoValidate = true;
+        InitializeNakedObjectsFramework(this);
+    }
+
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+        CleanUpDatabase();
+    }
+
     private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
     private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
     private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
@@ -156,7 +175,7 @@ public class TestAttributesNew : AcceptanceTestCase {
         new Func<IConfiguration, DbContext>[] { config => new AttributesDbContext() };
 
     protected virtual void CleanUpDatabase() {
-        AttributesDbContext.Delete();
+        //AttributesDbContext.Delete();
     }
 
     protected virtual void CreateDatabase() {
@@ -172,27 +191,6 @@ public class TestAttributesNew : AcceptanceTestCase {
 
     protected override Action<NakedFrameworkOptions> AddNakedFunctions => builder => { };
 
-    [SetUp]
-    public void SetUp() {
-        CreateDatabase();
-        StartTest();
-    }
-
-    [TearDown]
-    public void TearDown() => EndTest();
-
-    [OneTimeSetUp]
-    public void FixtureSetUp() {
-        ObjectReflectorConfiguration.NoValidate = true;
-        InitializeNakedObjectsFramework(this);
-    }
-
-    [OneTimeTearDown]
-    public void FixtureTearDown() {
-        CleanupNakedObjectsFramework(this);
-        CleanUpDatabase();
-    }
-
     protected RestfulObjectsControllerBase Api() {
         var sp = GetConfiguredContainer();
         var api = sp.GetService<RestfulObjectsController>();
@@ -201,20 +199,45 @@ public class TestAttributesNew : AcceptanceTestCase {
 
     private static string FullName<T>() => typeof(T).FullName;
 
-    [Test]
-    public void ActionOrder() {
+    private JObject GetObject(string name, string id) {
         var api = Api();
-
-        var result = api.GetObject(FullName<Memberorder1>(), "1");
+        var result = api.GetObject(name, id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var obj2 = JObject.Parse(json);
+        return obj2;
+    }
 
-        var members = obj2["members"];
-        var inOrder = members.ToArray();
-        Assert.AreEqual(((JProperty)inOrder[2]).Name, "Action2");
-        Assert.AreEqual(members["Action2"]["extensions"]["memberOrder"].ToString(), "1");
-        Assert.AreEqual(((JProperty)inOrder[3]).Name, "Action1");
-        Assert.AreEqual(members["Action1"]["extensions"]["memberOrder"].ToString(), "3");
+    private static void AssertActionOrderIs(JProperty[] properties, params string[] names) {
+        Assert.AreEqual(properties.Length, names.Length);
+
+        for (var i = 0; i < names.Length; i++) {
+            Assert.AreEqual(properties[i].Name, names[i]);
+        }
+    }
+
+    private static void AssertMemberOrderExtensionIs(JProperty[] properties, params int[] order) {
+        Assert.AreEqual(properties.Length, order.Length);
+
+        for (var i = 0; i < order.Length; i++) {
+            Assert.AreEqual(properties[i].Value["extensions"]["memberOrder"].Value<int>(), order[i]);
+        }
+    }
+
+    [Test]
+    public void ActionOrder() {
+        var obj = GetObject(FullName<Memberorder1>(), "1");
+        var actions = obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
+        AssertActionOrderIs(actions, "Action2", "Action1");
+        AssertMemberOrderExtensionIs(actions, 1, 3);
+    }
+
+    [Test]
+    public void ActionOrderOnSubClass() {
+        var obj = GetObject(FullName<Memberorder2>(), "2");
+        var actions = obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
+
+        AssertActionOrderIs(actions, "Action2", "Action4", "Action1", "Action3");
+        AssertMemberOrderExtensionIs(actions, 1, 2, 3, 4);
     }
 }
