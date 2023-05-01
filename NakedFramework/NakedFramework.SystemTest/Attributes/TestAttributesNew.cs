@@ -683,4 +683,42 @@ public class TestAttributesNew : AcceptanceTestCase {
         var prop = GetMember(obj, nameof(Description2.Prop1));
         Assert.AreEqual("", prop["extensions"]["description"].ToString());
     }
+
+    [Test]
+    public virtual void ObjectImmutableTransient() {
+        var obj = GetTransientObject<Immutable2>();
+        var prop0 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop0));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].ToString());
+        var prop1 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop1));
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+        var prop2 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop2));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop2["disabledReason"].ToString());
+        var prop3 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop3));
+        Assert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
+        var prop4 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop4));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].ToString());
+        var prop5 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop5));
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+        var prop6 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop6));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void ObjectImmutable() {
+        var obj = GetObject<Immutable2>("2");
+        var prop0 = GetMember(obj, nameof(Immutable2.Prop0));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].ToString());
+        var prop1 = GetMember(obj, nameof(Immutable2.Prop1));
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+        var prop2 = GetMember(obj, nameof(Immutable2.Prop2));
+        Assert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
+        var prop3 = GetMember(obj, nameof(Immutable2.Prop3));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop3["disabledReason"].ToString());
+        var prop4 = GetMember(obj, nameof(Immutable2.Prop4));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].ToString());
+        var prop5 = GetMember(obj, nameof(Immutable2.Prop5));
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+        var prop6 = GetMember(obj, nameof(Immutable2.Prop6));
+        Assert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
+    }
 }

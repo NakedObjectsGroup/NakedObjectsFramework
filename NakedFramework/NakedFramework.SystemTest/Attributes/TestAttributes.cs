@@ -632,7 +632,8 @@ namespace NakedObjects.SystemTest.Attributes {
             //context.Iconname2s.Add(new Iconname2 { Id = 1 });
             //context.Iconname3s.Add(new Iconname3 { Id = 1 });
             //context.Iconname4s.Add(new Iconname4 { Id = 1 });
-            //context.Immutable1s.Add(new Immutable1 { Id = 1 });
+            context.Immutable1s.Add(new Immutable1 { Id = 1 });
+            context.Immutable2s.Add(new Immutable2 { Id = 1 });
             context.Mask1s.Add(new Mask1 { Id = 1, Prop1 = new DateTime(2009, 9, 23), Prop2 = new DateTime(2009, 9, 24)});
             context.Mask2s.Add(new Mask2 { Id = 1 });
             context.Maxlength1s.Add(new Maxlength1 { Id = 1 });
@@ -689,6 +690,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Iconname3> Iconname3s { get; set; }
         public DbSet<Iconname4> Iconname4s { get; set; }
         public DbSet<Immutable1> Immutable1s { get; set; }
+        public DbSet<Immutable2> Immutable2s { get; set; }
         public DbSet<Mask1> Mask1s { get; set; }
         public DbSet<Mask2> Mask2s { get; set; }
         public DbSet<Maxlength1> Maxlength1s { get; set; }
