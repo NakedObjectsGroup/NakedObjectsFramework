@@ -221,68 +221,7 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual("Finder Action2", finderActions[1].Name(null));
             Assert.AreEqual("Finder Action3", finderActions[2].Name(null));
         }
-
-   
-
         
-
-        [Test]
-        public virtual void NullDescribedAsAppliedToAction() {
-            var describedAs2 = NewTestObject<Describedas2>();
-            var action = describedAs2.GetAction("Do Something");
-            Assert.IsNotNull(action);
-            action.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescribedAsAppliedToObject() {
-            var describedAs2 = NewTestObject<Describedas2>();
-            describedAs2.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescribedAsAppliedToParameter() {
-            var describedAs2 = NewTestObject<Describedas2>();
-            var action = describedAs2.GetAction("Do Something");
-            var param = action.Parameters[0];
-            param.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescribedAsAppliedToProperty() {
-            var describedAs2 = NewTestObject<Describedas2>();
-            var prop = describedAs2.GetPropertyByName("Prop1");
-            prop.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescriptionAppliedToAction() {
-            var description2 = NewTestObject<Description2>();
-            var action = description2.GetAction("Do Something");
-            Assert.IsNotNull(action);
-            action.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescriptionAppliedToObject() {
-            var description2 = NewTestObject<Description2>();
-            description2.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescriptionAppliedToParameter() {
-            var description2 = NewTestObject<Description2>();
-            var action = description2.GetAction("Do Something");
-            var param = action.Parameters[0];
-            param.AssertIsDescribedAs("");
-        }
-
-        [Test]
-        public virtual void NullDescriptionAppliedToProperty() {
-            var description2 = NewTestObject<Description2>();
-            var prop = description2.GetPropertyByName("Prop1");
-            prop.AssertIsDescribedAs("");
-        }
 
         [Test]
         public virtual void ObjectImmutable() {
@@ -683,9 +622,9 @@ namespace NakedObjects.SystemTest.Attributes {
         protected override void Seed(AttributesDbContext context) {
             context.Default1s.Add(new Default1 { Id = 1 });
             context.DescribedAs1s.Add(new Describedas1 { Id = 1 });
-            //context.DescribedAs2s.Add(new Describedas2 { Id = 1 });
+            context.DescribedAs2s.Add(new Describedas2 { Id = 1 });
             context.Description1s.Add(new Description1 { Id = 1 });
-            //context.Description2s.Add(new Description2 { Id = 1 });
+            context.Description2s.Add(new Description2 { Id = 1 });
             context.Disabled1s.Add(new Disabled1 { Id = 1 });
             context.Displayname1s.Add(new Displayname1 { Id = 1 });
             context.Hidden1s.Add(new Hidden1 { Id = 1 });

@@ -627,4 +627,60 @@ public class TestAttributesNew : AcceptanceTestCase {
         var prop = GetMember(obj, nameof(Named1.Prop1));
         Assert.AreEqual("Bar", prop["extensions"]["friendlyName"].ToString());
     }
+
+    [Test]
+    public virtual void NullDescribedAsAppliedToAction() {
+        var obj = GetObject<Describedas2>();
+        var action = GetMember(obj, nameof(Describedas2.DoSomething));
+        Assert.AreEqual("", action["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescribedAsAppliedToObject() {
+        var obj = GetObject<Describedas2>();
+        Assert.AreEqual("", obj["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescribedAsAppliedToParameter() {
+        var obj = GetObject<Describedas2>();
+        var action = GetMember(obj, nameof(Describedas2.DoSomething));
+        var param = action["parameters"]["param1"];
+        Assert.AreEqual("", param["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescribedAsAppliedToProperty() {
+        var obj = GetObject<Describedas2>();
+        var prop = GetMember(obj, nameof(Describedas2.Prop1));
+        Assert.AreEqual("", obj["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescriptionAppliedToAction() {
+        var obj = GetObject<Description2>();
+        var action = GetMember(obj, nameof(Description2.DoSomething));
+        Assert.AreEqual("", action["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescriptionAppliedToObject() {
+        var obj = GetObject<Description2>();
+        Assert.AreEqual("", obj["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescriptionAppliedToParameter() {
+        var obj = GetObject<Description2>();
+        var action = GetMember(obj, nameof(Description2.DoSomething));
+        var param = action["parameters"]["param1"];
+        Assert.AreEqual("", param["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void NullDescriptionAppliedToProperty() {
+        var obj = GetObject<Description2>();
+        var prop = GetMember(obj, nameof(Description2.Prop1));
+        Assert.AreEqual("", prop["extensions"]["description"].ToString());
+    }
 }
