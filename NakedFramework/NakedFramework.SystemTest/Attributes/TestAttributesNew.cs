@@ -243,10 +243,11 @@ public class TestAttributesNew : AcceptanceTestCase {
         }
     }
 
-    private static JProperty[] GetActions(JObject obj) {
-        var actions = obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
-        return actions;
-    }
+    private static JProperty[] GetActions(JObject obj) => obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
+
+    private static JProperty[] GetProperties(JObject obj) => obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "property").ToArray();
+
+    private static JProperty[] GetCollections(JObject obj) => obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "collection").ToArray();
 
     private static JToken GetMember(JObject mask1, string name) => mask1["members"][name];
 
@@ -254,7 +255,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     public void ActionOrder() {
         var obj = GetObject<Memberorder1>();
         var actions = GetActions(obj);
-        AssertActionOrderIs(actions, "Action2", "Action1");
+        AssertActionOrderIs(actions, nameof(Memberorder1.Action2), nameof(Memberorder1.Action1));
         AssertMemberOrderExtensionIs(actions, 1, 3);
     }
 
@@ -262,14 +263,14 @@ public class TestAttributesNew : AcceptanceTestCase {
     public void ActionOrderOnSubClass() {
         var obj = GetObject<Memberorder2>("2");
         var actions = GetActions(obj);
-        AssertActionOrderIs(actions, "Action2", "Action4", "Action1", "Action3");
+        AssertActionOrderIs(actions, nameof(Memberorder2.Action2), nameof(Memberorder2.Action4), nameof(Memberorder2.Action1), nameof(Memberorder2.Action3));
         AssertMemberOrderExtensionIs(actions, 1, 2, 3, 4);
     }
 
     [Test]
     public virtual void CMaskOnDecimalProperty() {
         var mask1 = GetObject<Mask2>();
-        var prop1 = GetMember(mask1, "Prop1");
+        var prop1 = GetMember(mask1, nameof(Mask2.Prop1));
 
         Assert.AreEqual(32.7, prop1["value"].Value<decimal>());
         Assert.AreEqual("decimal", prop1["extensions"]["format"].ToString());
@@ -300,7 +301,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void ComponentModelMaxLengthOnParm() {
         var obj = GetObject<Maxlength2>();
-        var act = GetMember(obj, "Action");
+        var act = GetMember(obj, nameof(Maxlength2.Action));
 
         Assert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
     }
@@ -308,7 +309,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void ComponentModelMaxLengthOnProperty() {
         var obj = GetObject<Maxlength2>();
-        var prop2 = GetMember(obj, "Prop2");
+        var prop2 = GetMember(obj, nameof(Maxlength2.Prop2));
         Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
     }
 
@@ -322,7 +323,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DefaultNumericProperty() {
         var obj = GetTransientObject<Default1>();
-        var prop =  GetMember((JObject)obj["result"], "Prop1");
+        var prop = GetMember((JObject)obj["result"], nameof(Default1.Prop1));
         var def = prop["value"];
         Assert.AreEqual(8, def.Value<int>());
     }
@@ -330,7 +331,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DefaultStringProperty() {
         var obj = GetTransientObject<Default1>();
-        var prop =  GetMember((JObject)obj["result"], "Prop2");
+        var prop = GetMember((JObject)obj["result"], nameof(Default1.Prop2));
         var def = prop["value"];
         Assert.AreEqual("Foo", def.Value<string>());
     }
@@ -338,7 +339,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public void DefaultParameters() {
         var obj = GetObject<Default1>();
-        var action = GetMember(obj, "DoSomething");
+        var action = GetMember(obj, nameof(Default1.DoSomething));
         var def0 = action["parameters"]["param0"]["default"];
 
         Assert.AreEqual(8, def0.Value<int>());
@@ -351,7 +352,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DescribedAsAppliedToAction() {
         var obj = GetObject<Describedas1>();
-        var action = GetMember(obj, "DoSomething");
+        var action = GetMember(obj, nameof(Describedas1.DoSomething));
         Assert.AreEqual("Hex", action["extensions"]["description"].ToString());
     }
 
@@ -364,7 +365,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DescribedAsAppliedToParameter() {
         var obj = GetObject<Describedas1>();
-        var action = GetMember(obj, "DoSomething");
+        var action = GetMember(obj, nameof(Describedas1.DoSomething));
         var param = action["parameters"]["param1"];
         Assert.AreEqual("Yop", param["extensions"]["description"].ToString());
     }
@@ -372,14 +373,14 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DescribedAsAppliedToProperty() {
         var obj = GetObject<Describedas1>();
-        var prop = GetMember(obj, "Prop1");
+        var prop = GetMember(obj, nameof(Describedas1.Prop1));
         Assert.AreEqual("Bar", prop["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DescriptionAppliedToAction() {
         var obj = GetObject<Description1>();
-        var action = GetMember(obj, "DoSomething");
+        var action = GetMember(obj, nameof(Description1.DoSomething));
         Assert.AreEqual("Hex", action["extensions"]["description"].ToString());
     }
 
@@ -393,7 +394,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     public virtual void DescriptionAppliedToParameter() {
         var obj = GetObject<Description1>();
 
-        var action = GetMember(obj, "DoSomething");
+        var action = GetMember(obj, nameof(Description1.DoSomething));
         var param = action["parameters"]["param1"];
         Assert.AreEqual("Yop", param["extensions"]["description"].ToString());
     }
@@ -401,14 +402,14 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DescriptionAppliedToProperty() {
         var obj = GetObject<Description1>();
-        var prop = GetMember(obj, "Prop1");
+        var prop = GetMember(obj, nameof(Description1.Prop1));
         Assert.AreEqual("Bar", prop["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DisabledTransient() {
         var obj = GetTransientObject<Disabled1>();
-        var prop1 =  GetMember((JObject)obj["result"], "Prop1");
+        var prop1 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop1));
 
         Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
     }
@@ -416,7 +417,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void Disabled() {
         var obj = GetObject<Disabled1>();
-        var prop1 = GetMember(obj, "Prop1");
+        var prop1 = GetMember(obj, nameof(Disabled1.Prop1));
 
         Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
     }
@@ -424,63 +425,63 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DisabledAlwaysTransient() {
         var obj = GetTransientObject<Disabled1>();
-        var prop5 =  GetMember((JObject)obj["result"], "Prop5");
+        var prop5 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop5));
         Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledAlways() {
         var obj = GetObject<Disabled1>();
-        var prop5 = GetMember(obj, "Prop5");
+        var prop5 = GetMember(obj, nameof(Disabled1.Prop5));
         Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledNeverTransient() {
         var obj = GetTransientObject<Disabled1>();
-        var prop4 =  GetMember((JObject)obj["result"], "Prop4");
+        var prop4 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop4));
         Assert.AreEqual(null, prop4["disabledReason"]);
     }
 
     [Test]
     public virtual void DisabledNever() {
         var obj = GetObject<Disabled1>();
-        var prop4 = GetMember(obj, "Prop4");
+        var prop4 = GetMember(obj, nameof(Disabled1.Prop4));
         Assert.AreEqual(null, prop4["disabledReason"]);
     }
 
     [Test]
     public virtual void DisabledOncePersistedTransient() {
         var obj = GetTransientObject<Disabled1>();
-        var prop2 =  GetMember((JObject)obj["result"], "Prop2");
+        var prop2 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop2));
         Assert.AreEqual(null, prop2["disabledReason"]);
     }
 
     [Test]
     public virtual void DisabledOncePersisted() {
         var obj = GetObject<Disabled1>();
-        var prop2 = GetMember(obj, "Prop2");
+        var prop2 = GetMember(obj, nameof(Disabled1.Prop2));
         Assert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledUntilPersistedTransient() {
         var obj = GetTransientObject<Disabled1>();
-        var prop3 =  GetMember((JObject)obj["result"], "Prop3");
+        var prop3 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop3));
         Assert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledUntilPersisted() {
         var obj = GetObject<Disabled1>();
-        var prop3 = GetMember(obj, "Prop3");
+        var prop3 = GetMember(obj, nameof(Disabled1.Prop3));
         Assert.AreEqual(null, prop3["disabledReason"]);
     }
 
     [Test]
     public virtual void DisplayNameAppliedToAction() {
         var obj = GetObject<Displayname1>();
-        var action = GetMember(obj, "DoSomething");
+        var action = GetMember(obj, nameof(Displayname1.DoSomething));
         Assert.AreEqual("Hex", action["extensions"]["friendlyName"].ToString());
     }
 
@@ -493,8 +494,8 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void DMaskOnDateProperty() {
         var obj = GetObject<Mask1>();
-        var prop1 =  GetMember(obj, "Prop1");
-        var prop2 = GetMember(obj, "Prop2");
+        var prop1 = GetMember(obj, nameof(Mask1.Prop1));
+        var prop2 = GetMember(obj, nameof(Mask1.Prop2));
 
         Assert.AreEqual("2009-09-23", prop1["value"].ToString());
         Assert.AreEqual("date", prop1["extensions"]["format"].ToString());
@@ -507,70 +508,95 @@ public class TestAttributesNew : AcceptanceTestCase {
     [Test]
     public virtual void HiddenTransient() {
         var obj = GetTransientObject<Hidden1>();
-        var prop1 =  GetMember((JObject)obj["result"], "Prop1");
+        var prop1 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop1));
         Assert.IsNull(prop1);
     }
 
     [Test]
     public virtual void Hidden() {
         var obj = GetObject<Hidden1>();
-        var prop1 =  GetMember(obj, "Prop1");
+        var prop1 = GetMember(obj, nameof(Hidden1.Prop1));
         Assert.IsNull(prop1);
     }
 
     [Test]
     public virtual void HiddenAlwaysTransient() {
         var obj = GetTransientObject<Hidden1>();
-        var prop5 =  GetMember((JObject)obj["result"], "Prop5");
+        var prop5 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop5));
         Assert.IsNull(prop5);
     }
 
     [Test]
     public virtual void HiddenAlways() {
         var obj = GetObject<Hidden1>();
-        var prop5 =  GetMember(obj, "Prop5");
+        var prop5 = GetMember(obj, nameof(Hidden1.Prop5));
         Assert.IsNull(prop5);
     }
 
     [Test]
     public virtual void HiddenNeverTransient() {
         var obj = GetTransientObject<Hidden1>();
-        var prop4 =  GetMember((JObject)obj["result"], "Prop4");
+        var prop4 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop4));
         Assert.IsNotNull(prop4);
     }
 
     [Test]
     public virtual void HiddenNever() {
         var obj = GetObject<Hidden1>();
-        var prop4 =  GetMember(obj, "Prop4");
+        var prop4 = GetMember(obj, nameof(Hidden1.Prop4));
         Assert.IsNotNull(prop4);
     }
 
     [Test]
     public virtual void HiddenOncePersistedTransient() {
         var obj = GetTransientObject<Hidden1>();
-        var prop2 =  GetMember((JObject)obj["result"], "Prop2");
+        var prop2 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop2));
         Assert.IsNotNull(prop2);
     }
 
     [Test]
     public virtual void HiddenOncePersisted() {
         var obj = GetObject<Hidden1>();
-        var prop2 =  GetMember(obj, "Prop2");
+        var prop2 = GetMember(obj, nameof(Hidden1.Prop2));
         Assert.IsNull(prop2);
     }
 
     [Test]
     public virtual void HiddenUntilPersistedTransient() {
         var obj = GetTransientObject<Hidden1>();
-        var prop3 =  GetMember((JObject)obj["result"], "Prop3");
+        var prop3 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop3));
         Assert.IsNull(prop3);
     }
 
     [Test]
     public virtual void HiddenUntilPersisted() {
         var obj = GetObject<Hidden1>();
-        var prop3 = GetMember(obj, "Prop3");
+        var prop3 = GetMember(obj, nameof(Hidden1.Prop3));
         Assert.IsNotNull(prop3);
+    }
+
+    [Test]
+    public virtual void NakedObjectsIgnore_OnIndividualMembers() {
+        var obj = GetObject<NakedObjectsIgnore1>();
+        //Note: numbers will change to 3 & 1 when NakedObjectsType
+        //is re-introduced and commented back in
+        Assert.AreEqual(3, GetProperties(obj).Length);
+        Assert.AreEqual(2, GetCollections(obj).Length);
+        Assert.AreEqual(3, GetActions(obj).Length);
+    }
+
+    [Test]
+    public virtual void NakedObjectsMaxLengthOnParm() {
+        var obj = GetObject<Maxlength1>();
+        var act = GetMember(obj, nameof(Maxlength1.Action));
+
+        Assert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
+    }
+
+    [Test]
+    public virtual void NakedObjectsMaxLengthOnProperty() {
+        var obj = GetObject<Maxlength1>();
+        var prop2 = GetMember(obj, nameof(Maxlength1.Prop2));
+        Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
     }
 }

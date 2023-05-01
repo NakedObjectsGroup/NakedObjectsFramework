@@ -224,18 +224,6 @@ namespace NakedObjects.SystemTest.Attributes {
 
    
 
-       
-
-      
-
-        [Test]
-        public virtual void NakedObjectsIgnore_OnIndividualMembers() {
-            var obj = NewTestObject<NakedObjectsIgnore1>();
-            //Note: numbers will change to 3 & 1 when NakedObjectsType
-            //is re-introduced and commented back in
-            Assert.AreEqual(5, obj.Properties.Length);
-            Assert.AreEqual(3, obj.Actions.Length);
-        }
 
         [Test]
         public virtual void NakedObjectsMaxLengthOnParm() {
@@ -755,9 +743,9 @@ namespace NakedObjects.SystemTest.Attributes {
             //context.Immutable1s.Add(new Immutable1 { Id = 1 });
             context.Mask1s.Add(new Mask1 { Id = 1, Prop1 = new DateTime(2009, 9, 23), Prop2 = new DateTime(2009, 9, 24)});
             context.Mask2s.Add(new Mask2 { Id = 1 });
-            //context.Maxlength1s.Add(new Maxlength1 { Id = 1 });
+            context.Maxlength1s.Add(new Maxlength1 { Id = 1 });
             context.Maxlength2s.Add(new Maxlength2 { Id = 1 });
-            //context.NakedObjectsIgnore1s.Add(new NakedObjectsIgnore1 { Id = 1 });
+            context.NakedObjectsIgnore1s.Add(new NakedObjectsIgnore1 { Id = 1 });
             //context.NakedObjectsIgnore2s.Add(new NakedObjectsIgnore2 { Id = 1 });
             //context.NakedObjectsIgnore3s.Add(new NakedObjectsIgnore3 { Id = 1 });
             //context.NakedObjectsIgnore4s.Add(new NakedObjectsIgnore4 { Id = 1 });
@@ -1141,12 +1129,12 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public virtual NakedObjectsIgnore2 RefPropToAnIgnoredType { get; set; }
 
-        public ICollection<NakedObjectsIgnore1> Coll { get; set; }
+        public ICollection<NakedObjectsIgnore1> Coll { get; set; } = new List<NakedObjectsIgnore1>();
 
         [NakedObjectsIgnore]
-        public ICollection<NakedObjectsIgnore1> CollIgnored { get; set; }
+        public ICollection<NakedObjectsIgnore1> CollIgnored { get; set; } = new List<NakedObjectsIgnore1>();
 
-        public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; }
+        public ICollection<NakedObjectsIgnore2> CollOfIgnoredType { get; set; } = new List<NakedObjectsIgnore2>();
 
         public void Action() { }
 
