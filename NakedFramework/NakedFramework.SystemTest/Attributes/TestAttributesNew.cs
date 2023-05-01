@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Model;
 using NakedFramework.Test;
 using NakedFramework.Test.TestCase;
 using NakedObjects.Reflector.Configuration;
@@ -158,7 +160,7 @@ public class TestAttributesNew : AcceptanceTestCase {
     }
 
     protected virtual void CreateDatabase() {
-        new AttributesDbContext().Database.Create();
+        //new AttributesDbContext().Database.Create();
     }
 
     protected override void RegisterTypes(IServiceCollection services) {
@@ -201,17 +203,18 @@ public class TestAttributesNew : AcceptanceTestCase {
 
     [Test]
     public void ActionOrder() {
-        //var api = Api();
-        //var result = api.GetInvokeOnService(FullName<SimpleRepository<Memberorder1>>(), "", null);
-        //var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //var parsedResult = JObject.Parse(json);
+        var api = Api();
 
-        //var obj2 = NewTestObject<Memberorder1>();
-        //var actions = obj2.Actions;
-        //Assert.AreEqual(actions[0].Name, "Action2");
-        //Assert.AreEqual(actions[1].Name, "Action1");
+        var result = api.GetObject(FullName<Memberorder1>(), "1");
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var obj2 = JObject.Parse(json);
 
-        //obj2.AssertActionOrderIs("Action2, Action1");
+        var members = obj2["members"];
+        var inOrder = members.ToArray();
+        Assert.AreEqual(((JProperty)inOrder[2]).Name, "Action2");
+        Assert.AreEqual(members["Action2"]["extensions"]["memberOrder"].ToString(), "1");
+        Assert.AreEqual(((JProperty)inOrder[3]).Name, "Action1");
+        Assert.AreEqual(members["Action1"]["extensions"]["memberOrder"].ToString(), "3");
     }
 }

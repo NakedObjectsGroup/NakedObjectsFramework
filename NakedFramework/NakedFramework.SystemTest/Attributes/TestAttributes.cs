@@ -1063,6 +1063,18 @@ namespace NakedObjects.SystemTest.Attributes {
 
     #region Classes used in test
 
+    
+    public class AttributesDatabaseInitializer : DropCreateDatabaseAlways<AttributesDbContext> {
+        protected override void Seed(AttributesDbContext context) {
+            context.Memberorder1s.Add(new Memberorder1() { Id = 1 });
+            //context.Bars.Add(new Bar { Id = 1 });
+            //context.Quxs.Add(new Qux { Id = 1 });
+            //context.FooSubs.Add(new FooSub { Id = 2 });
+            context.SaveChanges();
+        }
+    }
+
+
     public class AttributesDbContext : DbContext {
         public const string DatabaseName = "TestAttributes";
 
@@ -1112,12 +1124,16 @@ namespace NakedObjects.SystemTest.Attributes {
         public DbSet<Contributee2> Contributee2s { get; set; }
         public DbSet<Contributee3> Contributee3s { get; set; }
         public DbSet<FinderAction1> Exclude1s { get; set; }
+
+
+
         public static void Delete() => Database.Delete(Cs);
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new AttributesDatabaseInitializer());
+
     }
 
-    #region ContributedAction
-
-    #endregion
+  
 
     #region Default
 
@@ -1864,9 +1880,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
     #endregion
 
-    #region FinderAction
-
-    #endregion
+   
 
     #endregion
 }
