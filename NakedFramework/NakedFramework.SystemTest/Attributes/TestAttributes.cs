@@ -222,91 +222,11 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual("Finder Action3", finderActions[2].Name(null));
         }
 
+   
 
-        [Test]
-        public virtual void DisplayNameAppliedToAction() {
-            var displayname1 = NewTestObject<Displayname1>();
-            var hex = displayname1.GetAction("Hex");
-            Assert.IsNotNull(hex);
-            Equals("Hex", hex.Name);
-        }
+       
 
-        [Test]
-        public virtual void DisplayNameAppliedToObject() {
-            var displayname1 = NewTestObject<Displayname1>();
-            displayname1.AssertTitleEquals("Untitled Foo");
-        }
-
-        [Test]
-        public virtual void DMaskOnDateProperty() {
-            var culture = Thread.CurrentThread.CurrentCulture;
-            try {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                var mask1 = NewTestObject<Mask1>();
-                var prop1 = mask1.GetPropertyByName("Prop1");
-                prop1.SetValue("09/23/2009 11:34:50");
-                var prop2 = mask1.GetPropertyByName("Prop2");
-                prop2.SetValue("09/23/2009 11:34:50");
-                var dom = (Mask1)mask1.GetDomainObject();
-                Equals("09/23/2009 11:34:50", dom.Prop1.ToString(CultureInfo.CurrentCulture));
-                Equals("09/23/2009 11:34:50", prop1.Content.Title);
-                Equals("09/23/2009 11:34:50", dom.Prop2.ToString(CultureInfo.CurrentCulture));
-                Equals("09/23/2009", prop2.Content.Title);
-                prop1.AssertTitleIsEqual("09/23/2009 11:34:50");
-                prop1.AssertValueIsEqual("09/23/2009 11:34:50");
-                prop2.AssertTitleIsEqual("09/23/2009");
-                prop2.AssertValueIsEqual("09/23/2009 11:34:50");
-            }
-            finally {
-                Thread.CurrentThread.CurrentCulture = culture;
-            }
-        }
-
-        [Test]
-        public virtual void Hidden() {
-            var hidden1 = NewTestObject<Hidden1>();
-            var prop1 = hidden1.GetPropertyByName("Prop1");
-            prop1.AssertIsInvisible();
-
-            hidden1.Save();
-            prop1.AssertIsInvisible();
-        }
-
-        [Test]
-        public virtual void HiddenAlways() {
-            var hidden1 = NewTestObject<Hidden1>();
-            var prop5 = hidden1.GetPropertyByName("Prop5");
-            prop5.AssertIsInvisible();
-            hidden1.Save();
-            prop5.AssertIsInvisible();
-        }
-
-        [Test]
-        public virtual void HiddenNever() {
-            var hidden1 = NewTestObject<Hidden1>();
-            var prop4 = hidden1.GetPropertyByName("Prop4");
-            prop4.AssertIsVisible();
-            hidden1.Save();
-            prop4.AssertIsVisible();
-        }
-
-        [Test]
-        public virtual void HiddenOncePersisted() {
-            var hidden1 = NewTestObject<Hidden1>();
-            var prop2 = hidden1.GetPropertyByName("Prop2");
-            prop2.AssertIsVisible();
-            hidden1.Save();
-            prop2.AssertIsInvisible();
-        }
-
-        [Test]
-        public virtual void HiddenUntilPersisted() {
-            var hidden1 = NewTestObject<Hidden1>();
-            var prop3 = hidden1.GetPropertyByName("Prop3");
-            prop3.AssertIsInvisible();
-            hidden1.Save();
-            prop3.AssertIsVisible();
-        }
+      
 
         [Test]
         public virtual void NakedObjectsIgnore_OnIndividualMembers() {
@@ -826,14 +746,14 @@ namespace NakedObjects.SystemTest.Attributes {
             context.Description1s.Add(new Description1 { Id = 1 });
             //context.Description2s.Add(new Description2 { Id = 1 });
             context.Disabled1s.Add(new Disabled1 { Id = 1 });
-            //context.Displayname1s.Add(new Displayname1 { Id = 1 });
-            //context.Hidden1s.Add(new Hidden1 { Id = 1 });
+            context.Displayname1s.Add(new Displayname1 { Id = 1 });
+            context.Hidden1s.Add(new Hidden1 { Id = 1 });
             //context.Iconname1s.Add(new Iconname1 { Id = 1 });
             //context.Iconname2s.Add(new Iconname2 { Id = 1 });
             //context.Iconname3s.Add(new Iconname3 { Id = 1 });
             //context.Iconname4s.Add(new Iconname4 { Id = 1 });
             //context.Immutable1s.Add(new Immutable1 { Id = 1 });
-            //context.Mask1s.Add(new Mask1 { Id = 1 });
+            context.Mask1s.Add(new Mask1 { Id = 1, Prop1 = new DateTime(2009, 9, 23), Prop2 = new DateTime(2009, 9, 24)});
             context.Mask2s.Add(new Mask2 { Id = 1 });
             //context.Maxlength1s.Add(new Maxlength1 { Id = 1 });
             context.Maxlength2s.Add(new Maxlength2 { Id = 1 });
@@ -1147,10 +1067,11 @@ namespace NakedObjects.SystemTest.Attributes {
     public class Mask1 {
         public virtual int Id { get; set; }
 
-        public virtual DateTime Prop1 { get; set; }
+        public virtual DateTime Prop1 { get; set; } = new DateTime();
 
         [Mask("d")]
-        public virtual DateTime Prop2 { get; set; }
+
+        public virtual DateTime Prop2 { get; set; } = new DateTime();
 
         public void DoSomething([Mask("d")] DateTime d1) { }
     }
