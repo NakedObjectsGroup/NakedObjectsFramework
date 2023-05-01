@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Rest.API;
+using NakedFramework.Rest.Model;
 using NakedFramework.Test;
 using NakedFramework.Test.TestCase;
 using NakedObjects.Reflector.Configuration;
@@ -199,45 +201,276 @@ public class TestAttributesNew : AcceptanceTestCase {
 
     private static string FullName<T>() => typeof(T).FullName;
 
-    private JObject GetObject(string name, string id) {
+    private JObject GetObject<T>(string id = "1") {
         var api = Api();
-        var result = api.GetObject(name, id);
+        var result = api.GetObject(FullName<T>(), id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
         Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        var obj2 = JObject.Parse(json);
-        return obj2;
+        return JObject.Parse(json);
+    }
+
+    private JObject GetObjects<T>() where T : class, new() {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        var result = api.GetInvokeOnService(FullName<SimpleRepository<T>>(), nameof(SimpleRepository<T>.AllInstances), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        return JObject.Parse(json);
+    }
+
+    private JObject GetTransientObject<T>() where T : class, new() {
+        var api = Api().AsPost();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
+        var result = api.GetInvokeOnService(FullName<SimpleRepository<T>>(), nameof(SimpleRepository<T>.NewInstance), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        return JObject.Parse(json);
     }
 
     private static void AssertActionOrderIs(JProperty[] properties, params string[] names) {
-        Assert.AreEqual(properties.Length, names.Length);
+        Assert.AreEqual(names.Length, properties.Length);
 
         for (var i = 0; i < names.Length; i++) {
-            Assert.AreEqual(properties[i].Name, names[i]);
+            Assert.AreEqual(names[i], properties[i].Name);
         }
     }
 
     private static void AssertMemberOrderExtensionIs(JProperty[] properties, params int[] order) {
-        Assert.AreEqual(properties.Length, order.Length);
+        Assert.AreEqual(order.Length, properties.Length);
 
         for (var i = 0; i < order.Length; i++) {
-            Assert.AreEqual(properties[i].Value["extensions"]["memberOrder"].Value<int>(), order[i]);
+            Assert.AreEqual(order[i], properties[i].Value["extensions"]["memberOrder"].Value<int>());
         }
+    }
+
+    private static JProperty[] GetActions(JObject obj) {
+        var actions = obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
+        return actions;
     }
 
     [Test]
     public void ActionOrder() {
-        var obj = GetObject(FullName<Memberorder1>(), "1");
-        var actions = obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
+        var obj = GetObject<Memberorder1>();
+        var actions = GetActions(obj);
         AssertActionOrderIs(actions, "Action2", "Action1");
         AssertMemberOrderExtensionIs(actions, 1, 3);
     }
 
     [Test]
     public void ActionOrderOnSubClass() {
-        var obj = GetObject(FullName<Memberorder2>(), "2");
-        var actions = obj["members"].Cast<JProperty>().Where(p => p.Value["memberType"].ToString() is "action").ToArray();
-
+        var obj = GetObject<Memberorder2>("2");
+        var actions = GetActions(obj);
         AssertActionOrderIs(actions, "Action2", "Action4", "Action1", "Action3");
         AssertMemberOrderExtensionIs(actions, 1, 2, 3, 4);
+    }
+
+    [Test]
+    public virtual void CMaskOnDecimalProperty() {
+        var mask1 = GetObject<Mask2>();
+        var prop1 = mask1["members"]["Prop1"];
+
+        Assert.AreEqual(32.7, prop1["value"].Value<decimal>());
+        Assert.AreEqual("decimal", prop1["extensions"]["format"].ToString());
+        Assert.AreEqual("c", prop1["extensions"]["x-ro-nof-mask"].ToString());
+    }
+
+    [Test]
+    public virtual void CollectionContributed() {
+        var obj = GetObjects<Contributee2>();
+        var actions = GetActions(obj["result"] as JObject);
+        AssertActionOrderIs(actions, "CollectionContributedAction", "CollectionContributedAction1", "CollectionContributedAction2");
+    }
+
+    [Test]
+    public virtual void CollectionContributedNotToAnotherClass() {
+        var obj = GetObjects<Contributee>();
+        var actions = GetActions(obj["result"] as JObject);
+        AssertActionOrderIs(actions);
+    }
+
+    [Test]
+    public virtual void CollectionContributedToSubClass() {
+        var obj = GetObjects<Contributee3>();
+        var actions = GetActions(obj["result"] as JObject);
+        AssertActionOrderIs(actions, "CollectionContributedAction", "CollectionContributedAction1", "CollectionContributedAction2");
+    }
+
+    [Test]
+    public virtual void ComponentModelMaxLengthOnParm() {
+        var obj = GetObject<Maxlength2>();
+        var act = obj["members"]["Action"];
+
+        Assert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
+    }
+
+    [Test]
+    public virtual void ComponentModelMaxLengthOnProperty() {
+        var obj = GetObject<Maxlength2>();
+        var prop2 = obj["members"]["Prop2"];
+        Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
+    }
+
+    [Test]
+    public virtual void Contributed() {
+        var obj = GetObject<Contributee>();
+        var actions = GetActions(obj);
+        AssertActionOrderIs(actions, "ContributedAction");
+    }
+
+    [Test]
+    public virtual void DefaultNumericProperty() {
+        var obj = GetTransientObject<Default1>();
+        var prop = obj["result"]["members"]["Prop1"];
+        var def = prop["value"];
+        Assert.AreEqual(8, def.Value<int>());
+    }
+
+    [Test]
+    public virtual void DefaultStringProperty() {
+        var obj = GetTransientObject<Default1>();
+        var prop = obj["result"]["members"]["Prop2"];
+        var def = prop["value"];
+        Assert.AreEqual("Foo", def.Value<string>());
+    }
+
+    [Test]
+    public void DefaultParameters() {
+        var obj = GetObject<Default1>();
+        var action = obj["members"]["DoSomething"];
+        var def0 = action["parameters"]["param0"]["default"];
+
+        Assert.AreEqual(8, def0.Value<int>());
+
+        var def1 = action["parameters"]["param1"]["default"];
+
+        Assert.AreEqual("Foo", def1.Value<string>());
+    }
+
+    [Test]
+    public virtual void DescribedAsAppliedToAction() {
+        var obj = GetObject<Describedas1>();
+        var action = obj["members"]["DoSomething"];
+        Assert.AreEqual("Hex", action["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescribedAsAppliedToObject() {
+        var obj = GetObject<Describedas1>();
+        Assert.AreEqual("Foo", obj["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescribedAsAppliedToParameter() {
+        var obj = GetObject<Describedas1>();
+        var action = obj["members"]["DoSomething"];
+        var param = action["parameters"]["param1"];
+        Assert.AreEqual("Yop", param["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescribedAsAppliedToProperty() {
+        var obj = GetObject<Describedas1>();
+        var prop = obj["members"]["Prop1"];
+        Assert.AreEqual("Bar", prop["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescriptionAppliedToAction() {
+        var obj = GetObject<Description1>();
+        var action = obj["members"]["DoSomething"];
+        Assert.AreEqual("Hex", action["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescriptionAppliedToObject() {
+        var obj = GetObject<Description1>();
+        Assert.AreEqual("Foo", obj["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescriptionAppliedToParameter() {
+        var obj = GetObject<Description1>();
+
+        var action = obj["members"]["DoSomething"];
+        var param = action["parameters"]["param1"];
+        Assert.AreEqual("Yop", param["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DescriptionAppliedToProperty() {
+        var obj = GetObject<Description1>();
+        var prop = obj["members"]["Prop1"];
+        Assert.AreEqual("Bar", prop["extensions"]["description"].ToString());
+    }
+
+    [Test]
+    public virtual void DisabledTransient() {
+        var obj = GetTransientObject<Disabled1>();
+        var prop1 = obj["result"]["members"]["Prop1"];
+
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void Disabled() {
+        var obj = GetObject<Disabled1>();
+        var prop1 = obj["members"]["Prop1"];
+
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void DisabledAlwaysTransient() {
+        var obj = GetTransientObject<Disabled1>();
+        var prop5 = obj["result"]["members"]["Prop5"];
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+    }
+    [Test]
+    public virtual void DisabledAlways() {
+        var obj = GetObject<Disabled1>();
+        var prop5 = obj["members"]["Prop5"];
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void DisabledNeverTransient() {
+        var obj = GetTransientObject<Disabled1>();
+        var prop4 = obj["result"]["members"]["Prop4"];
+        Assert.AreEqual(null, prop4["disabledReason"]);
+    }
+
+    [Test]
+    public virtual void DisabledNever() {
+        var obj = GetObject<Disabled1>();
+        var prop4 = obj["members"]["Prop4"];
+        Assert.AreEqual(null, prop4["disabledReason"]);
+    }
+
+    [Test]
+    public virtual void DisabledOncePersistedTransient() {
+        var obj = GetTransientObject<Disabled1>();
+        var prop2 = obj["result"]["members"]["Prop2"];
+        Assert.AreEqual(null, prop2["disabledReason"]);
+    }
+
+    [Test]
+    public virtual void DisabledOncePersisted() {
+        var obj = GetObject<Disabled1>();
+        var prop2 = obj["members"]["Prop2"];
+        Assert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void DisabledUntilPersistedTransient() {
+        var obj = GetTransientObject<Disabled1>();
+        var prop3 = obj["result"]["members"]["Prop3"];
+        Assert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
+    }
+
+    [Test]
+    public virtual void DisabledUntilPersisted() {
+        var obj = GetObject<Disabled1>();
+        var prop3 = obj["members"]["Prop3"];
+        Assert.AreEqual(null, prop3["disabledReason"]);
     }
 }

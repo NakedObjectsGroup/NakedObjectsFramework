@@ -207,27 +207,7 @@ namespace NakedObjects.SystemTest.Attributes {
             }
         }
 
-        //[Test]
-        //public void ActionOrder() {
-        //    var obj2 = NewTestObject<Memberorder1>();
-        //    var actions = obj2.Actions;
-        //    Assert.AreEqual(actions[0].Name, "Action2");
-        //    Assert.AreEqual(actions[1].Name, "Action1");
-
-        //    obj2.AssertActionOrderIs("Action2, Action1");
-        //}
-
-        [Test]
-        public void ActionOrderOnSubClass() {
-            var obj3 = NewTestObject<Memberorder2>();
-            var actions = obj3.Actions;
-            Assert.AreEqual(actions[0].Name, "Action2");
-            Assert.AreEqual(actions[1].Name, "Action4");
-            Assert.AreEqual(actions[2].Name, "Action1");
-            Assert.AreEqual(actions[3].Name, "Action3");
-
-            obj3.AssertActionOrderIs("Action2, Action4, Action1, Action3");
-        }
+        
 
         [Test]
         public virtual void ActionsIncludedInFinderMenu() {
@@ -242,231 +222,6 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual("Finder Action3", finderActions[2].Name(null));
         }
 
-        [Test]
-        public virtual void CMaskOnDecimalProperty() {
-            var culture = Thread.CurrentThread.CurrentCulture;
-            try {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-                var mask1 = NewTestObject<Mask2>();
-                var prop1 = mask1.GetPropertyByName("Prop1");
-                prop1.SetValue("32.70");
-                var dom = (Mask2)mask1.GetDomainObject();
-                Equals("32.7", dom.Prop1.ToString(CultureInfo.CurrentCulture));
-                Equals("32.70", prop1.Content.Title);
-                Equals("¤32.70", prop1.Title);
-                prop1.AssertTitleIsEqual("¤32.70");
-                prop1.AssertValueIsEqual("32.70");
-            }
-            finally {
-                Thread.CurrentThread.CurrentCulture = culture;
-            }
-        }
-
-        [Test]
-        public virtual void CollectionContributed() {
-            var testObj = NewTestObject<Contributee2>();
-            var obj = testObj.GetDomainObject();
-            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var actions = (adapter.Spec as IObjectSpec)?.GetCollectionContributedActions();
-            var testActions = testObj.Actions;
-
-            Assert.AreEqual(3, actions?.Length);
-            Assert.IsTrue(actions[0] is IActionSpec);
-            Assert.AreEqual("Collection Contributed Action", actions[0].Name(null));
-            Assert.AreEqual("Collection Contributed Action1", actions[1].Name(null));
-            Assert.AreEqual("Collection Contributed Action2", actions[2].Name(null));
-        }
-
-        [Test]
-        public virtual void CollectionContributedNotToAnotherClass() {
-            var obj = NewTestObject<Contributee>().GetDomainObject();
-            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
-
-            Assert.AreEqual(0, actions.Length);
-        }
-
-        [Test]
-        public virtual void CollectionContributedToSubClass() {
-            var obj = NewTestObject<Contributee3>().GetDomainObject();
-            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
-
-            Assert.AreEqual(3, actions.Length);
-            Assert.IsTrue(actions[0] is IActionSpec);
-            Assert.AreEqual("Collection Contributed Action", actions[0].Name(null));
-            Assert.AreEqual("Collection Contributed Action1", actions[1].Name(null));
-            Assert.AreEqual("Collection Contributed Action2", actions[2].Name(null));
-        }
-
-        [Test]
-        public virtual void ComponentModelMaxLengthOnParm() {
-            var obj = NewTestObject<Maxlength2>();
-            var act = obj.GetAction("Action");
-
-            act.AssertIsInvalidWithParms("123456789");
-            act.AssertIsInvalidWithParms("12345678 ");
-            act.AssertIsValidWithParms("12345678");
-        }
-
-        [Test]
-        public virtual void ComponentModelMaxLengthOnProperty() {
-            var obj = NewTestObject<Maxlength2>();
-            var prop2 = obj.GetPropertyByName("Prop2");
-            prop2.AssertFieldEntryInvalid("12345678");
-            prop2.AssertFieldEntryInvalid("1234567 ");
-            prop2.SetValue("1234567");
-        }
-
-        [Test]
-        public virtual void Contributed() {
-            var obj = NewTestObject<Contributee>().GetDomainObject();
-            var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var actions = adapter.Spec.GetActions();
-
-            Assert.AreEqual(1, actions.Length);
-            Assert.IsTrue(actions[0] is IActionSpec);
-            Assert.AreEqual("Contributed Action", actions[0].Name(null));
-
-            //Test that the actions show up on the TestObject as test actions
-            var testActions = NewTestObject<Contributee>().Actions;
-            Assert.AreEqual(1, testActions.Length);
-            Assert.AreEqual("Contributed Action", testActions[0].Name);
-        }
-
-        [Test]
-        public virtual void DefaultNumericProperty() {
-            var default1 = NewTestObject<Default1>();
-            var prop = default1.GetPropertyByName("Prop1");
-            var def = prop.GetDefault().Title;
-            Assert.IsNotNull(def);
-            Assert.AreEqual("8", def);
-        }
-
-        [Test]
-        public void DefaultParameters() {
-            var default1 = NewTestObject<Default1>();
-            var action = default1.GetAction("Do Something");
-            var def0 = action.Parameters[0].GetDefault().Title;
-            Assert.IsNotNull(def0);
-            Assert.AreEqual("8", def0);
-
-            var def1 = action.Parameters[1].GetDefault().Title;
-            Assert.IsNotNull(def1);
-            Assert.AreEqual("Foo", def1);
-        }
-
-        [Test]
-        public virtual void DefaultStringProperty() {
-            var default1 = NewTestObject<Default1>();
-            var prop = default1.GetPropertyByName("Prop2");
-            var def = prop.GetDefault().Title;
-            Assert.IsNotNull(def);
-            Assert.AreEqual("Foo", def);
-        }
-
-        [Test]
-        public virtual void DescribedAsAppliedToAction() {
-            var describedAs1 = NewTestObject<Describedas1>();
-            var action = describedAs1.GetAction("Do Something");
-            Assert.IsNotNull(action);
-            action.AssertIsDescribedAs("Hex");
-        }
-
-        [Test]
-        public virtual void DescribedAsAppliedToObject() {
-            var describedAs1 = NewTestObject<Describedas1>();
-            describedAs1.AssertIsDescribedAs("Foo");
-        }
-
-        [Test]
-        public virtual void DescribedAsAppliedToParameter() {
-            var describedAs1 = NewTestObject<Describedas1>();
-            var action = describedAs1.GetAction("Do Something");
-            var param = action.Parameters[0];
-            param.AssertIsDescribedAs("Yop");
-        }
-
-        [Test]
-        public virtual void DescribedAsAppliedToProperty() {
-            var describedAs1 = NewTestObject<Describedas1>();
-            var prop = describedAs1.GetPropertyByName("Prop1");
-            prop.AssertIsDescribedAs("Bar");
-        }
-
-        [Test]
-        public virtual void DescriptionAppliedToAction() {
-            var description1 = NewTestObject<Description1>();
-            var action = description1.GetAction("Do Something");
-            Assert.IsNotNull(action);
-            action.AssertIsDescribedAs("Hex");
-        }
-
-        [Test]
-        public virtual void DescriptionAppliedToObject() {
-            var description1 = NewTestObject<Description1>();
-            description1.AssertIsDescribedAs("Foo");
-        }
-
-        [Test]
-        public virtual void DescriptionAppliedToParameter() {
-            var description1 = NewTestObject<Description1>();
-            var action = description1.GetAction("Do Something");
-            var param = action.Parameters[0];
-            param.AssertIsDescribedAs("Yop");
-        }
-
-        [Test]
-        public virtual void DescriptionAppliedToProperty() {
-            var description1 = NewTestObject<Description1>();
-            var prop = description1.GetPropertyByName("Prop1");
-            prop.AssertIsDescribedAs("Bar");
-        }
-
-        [Test]
-        public virtual void Disabled() {
-            var obj = NewTransientDisabled1();
-            var prop1 = obj.GetPropertyByName("Prop1");
-            prop1.AssertIsUnmodifiable();
-            obj.Save();
-            prop1.AssertIsUnmodifiable();
-        }
-
-        [Test]
-        public virtual void DisabledAlways() {
-            var obj = NewTransientDisabled1();
-            var prop5 = obj.GetPropertyByName("Prop5");
-            prop5.AssertIsUnmodifiable();
-            obj.Save();
-            prop5.AssertIsUnmodifiable();
-        }
-
-        [Test]
-        public virtual void DisabledNever() {
-            var obj = NewTransientDisabled1();
-            var prop4 = obj.GetPropertyByName("Prop4");
-            prop4.AssertIsModifiable();
-            obj.Save();
-            prop4.AssertIsModifiable();
-        }
-
-        [Test]
-        public virtual void DisabledOncePersisted() {
-            var obj = NewTransientDisabled1();
-            var prop2 = obj.GetPropertyByName("Prop2");
-            prop2.AssertIsModifiable();
-            obj.Save();
-            prop2.AssertIsUnmodifiable();
-        }
-
-        [Test]
-        public virtual void DisabledUntilPersisted() {
-            var obj = NewTransientDisabled1();
-            var prop3 = obj.GetPropertyByName("Prop3");
-            prop3.AssertIsUnmodifiable();
-            obj.Save();
-            prop3.AssertIsModifiable();
-        }
 
         [Test]
         public virtual void DisplayNameAppliedToAction() {
@@ -1063,11 +818,53 @@ namespace NakedObjects.SystemTest.Attributes {
 
     #region Classes used in test
 
-    
     public class AttributesDatabaseInitializer : DropCreateDatabaseAlways<AttributesDbContext> {
         protected override void Seed(AttributesDbContext context) {
-            context.Memberorder1s.Add(new Memberorder1() { Id = 1 });
-            context.Memberorder2s.Add(new Memberorder2() { Id = 1 });
+            context.Default1s.Add(new Default1 { Id = 1 });
+            context.DescribedAs1s.Add(new Describedas1 { Id = 1 });
+            //context.DescribedAs2s.Add(new Describedas2 { Id = 1 });
+            context.Description1s.Add(new Description1 { Id = 1 });
+            //context.Description2s.Add(new Description2 { Id = 1 });
+            context.Disabled1s.Add(new Disabled1 { Id = 1 });
+            //context.Displayname1s.Add(new Displayname1 { Id = 1 });
+            //context.Hidden1s.Add(new Hidden1 { Id = 1 });
+            //context.Iconname1s.Add(new Iconname1 { Id = 1 });
+            //context.Iconname2s.Add(new Iconname2 { Id = 1 });
+            //context.Iconname3s.Add(new Iconname3 { Id = 1 });
+            //context.Iconname4s.Add(new Iconname4 { Id = 1 });
+            //context.Immutable1s.Add(new Immutable1 { Id = 1 });
+            //context.Mask1s.Add(new Mask1 { Id = 1 });
+            context.Mask2s.Add(new Mask2 { Id = 1 });
+            //context.Maxlength1s.Add(new Maxlength1 { Id = 1 });
+            context.Maxlength2s.Add(new Maxlength2 { Id = 1 });
+            //context.NakedObjectsIgnore1s.Add(new NakedObjectsIgnore1 { Id = 1 });
+            //context.NakedObjectsIgnore2s.Add(new NakedObjectsIgnore2 { Id = 1 });
+            //context.NakedObjectsIgnore3s.Add(new NakedObjectsIgnore3 { Id = 1 });
+            //context.NakedObjectsIgnore4s.Add(new NakedObjectsIgnore4 { Id = 1 });
+            //context.NakedObjectsIgnore5s.Add(new NakedObjectsIgnore5 { Id = 1 });
+            //context.Named1s.Add(new Named1 { Id = 1 });
+            //context.Range1s.Add(new Range1 { Id = 1 });
+            //context.Regex1s.Add(new Regex1 { Id = 1 });
+            //context.Regex2s.Add(new Regex2 { Id = 1 });
+            context.Memberorder1s.Add(new Memberorder1 { Id = 1 });
+            context.Memberorder2s.Add(new Memberorder2 { Id = 1 });
+            //context.Stringlength1s.Add(new Stringlength1 { Id = 1 });
+            //context.Title1s.Add(new Title1 { Id = 1 });
+            //context.Title2s.Add(new Title2 { Id = 1 });
+            //context.Title3s.Add(new Title3 { Id = 1 });
+            //context.Title4s.Add(new Title4 { Id = 1 });
+            //context.Title5s.Add(new Title5 { Id = 1 });
+            //context.Title6s.Add(new Title6 { Id = 1 });
+            //context.Title7s.Add(new Title7 { Id = 1 });
+            //context.Title8s.Add(new Title8 { Id = 1 });
+            //context.Title9s.Add(new Title9 { Id = 1 });
+            //context.ValidateProgrammaticUpdates1s.Add(new Validateprogrammaticupdates1 { Id = 1 });
+            //context.ValidateProgrammaticUpdates2s.Add(new Validateprogrammaticupdates2 { Id = 1 });
+            context.Contributees.Add(new Contributee { Id = 1 });
+            context.Contributee2s.Add(new Contributee2 { Id = 1 });
+            context.Contributee3s.Add(new Contributee3 { Id = 1 });
+            //context.Exclude1s.Add(new FinderAction1 { Id = 1 });
+
             context.SaveChanges();
         }
     }
@@ -1362,7 +1159,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual int Id { get; set; }
 
         [Mask("c")]
-        public virtual decimal Prop1 { get; set; }
+        public virtual decimal Prop1 { get; set; } = 32.70M;
     }
 
     #endregion
