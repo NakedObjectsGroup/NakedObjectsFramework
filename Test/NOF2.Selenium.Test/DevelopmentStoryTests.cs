@@ -70,38 +70,38 @@ public class DevelopmentStoryTests : BaseTest {
 
     [TestMethod]
     public void ViewInstanceDirectlyByUrl() {
-        helper.GotoUrlDirectly(prefix + "Address--13618");
+        helper.GotoProductUrlDirectly(prefix + "Address--13618");
         helper.GetObjectView();
     }
 
     [TestMethod]
     public void TextStringProperty() {
-        helper.GotoUrlDirectly(prefix + "Address--13618");
+        helper.GotoProductUrlDirectly(prefix + "Address--13618");
         helper.GetObjectView().GetProperty("Address Line1").AssertValueIs("Waldstr 91");
     }
 
     [TestMethod]
     public void TimeStampProperty() {
-        helper.GotoUrlDirectly(prefix + "Address--13618");
+        helper.GotoProductUrlDirectly(prefix + "Address--13618");
         var d = helper.GetObjectView().GetProperty("Modified Date").GetValue();
         Assert.IsTrue(d.StartsWith("31 Jul 2008") && d.EndsWith(":00:00")); //Miss out the hours due to time zone issues
     }
 
     [TestMethod]
     public void DateProperty() {
-        helper.GotoUrlDirectly(prefix + "Employee--2");
+        helper.GotoProductUrlDirectly(prefix + "Employee--2");
         helper.GetObjectView().GetProperty("Hire Date").AssertValueIs("3 Mar 2002");
     }
 
     [TestMethod]
     public void WholeNumberProperty() {
-        helper.GotoUrlDirectly(prefix + "Employee--2");
+        helper.GotoProductUrlDirectly(prefix + "Employee--2");
         helper.GetObjectView().GetProperty("Sick Leave Hours").AssertValueIs("20");
     }
 
     [TestMethod]
     public void BooleanProperty() {
-        helper.GotoUrlDirectly(prefix + "Employee--2");
+        helper.GotoProductUrlDirectly(prefix + "Employee--2");
         var flag = helper.GetObjectView().GetProperty("Salaried");
         flag.AssertIsCheckbox();
     }
@@ -119,13 +119,13 @@ public class DevelopmentStoryTests : BaseTest {
 
     [TestMethod]
     public void ReferenceProperty() {
-        helper.GotoUrlDirectly(prefix + "Employee--66");
+        helper.GotoProductUrlDirectly(prefix + "Employee--66");
         helper.GetObjectView().GetProperty("Person Details").GetReference().AssertTitleIs("Karan Khanna");
     }
 
     [TestMethod]
     public void InternalCollection() {
-        helper.GotoUrlDirectly(prefix + "SalesOrderHeader--52035");
+        helper.GotoProductUrlDirectly(prefix + "SalesOrderHeader--52035");
         var obj = helper.GetObjectView().AssertTitleIs("SO52035");
         var coll = obj.GetCollection("Details").AssertDetails("2 Items");
         coll.ClickListView().GetRowFromList(0).AssertTitleIs("1 x AWC Logo Cap");
@@ -144,13 +144,13 @@ public class DevelopmentStoryTests : BaseTest {
 
     [TestMethod]
     public void TitleConstructedFromReferenceFields() {
-        helper.GotoUrlDirectly(prefix + "Employee--67");
+        helper.GotoProductUrlDirectly(prefix + "Employee--67");
         helper.GetObjectView().AssertTitleIs("Jay Adams");
     }
 
     [TestMethod]
     public void TitleConstructedFromValueFields() {
-        helper.GotoUrlDirectly(prefix + "Person--2284");
+        helper.GotoProductUrlDirectly(prefix + "Person--2284");
         helper.GetObjectView().AssertTitleIs("Lynn Tsoflias");
     }
 
@@ -501,7 +501,7 @@ public class DevelopmentStoryTests : BaseTest {
 
     [TestMethod]
     public void SavingATransientWithAReferenceToAPersistentObject() {
-        var start = helper.GotoUrlDirectly("home/object?m1=Employees&i2=View&o2=AW.Types.Employee--240");
+        var start = helper.GotoProductUrlDirectly("home/object?m1=Employees&i2=View&o2=AW.Types.Employee--240");
         var jc = helper.GetHomeView(Pane.Left).OpenMainMenu("Employees").GetActionWithoutDialog("Create New Job Candidate").ClickToViewTransientObject();
         var emp = helper.GetObjectView(Pane.Right);
         var empField = jc.GetEditableReferenceProperty("Employee");

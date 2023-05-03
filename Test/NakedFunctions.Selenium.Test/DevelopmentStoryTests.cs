@@ -426,7 +426,7 @@ public class DevelopmentStoryTests : BaseTest {
               .OpenActions().GetActionWithDialog("Append Comment").Open()
               .GetTextField("Comment");
 
-        helper.GotoUrlDirectly("object?i1=View&o1=AW.Types.SalesOrderHeader--73266")
+        helper.GotoProductUrlDirectly("object?i1=View&o1=AW.Types.SalesOrderHeader--73266")
               .GetObjectView().AssertTitleIs("SO73266")
               .OpenActions().GetActionWithDialog("Append Comment").Open()
               .GetTextField("Comment To Append");
@@ -589,7 +589,7 @@ public class DevelopmentStoryTests : BaseTest {
         list.SelectCheckBoxOnRow(1);
         dialog.ClickOKToViewUpdatedList();
 
-        helper.GotoUrlDirectly("object?i1=View&o1=AW.Types.Product--2&c1_ProductReviews=Table")
+        helper.GotoProductUrlDirectly("object?i1=View&o1=AW.Types.Product--2&c1_ProductReviews=Table")
               .GetObjectView().GetCollection("Product Reviews")
               .GetLastRowFromTable().AssertColumnValueIs(2, rand);
         //TODO: column numbers wrong!

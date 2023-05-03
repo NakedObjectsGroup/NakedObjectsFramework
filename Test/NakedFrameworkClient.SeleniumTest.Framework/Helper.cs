@@ -620,8 +620,18 @@ public class Helper {
         return this;
     }
 
-    public Helper GotoUrlDirectly(string url) {
+    public Helper GotoProductUrlDirectly(string url) {
         WebDriver.Navigate().GoToUrl(ProductBaseUrl + url);
+        return this;
+    }
+
+    public Helper GotoBaseUrlDirectly(string url) {
+        WebDriver.Navigate().GoToUrl(BaseUrl + url);
+        return this;
+    }
+
+    public Helper GotoUrlDirectly(string url) {
+        WebDriver.Navigate().GoToUrl(url);
         return this;
     }
 

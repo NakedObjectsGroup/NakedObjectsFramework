@@ -84,7 +84,7 @@ public class TypeRetrievalTests : BaseTest {
     }
 
     private void AccessInstanceWithTitle(string identifier, string title) {
-        helper.GotoUrlDirectly(prefix + identifier);
+        helper.GotoProductUrlDirectly(prefix + identifier);
         helper.GetObjectView().AssertTitleIs(title);
     }
 
