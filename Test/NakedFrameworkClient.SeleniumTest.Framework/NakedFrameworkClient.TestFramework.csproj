@@ -13,7 +13,7 @@
 		<Copyright>Naked Objects Group</Copyright>
 		<PackageProjectUrl>https://github.com/NakedObjectsGroup</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/NakedObjectsGroup</RepositoryUrl>
-		<Version>112.3.0</Version>
+		<Version>112.4.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
