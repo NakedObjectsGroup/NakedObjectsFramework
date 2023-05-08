@@ -15,7 +15,7 @@ public class ListView : ActionResult {
     }
 
     public ListView AssertDetails(string expected) {
-        var actual = helper.WaitForChildElement(element, ".summary .details").Text;
+        var actual = Details();
         Assert.AreEqual(expected, actual);
         return this;
     }
@@ -25,7 +25,15 @@ public class ListView : ActionResult {
         return this;
     }
 
+    public string Details() => helper.WaitForChildElement(element, ".summary .details").Text;
+
     public int RowCount() => element.FindElements(By.CssSelector("table tbody tr")).Count;
+
+
+    public int TotalCount() {
+        var totalToken = Details().Split(' ')[^1];
+        return int.Parse(totalToken);
+    }
 
     public ListView AssertIsList() => throw new NotImplementedException();
 
