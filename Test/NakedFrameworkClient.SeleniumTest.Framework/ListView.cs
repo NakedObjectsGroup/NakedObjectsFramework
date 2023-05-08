@@ -31,7 +31,7 @@ public class ListView : ActionResult {
 
 
     public int TotalCount() {
-        var totalToken = Details().Split(' ')[^1];
+        var totalToken = Details().Split(' ')[^2];
         return int.Parse(totalToken);
     }
 
