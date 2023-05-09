@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>NakedFunctions.ProgrammingModel</id>
-		<version>2.1.0</version>
+		<version>2.2.0</version>
 		<authors>Naked Objects Group Ltd</authors>
 		<owners>Naked Objects Group Ltd</owners>
 		<license type="expression">Apache-2.0</license>
@@ -14,7 +14,7 @@
 		<tags>functional programming naked functions</tags>
 		<dependencies>
 			<group targetFramework="net6.0">
-				<dependency id="NakedFramework.ProgrammingModel" version="[14.1.0, 15)" />
+				<dependency id="NakedFramework.ProgrammingModel" version="[14.2.0, 15)" />
 			</group>
 		</dependencies>
 	</metadata>

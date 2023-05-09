@@ -1,1 +1,1 @@
-Naked Objects 14.1.0,Naked Functions 2.1.0,NOF2 1.1.0
+Naked Objects 14.2.0,Naked Functions 2.2.0,NOF2 1.1.0
