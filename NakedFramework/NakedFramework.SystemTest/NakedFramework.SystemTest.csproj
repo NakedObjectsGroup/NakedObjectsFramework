@@ -24,7 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NakedFramework.RATL\NakedFramework.RATLInternal.csproj" />
     <ProjectReference Include="..\NakedFramework.Test\NakedFramework.Test.csproj" />
-  </ItemGroup>
+  </ItemGroup>   
+
 
 </Project>
