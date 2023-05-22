@@ -76,6 +76,8 @@ public abstract class BaseRATLNUnitTestCase {
 
     public DomainObject GetObject(string type, string id) => ROSIApi.GetObject(new Uri("http://localhost/"), type, id, TestInvokeOptions()).Result;
 
+    public DomainObject GetService(string type) => ROSIApi.GetService(new Uri("http://localhost/"), type, TestInvokeOptions()).Result;
+
     public string FullName<T>() => typeof(T).FullName;
 
     public TestInvokeOptions TestInvokeOptions(string? token = null, EntityTagHeaderValue? tag = null) =>

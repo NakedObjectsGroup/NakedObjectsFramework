@@ -66,8 +66,8 @@ namespace NakedObjects.SystemTest.Attributes {
             context.Title7s.Add(new Title7 { Id = 1, Prop1 = t4 });
             context.Title8s.Add(new Title8 { Id = 1, Prop1 = t1 });
             context.Title9s.Add(new Title9 { Id = 1, Prop1 = t2 });
-            //context.ValidateProgrammaticUpdates1s.Add(new Validateprogrammaticupdates1 { Id = 1 });
-            //context.ValidateProgrammaticUpdates2s.Add(new Validateprogrammaticupdates2 { Id = 1 });
+            context.ValidateProgrammaticUpdates1s.Add(new Validateprogrammaticupdates1 { Id = 1 });
+            context.ValidateProgrammaticUpdates2s.Add(new Validateprogrammaticupdates2 { Id = 1 });
             context.Contributees.Add(new Contributee { Id = 1 });
             context.Contributee2s.Add(new Contributee2 { Id = 1 });
             context.Contributee3s.Add(new Contributee3 { Id = 1 });
@@ -852,7 +852,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop1 { get; set; }
 
         [Optionally]
-        public string Prop2 { get; set; }
+        public virtual string Prop2 { get; set; }
 
         public string ValidateProp1(string prop1) => prop1 == "fail" ? "fail" : null;
     }
@@ -873,12 +873,16 @@ namespace NakedObjects.SystemTest.Attributes {
     public class TestServiceValidateProgrammaticUpdates {
         public IDomainObjectContainer Container { set; protected get; }
 
-        public void SaveObject1(Validateprogrammaticupdates1 obj) {
-            Container.Persist(ref obj);
+        public Validateprogrammaticupdates1 GetObject1() => Container.NewTransientInstance<Validateprogrammaticupdates1>();
+
+        public Validateprogrammaticupdates2 GetObject2() => Container.NewTransientInstance<Validateprogrammaticupdates2>();
+
+        public void SaveObject1(Validateprogrammaticupdates1 obj, string newVal) {
+            obj.Prop1 = newVal;
         }
 
-        public void SaveObject2(Validateprogrammaticupdates2 obj) {
-            Container.Persist(ref obj);
+        public void SaveObject2(Validateprogrammaticupdates2 obj, string newVal) {
+            obj.Prop1 = newVal;
         }
     }
 

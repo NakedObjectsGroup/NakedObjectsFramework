@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,10 +24,11 @@ using NakedFramework.Test;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Attributes;
-using NakedObjects.SystemTest.Injection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using ROSI.Apis;
+using ROSI.Exceptions;
 using SystemTest.Attributes;
 using RestfulObjectsController = NakedFramework.RATL.Helpers.RestfulObjectsController;
 
@@ -58,9 +60,7 @@ public class TestAttributes : AcceptanceTestCase {
         services.AddMvc(options => options.EnableEndpointRouting = false);
         services.AddHttpContextAccessor();
         services.AddNakedFramework(frameworkOptions => {
-            frameworkOptions.AddEF6Persistor(options => {
-                options.ContextCreators = ContextCreators;
-            });
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
             frameworkOptions.AddRestfulObjects(restOptions => { });
             frameworkOptions.AddNakedObjects(appOptions => {
                 appOptions.DomainModelTypes = ObjectTypes;
@@ -304,12 +304,12 @@ public class TestAttributes : AcceptanceTestCase {
 
     [Test]
     public virtual void CMaskOnDecimalProperty() {
-        var mask1 = GetObject<Mask2>();
-        var prop1 = GetMember(mask1, nameof(Mask2.Prop1));
+        var mask1 = GetObject(FullName<Mask2>(), "1");
+        var prop1 = mask1.GetProperty(nameof(Mask2.Prop1));
 
-        Assert.AreEqual(32.7, prop1["value"].Value<decimal>());
-        Assert.AreEqual("decimal", prop1["extensions"]["format"].ToString());
-        Assert.AreEqual("c", prop1["extensions"]["x-ro-nof-mask"].ToString());
+        Assert.AreEqual(32.7, prop1.GetValue<decimal>());
+        Assert.AreEqual("decimal", prop1.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format));
+        Assert.AreEqual("c", prop1.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.x_ro_nof_mask));
     }
 
     [Test]
@@ -989,65 +989,78 @@ public class TestAttributes : AcceptanceTestCase {
         Assert.AreEqual("Qux", obj["title"].Value<string>());
     }
 
-    //[Test]
-    //public virtual void ValidateObjectChange() {
-    //    //var service = GetService(typeof(TestServiceValidateProgrammaticUpdates));
-    //    var vpu1 = GetObject<Validateprogrammaticupdates1>();
-    //    //service.GetAction("Save Object1").InvokeReturnObject(vpu1);
+    [Test]
+    public virtual async Task ValidateObjectChange() {
+        var vpu1 = GetObject(FullName<Validateprogrammaticupdates1>(), "1");
 
-    //    try {
-    //        vpu1.GetPropertyByName("Prop1").SetValue("fail");
-    //        Assert.Fail();
-    //    }
-    //    catch (AssertFailedException e) {
-    //        Assert.AreEqual(e.Message, "Assert.IsFalse failed. Content: 'fail' is not valid. Reason: fail");
-    //    }
-    //    catch (Exception e) {
-    //        Assert.Fail(e.Message);
-    //    }
-    //}
+        try {
+            var prop = await vpu1.GetProperty(nameof(Validateprogrammaticupdates1.Prop1)).GetDetails();
+            var val = await prop.SetValue("fail");
+            Assert.Fail();
+        }
+        catch (HttpInvalidArgumentsRosiException e) {
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, e.StatusCode);
+            Assert.AreEqual("fail", e.Content.GetArgument().GetInvalidReason());
+        }
+        catch (Exception e) {
+            Assert.Fail(e.Message);
+        }
+    }
 
-    //[Test]
-    //public virtual void ValidateObjectCrossValidationChange() {
-    //    var service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
-    //    var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
+    [Test]
+    public virtual async Task ValidateObjectSave() {
+        var service = GetService(FullName<TestServiceValidateProgrammaticUpdates>());
+        var vpu1 = GetObject(FullName<Validateprogrammaticupdates1>(), "1");
 
-    //    try {
-    //        vpu2.GetPropertyByName("Prop1").SetValue("fail");
-    //        service.GetAction("Save Object2").InvokeReturnObject(vpu2);
-    //        Assert.Fail();
-    //    }
-    //    catch (PersistFailedException e) {
-    //        Assert.AreEqual(e.Message, @"Validateprogrammaticupdates2/Untitled Validateprogrammaticupdates2 not in a valid state to be persisted - fail");
-    //    }
-    //    catch (Exception e) {
-    //        Assert.Fail(e.Message);
-    //    }
-    //}
+        try {
+            var result = await service.GetAction(nameof(TestServiceValidateProgrammaticUpdates.SaveObject1)).Invoke(vpu1, "fail");
+            Assert.Fail();
+        }
+        catch (HttpErrorRosiException e) {
+            Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
+            Assert.AreEqual(@"199 RestfulObjects ""Validateprogrammaticupdates1/Untitled Validateprogrammaticupdates1 not in a valid state to be persisted - Validateprogrammaticupdates1.Prop1 is invalid: fail""", e.Message);
+        }
+        catch (Exception e) {
+            Assert.Fail(e.Message);
+        }
+    }
 
-    //[Test]
-    //public virtual void ValidateObjectCrossValidationSave() {
-    //    var service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
-    //    var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
-    //    try {
-    //        (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
-    //        service.GetAction("Save Object2").InvokeReturnObject(vpu2);
-    //        Assert.Fail();
-    //    }
-    //    catch (Exception /*expected*/) { }
-    //}
+    [Test]
+    public virtual async Task ValidateObjectCrossValidationPersist() {
+        var service = GetService(FullName<TestServiceValidateProgrammaticUpdates>());
+        var result = await service.GetAction(nameof(TestServiceValidateProgrammaticUpdates.GetObject2)).Invoke();
+        var vpu2 = result.GetObject();
 
-    //[Test]
-    //public virtual void ValidateObjectSave() {
-    //    var service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
-    //    var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
+        try {
+            await vpu2.PersistWithNamedParams(new Dictionary<string, object> { { "Id", 0 }, { "Prop1", "fail" }, { "Prop2", "" } });
 
-    //    try {
-    //        (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
+            Assert.Fail();
+        }
+        catch (HttpInvalidArgumentsRosiException e) {
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, e.StatusCode);
+            Assert.AreEqual("fail", e.Content.GetInvalidReason());
+        }
+        catch (Exception e) {
+            Assert.Fail(e.Message);
+        }
+    }
 
-    //        service.GetAction("Save Object1").InvokeReturnObject(vpu1);
-    //        Assert.Fail();
-    //    }
-    //    catch (Exception /*expected*/) { }
-    //}
+    [Test]
+    public virtual async Task ValidateObjectCrossValidationSave() {
+        var service = GetService(FullName<TestServiceValidateProgrammaticUpdates>());
+        var vpu2 = GetObject(FullName<Validateprogrammaticupdates2>(), "1");
+
+        try {
+            var result = await service.GetAction(nameof(TestServiceValidateProgrammaticUpdates.SaveObject2)).Invoke(vpu2, "fail");
+
+            Assert.Fail();
+        }
+        catch (HttpErrorRosiException e) {
+            Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
+            Assert.AreEqual(@"199 RestfulObjects ""Validateprogrammaticupdates2/Untitled Validateprogrammaticupdates2 not in a valid state to be persisted - fail""", e.Message);
+        }
+        catch (Exception e) {
+            Assert.Fail(e.Message);
+        }
+    }
 }

@@ -5,9 +5,18 @@ using ROSI.Records;
 namespace ROSI.Apis;
 
 public static class ArgumentsApi {
+
+    public static Argument? GetArgument(this Arguments argumentsRepresentation) {
+        if (argumentsRepresentation.GetDomainType() is null && !argumentsRepresentation.GetArguments().Any()) {
+            return new Argument(argumentsRepresentation.Wrapped, argumentsRepresentation.Options);
+        }
+
+        return null;
+    }
+
     public static Dictionary<string, Argument> GetArguments(this Arguments argumentsRepresentation) {
         if (argumentsRepresentation.GetDomainType() is null) {
-            return argumentsRepresentation.Wrapped.Children().OfType<JProperty>().Where(jp => !jp.Name.StartsWith("x-ro")).ToDictionary(jp => jp.Name, jp => new Argument((JObject)jp.Value, argumentsRepresentation.Options));
+            return argumentsRepresentation.Wrapped.Children().OfType<JProperty>().Where(jp => !jp.Name.StartsWith("x-ro") && jp.Value is JObject).ToDictionary(jp => jp.Name, jp => new Argument((JObject)jp.Value, argumentsRepresentation.Options));
         }
 
         return new Dictionary<string, Argument>();
