@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedFramework.Core.Util;
 using NakedFramework.Error;
 
@@ -51,7 +52,7 @@ internal static class Methods {
                     }
 
                     var msg = new StringBuilder();
-                    msg.Append($"Cannot inject service into property {prop.Name} on target {target.GetType().FullName}" + $" because multiple services implement type {prop.PropertyType}: ");
+                    msg.Append($"Cannot inject service into property {prop.Name} on target {target.GetType().GetProxiedType().FullName} because multiple services implement type {prop.PropertyType}: ");
                     foreach (var serv in matches) {
                         msg.Append(serv.GetType().FullName).Append("; ");
                     }
@@ -63,7 +64,7 @@ internal static class Methods {
     }
 
     public static void InjectLogger(object target, ILoggerFactory loggerFactory) {
-        var targetType = target.GetType();
+        var targetType = target.GetType().GetProxiedType();
         var targetProperties = targetType.GetProperties().Where(p => p.CanWrite).ToList();
         targetProperties.Where(p => p.PropertyType == typeof(ILoggerFactory)).ForEach(tf => tf.SetValue(target, loggerFactory));
         var loggerType = typeof(ILogger<>).MakeGenericType(targetType);

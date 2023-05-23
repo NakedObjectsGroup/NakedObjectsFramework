@@ -68,6 +68,8 @@ public class TestContainer : AcceptanceTestCase {
         services.AddScoped(p => TestPrincipal);
     }
 
+    protected INakedFramework NakedFramework { get; set; }
+
     protected Func<IConfiguration, DbContext>[] ContextCreators =>
         new Func<IConfiguration, DbContext>[] { config => new ContainerDbContext() };
 
@@ -75,7 +77,7 @@ public class TestContainer : AcceptanceTestCase {
 
     protected Type[] Services => new[] { typeof(SimpleRepository<Object1>) };
 
-    private INakedFramework NakedFramework { get; set; }
+   
 
     private Object1 TestObject => NakedFramework.LifecycleManager.CreateInstance((IObjectSpec)NakedFramework.MetamodelManager.GetSpecification(typeof(Object1))).Object as Object1;
 

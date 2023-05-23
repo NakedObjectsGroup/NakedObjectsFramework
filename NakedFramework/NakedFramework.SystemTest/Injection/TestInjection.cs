@@ -7,40 +7,74 @@
 
 using System;
 using System.Data.Entity;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedObjects;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Injection;
+namespace NakedFramework.SystemTest.Injection;
 
 [TestFixture]
-public class TestInjection : AbstractSystemTest<InjectionDbContext> {
+public class TestInjection : AcceptanceTestCase {
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+    }
 
     [TearDown]
     public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        InjectionDbContext.Delete();
-        var context = Activator.CreateInstance<InjectionDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        InjectionDbContext.Delete();
     }
 
-    protected override Type[] ObjectTypes => new[] {
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
+
+    protected INakedFramework NakedFramework { get; set; }
+
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new InjectionDbContext() };
+
+    protected Type[] ObjectTypes => new[] {
         typeof(Object1),
         typeof(Object2),
         typeof(Object3),
@@ -52,7 +86,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
         typeof(IService3)
     };
 
-    protected override Type[] Services =>
+    protected Type[] Services =>
         new[] {
             typeof(SimpleRepository<Object1>),
             typeof(SimpleRepository<Object2>),
@@ -69,7 +103,7 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectArrayOfServicesDefinedByInterface() {
-        var testObject = (Object4)NewTestObject<Object4>().GetDomainObject();
+        var testObject = NakedFramework.Persistor.Instances<Object4>().Single();
         var arr = testObject.GetService4s();
         Assert.IsNotNull(arr);
         Assert.AreEqual(3, arr.Length);
@@ -98,9 +132,9 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectContainer() {
-        var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+        var testObject = NakedFramework.Persistor.Instances<Object1>().Single();
         Assert.IsNotNull(testObject.Container);
-        IsInstanceOfType(testObject.Container, typeof(IDomainObjectContainer));
+        Assert.IsInstanceOf<IDomainObjectContainer>(testObject.Container);
     }
 
     [Test]
@@ -120,39 +154,39 @@ public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
     [Test]
     public void InjectService() {
-        var testObject = (Object2)NewTestObject<Object2>().GetDomainObject();
+        var testObject = NakedFramework.Persistor.Instances<Object2>().Single();
         Assert.IsNotNull(testObject.GetService1());
-        IsInstanceOfType(testObject.GetService1(), typeof(Service1));
+        Assert.IsInstanceOf<Service1>(testObject.GetService1());
     }
 
     [Test]
     public void InjectServiceDefinedByInterface() {
-        var testObject = (Object2)NewTestObject<Object2>().GetDomainObject();
+        var testObject = NakedFramework.Persistor.Instances<Object2>().Single();
         Assert.IsNotNull(testObject.GetService2());
-        IsInstanceOfType(testObject.GetService2(), typeof(ServiceImplementation));
+        Assert.IsInstanceOf<ServiceImplementation>(testObject.GetService2());
         Assert.IsNotNull(testObject.GetService3());
-        IsInstanceOfType(testObject.GetService3(), typeof(ServiceImplementation));
+        Assert.IsInstanceOf<ServiceImplementation>(testObject.GetService3());
         Assert.IsNull(testObject.GetObject());
     }
 
     [Test]
     public void RuntimeExceptionForAmbigiousInjecton() {
         try {
-            var testObject = (Object5)NewTestObject<Object5>().GetDomainObject();
+            var testObject = NakedFramework.Persistor.Instances<Object5>().Single();
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            Assert.AreEqual("Cannot inject service into property Service4 on target NakedObjects.SystemTest.Injection.Object5 because multiple services implement type NakedObjects.SystemTest.Injection.IService4: NakedObjects.SystemTest.Injection.Service4ImplA; NakedObjects.SystemTest.Injection.Service4ImplB; NakedObjects.SystemTest.Injection.Service4ImplC; ", e.Message);
+            Assert.AreEqual("Cannot inject service into property Service4 on target NakedFramework.SystemTest.Injection.Object5 because multiple services implement type NakedFramework.SystemTest.Injection.IService4: NakedFramework.SystemTest.Injection.Service4ImplA; NakedFramework.SystemTest.Injection.Service4ImplB; NakedFramework.SystemTest.Injection.Service4ImplC; ", e.Message);
         }
     }
 
     [Test]
     public void InjectLogger() {
-        var testObject = (Object6)NewTestObject<Object6>().GetDomainObject();
+        var testObject = NakedFramework.Persistor.Instances<Object6>().Single();
         Assert.IsNotNull(testObject.LoggerFactory);
         Assert.IsNotNull(testObject.Logger);
-        IsInstanceOfType(testObject.LoggerFactory, typeof(ILoggerFactory));
-        IsInstanceOfType(testObject.Logger, typeof(ILogger<Object6>));
+        Assert.IsInstanceOf<ILoggerFactory>(testObject.LoggerFactory);
+        Assert.IsInstanceOf<ILogger<Object6>>(testObject.Logger);
     }
 }
 
@@ -171,6 +205,19 @@ public class InjectionDbContext : DbContext {
     public DbSet<Object6> Object6 { get; set; }
 
     public static void Delete() => Database.Delete(Cs);
+
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new InjectionDatabaseInitializer());
+
+    public class InjectionDatabaseInitializer : DropCreateDatabaseAlways<InjectionDbContext> {
+        protected override void Seed(InjectionDbContext context) {
+            context.Object1.Add(new Object1 { Id = 1 });
+            context.Object2.Add(new Object2 { Id = 1 });
+            context.Object3.Add(new Object3 { Id = 1 });
+            context.Object4.Add(new Object4 { Id = 1 });
+            context.Object5.Add(new Object5 { Id = 1 });
+            context.Object6.Add(new Object6 { Id = 1 });
+        }
+    }
 }
 
 public class Object1 {
