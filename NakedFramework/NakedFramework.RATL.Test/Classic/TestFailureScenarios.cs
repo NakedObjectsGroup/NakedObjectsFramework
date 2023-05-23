@@ -71,7 +71,7 @@ public class TestFailureScenarios : AcceptanceTestCase {
         }
         catch (Exception e) {
             Assert.IsInstanceOfType(e, typeof(AssertFailedException));
-            Assert.AreEqual("Assert.Fail failed. Invalid Argument(s)", e.Message);
+            Assert.AreEqual("Assert.Fail failed. Invalid Argument(s) expected: System.String actual: System.Int32", e.Message);
         }
     }
 

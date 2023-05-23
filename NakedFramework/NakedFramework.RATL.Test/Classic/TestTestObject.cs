@@ -107,7 +107,7 @@ public class TestTestObject : AcceptanceTestCase {
 
     [Test]
     public virtual void TestSaveFails() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        var transient = GetTestService<Service1>().GetAction("Get Transient").InvokeReturnObject();
         AssertExpectException(() => transient.Save(), "Assert.Fail failed. Id:Mandatory");
     }
 
@@ -167,13 +167,13 @@ public class TestTestObject : AcceptanceTestCase {
 
     [Test]
     public virtual void TestAssertCanBeSavedFails() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        var transient = GetTestService<Service1>().GetAction("Get Transient").InvokeReturnObject();
         AssertExpectException(() => transient.AssertCanBeSaved(), "Assert.Fail failed. Id:Mandatory");
     }
 
     [Test]
     public virtual void TestAssertCannotBeSaved() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        var transient = GetTestService<Service1>().GetAction("Get Transient").InvokeReturnObject();
         transient.AssertCannotBeSaved();
     }
 
@@ -191,7 +191,7 @@ public class TestTestObject : AcceptanceTestCase {
 
     [Test]
     public virtual void TestAssertOnTransient() {
-        var transient = GetTestService(FullName<Service1>()).GetAction("Get Transient").InvokeReturnObject();
+        var transient = GetTestService<Service1>().GetAction("Get Transient").InvokeReturnObject();
         transient.AssertIsTransient();
         AssertExpectException(() => transient.AssertIsPersistent(), "Assert.IsTrue failed. Object is not persistent");
     }

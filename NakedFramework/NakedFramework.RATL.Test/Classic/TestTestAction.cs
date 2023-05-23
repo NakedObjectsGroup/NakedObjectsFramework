@@ -201,7 +201,7 @@ public class TestTestAction : AcceptanceTestCase {
 
         act.AssertIsValidWithParms(1, "something");
 
-        AssertExpectException(() => act.AssertIsValidWithParms("something", 1), "Assert.Fail failed. Invalid Argument(s)");
+        AssertExpectException(() => act.AssertIsValidWithParms("something", 1), "Assert.Fail failed. Invalid Argument(s) expected: System.Int32 actual: System.String");
     }
 
     [Test]
