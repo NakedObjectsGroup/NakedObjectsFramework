@@ -8,26 +8,36 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MyApp.MyCluster1;
 using MyApp.MyCluster2;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Metamodel.Authorization;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
 using NakedFramework.Security;
 using NakedObjects;
 using NakedObjects.Reflector.Authorization;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using Newtonsoft.Json;
 using NotMyApp.MyCluster2;
 using NUnit.Framework;
+using ROSI.Exceptions;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     [TestFixture]
-    public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
+    public class TestNamespaceAuthorization : AcceptanceTestCase {
         [SetUp]
         public void SetUp() {
             StartTest();
-            SetUser("sven");
         }
 
         [TearDown]
@@ -35,34 +45,52 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
-            NamespaceAuthorizationDbContext.Delete();
-            var context = Activator.CreateInstance<NamespaceAuthorizationDbContext>();
-
-            context.Database.Create();
             InitializeNakedObjectsFramework(this);
         }
 
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
-            NamespaceAuthorizationDbContext.Delete();
         }
 
-        protected override Type[] ObjectTypes => new[] {
+        protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+            services.AddControllers()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddHttpContextAccessor();
+            services.AddNakedFramework(frameworkOptions => {
+                frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+                frameworkOptions.AddRestfulObjects(restOptions => { });
+                frameworkOptions.AuthorizationConfiguration = AuthorizationConfiguration;
+                frameworkOptions.AddNakedObjects(appOptions => {
+                    appOptions.DomainModelTypes = ObjectTypes;
+                    appOptions.DomainModelServices = Services;
+                });
+            });
+            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+            services.AddScoped(p => PrincipalNamed("sven"));
+        }
+
+        protected virtual IPrincipal PrincipalNamed(string name, string[] roles = null) => CreatePrincipal(name, roles ?? new string[] { });
+
+        protected Func<IConfiguration, DbContext>[] ContextCreators =>
+            new Func<IConfiguration, DbContext>[] { config => new NamespaceAuthorizationDbContext() };
+
+        protected Type[] ObjectTypes => new[] {
             typeof(Bar1),
             typeof(Bar2),
             typeof(Foo1),
             typeof(Foo2)
         };
 
-        protected override Type[] Services => new[] {
+        protected Type[] Services => new[] {
             typeof(SimpleRepository<Bar1>),
             typeof(SimpleRepository<Bar2>),
             typeof(SimpleRepository<Foo1>),
             typeof(SimpleRepository<Foo2>)
         };
 
-        protected override IAuthorizationConfiguration AuthorizationConfiguration {
+        protected IAuthorizationConfiguration AuthorizationConfiguration {
             get {
                 var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
                 config.AddNamespaceAuthorizer<MyAppAuthorizer>("MyApp");
@@ -75,33 +103,39 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         [Test]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
             //Bar1
-            var bar1 = GetTestService(typeof(SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();
+            
             try {
-                bar1.GetPropertyByName("Prop1").AssertIsVisible();
+                var bar1 = GetTestService(typeof(SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();
+             
                 Assert.Fail("Should not get to here");
             }
-            catch (Exception e) {
-                Assert.AreEqual("MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Prop1", e.Message);
+            catch (AggregateException ae) {
+                Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+                Assert.AreEqual(@"199 RestfulObjects ""MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Act1""", ae.InnerException.Message);
             }
 
             //Foo1
-            var foo1 = GetTestService(typeof(SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
+            
             try {
-                foo1.GetPropertyByName("Prop1").AssertIsVisible();
+                var foo1 = GetTestService(typeof(SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
+               
                 Assert.Fail("Should not get to here");
             }
-            catch (Exception e) {
-                Assert.AreEqual("MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Prop1", e.Message);
+            catch (AggregateException ae) {
+                Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+                Assert.AreEqual(@"199 RestfulObjects ""MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Act1""", ae.InnerException.Message);
             }
 
             //Foo2
-            var foo2 = GetTestService(typeof(SimpleRepository<Foo2>)).GetAction("New Instance").InvokeReturnObject();
+            
             try {
-                foo2.GetPropertyByName("Prop1").AssertIsVisible();
+                var foo2 = GetTestService(typeof(SimpleRepository<Foo2>)).GetAction("New Instance").InvokeReturnObject();
+               
                 Assert.Fail("Should not get to here");
             }
-            catch (Exception e) {
-                Assert.AreEqual("MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Prop1", e.Message);
+            catch (AggregateException ae) {
+                Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+                Assert.AreEqual(@"199 RestfulObjects ""MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Act1""", ae.InnerException.Message);
             }
 
             //Bar2

@@ -8,11 +8,21 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NakedFramework.Core.Error;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Metamodel.Authorization;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
 using NakedFramework.Security;
 using NakedObjects.Reflector.Authorization;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
@@ -20,47 +30,67 @@ using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Authorization.Installer;
 
-public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object> {
-    protected override Type[] ObjectTypes => new[] { typeof(TDefault), typeof(Foo) };
+public abstract class TestCustomAuthorizer<TDefault> : AcceptanceTestCase where TDefault : ITypeAuthorizer<object> {
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new CustomAuthorizerInstallerDbContext() };
 
-    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
+    protected virtual Type[] ObjectTypes => new[] { typeof(TDefault), typeof(Foo) };
 
-    protected override IAuthorizationConfiguration AuthorizationConfiguration => new AuthorizationConfiguration<TDefault>();
+    protected virtual Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
+
+    protected virtual IAuthorizationConfiguration AuthorizationConfiguration => new AuthorizationConfiguration<TDefault>();
+
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AuthorizationConfiguration = AuthorizationConfiguration;
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => PrincipalNamed("sven"));
+    }
+
+    protected virtual IPrincipal PrincipalNamed(string name, string[] roles = null) => CreatePrincipal(name, roles ?? new string[] { });
 }
 
 [TestFixture] //Use DefaultAuthorizer1
 public class TestCustomAuthorizer1 : TestCustomAuthorizer<DefaultAuthorizer1> {
+    
     [TearDown]
     public void TearDown() {
         EndTest();
-    }
-
-    [OneTimeSetUp]
-    public void FixtureSetUp() {
-        CustomAuthorizerInstallerDbContext.Delete();
-        var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
-
-        context.Database.Create();
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
     }
+
 
     [Test]
     public void AttemptToUseAuthorizerForAbstractType() {
         try {
             InitializeNakedObjectsFramework(this);
         }
-        catch (InitialisationException e) {
-            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
+        catch (AggregateException ae) {
+            Assert.IsInstanceOf<InitialisationException>(ae.InnerException);
+
+            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
         }
     }
 }
 
 [TestFixture] //Use DefaultAuthorizer2
 public class TestCustomAuthorizer2 : TestCustomAuthorizer<DefaultAuthorizer2> {
+  
     [TearDown]
     public void TearDown() {
         EndTest();
@@ -69,22 +99,26 @@ public class TestCustomAuthorizer2 : TestCustomAuthorizer<DefaultAuthorizer2> {
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizerInstallerDbContext.Delete();
     }
+
 
     [Test]
     public void AttemptToUseNonImplementationOfITestAuthorizer() {
         try {
             InitializeNakedObjectsFramework(this);
         }
-        catch (InitialisationException e) {
-            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
+        catch (AggregateException ae) {
+            Assert.IsInstanceOf<InitialisationException>(ae.InnerException);
+
+            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
         }
     }
 }
 
 [TestFixture] //Use DefaultAuthorizer1
 public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1> {
+  
+
     [TearDown]
     public void TearDown() {
         EndTest();
@@ -93,7 +127,6 @@ public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1> {
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizerInstallerDbContext.Delete();
     }
 
     [Test]
@@ -101,8 +134,10 @@ public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1> {
         try {
             InitializeNakedObjectsFramework(this);
         }
-        catch (InitialisationException e) {
-            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
+        catch (AggregateException ae) {
+            Assert.IsInstanceOf<InitialisationException>(ae.InnerException);
+
+            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
         }
     }
 }
@@ -112,29 +147,22 @@ public class TestCustomAuthoriser4 : TestCustomAuthorizer<DefaultAuthorizer3> {
     [SetUp]
     public void SetUp() {
         StartTest();
-        SetUser("Fred");
     }
 
     [TearDown]
-    public void TearDown() {
-        EndTest();
-    }
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        CustomAuthorizerInstallerDbContext.Delete();
-
-        var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizerInstallerDbContext.Delete();
     }
+
+    protected override IPrincipal PrincipalNamed(string name, string[] roles = null) => base.PrincipalNamed("Fred");
 
     [Test]
     public void AccessByAuthorizedUserName() {
@@ -147,33 +175,31 @@ public class TestCustomAuthoriser5 : TestCustomAuthorizer<DefaultAuthorizer3> {
     [SetUp]
     public void SetUp() {
         StartTest();
-        SetUser("Anon");
     }
 
     [TearDown]
-    public void TearDown() {
-        EndTest();
-    }
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
-    public void ClassSetUp() {
-        CustomAuthorizerInstallerDbContext.Delete();
-
-        var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
-
-        context.Database.Create();
+    public void FixtureSetUp() {
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizerInstallerDbContext.Delete();
     }
+
+    protected override IPrincipal PrincipalNamed(string name, string[] roles = null) => base.PrincipalNamed("Anon");
 
     [Test]
     public void AccessByAnonUserWithoutRole() {
-        GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
+        try {
+            GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
+        }
+        catch (Exception e) {
+            Assert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
+        }
     }
 }
 
@@ -182,28 +208,22 @@ public class TestCustomAuthoriser6 : TestCustomAuthorizer<DefaultAuthorizer3> {
     [SetUp]
     public void SetUp() {
         StartTest();
-        SetUser("Anon", "sysAdmin");
     }
 
     [TearDown]
-    public void TearDown() {
-        EndTest();
-    }
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
-    public void ClassSetUp() {
-        CustomAuthorizerInstallerDbContext.Delete();
-        var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
-
-        context.Database.Create();
+    public void FixtureSetUp() {
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizerInstallerDbContext.Delete();
     }
+
+    protected override IPrincipal PrincipalNamed(string name, string[] roles = null) => base.PrincipalNamed("Anon", new[] { "sysadmin" });
 
     [Test]
     public void AccessByAnonUserWithRole() {
@@ -216,28 +236,23 @@ public class TestCustomAuthoriser7 : TestCustomAuthorizer<DefaultAuthorizer3> {
     [SetUp]
     public void SetUp() {
         StartTest();
-        SetUser("Anon", "service", "sysAdmin");
     }
 
     [TearDown]
-    public void TearDown() {
-        EndTest();
-    }
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
-    public void ClassSetUp() {
-        CustomAuthorizerInstallerDbContext.Delete();
-        var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
-
-        context.Database.Create();
+    public void FixtureSetUp() {
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizerInstallerDbContext.Delete();
     }
+
+
+    protected override IPrincipal PrincipalNamed(string name, string[] roles = null) => base.PrincipalNamed("Anon", new[] { "service", "sysadmin" });
 
     [Test]
     public void AccessByAnonUserWithMultipleRoles() {

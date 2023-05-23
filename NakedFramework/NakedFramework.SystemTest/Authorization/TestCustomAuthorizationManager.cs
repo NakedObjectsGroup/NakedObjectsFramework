@@ -8,13 +8,24 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Metamodel.Authorization;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
 using NakedFramework.Security;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Authorization;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using ROSI.Exceptions;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -22,11 +33,10 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer;
 
 [TestFixture]
-public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
+public class TestCustomAuthorizationManager : AcceptanceTestCase {
     [SetUp]
     public void SetUp() {
         StartTest();
-        SetUser("sven");
     }
 
     [TearDown]
@@ -34,20 +44,36 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        CustomAuthorizationManagerDbContext.Delete();
-        var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        CustomAuthorizationManagerDbContext.Delete();
     }
 
-    protected override Type[] ObjectTypes => new[] {
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AuthorizationConfiguration = AuthorizationConfiguration;
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => CreatePrincipal("sven", Array.Empty<string>()));
+    }
+
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new CustomAuthorizationManagerDbContext() };
+
+    protected Type[] ObjectTypes => new[] {
         typeof(Foo),
         typeof(Audit.Foo),
         typeof(FooSub),
@@ -57,7 +83,7 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
         typeof(QueryableList<Foo>)
     };
 
-    protected override Type[] Services => new[] {
+    protected Type[] Services => new[] {
         typeof(SimpleRepository<Foo>),
         typeof(SimpleRepository<FooSub>),
         typeof(SimpleRepository<SubTypeOfFoo>),
@@ -68,7 +94,7 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
         typeof(QuxService)
     };
 
-    protected override IAuthorizationConfiguration AuthorizationConfiguration {
+    protected IAuthorizationConfiguration AuthorizationConfiguration {
         get {
             var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
             config.AddTypeAuthorizer<Foo, FooAuthorizer>();
@@ -87,13 +113,15 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
 
     [Test]
     public void EditabilityUsingSpecificTypeAuthorizer() {
-        var qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
+        
         try {
-            qux.GetPropertyByName("Prop1").AssertIsModifiable();
+            var qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
             Assert.Fail("Should not get to here");
         }
-        catch (Exception e) {
-            Assert.AreEqual("QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1", e.Message);
+        catch (AggregateException ae) {
+            Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+
+            Assert.AreEqual(@"199 RestfulObjects ""QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Id""", ae.InnerException.Message);
         }
     }
 
@@ -115,14 +143,16 @@ public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthoriza
 
     [Test]
     public void VisibilityUsingSpecificTypeAuthorizer() {
-        var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
         try {
-            foo.GetPropertyByName("Prop1").AssertIsVisible();
+            var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
             Assert.Fail("Should not get to here");
         }
-        catch (Exception e) {
-            Assert.AreEqual("FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Prop1", e.Message);
+        catch (AggregateException ae) {
+            Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+
+            Assert.AreEqual(@"199 RestfulObjects ""FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Id""", ae.InnerException.Message);
         }
+       
     }
 }
 
