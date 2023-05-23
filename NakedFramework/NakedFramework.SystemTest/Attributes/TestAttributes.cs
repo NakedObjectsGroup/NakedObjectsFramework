@@ -71,17 +71,7 @@ public class TestAttributes : AcceptanceTestCase {
         services.AddScoped(p => TestPrincipal);
     }
 
-    private const string format = "yyyy-MM-dd";
-
-    private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToString(format);
-    private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToString(format);
-    private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToString(format);
-    private static readonly string today = DateTime.Today.ToString(format);
-    private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToString(format);
-    private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToString(format);
-    private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToString(format);
-
-    protected Type[] ObjectTypes {
+     protected Type[] ObjectTypes {
         get {
             return new[] {
                 typeof(Default1),
@@ -196,6 +186,21 @@ public class TestAttributes : AcceptanceTestCase {
 
     protected Func<IConfiguration, DbContext>[] ContextCreators =>
         new Func<IConfiguration, DbContext>[] { config => new AttributesDbContext() };
+
+
+
+
+    private const string format = "yyyy-MM-dd";
+
+    private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToString(format);
+    private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToString(format);
+    private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToString(format);
+    private static readonly string today = DateTime.Today.ToString(format);
+    private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToString(format);
+    private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToString(format);
+    private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToString(format);
+
+   
 
     private JObject GetObject<T>(string id = "1") {
         var api = Api();

@@ -17,6 +17,8 @@ internal class TestObject : TestHasActions, ITestObject {
         }
     }
 
+    public Type? WrappedType => TypeUtils.GetType(DomainObject.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.domainType));
+
     public ITestProperty[] Properties {
         get {
             var ps = DomainObject.GetProperties().Select(p => new TestProperty(p)).Cast<ITestProperty>();

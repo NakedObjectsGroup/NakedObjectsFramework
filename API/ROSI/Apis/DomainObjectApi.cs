@@ -56,6 +56,7 @@ public static class DomainObjectApi {
     public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, params object[] pp) => await objectRepresentation.Persist(objectRepresentation.Options, pp);
 
     public static async Task<DomainObject> Persist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
+        options = options with { Tag = objectRepresentation.Tag };
         var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
         var json = (await HttpHelpers.Persist(link, options, pp)).Response;
         return new DomainObject(JObject.Parse(json), objectRepresentation.Options);
@@ -66,7 +67,7 @@ public static class DomainObjectApi {
     }
 
     public static async Task ValidatePersist(this DomainObject objectRepresentation, InvokeOptions options, params object[] pp) {
-        options = options with { ReservedArguments = options.ReservedArguments.Add("x-ro-validate-only", true) };
+        options = options with { Tag = objectRepresentation.Tag, ReservedArguments = options.ReservedArguments.Add("x-ro-validate-only", true) };
 
         var link = objectRepresentation.GetLinks().GetPersistLink() ?? throw new NoSuchPropertyRosiException("Missing persist link in object");
         var json = (await HttpHelpers.Persist(link, options, pp)).Response;

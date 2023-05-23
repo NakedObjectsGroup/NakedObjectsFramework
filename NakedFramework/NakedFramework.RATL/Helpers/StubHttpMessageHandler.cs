@@ -39,7 +39,7 @@ public class StubHttpMessageHandler : HttpMessageHandler {
     }
 
     private async Task<HttpResponseMessage> SendAsyncService(HttpRequestMessage request, string[] segments) {
-        var serviceId = segments[2].TrimEnd('/');
+        var serviceId = WebUtility.UrlDecode(segments[2].TrimEnd('/'));
 
         if (segments.Length > 3) {
             switch (segments[3]) {

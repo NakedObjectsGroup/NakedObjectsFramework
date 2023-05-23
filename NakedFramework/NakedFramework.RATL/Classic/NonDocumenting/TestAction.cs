@@ -149,6 +149,12 @@ internal class TestAction : ITestAction {
         LastMessage = string.Empty;
     }
 
+    private static Type? ParameterType(object parameter) => parameter switch {
+        TestObject t => t.WrappedType,
+        DomainObject d => new TestObject(d).WrappedType,
+        _ => parameter?.GetType()
+    };
+
     private object[] ParsedParameters(params object[] parameters) {
         var parsedParameters = new List<object>();
 
@@ -158,11 +164,14 @@ internal class TestAction : ITestAction {
         var zip = actualParameters.Zip(parameters);
 
         foreach (var (p, v) in zip) {
-            if (p.Type != v.GetType()) {
-                Assert.Fail("Invalid Argument(s)");
+            var expected = p.Type;
+            var actual = ParameterType(v);
+
+            if (expected != actual) {
+                Assert.Fail($"Invalid Argument(s) expected: {expected} actual: {actual}");
             }
         }
 
-        return parameters;
+        return parameters.Select(p => p is TestObject t ? t.Value : p).ToArray();
     }
 }
