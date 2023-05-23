@@ -13,6 +13,7 @@ using System.Data.Entity;
 using System.Linq;
 using NakedFramework;
 using NakedObjects;
+using NakedObjects.SystemTest;
 using SystemTest.Attributes;
 
 #pragma warning disable 612
@@ -21,7 +22,7 @@ using SystemTest.Attributes;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedObjects.SystemTest.Attributes {
+namespace NakedFramework.SystemTest.Attributes {
     #region Classes used in test
 
     public class AttributesDatabaseInitializer : DropCreateDatabaseAlways<AttributesDbContext> {

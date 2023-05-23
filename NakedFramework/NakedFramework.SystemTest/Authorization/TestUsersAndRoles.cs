@@ -18,17 +18,19 @@ using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
 using NakedFramework.Security;
+using NakedFramework.SystemTest.Audit;
+using NakedObjects;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Audit;
+using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.UsersAndRoles;
+namespace NakedFramework.SystemTest.Authorization.UsersAndRoles;
 
 public class TestUsersAndRoles : AcceptanceTestCase {
     protected Func<IConfiguration, DbContext>[] ContextCreators =>

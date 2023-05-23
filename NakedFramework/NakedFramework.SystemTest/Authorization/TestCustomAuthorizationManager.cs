@@ -18,11 +18,13 @@ using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
 using NakedFramework.Security;
+using NakedFramework.SystemTest.Audit;
+using NakedObjects;
 using NakedObjects.Core.Util;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Audit;
+using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using ROSI.Exceptions;
@@ -30,7 +32,7 @@ using ROSI.Exceptions;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer;
+namespace NakedFramework.SystemTest.Authorization.CustomAuthorizer;
 
 [TestFixture]
 public class TestCustomAuthorizationManager : AcceptanceTestCase {

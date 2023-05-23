@@ -24,6 +24,7 @@ using NakedObjects;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NotMyApp.MyCluster2;
 using NUnit.Framework;
@@ -32,7 +33,7 @@ using ROSI.Exceptions;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
+namespace NakedFramework.SystemTest.Authorization.NamespaceAuthorization {
     [TestFixture]
     public class TestNamespaceAuthorization : AcceptanceTestCase {
         [SetUp]

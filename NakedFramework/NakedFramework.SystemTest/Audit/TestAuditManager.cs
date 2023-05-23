@@ -21,9 +21,12 @@ using NakedFramework.Persistor.EF6.Util;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
+using NakedObjects;
+using NakedFramework.SystemTest;
 using NakedObjects.Reflector.Audit;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -31,7 +34,7 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
-namespace NakedObjects.SystemTest.Audit;
+namespace NakedFramework.SystemTest.Audit;
 
 [TestFixture]
 public class TestAuditManager : AcceptanceTestCase {
@@ -131,7 +134,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AnAction", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
             Assert.IsFalse(b);
             Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
@@ -153,7 +156,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AnAction", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Qux", o.GetEF6ProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetEF6ProxiedType().FullName);
             Assert.IsFalse(b);
             Assert.AreEqual(0, pp.Length);
             quxCalledCound++;
@@ -175,7 +178,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AnActionWithParm", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
             Assert.IsFalse(b);
             Assert.AreEqual(1, pp.Length);
             Assert.AreEqual(1, pp[0]);
@@ -198,7 +201,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AnActionWithParms", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
             Assert.IsFalse(b);
             Assert.AreEqual(2, pp.Length);
             Assert.AreEqual(1, pp[0]);
@@ -223,7 +226,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AnotherQueryOnlyAction", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
             Assert.IsTrue(b);
             Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
@@ -244,7 +247,7 @@ public class TestAuditManager : AcceptanceTestCase {
         FooAuditor.Auditor.objectPersistedCallback = (p, o) => {
             Assert.AreEqual("Test", p.Identity?.Name);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
             Assert.IsNull(((Foo)o).Prop1);
             fooPersistedCount++;
         };
@@ -265,7 +268,7 @@ public class TestAuditManager : AcceptanceTestCase {
         QuxAuditor.Auditor.objectPersistedCallback = (p, o) => {
             Assert.AreEqual("Test", p.Identity?.Name);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
             Assert.IsNull(((Qux)o).Prop1);
             quxPersistedCount++;
         };
@@ -288,7 +291,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AQueryOnlyAction", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
             Assert.IsTrue(b);
             Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
@@ -422,7 +425,7 @@ public class TestAuditManager : AcceptanceTestCase {
         FooAuditor.Auditor.objectUpdatedCallback = (p, o) => {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
             Assert.AreEqual(newValue, ((Foo)o).Prop1);
             fooUpdatedCount++;
         };
@@ -452,7 +455,7 @@ public class TestAuditManager : AcceptanceTestCase {
         QuxAuditor.Auditor.objectUpdatedCallback = (p, o) => {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
             Assert.AreEqual(newValue, ((Qux)o).Prop1);
             quxUpdatedCount++;
         };
@@ -478,7 +481,7 @@ public class TestAuditManager : AcceptanceTestCase {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.AreEqual("AnAction", a);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
             Assert.IsFalse(b);
             Assert.AreEqual(0, pp.Length);
             defaultCalledCount++;
@@ -499,7 +502,7 @@ public class TestAuditManager : AcceptanceTestCase {
         MyDefaultAuditor.Auditor.objectPersistedCallback = (p, o) => {
             Assert.AreEqual("Test", p.Identity?.Name);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
             Assert.IsNull(((Bar)o).Prop1);
             defaultPersistedCount++;
         };
@@ -543,7 +546,7 @@ public class TestAuditManager : AcceptanceTestCase {
         MyDefaultAuditor.Auditor.objectUpdatedCallback = (p, o) => {
             Assert.AreEqual("Test", p.Identity.Name);
             Assert.IsNotNull(o);
-            Assert.AreEqual("NakedObjects.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
             Assert.AreEqual(newValue, ((Bar)o).Prop1);
             defaultUpdatedCount++;
         };

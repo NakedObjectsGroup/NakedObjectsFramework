@@ -23,7 +23,7 @@ using NakedFramework.Rest.Model;
 using NakedFramework.Test;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
-using NakedObjects.SystemTest.Attributes;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;

@@ -22,13 +22,14 @@ using NakedFramework.Security;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Authorization.Installer;
+namespace NakedFramework.SystemTest.Authorization.Installer;
 
 public abstract class TestCustomAuthorizer<TDefault> : AcceptanceTestCase where TDefault : ITypeAuthorizer<object> {
     protected Func<IConfiguration, DbContext>[] ContextCreators =>
