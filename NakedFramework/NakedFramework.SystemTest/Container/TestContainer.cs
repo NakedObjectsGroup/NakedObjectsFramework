@@ -8,49 +8,81 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using NakedFramework;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.Architecture.Spec;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedObjects;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Container;
+namespace NakedFramework.SystemTest.Container;
 
 [TestFixture]
-public class TestContainer : AbstractSystemTest<ContainerDbContext> {
+public class TestContainer : AcceptanceTestCase {
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+    }
 
     [TearDown]
     public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        ContainerDbContext.Delete();
-        var context = Activator.CreateInstance<ContainerDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        ContainerDbContext.Delete();
     }
 
-    protected override Type[] ObjectTypes => new[] { typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum) };
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
 
-    protected override Type[] Services =>
-        new[] {
-            typeof(SimpleRepository<Object1>)
-        };
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new ContainerDbContext() };
+
+    protected Type[] ObjectTypes => new[] { typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum) };
+
+    protected Type[] Services => new[] { typeof(SimpleRepository<Object1>) };
+
+    private INakedFramework NakedFramework { get; set; }
+
+    private Object1 TestObject => NakedFramework.LifecycleManager.CreateInstance((IObjectSpec)NakedFramework.MetamodelManager.GetSpecification(typeof(Object1))).Object as Object1;
 
     [Test]
     public void DefaultsTransient() {
-        var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
-        Assert.IsNotNull(testObject.Container);
+        var testObject = TestObject;
+        Assert.IsNotNull(testObject?.Container);
 
         var o2 = testObject.Container.NewTransientInstance<Object2>();
 
@@ -68,7 +100,7 @@ public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 
     [Test]
     public void DefaultsViewModel() {
-        var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+        var testObject = TestObject;
         Assert.IsNotNull(testObject.Container);
 
         var vm = testObject.NewViewModel();
