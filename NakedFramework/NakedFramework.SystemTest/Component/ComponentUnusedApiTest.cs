@@ -8,52 +8,74 @@
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Framework;
 using NakedFramework.Architecture.Spec;
-using NakedFramework.Test.Interface;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedObjects;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.SystemTest.Component;
+namespace NakedFramework.SystemTest.Component;
 
 [TestFixture]
-public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
+public class ComponentUnusedApiTest : AcceptanceTestCase {
     [SetUp]
-    public void Initialize() {
+    public void SetUp() {
         StartTest();
-        foo1 = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
-        foo1.GetPropertyByName("Id").SetValue("12345");
-        foo1.GetPropertyByName("Name").SetValue("Foo1");
-        foo1.Save();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
     }
 
     [TearDown]
-    public void Cleanup() {
-        EndTest();
-    }
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
-    public void SetupTestFixture() {
-        FooContext.Delete();
-        var context = Activator.CreateInstance<FooContext>();
-
-        context.Database.Create();
+    public void FixtureSetUp() {
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
-    public void TearDownTest() {
+    public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        FooContext.Delete();
     }
 
-    private ITestObject foo1;
-    protected override Type[] ObjectTypes => new[] { typeof(Foo) };
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
 
-    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new FooContext() };
+
+    protected Type[] ObjectTypes => new[] { typeof(Foo) };
+
+    protected Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
+
+    private INakedFramework NakedFramework { get; set; }
 
     [Test]
     public virtual void MetamodelManagerAllSpecs() {
@@ -63,14 +85,14 @@ public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
 
     [Test]
     public virtual void NakedObjectManagerNewAdapterForKnownObjectTest() {
-        var poco = foo1.GetDomainObject();
+        var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.NewAdapterForKnownObject(poco, null);
         Assert.AreEqual(poco, adapter.Object);
     }
 
     [Test]
     public virtual void ObjectPersistorReloadTest() {
-        var poco = foo1.GetDomainObject();
+        var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
         NakedFramework.Persistor.Reload(adapter);
         Assert.AreEqual(poco, adapter.Object);
@@ -78,7 +100,7 @@ public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
 
     [Test]
     public virtual void ObjectPersistorResolveFieldTest() {
-        var poco = foo1.GetDomainObject();
+        var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
         var field = (adapter.Spec as IObjectSpec)?.Properties.First();
         NakedFramework.Persistor.ResolveField(adapter, field);
@@ -87,7 +109,7 @@ public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
 
     [Test]
     public virtual void ObjectPersistorLoadFieldTest() {
-        var poco = foo1.GetDomainObject();
+        var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
         NakedFramework.Persistor.LoadField(adapter, nameof(Foo.Name));
         Assert.AreEqual(poco, adapter.Object);
@@ -129,6 +151,14 @@ public class FooContext : DbContext {
 
     public DbSet<Foo> Foos { get; set; }
     public static void Delete() => Database.Delete(Cs);
+
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new FooContextDatabaseInitializer());
+
+    public class FooContextDatabaseInitializer : DropCreateDatabaseAlways<FooContext> {
+        protected override void Seed(FooContext context) {
+            context.Foos.Add(new Foo { Id = 12345, Name = "Foo1" });
+        }
+    }
 }
 
 public class Foo : IHasIntegerId {
