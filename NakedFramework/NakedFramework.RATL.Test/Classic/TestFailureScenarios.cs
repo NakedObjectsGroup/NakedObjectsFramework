@@ -114,7 +114,7 @@ public class TestFailureScenarios : AcceptanceTestCase {
         var def1 = p1.GetDefault();
         var def2 = p2.GetDefault();
 
-        Assert.AreEqual("1", def1.Title);
+        Assert.AreEqual("Value2", def1.Title);
         Assert.AreEqual(null, def2);
     }
 

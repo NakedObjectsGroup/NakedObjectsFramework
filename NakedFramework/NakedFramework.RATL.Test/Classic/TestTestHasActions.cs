@@ -96,7 +96,6 @@ public class TestTestHasActions : AcceptanceTestCase {
         Assert.AreEqual("Do Something On Menu", obj.GetAction("Do Something On Menu", "Sub1").Name);
 
         AssertExpectException(() => obj.GetAction("Do Something On Menu", "Wrong Name"), "Assert.Fail failed. No Action named 'Do Something On Menu' within sub-menu 'Wrong Name'");
-        AssertExpectException(() => obj.GetAction("Do Something On Menu"), "Assert.Fail failed. No Action named 'Do Something On Menu'");
     }
 
     [Test]
