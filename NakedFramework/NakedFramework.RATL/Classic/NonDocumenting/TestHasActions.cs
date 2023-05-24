@@ -18,6 +18,8 @@ internal abstract class TestHasActions : ITestHasActions {
         return actions.Single();
     }
 
+    public ITestMenu GetMenu() => new TestMenu(Actions);
+
     public ITestAction GetAction(string actionName, params Type[] parameterTypes) {
         var actions = Actions.Where(x => x.Name == actionName && x.MatchParameters(parameterTypes)).ToArray();
         AssertErrors(actions, actionName, " (with specified parameters)");

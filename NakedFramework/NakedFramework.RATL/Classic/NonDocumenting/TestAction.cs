@@ -117,6 +117,20 @@ internal class TestAction : ITestAction {
         return this;
     }
 
+    public ITestAction AssertIsSubMenu() {
+        Assert.IsFalse(string.IsNullOrWhiteSpace(SubMenu));
+        return this;
+    }
+
+    public ITestAction AssertIsAction() {
+        return this;
+    }
+
+    public ITestAction AssertNameEquals(string name) {
+        Assert.AreEqual(Name, name);
+        return this;
+    }
+
     private T? DoInvoke<T>(int? page, params object[] parameters) where T : class, ITestNaked {
         ResetLastMessage();
         AssertIsValidWithParms(parameters);

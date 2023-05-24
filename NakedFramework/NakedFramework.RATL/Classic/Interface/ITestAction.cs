@@ -19,4 +19,7 @@ public interface ITestAction {
     ITestAction AssertIsDescribedAs(string expected);
     ITestAction AssertLastMessageIs(string message);
     ITestAction AssertLastMessageContains(string message);
+    ITestAction AssertIsSubMenu();
+    ITestAction AssertIsAction();
+    ITestAction AssertNameEquals(string name);
 }

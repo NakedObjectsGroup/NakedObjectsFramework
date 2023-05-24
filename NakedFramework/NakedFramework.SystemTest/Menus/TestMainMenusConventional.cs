@@ -6,41 +6,77 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NakedFramework;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedFramework.Test.Interface;
+using NakedFramework.Test.TestObjects;
+using NakedObjects;
+using NakedObjects.Reflector.Extensions;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TestObjectMenu;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus.Service2;
+namespace NakedFramework.SystemTest.Menus.Service2;
 
 [TestFixture]
-public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
+public class TestMainMenusConventional : AcceptanceTestCase {
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+    }
 
     [TearDown]
-    public void CleanUp() => EndTest();
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        MenusDbContext.Delete();
-        var context = Activator.CreateInstance<MenusDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        MenusDbContext.Delete();
     }
 
-    protected override Type[] Services =>
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.MainMenus = MainMenus;
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = Array.Empty<Type>();
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
+
+    protected INakedFramework NakedFramework { get; set; }
+
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new MenusDbContext() };
+
+    protected  Type[] Services =>
         new[] {
             typeof(FooService),
             typeof(ServiceWithSubMenus),
@@ -48,7 +84,30 @@ public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
             typeof(QuxService)
         };
 
-    protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+    protected  IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+
+
+    protected virtual ITestMenu[] AllMainMenus() {
+        var factory = new TestObjectFactory(NakedFramework);
+        return NakedFramework.MetamodelManager.MainMenus().Select(m => factory.CreateTestMenuMain(m)).ToArray();
+    }
+
+    protected virtual ITestMenu GetMainMenu(string menuName) {
+        var factory = new TestObjectFactory(NakedFramework);
+        var mainMenus = NakedFramework.MetamodelManager.MainMenus();
+        if (mainMenus.Any()) {
+            var menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
+            if (menu == null) {
+                Assert.Fail("No such main menu " + menuName);
+            }
+
+            return factory.CreateTestMenuMain(menu);
+        }
+
+        return null;
+    }
+
+
 
     [Test]
     public virtual void TestActionVisibility() {
@@ -133,7 +192,8 @@ public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
 
     [Test]
     public virtual void TestMainMenuCount() {
-        AssertMainMenuCountIs(7);
+        var menus = AllMainMenus();
+        Assert.AreEqual(7, menus.Length);
     }
 
     [Test]

@@ -4,6 +4,8 @@ public interface ITestHasActions : ITestNaked {
     ITestAction[] Actions { get; }
     ITestAction GetAction(string name);
 
+    ITestMenu GetMenu();
+
     /// <summary>
     ///     It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
     /// </summary>
@@ -25,4 +27,5 @@ public interface ITestHasActions : ITestNaked {
     /// <param name="order"></param>
     /// <returns>The current object</returns>
     ITestHasActions AssertActionOrderIs(string order);
+
 }

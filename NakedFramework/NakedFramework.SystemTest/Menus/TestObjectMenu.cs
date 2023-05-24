@@ -9,41 +9,73 @@ using System;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
 using NakedObjects;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TestObjectMenu;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus {
+namespace NakedFramework.SystemTest.Service3 {
     [TestFixture]
-    public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
+    public class TestObjectMenu : AcceptanceTestCase {
         [SetUp]
-        public void SetUp() => StartTest();
+        public void SetUp() {
+            StartTest();
+            NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+        }
 
         [TearDown]
         public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
-            MenusDbContext.Delete();
-            var context = Activator.CreateInstance<MenusDbContext>();
-
-            context.Database.Create();
             InitializeNakedObjectsFramework(this);
         }
 
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
-            MenusDbContext.Delete();
         }
 
-        protected override Type[] ObjectTypes =>
+        protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+            services.AddControllers()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddHttpContextAccessor();
+            services.AddNakedFramework(frameworkOptions => {
+                frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+                frameworkOptions.AddRestfulObjects(restOptions => { });
+                frameworkOptions.AddNakedObjects(appOptions => {
+                    appOptions.DomainModelTypes = ObjectTypes;
+                    appOptions.DomainModelServices = Services;
+                });
+            });
+            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+            services.AddScoped(p => TestPrincipal);
+        }
+
+        protected INakedFramework NakedFramework { get; set; }
+
+        protected Func<IConfiguration, DbContext>[] ContextCreators =>
+            new Func<IConfiguration, DbContext>[] { config => new MenusDbContext() };
+
+
+        protected  Type[] ObjectTypes =>
             new[] {
                 typeof(Foo),
                 typeof(Foo2),
@@ -54,7 +86,7 @@ namespace NakedObjects.SystemTest.Menus {
                 typeof(Bar5)
             };
 
-        protected override Type[] Services =>
+        protected  Type[] Services =>
             new[] {
                 typeof(SimpleRepository<Foo>),
                 typeof(SimpleRepository<Foo2>),
@@ -70,67 +102,69 @@ namespace NakedObjects.SystemTest.Menus {
 
         [Test]
         public void SubClassAddingNewSubMenuAboveSuperMenu() {
-            var bar4 = GetTestService("Bar4s").GetAction("New Instance").InvokeReturnObject().Save();
+            var bar4 = NewTestObject<Bar5>("5");
             var menu = bar4.GetMenu();
 
-            menu.AssertItemCountIs(7);
+            menu.AssertItemCountIs(10);
             var items = menu.AllItems();
 
-            var sub = items[0].AssertIsSubMenu().AssertNameEquals("Bar 4").AsSubMenu().AssertItemCountIs(1);
+            items[0].AssertIsAction().AssertNameEquals("Action 14");
+
+            var sub = items[1].AssertIsSubMenu().AssertSubMenuEquals("Bar 4").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action 13");
 
-            items[1].AssertIsAction().AssertNameEquals("Action2 Renamed");
-            items[2].AssertIsAction().AssertNameEquals("Action1");
-            sub = items[3].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
+            items[2].AssertIsAction().AssertNameEquals("Action2 Renamed");
+            items[3].AssertIsAction().AssertNameEquals("Action1");
+            sub = items[4].AssertIsSubMenu().AssertSubMenuEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
 
-            sub = items[4].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(2);
+            sub = items[5].AssertIsSubMenu().AssertSubMenuEquals("Docs").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action4");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action8");
 
-            sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            sub = items[7].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[6].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[9].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
 
         [Test]
         public void SubClassDelegatingToSuperMenu() {
-            var bar3 = GetTestService("Bar3s").GetAction("New Instance").InvokeReturnObject().Save();
+            var bar3 = NewTestObject<Bar3>("3");
             var menu = bar3.GetMenu();
 
-            menu.AssertItemCountIs(7);
+            menu.AssertItemCountIs(9);
 
             var items = menu.AllItems();
             items[0].AssertIsAction().AssertNameEquals("Action2 Renamed");
             items[1].AssertIsAction().AssertNameEquals("Action1");
-            var sub = items[2].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
+            var sub = items[2].AssertIsSubMenu().AssertSubMenuEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
 
-            sub = items[3].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(2);
+            sub = items[3].AssertIsSubMenu().AssertSubMenuEquals("Docs").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action4");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action8");
 
             //Note that the sub-type's new action has been added here, by the
             //AddRemainingNativeActions on the superclass menu
-            items[4].AssertIsAction().AssertNameEquals("Action 12");
+            items[5].AssertIsAction().AssertNameEquals("Action 12");
 
-            sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            sub = items[6].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[6].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[8].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
 
         [Test]
         public void SubClassWithNoNewActionsOrMenuGetsDefaultMenu() {
-            var bar2 = GetTestService("Bar2s").GetAction("New Instance").InvokeReturnObject().Save();
+            var bar2 = NewTestObject<Bar2>("2");
             var menu = bar2.GetMenu();
 
-            menu.AssertItemCountIs(8);
+            menu.AssertItemCountIs(9);
 
             var items = menu.AllItems();
             items[0].AssertIsAction().AssertNameEquals("Action1");
@@ -139,42 +173,21 @@ namespace NakedObjects.SystemTest.Menus {
             items[3].AssertIsAction().AssertNameEquals("Action3");
             items[4].AssertIsAction().AssertNameEquals("Action4"); //New in this sub-class
 
-            var sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            var sub = items[5].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[6].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[7].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
 
-            sub = items[7].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(1);
+            sub = items[8].AssertIsSubMenu().AssertSubMenuEquals("Docs").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action8");
         }
 
         [Test]
         public void TestDefaultMenu() {
-            var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();
+            var foo = NewTestObject<Foo>();
             var menu = foo.GetMenu();
-
-            menu.AssertItemCountIs(6);
-
-            var items = menu.AllItems();
-            items[0].AssertIsAction().AssertNameEquals("Action2");
-            items[1].AssertIsAction().AssertNameEquals("Renamed1");
-            items[2].AssertIsAction().AssertNameEquals("Action4");
-            items[3].AssertIsAction().AssertNameEquals("Action3");
-
-            var sub = items[4].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
-            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
-            sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
-
-            sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
-            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
-        }
-
-        [Test]
-        public void TestDefaultMenuOnSubClass() {
-            var foo2 = GetTestService("Foo2s").GetAction("New Instance").InvokeReturnObject().Save();
-            var menu = foo2.GetMenu();
 
             menu.AssertItemCountIs(7);
 
@@ -183,67 +196,88 @@ namespace NakedObjects.SystemTest.Menus {
             items[1].AssertIsAction().AssertNameEquals("Renamed1");
             items[2].AssertIsAction().AssertNameEquals("Action4");
             items[3].AssertIsAction().AssertNameEquals("Action3");
-            items[4].AssertIsAction().AssertNameEquals("Action 15");
 
-            var sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            var sub = items[4].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[6].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[6].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
+        }
+
+        [Test]
+        public void TestDefaultMenuOnSubClass() {
+            var foo2 = NewTestObject<Foo2>("2");
+            var menu = foo2.GetMenu();
+
+            menu.AssertItemCountIs(8);
+
+            var items = menu.AllItems();
+            items[0].AssertIsAction().AssertNameEquals("Action2");
+            items[1].AssertIsAction().AssertNameEquals("Renamed1");
+            items[2].AssertIsAction().AssertNameEquals("Action4");
+            items[3].AssertIsAction().AssertNameEquals("Action3");
+            items[4].AssertIsAction().AssertNameEquals("Action 15");
+
+            var sub = items[5].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
+            sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
+
+            sub = items[7].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
 
         [Test]
         public void TestSpecifiedMenu() {
-            var bar = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject().Save();
+            var bar = NewTestObject<Bar>();
             var menu = bar.GetMenu();
 
-            menu.AssertItemCountIs(6);
+            menu.AssertItemCountIs(8);
 
             var items = menu.AllItems();
             items[0].AssertIsAction().AssertNameEquals("Action2 Renamed");
             items[1].AssertIsAction().AssertNameEquals("Action1");
-            var sub = items[2].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
+            var sub = items[2].AssertIsSubMenu().AssertSubMenuEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
 
-            sub = items[3].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(2);
+            sub = items[3].AssertIsSubMenu().AssertSubMenuEquals("Docs").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action4");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action8");
 
-            sub = items[4].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            sub = items[5].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[5].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[7].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
 
         [Test]
         public void TwoLevelsOfInheritance() {
-            var bar5 = GetTestService("Bar5s").GetAction("New Instance").InvokeReturnObject().Save();
+            var bar5 = NewTestObject<Bar5>("5");
             var menu = bar5.GetMenu();
 
-            menu.AssertItemCountIs(8);
+            menu.AssertItemCountIs(10);
             var items = menu.AllItems();
 
             items[0].AssertIsAction().AssertNameEquals("Action 14");
-            var sub = items[1].AssertIsSubMenu().AssertNameEquals("Bar 4").AsSubMenu().AssertItemCountIs(1);
+            var sub = items[1].AssertIsSubMenu().AssertSubMenuEquals("Bar 4").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action 13");
 
             items[2].AssertIsAction().AssertNameEquals("Action2 Renamed");
             items[3].AssertIsAction().AssertNameEquals("Action1");
-            sub = items[4].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
+            sub = items[4].AssertIsSubMenu().AssertSubMenuEquals("Sub1").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action3");
 
-            sub = items[5].AssertIsSubMenu().AssertNameEquals("Docs").AsSubMenu().AssertItemCountIs(2);
+            sub = items[5].AssertIsSubMenu().AssertSubMenuEquals("Docs").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action4");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action8");
 
-            sub = items[6].AssertIsSubMenu().AssertNameEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
+            sub = items[7].AssertIsSubMenu().AssertSubMenuEquals("Contrib1").AsSubMenu().AssertItemCountIs(2);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action6a");
             sub.AllItems()[1].AssertIsAction().AssertNameEquals("Action5");
 
-            sub = items[7].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
+            sub = items[9].AssertIsSubMenu().AssertSubMenuEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
     }
@@ -255,10 +289,33 @@ namespace TestObjectMenu {
         private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;Encrypt=False;";
         public MenusDbContext() : base(Cs) { }
 
-        public DbSet<Foo> Foo { get; set; }
-        public DbSet<Bar> Bar { get; set; }
+        public DbSet<Foo> Foos { get; set; }
+        public DbSet<Bar> Bars { get; set; }
+
+        public DbSet<Foo2> Foo2s { get; set; }
+       
+        public DbSet<Bar2> Bar2s { get; set; }
+        public DbSet<Bar3> Bar3s { get; set; }
+        public DbSet<Bar4> Bar4s { get; set; }
+        public DbSet<Bar5> Bar5s { get; set; }
+
 
         public static void Delete() => Database.Delete(Cs);
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new MenuDatabaseInitializer());
+
+        public class MenuDatabaseInitializer : DropCreateDatabaseAlways<MenusDbContext> {
+            protected override void Seed(MenusDbContext context) {
+                context.Foos.Add(new Foo { Id = 1 });
+                context.Foo2s.Add(new Foo2 { Id = 2 });
+                context.Bars.Add(new Bar { Id = 1 });
+                context.Bar2s.Add(new Bar2 { Id = 1 });
+                context.Bar3s.Add(new Bar3 { Id = 1 });
+                context.Bar4s.Add(new Bar4 { Id = 1 });
+                context.Bar5s.Add(new Bar5 { Id = 1 });
+            }
+        }
+
     }
 
     public class Foo {
