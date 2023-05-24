@@ -27,94 +27,94 @@ using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedFramework.SystemTest.Menus {
-    //This class is not testing menus, nor TestMenus, but simply backwards compatibility
-    //of GetAction, including with specified subMenu.
-    [TestFixture]
-    public class TestAccessingMenuActionsViaGetAction : AcceptanceTestCase {
-        [SetUp]
-        public void SetUp() {
-            StartTest();
-            NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
-        }
+namespace NakedFramework.SystemTest.Menus;
 
-        [TearDown]
-        public void TearDown() => EndTest();
+//This class is not testing menus, nor TestMenus, but simply backwards compatibility
+//of GetAction, including with specified subMenu.
+[TestFixture]
+public class TestAccessingMenuActionsViaGetAction : AcceptanceTestCase {
+    [SetUp]
+    public void SetUp() {
+        StartTest();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+    }
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            InitializeNakedObjectsFramework(this);
-        }
+    [TearDown]
+    public void TearDown() => EndTest();
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-        }
+    [OneTimeSetUp]
+    public void FixtureSetUp() {
+        InitializeNakedObjectsFramework(this);
+    }
 
-        protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
-            services.AddControllers()
-                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
-            services.AddMvc(options => options.EnableEndpointRouting = false);
-            services.AddHttpContextAccessor();
-            services.AddNakedFramework(frameworkOptions => {
-                frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
-                frameworkOptions.AddRestfulObjects(restOptions => { });
-                frameworkOptions.AddNakedObjects(appOptions => {
-                    appOptions.DomainModelTypes = ObjectTypes;
-                    appOptions.DomainModelServices = Services;
-                });
+    [OneTimeTearDown]
+    public void FixtureTearDown() {
+        CleanupNakedObjectsFramework(this);
+    }
+
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
             });
-            services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
-            services.AddScoped(p => TestPrincipal);
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
+
+    protected INakedFramework NakedFramework { get; set; }
+
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new CADbContext() };
+
+    protected Type[] ObjectTypes =>
+        new[] {
+            typeof(Foo),
+            typeof(Foo2),
+            typeof(Bar)
+        };
+
+    protected Type[] Services =>
+        new[] {
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<Foo2>),
+            typeof(SimpleRepository<Bar>),
+            typeof(ContributingService)
+        };
+
+    [Test]
+    public void ContributedActionToObjectWithDefaultMenu() {
+        var foo = NewTestObject<Foo>();
+        Assert.IsNotNull(foo.GetAction("Action1"));
+    }
+
+    [Test]
+    public void ContributedActionToObjectWithExplicitMenu() {
+        var bar = NewTestObject<Bar>();
+        Assert.IsNotNull(bar.GetAction("Action3"));
+        Assert.IsNotNull(bar.GetAction("Action4"));
+        Assert.IsNotNull(bar.GetAction("Action5"));
+        Assert.IsNotNull(bar.GetAction("Action4", "Sub1"));
+        Assert.IsNotNull(bar.GetAction("Action5", "Sub2"));
+    }
+
+    [Test]
+    public void ContributedActionToSubMenuObjectWithDefaultMenu() {
+        var foo = NewTestObject<Foo>();
+        Assert.IsNotNull(foo.GetAction("Action2", "Sub"));
+        Assert.IsNotNull(foo.GetAction("Action2")); //Note that you can also access the action directly
+        try {
+            foo.GetAction("Action1", "Sub");
         }
-
-        protected INakedFramework NakedFramework { get; set; }
-
-        protected Func<IConfiguration, DbContext>[] ContextCreators =>
-            new Func<IConfiguration, DbContext>[] { config => new CADbContext() };
-
-        protected Type[] ObjectTypes =>
-            new[] {
-                typeof(Foo),
-                typeof(Foo2),
-                typeof(Bar)
-            };
-
-        protected Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo2>),
-                typeof(SimpleRepository<Bar>),
-                typeof(ContributingService)
-            };
-
-        [Test]
-        public void ContributedActionToObjectWithDefaultMenu() {
-            var foo = NewTestObject<Foo>();
-            Assert.IsNotNull(foo.GetAction("Action1"));
-        }
-
-        [Test]
-        public void ContributedActionToObjectWithExplicitMenu() {
-            var bar = NewTestObject<Bar>();
-            Assert.IsNotNull(bar.GetAction("Action3"));
-            Assert.IsNotNull(bar.GetAction("Action4"));
-            Assert.IsNotNull(bar.GetAction("Action5"));
-            Assert.IsNotNull(bar.GetAction("Action4", "Sub1"));
-            Assert.IsNotNull(bar.GetAction("Action5", "Sub2"));
-        }
-
-        [Test]
-        public void ContributedActionToSubMenuObjectWithDefaultMenu() {
-            var foo = NewTestObject<Foo>();
-            Assert.IsNotNull(foo.GetAction("Action2", "Sub"));
-            Assert.IsNotNull(foo.GetAction("Action2")); //Note that you can also access the action directly
-            try {
-                foo.GetAction("Action1", "Sub");
-            }
-            catch (Exception e) {
-                Assert.AreEqual("Assert.Fail failed. No Action named 'Action1' within sub-menu 'Sub'", e.Message);
-            }
+        catch (Exception e) {
+            Assert.AreEqual("Assert.Fail failed. No Action named 'Action1' within sub-menu 'Sub'", e.Message);
         }
     }
 }
