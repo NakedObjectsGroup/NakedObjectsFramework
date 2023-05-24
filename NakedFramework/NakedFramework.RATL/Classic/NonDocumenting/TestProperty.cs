@@ -60,10 +60,13 @@ public class TestProperty : ITestProperty {
     //    return this;
     //}
 
+
     public ITestNaked Content =>
         member switch {
             IProperty property when property.GetLinkValue() is { } link => new TestObject(ROSIApi.GetObject(link.GetHref(), link.Options).Result),
-            IProperty property => new TestValue(property.ConvertValue()),
+            PropertyMember property when property.GetHasChoices().Result => RATLHelpers.GetChoiceValue(property, property.GetValue()),
+            PropertyMember property => new TestValue(property.ConvertValue()),
+            PropertyDetails property  => RATLHelpers.GetChoiceValue(property, property.GetValue()),
             CollectionMember collection => new TestCollection(collection.GetDetails().Result),
             IHasValue collection => new TestCollection(collection),
             _ => null

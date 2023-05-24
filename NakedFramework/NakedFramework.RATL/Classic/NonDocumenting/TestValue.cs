@@ -6,5 +6,5 @@ internal class TestValue : ITestValue {
     public TestValue(object value) => Value = value;
 
     public object Value { get; }
-    public string Title => Value.ToString();
+    public virtual string Title => $"{Value}";
 }

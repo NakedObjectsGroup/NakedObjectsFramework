@@ -28,6 +28,14 @@ public static class PropertyMemberApi {
         return (await propertyRepresentation.GetDetails(options)).GetChoices<T>();
     }
 
+    public static async Task<IEnumerable<object?>> GetChoices(this PropertyMember propertyRepresentation, InvokeOptions? options = null) {
+        if (propertyRepresentation.HasChoicesFlag()) {
+            return propertyRepresentation.GetMandatoryProperty(JsonConstants.Choices).Where(c => c is JValue).Cast<JValue>().Select(c => c.Value);
+        }
+
+        return (await propertyRepresentation.GetDetails(options)).GetChoices();
+    }
+
     public static async Task<IEnumerable<Link>> GetLinkChoices(this PropertyMember propertyRepresentation, InvokeOptions? options = null) {
         if (propertyRepresentation.HasChoicesFlag()) {
             return propertyRepresentation.GetMandatoryProperty(JsonConstants.Choices).ToLinks(propertyRepresentation);

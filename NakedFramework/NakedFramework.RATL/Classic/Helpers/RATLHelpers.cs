@@ -12,10 +12,31 @@ public static class RATLHelpers {
     public static Type GetType(string typeName) =>
         AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetType(typeName)).FirstOrDefault(type => type is not null);
 
+    public static ITestNaked GetChoiceValue(IHasChoices hasChoices, object dflt) {
+        if (hasChoices.GetChoices().Any()) {
+            var choices = ((IHasExtensions)hasChoices).GetExtensions().GetExtension<Dictionary<string, object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_choices);
+            var title = choices.Single(kvp => kvp.Value.Equals(dflt)).Key;
+            return new TestChoice(dflt, title);
+        }
+
+        return new TestValue(dflt);
+    }
+
+    public static ITestNaked GetChoiceValue(PropertyMember property, object dflt) {
+        if (property.GetChoices().Result.Any()) {
+            var choices = property.GetExtensions().GetExtension<Dictionary<string, object>>(ExtensionsApi.ExtensionKeys.x_ro_nof_choices);
+            var title = choices.SingleOrDefault(kvp => kvp.Value.Equals(dflt)).Key;
+            return title is null ? new TestValue(dflt) : new TestChoice(dflt, title);
+        }
+
+        return new TestValue(dflt);
+    }
+
+
     public static ITestNaked[] GetChoices(IHasChoices hasChoices) {
         var valueChoices = hasChoices.GetChoices().ToArray();
         if (valueChoices?.Any() == true) {
-            return valueChoices.Select(v => new TestValue(v)).Cast<ITestNaked>().ToArray();
+            return valueChoices.Select(v => GetChoiceValue(hasChoices, v)).ToArray();
         }
 
         return hasChoices.GetLinkChoices().Select(l => GetTestObject(l)).Cast<ITestNaked>().ToArray();

@@ -8,41 +8,68 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Enum;
+namespace NakedFramework.SystemTest.Other;
 
 [TestFixture]
-public class EnumTest : AbstractSystemTest<EnumDbContext> {
+public class EnumTest : AcceptanceTestCase {
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+    }
 
     [TearDown]
     public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        EnumDbContext.Delete();
-        var context = Activator.CreateInstance<EnumDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        EnumDbContext.Delete();
     }
 
-    protected override Type[] ObjectTypes => new[] { typeof(Foo), typeof(Sexes), typeof(HairColours) };
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = ObjectTypes;
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
 
-    protected override Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new EnumDbContext() };
+
+    protected Type[] ObjectTypes => new[] { typeof(Foo), typeof(Sexes), typeof(HairColours) };
+
+    protected Type[] Services => new[] { typeof(SimpleRepository<Foo>) };
 
     [Test]
     public virtual void EnumParameter() {
@@ -50,10 +77,10 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
         var act1 = foo.GetAction("Action1");
         var values = act1.Parameters[0].GetChoices();
         Assert.AreEqual(4, values.Length);
-        Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
-        Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
-        Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
-        Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
+        Assert.AreEqual("Female", values[0].Title);
+        Assert.AreEqual("Male", values[1].Title);
+        Assert.AreEqual("Not Specified", values[2].Title);
+        Assert.AreEqual("Unknown", values[3].Title);
     }
 
     [Test]
@@ -73,10 +100,10 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
         var sex1 = foo.GetPropertyByName("Sex1");
         var values = sex1.GetChoices();
         Assert.AreEqual(4, values.Length);
-        Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
-        Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
-        Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
-        Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
+        Assert.AreEqual("Female", values[0].Title);
+        Assert.AreEqual("Male", values[1].Title);
+        Assert.AreEqual("Not Specified", values[2].Title);
+        Assert.AreEqual("Unknown", values[3].Title);
 
         sex1.AssertFieldEntryIsValid("Male");
         sex1.AssertFieldEntryInvalid("Man");
@@ -89,8 +116,8 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
         var sex1 = foo.GetPropertyByName("Hair Colour1");
         var values = sex1.GetChoices();
         Assert.AreEqual(5, values.Length);
-        Assert.AreEqual("Black", values.ElementAt(0).NakedObject.TitleString());
-        Assert.AreEqual("White", values.ElementAt(4).NakedObject.TitleString());
+        Assert.AreEqual("Black", values[0].Title);
+        Assert.AreEqual("White", values[4].Title);
 
         sex1.AssertFieldEntryIsValid("Brunette");
         sex1.AssertFieldEntryInvalid("Fair");
@@ -103,8 +130,8 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
         var sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("Male");
         var values = sex1.GetChoices();
         Assert.AreEqual(2, values.Length);
-        Assert.AreEqual("Male", values.ElementAt(0).NakedObject.TitleString());
-        Assert.AreEqual("Female", values.ElementAt(1).NakedObject.TitleString());
+        Assert.AreEqual("Male", values[0].Title);
+        Assert.AreEqual("Female", values[1].Title);
     }
 
     [Test]
@@ -118,9 +145,9 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
 
     [Test]
     public virtual void EnumPropertyWithDefault() {
-        var foo = NewTestObject<Foo>();
+        var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
         //Property with no default
-        foo.GetPropertyByName("Sex1").AssertValueIsEqual("Male");
+        foo.GetPropertyByName("Sex1").AssertValueIsEqual("");
         //Property with default
         foo.GetPropertyByName("Sex2").AssertValueIsEqual("Unknown");
     }
@@ -132,10 +159,10 @@ public class EnumTest : AbstractSystemTest<EnumDbContext> {
         var sex1 = foo.GetPropertyByName("Sex5");
         var values = sex1.GetChoices();
         Assert.AreEqual(4, values.Length);
-        Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
-        Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
-        Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
-        Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
+        Assert.AreEqual("Female", values[0].Title);
+        Assert.AreEqual("Male", values[1].Title);
+        Assert.AreEqual("Not Specified", values[2].Title);
+        Assert.AreEqual("Unknown", values[3].Title);
     }
 }
 
@@ -149,6 +176,14 @@ public class EnumDbContext : DbContext {
 
     public DbSet<Foo> Foos { get; set; }
     public static void Delete() => Database.Delete(Cs);
+
+    protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new EnumDatabaseInitializer());
+
+    public class EnumDatabaseInitializer : DropCreateDatabaseAlways<EnumDbContext> {
+        protected override void Seed(EnumDbContext context) {
+            context.Foos.Add(new Foo { Id = 1, Sex1 = Sexes.Male, Sex2 = Sexes.Male, Sex3 = Sexes.Male, Sex4 = Sexes.Male, Sex5 = 1, HairColour1 = HairColours.Black });
+        }
+    }
 }
 
 public class Foo {

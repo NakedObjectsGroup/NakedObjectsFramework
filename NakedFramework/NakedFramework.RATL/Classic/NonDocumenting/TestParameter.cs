@@ -2,6 +2,7 @@
 using NakedFramework.RATL.Classic.Interface;
 using ROSI.Apis;
 using ROSI.Helpers;
+using ROSI.Interfaces;
 using ROSI.Records;
 
 namespace NakedFramework.RATL.Classic.NonDocumenting;
@@ -31,13 +32,16 @@ internal class TestParameter : ITestParameter {
         return RATLHelpers.GetChoices(prompt);
     }
 
+   
+
+
     public ITestNaked GetDefault() {
         if (parameter.GetLinkDefault() is { } link) {
             var domainObject = ROSIApi.GetObject(link.GetHref(), link.Options).Result;
             return new TestObject(domainObject);
         }
 
-        return parameter.HasDefault() ? new TestValue(parameter.GetDefault()) : null;
+        return parameter.HasDefault() ? RATLHelpers.GetChoiceValue(parameter, parameter.GetDefault()) : null;
     }
 
     public ITestParameter AssertIsOptional() {
