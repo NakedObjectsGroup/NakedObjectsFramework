@@ -7,40 +7,77 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedFramework.Test.Interface;
+using NakedFramework.Test.TestObjects;
+using NakedObjects;
+using NakedObjects.Reflector.Extensions;
+using NakedObjects.SystemTest.Menus;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TestObjectMenu;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus.Service;
+namespace NakedFramework.SystemTest.Menus;
 
 [TestFixture]
-public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
+public class TestMainMenusUsingDelegation : AcceptanceTestCase {
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+    }
 
     [TearDown]
-    public void CleanUp() => EndTest();
+    public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        MenusDbContext.Delete();
-        var context = Activator.CreateInstance<MenusDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        MenusDbContext.Delete();
     }
 
-    protected override Type[] Services =>
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.MainMenus = MainMenus;
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = Array.Empty<Type>();
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
+
+    protected INakedFramework NakedFramework { get; set; }
+
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new MenusDbContext() };
+
+    protected  Type[] Services =>
         new[] {
             typeof(FooService),
             typeof(ServiceWithSubMenus),
@@ -48,7 +85,12 @@ public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
             typeof(QuxService)
         };
 
-    protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+    protected  IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+
+    protected virtual ITestMenu[] AllMainMenus() {
+        var factory = new TestObjectFactory(NakedFramework);
+        return NakedFramework.MetamodelManager.MainMenus().Select(m => factory.CreateTestMenuMain(m)).ToArray();
+    }
 
     [Test]
     public virtual void TestMainMenus() {

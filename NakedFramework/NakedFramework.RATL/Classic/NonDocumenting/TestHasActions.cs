@@ -13,13 +13,13 @@ internal abstract class TestHasActions : ITestHasActions {
     public ITestAction[] Actions => DomainObject.GetActions().Select(a => new TestAction(a)).Cast<ITestAction>().ToArray();
 
     public ITestAction GetAction(string actionName) {
-        var actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu)).ToArray();
+        var actions = Actions.Where(x => x.Name == actionName).ToArray();
         AssertErrors(actions, actionName);
         return actions.Single();
     }
 
     public ITestAction GetAction(string actionName, params Type[] parameterTypes) {
-        var actions = Actions.Where(x => x.Name == actionName && string.IsNullOrEmpty(x.SubMenu) && x.MatchParameters(parameterTypes)).ToArray();
+        var actions = Actions.Where(x => x.Name == actionName && x.MatchParameters(parameterTypes)).ToArray();
         AssertErrors(actions, actionName, " (with specified parameters)");
         return actions.Single();
     }
