@@ -87,11 +87,6 @@ public class TestMainMenusUsingDelegation : AcceptanceTestCase {
 
     protected  IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
 
-    protected virtual ITestMenu[] AllMainMenus() {
-        var factory = new TestObjectFactory(NakedFramework);
-        return NakedFramework.MetamodelManager.MainMenus().Select(m => factory.CreateTestMenuMain(m)).ToArray();
-    }
-
     [Test]
     public virtual void TestMainMenus() {
         var menus = AllMainMenus();

@@ -11,4 +11,8 @@ public static class MenusApi {
 
     public static async Task<DomainObject?> GetMenu(this Menus menusRepresentation, string menuId, InvokeOptions? options = null) =>
         menusRepresentation.GetMenuLink(menuId) is { } l ? new DomainObject(await ApiHelpers.GetResourceAsync(l, options ?? menusRepresentation.Options), menusRepresentation.Options) : null;
+
+    public static IEnumerable<DomainObject> GetMenus(this Menus menusRepresentation, InvokeOptions? options = null) =>
+        menusRepresentation.GetValue().Select(l => new DomainObject(ApiHelpers.GetResourceAsync(l, options ?? menusRepresentation.Options).Result, menusRepresentation.Options));
+
 }

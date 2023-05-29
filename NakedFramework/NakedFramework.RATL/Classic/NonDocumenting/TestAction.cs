@@ -97,7 +97,7 @@ internal class TestAction : ITestAction {
 
     public ITestAction AssertIsInvisible() {
         ResetLastMessage();
-        Assert.IsTrue(action is null, $"Action '{Name}' is visible");
+        Assert.IsTrue(action is null);
         return this;
     }
 

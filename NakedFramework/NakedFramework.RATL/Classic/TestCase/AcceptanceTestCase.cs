@@ -41,4 +41,39 @@ public abstract class AcceptanceTestCase : BaseRATLNUnitTestCase {
     public ITestObject GetTestService(Type t) => GetTestServiceByTypeName(t.FullName ?? "");
 
     public ITestObject GetTestService<T>() => GetTestServiceByTypeName(FullName<T>() ?? "");
+
+    public ITestMenu GetMainMenuById(string menuId) {
+        try {
+            var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+            var menus = home.GetMenus(home.Options).Result;
+            var menu = menus.GetMenu(menuId, home.Options).Result;
+            return new TestMenu(menu.GetActions().Select(a => new TestAction(a)).ToArray(), menu.GetTitle(), menu.GetMenuId() ?? "");
+        }
+        catch (Exception) {
+            Assert.Fail($"No such menu: {menuId}");
+        }
+
+        return null;
+    }
+
+    public ITestMenu GetMainMenu(string title) {
+        try {
+            var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+            var menus = home.GetMenus(home.Options).Result;
+            var menu = menus.GetMenus().Single(m => m.GetTitle() == title);
+            return new TestMenu(menu.GetActions().Select(a => new TestAction(a)).ToArray(), menu.GetTitle(), menu.GetMenuId() ?? "");
+        }
+        catch (Exception) {
+            Assert.Fail($"No such menu: {title}");
+        }
+
+        return null;
+    }
+
+    public ITestMenu[] AllMainMenus() {
+        var home = ROSIApi.GetHome(new Uri("http://localhost/"), TestInvokeOptions()).Result;
+        var menus = home.GetMenus(home.Options).Result;
+        var allmenus = menus.GetMenus();
+        return allmenus.Select(m => new TestMenu(m.GetActions().Select(a => new TestAction(a)).Cast<ITestAction>().ToArray(), m.GetTitle(), m.GetMenuId() ?? "")).Cast<ITestMenu>().ToArray();
+    }
 }

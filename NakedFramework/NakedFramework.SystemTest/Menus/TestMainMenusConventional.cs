@@ -11,7 +11,6 @@ using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NakedFramework;
 using NakedFramework.Architecture.Framework;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Menu;
@@ -19,8 +18,6 @@ using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
-using NakedFramework.Test.Interface;
-using NakedFramework.Test.TestObjects;
 using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
@@ -76,7 +73,7 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     protected Func<IConfiguration, DbContext>[] ContextCreators =>
         new Func<IConfiguration, DbContext>[] { config => new MenusDbContext() };
 
-    protected  Type[] Services =>
+    protected Type[] Services =>
         new[] {
             typeof(FooService),
             typeof(ServiceWithSubMenus),
@@ -84,35 +81,12 @@ public class TestMainMenusConventional : AcceptanceTestCase {
             typeof(QuxService)
         };
 
-    protected  IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
-
-
-    protected virtual ITestMenu[] AllMainMenus() {
-        var factory = new TestObjectFactory(NakedFramework);
-        return NakedFramework.MetamodelManager.MainMenus().Select(m => factory.CreateTestMenuMain(m)).ToArray();
-    }
-
-    protected virtual ITestMenu GetMainMenu(string menuName) {
-        var factory = new TestObjectFactory(NakedFramework);
-        var mainMenus = NakedFramework.MetamodelManager.MainMenus();
-        if (mainMenus.Any()) {
-            var menu = mainMenus.FirstOrDefault(m => m.Name == menuName);
-            if (menu == null) {
-                Assert.Fail("No such main menu " + menuName);
-            }
-
-            return factory.CreateTestMenuMain(menu);
-        }
-
-        return null;
-    }
-
-
+    protected IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
 
     [Test]
     public virtual void TestActionVisibility() {
         var q = GetMainMenu("Qs");
-        q.AssertItemCountIs(4);
+        q.AssertItemCountIs(3);
 
         q.GetAction("Qux Action0").AssertIsVisible();
         q.GetAction("Qux Action3").AssertIsInvisible();
@@ -143,24 +117,23 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     [Test]
     public virtual void TestAddingActionsToAMenu() {
         var q = GetMainMenu("Qs");
-        q.AssertItemCountIs(4);
+        q.AssertItemCountIs(3);
 
         q.AllItems()[0].AssertIsAction().AssertNameEquals("Qux Action0");
-        q.AllItems()[1].AssertIsAction().AssertNameEquals("Qux Action3");
-        q.AllItems()[2].AssertIsAction().AssertNameEquals("Qux Action1");
-        q.AllItems()[3].AssertIsAction().AssertNameEquals("Qux Action2");
+        q.AllItems()[1].AssertIsAction().AssertNameEquals("Qux Action1");
+        q.AllItems()[2].AssertIsAction().AssertNameEquals("Qux Action2");
     }
 
     [Test]
     public virtual void TestAddingSubMenuToAMenu() {
         var subs = GetMainMenu("Subs");
-        subs.AssertItemCountIs(2);
-        var sub1 = subs.AllItems()[0].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu();
+        subs.AssertItemCountIs(4);
+        var sub1 = subs.AllItems()[0].AssertIsSubMenu().AssertSubMenuEquals("Sub1").AsSubMenu();
         sub1.AssertItemCountIs(2);
         sub1.AllItems()[0].AssertIsAction().AssertNameEquals("Action1");
         sub1.AllItems()[1].AssertIsAction().AssertNameEquals("Action3");
 
-        var sub2 = subs.AllItems()[1].AssertIsSubMenu().AssertNameEquals("Sub2").AsSubMenu();
+        var sub2 = subs.AllItems()[2].AssertIsSubMenu().AssertSubMenuEquals("Sub2").AsSubMenu();
         sub2.AssertItemCountIs(2);
         sub2.AllItems()[0].AssertIsAction().AssertNameEquals("Action2");
         sub2.AllItems()[1].AssertIsAction().AssertNameEquals("Action0");
@@ -180,20 +153,19 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     [Test]
     public void TestHybridMenu() {
         var hyb = GetMainMenu("Hybrid");
-        hyb.AssertItemCountIs(6);
+        hyb.AssertItemCountIs(5);
 
         hyb.AllItems()[0].AssertIsAction().AssertNameEquals("Foo Action0");
         hyb.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
         hyb.AllItems()[2].AssertIsAction().AssertNameEquals("Qux Action0");
         hyb.AllItems()[3].AssertIsAction().AssertNameEquals("Qux Action1");
         hyb.AllItems()[4].AssertIsAction().AssertNameEquals("Qux Action2");
-        hyb.AllItems()[5].AssertIsAction().AssertNameEquals("Qux Action3");
     }
 
     [Test]
     public virtual void TestMainMenuCount() {
         var menus = AllMainMenus();
-        Assert.AreEqual(7, menus.Length);
+        Assert.AreEqual(5, menus.Length);
     }
 
     [Test]
@@ -207,15 +179,26 @@ public class TestMainMenusConventional : AcceptanceTestCase {
 
     [Test]
     public virtual void TestMenuWithNoActions() {
-        var e = GetMainMenu("Empty");
-        e.AssertItemCountIs(0);
+        try {
+            var e = GetMainMenu("Empty");
+            Assert.Fail("Expect exception");
+        }
+
+        catch (Exception e) {
+            Assert.AreEqual("Assert.Fail failed. No such menu: Empty", e.Message);
+        }
     }
 
     [Test]
     public virtual void TestSubMenuWithNoActions() {
-        var e = GetMainMenu("Empty2");
-        e.AssertItemCountIs(1);
-        e.AllItems()[0].AssertIsSubMenu().AssertNameEquals("Sub").AsSubMenu().AssertItemCountIs(0);
+        try {
+            var e = GetMainMenu("Empty2");
+            Assert.Fail("Expect exception");
+        }
+
+        catch (Exception e) {
+            Assert.AreEqual("Assert.Fail failed. No such menu: Empty2", e.Message);
+        }
     }
 }
 

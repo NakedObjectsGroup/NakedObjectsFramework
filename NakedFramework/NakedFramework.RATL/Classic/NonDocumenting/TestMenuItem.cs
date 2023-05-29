@@ -35,7 +35,7 @@ public class TestMenuItem : ITestMenuItem {
 
     public ITestAction AsAction() {
         AssertIsAction();
-        return Action;
+        return Action is null ? new TestAction(null) : Action;
     }
 
     public ITestMenuItem AssertIsSubMenu() {
@@ -49,7 +49,7 @@ public class TestMenuItem : ITestMenuItem {
 
     public ITestMenu AsSubMenu() {
         AssertIsSubMenu();
-        return new TestMenu(OwningMenu.AllItems().Cast<TestMenuItem>().Where(i => i.IsInSubmenu(Action.SubMenu)).Select(i => i.Action).ToArray());
+        return new TestMenu(OwningMenu.AllItems().Cast<TestMenuItem>().Where(i => i.IsInSubmenu(Action.SubMenu)).Select(i => i.Action).ToArray(), "", "");
     }
 
     #endregion
