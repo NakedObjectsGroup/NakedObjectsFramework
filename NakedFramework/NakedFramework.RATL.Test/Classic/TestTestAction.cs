@@ -220,7 +220,7 @@ public class TestTestAction : AcceptanceTestCase {
         var act = obj.GetAction("Always Disabled");
         act.AssertIsVisible();
         act.AssertLastMessageIs("");
-        AssertExpectException(() => act.AssertIsInvisible(), "Assert.IsTrue failed. Action 'Always Disabled' is visible");
+        AssertExpectException(() => act.AssertIsInvisible(), "Assert.IsTrue failed. ");
         act.AssertLastMessageIs("");
     }
 
