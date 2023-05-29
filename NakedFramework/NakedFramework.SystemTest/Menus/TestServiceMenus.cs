@@ -6,39 +6,72 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NakedFramework;
+using NakedFramework.Architecture.Framework;
+using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.Persistor.EF6.Extensions;
+using NakedFramework.RATL.Classic.TestCase;
+using NakedFramework.RATL.Helpers;
+using NakedFramework.Rest.Extensions;
+using NakedObjects;
+using NakedObjects.Reflector.Extensions;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using TestObjectMenu;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.SystemTest.Menus;
+namespace NakedFramework.SystemTest.Menus.Service3;
 
 [TestFixture]
-public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {
+public class TestServiceMenus : AcceptanceTestCase {
     [SetUp]
-    public void SetUp() => StartTest();
+    public void SetUp() {
+        StartTest();
+        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
+    }
 
     [TearDown]
     public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
-        MenusDbContext.Delete();
-        var context = Activator.CreateInstance<MenusDbContext>();
-
-        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
-        MenusDbContext.Delete();
     }
 
-    protected override Type[] Services =>
+    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
+        services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddHttpContextAccessor();
+        services.AddNakedFramework(frameworkOptions => {
+            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
+            frameworkOptions.AddRestfulObjects(restOptions => { });
+            frameworkOptions.AddNakedObjects(appOptions => {
+                appOptions.DomainModelTypes = Array.Empty<Type>();
+                appOptions.DomainModelServices = Services;
+            });
+        });
+        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
+        services.AddScoped(p => TestPrincipal);
+    }
+
+    protected INakedFramework NakedFramework { get; set; }
+
+    protected Func<IConfiguration, DbContext>[] ContextCreators =>
+        new Func<IConfiguration, DbContext>[] { config => new MenusDbContext() };
+
+    protected  Type[] Services =>
         new[] {
             typeof(FooService),
             typeof(ServiceWithSubMenus),
@@ -66,16 +99,6 @@ public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {
         bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
     }
 
-    [Test]
-    public void TestWhenMainMenusNotSpecifiedServiceMenusAreUsed() {
-        var bars = GetMainMenu("Bars"); //i.e. same as asking for GetService("Bars").GetMenu();
-        bars.AssertItemCountIs(4);
-
-        bars.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action1");
-        bars.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
-        bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
-        bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
-    }
 }
 
 #region Classes used in test

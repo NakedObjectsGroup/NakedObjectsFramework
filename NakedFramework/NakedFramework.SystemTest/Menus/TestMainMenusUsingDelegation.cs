@@ -23,7 +23,6 @@ using NakedFramework.Test.Interface;
 using NakedFramework.Test.TestObjects;
 using NakedObjects;
 using NakedObjects.Reflector.Extensions;
-using NakedObjects.SystemTest.Menus;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using TestObjectMenu;
@@ -81,8 +80,7 @@ public class TestMainMenusUsingDelegation : AcceptanceTestCase {
         new[] {
             typeof(FooService),
             typeof(ServiceWithSubMenus),
-            typeof(BarService),
-            typeof(QuxService)
+            typeof(BarService)
         };
 
     protected  IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
