@@ -8,7 +8,7 @@
             <div class="collection">
                 <table>
                     <tbody cdkDropList [cdkDropListConnectedTo]="dropZones" [cdkDropListOrientation]="'horizontal'">
-                        <tr #row *ngFor="let item of items(); let i = index" cdkDrag [cdkDragData]="item" nof-row [item]="item" [row]="i" [withCheckbox]="false" [isTable]="true"></tr>
+                        <tr #row *ngFor="let item of items(); let i = index" cdkDrag [cdkDragData]="item" nof-row [item]="item" [row]="i" [withCheckbox]="true" [isTable]="true"></tr>
                     </tbody>
                 </table>
             </div>

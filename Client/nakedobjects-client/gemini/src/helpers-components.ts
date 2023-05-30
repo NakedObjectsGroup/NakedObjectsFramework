@@ -8,7 +8,7 @@ import mapValues from 'lodash-es/mapValues';
 import zipObject from 'lodash-es/zipObject';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 
-export function safeUnsubscribe(sub: ISubscription) {
+export function safeUnsubscribe(sub?: ISubscription) {
     if (sub) {
         sub.unsubscribe();
     }
