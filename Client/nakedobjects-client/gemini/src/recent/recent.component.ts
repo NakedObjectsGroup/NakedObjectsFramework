@@ -14,6 +14,7 @@ import { RowComponent } from '../row/row.component';
     styleUrls: ['recent.component.css']
 })
 export class RecentComponent extends PaneComponent implements AfterViewInit, OnInit, OnDestroy {
+   
 
    
     constructor(
@@ -94,6 +95,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
     private ddSub?: ISubscription;
     dropZones: string[] = [];
     recent?: RecentItemsViewModel;
+    paneRouteData?: PaneRouteData;
 
     // template API
 
@@ -117,11 +119,11 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
     }
 
     private clearSelected() {
-        this.recent?.clear();
+        this.recent?.clearSelected(this.paneRouteData);
     }
 
     private clearSelectedDisabled() {
-        return this.recent?.items.length === 0 ? true : null;
+        return !this.paneRouteData?.selectedCollectionItems['']?.reduce((p, c) => p || c);
     }
 
     private sortByUsage() {
@@ -161,8 +163,11 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
     }
 
     protected override setup(routeData: PaneRouteData) {
-        this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
-        this.title = this.recent.title;
+        this.paneRouteData = routeData;
+        if (!this.recent) {
+            this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
+            this.title = this.recent.title;
+        }
     }
 
     focusOnFirstRow(rows?: QueryList<RowComponent>) {

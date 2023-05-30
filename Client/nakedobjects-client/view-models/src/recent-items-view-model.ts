@@ -1,5 +1,5 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import { ContextService, Pane, UrlManagerService } from '@nakedobjects/services';
+import { ContextService, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
 import every from 'lodash-es/every';
 import map from 'lodash-es/map';
 import { RecentItemViewModel } from './recent-item-view-model';
@@ -71,6 +71,14 @@ export class RecentItemsViewModel {
         this.recentItems = [];
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
     };
+
+    readonly clearSelected = (routeData?: PaneRouteData) => {
+        const toClear = routeData?.selectedCollectionItems[''] || [];
+        this.context.clearSelectedRecentlyViewed(toClear);
+        this.urlManager.setAllItemsSelected(false, '', this.onPaneId);
+        this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
+    };
+
 
     sort = (sortBy: SortType) => {
         if (sortBy !== this.currentSortType) {

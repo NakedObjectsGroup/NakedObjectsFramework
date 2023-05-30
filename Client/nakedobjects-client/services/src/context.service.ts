@@ -125,6 +125,18 @@ class RecentCache {
     clear() {
         this.recentCache = [];
     }
+
+    clearSelected(selected: boolean[]) {
+        selected.length = this.recentCache.length;
+
+        const zip : [boolean, Ro.DomainObjectRepresentation][] = this.recentCache.map((e,i) => [selected[i], e]); 
+
+        const removed = zip.filter(e => e[0]).map(e => e[1]);
+        this.recentCache = zip.filter(e => !e[0]).map(e => e[1]);
+
+        return removed;
+    }
+
 }
 
 class ValueCache {
@@ -932,6 +944,13 @@ export class ContextService {
 
         each(this.recentcache.items(), i => this.dirtyList.setDirty(i.getOid()));
         this.recentcache.clear();
+    };
+
+    clearSelectedRecentlyViewed = (selected: boolean[]) => {
+        // clear both recent view and cached objects
+        
+        const removed = this.recentcache.clearSelected(selected);
+        each(removed, i => this.dirtyList.setDirty(i.getOid()));
     };
 
     private markDirtyAfterChange = () => {
