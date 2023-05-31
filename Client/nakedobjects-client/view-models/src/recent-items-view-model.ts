@@ -76,7 +76,6 @@ export class RecentItemsViewModel {
         const toClear = routeData?.selectedCollectionItems[''] || [];
         this.context.clearSelectedRecentlyViewed(toClear);
         this.urlManager.setAllItemsSelected(false, '', this.onPaneId);
-        this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl(this.onPaneId);
     };
 
 
