@@ -68,6 +68,8 @@ public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : Test
         context.MaskRecords.Add(new MaskRecord { Name = "Title" });
         context.HiddenRecords.Add(new HiddenRecord { Name = "Title" });
 
+        context.MultilineRecords.Add(new MultilineRecord() { Name = "Title" });
+
         context.UrlLinkRecords.Add(new UrlLinkRecord() { Id = 1, Link1 = "Link1Name", Link2 = "Link2Name", Link3 = "Link3Name", Link4 = "Link4Name" });
 
 
@@ -105,6 +107,8 @@ public abstract class TestDbContext : DbContext {
     public DbSet<ByteArrayRecord> ByteArrayRecords { get; set; }
     public DbSet<MaskRecord> MaskRecords { get; set; }
     public DbSet<HiddenRecord> HiddenRecords { get; set; }
+
+    public DbSet<MultilineRecord> MultilineRecords { get; set; }
     public DbSet<AlternateKeyRecord> AlternateKeyRecords { get; set; }
     public DbSet<UrlLinkRecord> UrlLinkRecords { get; set; }
 

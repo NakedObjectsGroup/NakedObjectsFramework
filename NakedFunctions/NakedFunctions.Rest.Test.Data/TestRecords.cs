@@ -274,3 +274,15 @@ public record NToNCollectionRecord2
 
     public override int GetHashCode() => base.GetHashCode();
 }
+
+public record MultilineRecord
+{
+    [Key]
+    public int Id { get; init; }
+
+    public string Name { get; init; }
+
+    public override string ToString() => $"{Name}-{Id}";
+
+    public override int GetHashCode() => base.GetHashCode();
+}

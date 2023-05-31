@@ -309,6 +309,15 @@ public static class UrlLinkFunctions {
     public static string LinkFunction(this UrlLinkRecord er, IContext context) => "link";
 }
 
+public static class MultilineParameterFunctions {
+  
+    public static string Function(this MultilineRecord er, [MultiLine]string parm, IContext context) => "ok";
+
+    public static string Function1(this MultilineRecord er, [MultiLine][Optionally]string parm, IContext context) => "ok1";
+}
+
+
+
 #nullable enable
 
 public static class NullableParameterFunctions {

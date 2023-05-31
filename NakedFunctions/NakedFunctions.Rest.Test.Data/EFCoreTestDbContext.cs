@@ -75,6 +75,8 @@ public abstract class EFCoreTestDbContext : DbContext {
 
     public DbSet<NToNCollectionRecord2> NToNCollectionRecord2 { get; set; }
 
+    public DbSet<MultilineRecord> MultilineRecords { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder.UseSqlServer(cs);
@@ -125,6 +127,8 @@ public abstract class EFCoreTestDbContext : DbContext {
         modelBuilder.Entity<MaskRecord>().Ignore(m => m.MaskRecordProperty);
         modelBuilder.Entity<MaskRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
         modelBuilder.Entity<HiddenRecord>().HasData(new MaskRecord { Id = 1, Name = "Title" });
+
+        modelBuilder.Entity<MultilineRecord>().HasData(new MultilineRecord { Id = 1, Name = "Title" });
 
         modelBuilder.Entity<AlternateKeyRecord>().HasAlternateKey(k => k.Name);
         modelBuilder.Entity<AlternateKeyRecord>().HasData(new AlternateKeyRecord { Id = 1, Name = "AK1" });

@@ -43,7 +43,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(DeleteRecordFunctions),
         typeof(ImmutableCollectionRecordFunctions),
         typeof(UrlLinkFunctions),
-        typeof(NullableParameterFunctions)
+        typeof(NullableParameterFunctions),
+        typeof(MultilineParameterFunctions)
     };
 
     protected override Type[] Records { get; } = {
@@ -67,7 +68,8 @@ public class ObjectTestEF6 : AcceptanceTestCase {
         typeof(AlternateKeyRecord),
         typeof(UrlLinkRecord),
         typeof(NToNCollectionRecord1),
-        typeof(NToNCollectionRecord2)
+        typeof(NToNCollectionRecord2),
+        typeof(MultilineRecord)
     };
 
     protected override Type[] ObjectTypes { get; } = { };
@@ -1311,5 +1313,50 @@ public class ObjectTestEF6 : AcceptanceTestCase {
 
         Assert.AreEqual("False", parsedResult["members"]["NullableFunction"]["parameters"]["p1"]["extensions"]["optional"].ToString());
         Assert.AreEqual("False", parsedResult["members"]["NullableFunction"]["parameters"]["p2"]["extensions"]["optional"].ToString());
+    }
+
+    [Test]
+    public virtual void TestMultilineMandatoryParameter() {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm", new ScalarValue("fred") } } };
+        var result = api.GetInvoke(FullName<MultilineRecord>(), "1", nameof(MultilineParameterFunctions.Function), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("ok", parsedResult["result"]["value"].ToString());
+    }
+
+    [Test]
+    public virtual void TestMultilineMandatoryParameterEmpty() {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm", new ScalarValue("") } } };
+        var result = api.GetInvoke(FullName<MultilineRecord>(), "1", nameof(MultilineParameterFunctions.Function), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual(422, sc);
+    }
+
+    [Test]
+    public virtual void TestMultilineOptionalParameter() {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm", new ScalarValue("fred") } } };
+        var result = api.GetInvoke(FullName<MultilineRecord>(), "1", nameof(MultilineParameterFunctions.Function1), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("ok1", parsedResult["result"]["value"].ToString());
+    }
+
+    [Test]
+    public virtual void TestMultilineOptionalParameterEmpty() {
+        var api = Api();
+        var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "parm", new ScalarValue("") } } };
+        var result = api.GetInvoke(FullName<MultilineRecord>(), "1", nameof(MultilineParameterFunctions.Function1), map);
+        var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        var parsedResult = JObject.Parse(json);
+
+        Assert.AreEqual("ok1", parsedResult["result"]["value"].ToString());
     }
 }
