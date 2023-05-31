@@ -134,6 +134,14 @@ public static class DelegateUtils {
                 // wrap this for compatibility with calls via invoke
                 throw new NakedObjectDomainException(e.Message, e);
             }
+            catch (ArgumentException e) {
+                // wrap this so not confused with ArgumentExceptions from framework code
+                throw new NakedObjectDomainException(e.Message, e);
+            }
+            catch (TargetParameterCountException e) {
+                // wrap this so not confused with TargetParameterCountException from framework code
+                throw new NakedObjectDomainException(e.Message, e);
+            }
         };
     }
 

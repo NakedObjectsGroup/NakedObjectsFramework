@@ -24,6 +24,7 @@ public static class FacadeUtils {
 
     public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => ((ActionParameterFacade)actionParameterFacade)?.WrappedActionParameterSpec;
 
+    // If any more System exceptions are added here check DelegateUtils.WrapException it may need to be added there as well
     public static NakedObjectsFacadeException Map(Exception e) =>
         e switch {
             FindObjectException => new ObjectResourceNotFoundNOSException(e.Message, e),
