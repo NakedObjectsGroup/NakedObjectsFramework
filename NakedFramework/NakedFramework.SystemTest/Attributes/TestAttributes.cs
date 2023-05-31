@@ -23,7 +23,6 @@ using NakedFramework.Rest.Model;
 using NakedFramework.Test;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -71,7 +70,7 @@ public class TestAttributes : AcceptanceTestCase {
         services.AddScoped(p => TestPrincipal);
     }
 
-     protected Type[] ObjectTypes {
+    protected Type[] ObjectTypes {
         get {
             return new[] {
                 typeof(Default1),
@@ -121,7 +120,8 @@ public class TestAttributes : AcceptanceTestCase {
                 typeof(Contributee),
                 typeof(Contributee2),
                 typeof(Contributee3),
-                typeof(FinderAction1)
+                typeof(FinderAction1),
+                typeof(Multiline1)
             };
         }
     }
@@ -187,9 +187,6 @@ public class TestAttributes : AcceptanceTestCase {
     protected Func<IConfiguration, DbContext>[] ContextCreators =>
         new Func<IConfiguration, DbContext>[] { config => new AttributesDbContext() };
 
-
-
-
     private const string format = "yyyy-MM-dd";
 
     private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToString(format);
@@ -199,8 +196,6 @@ public class TestAttributes : AcceptanceTestCase {
     private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToString(format);
     private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToString(format);
     private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToString(format);
-
-   
 
     private JObject GetObject<T>(string id = "1") {
         var api = Api();
@@ -1067,5 +1062,41 @@ public class TestAttributes : AcceptanceTestCase {
         catch (Exception e) {
             Assert.Fail(e.Message);
         }
+    }
+
+    [Test]
+    public virtual async Task MultilineMandatoryParameter() {
+        var obj = GetObject(FullName<Multiline1>(), "1");
+        var result = await obj.GetAction(nameof(Multiline1.Action)).Invoke("fred");
+
+        Assert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
+    }
+
+    [Test]
+    public virtual async Task MultilineMandatoryParameterEmpty() {
+        try {
+            var obj = GetObject(FullName<Multiline1>(), "1");
+            var result = await obj.GetAction(nameof(Multiline1.Action)).Invoke("");
+            Assert.Fail("expect exception");
+        }
+        catch (HttpInvalidArgumentsRosiException e) {
+            Assert.AreEqual("Mandatory", e.Content.GetArguments()["parm"].GetInvalidReason());
+        }
+    }
+
+    [Test]
+    public virtual async Task MultilineOptionalParameter() {
+        var obj = GetObject(FullName<Multiline1>(), "1");
+        var result = await obj.GetAction(nameof(Multiline1.Action1)).Invoke("fred");
+
+        Assert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
+    }
+
+    [Test]
+    public virtual async Task MultilineOptionalParameterEmpty() {
+        var obj = GetObject(FullName<Multiline1>(), "1");
+        var result = await obj.GetAction(nameof(Multiline1.Action1)).Invoke("");
+
+        Assert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
     }
 }

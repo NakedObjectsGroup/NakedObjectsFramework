@@ -73,6 +73,7 @@ namespace NakedFramework.SystemTest.Attributes {
             context.Contributee2s.Add(new Contributee2 { Id = 1 });
             context.Contributee3s.Add(new Contributee3 { Id = 1 });
             //context.Exclude1s.Add(new FinderAction1 { Id = 1 });
+            context.Multiline1s.Add(new Multiline1 { Id = 1 });
 
             context.SaveChanges();
         }
@@ -130,6 +131,8 @@ namespace NakedFramework.SystemTest.Attributes {
         public DbSet<Contributee2> Contributee2s { get; set; }
         public DbSet<Contributee3> Contributee3s { get; set; }
         public DbSet<FinderAction1> Exclude1s { get; set; }
+
+        public DbSet<Multiline1> Multiline1s { get; set; }
 
         public static void Delete() => Database.Delete(Cs);
 
@@ -888,6 +891,13 @@ namespace NakedFramework.SystemTest.Attributes {
     }
 
     #endregion
+
+    public class Multiline1 {
+        public virtual int Id { get; set; }
+
+        public virtual void Action([MultiLine] string parm) { }
+        public virtual void Action1([MultiLine][Optionally] string parm) { }
+    }
 
     #endregion
 }
