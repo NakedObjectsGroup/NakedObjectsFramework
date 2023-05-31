@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFrameworkClient.TestFramework.Tests;
 using OpenQA.Selenium;
@@ -109,10 +111,59 @@ public abstract class FooterTests : AWTest {
         Click(el);
         WaitForView(Pane.Left, PaneType.Object, "Marcus Collins, AW00022262");
 
-        //Test that clear button works
+       
         ClickRecentButton();
         WaitForView(Pane.Left, PaneType.Recent);
         WaitForCss("tr td:nth-child(1)", 6);
+
+        (IWebElement, IWebElement, IWebElement) AssertButtons(bool usage, bool type, bool title) {
+            var su = GetInputButton("Sort by Usage", Pane.Left);
+            var stp = GetInputButton("Sort by Type", Pane.Left);
+            var sti = GetInputButton("Sort by Title", Pane.Left);
+
+            su = usage ? su.AssertIsEnabled() : su.AssertIsDisabled();
+            stp = type ? stp.AssertIsEnabled() : stp.AssertIsDisabled();
+            sti = title ? sti.AssertIsEnabled() : sti.AssertIsDisabled();
+
+            return (su, stp, sti);
+        }
+
+        // test sort buttons 
+        var (_, sortType, _) = AssertButtons(false, true, true);
+
+        Click(sortType);
+        Thread.Sleep(1000);
+        var (_, _, sortTitle) = AssertButtons(true, false, true);
+        el = WaitForCssNo("tr td:nth-child(2)", 0);
+        Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
+
+        Click(sortTitle);
+        Thread.Sleep(1000);
+        var (sortUsage, _, _) = AssertButtons(true, true, false);
+        el = WaitForCssNo("tr td:nth-child(2)", 0);
+        Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
+
+        Click(sortUsage);
+        Thread.Sleep(1000);
+        AssertButtons(false, true, true);
+        el = WaitForCssNo("tr td:nth-child(2)", 0);
+        Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
+
+        // test selection 
+        GetInputButton("Clear Selected", Pane.Left).AssertIsDisabled();
+
+        SelectCheckBox("#item1-0");
+
+        var clearSelected = GetInputButton("Clear Selected", Pane.Left).AssertIsEnabled();
+        Click(clearSelected);
+        Thread.Sleep(1000);
+        WaitForCss("tr td:nth-child(1)", 5);
+        el = WaitForCssNo("tr td:nth-child(2)", 0);
+        Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
+        GetInputButton("Clear Selected", Pane.Left).AssertIsDisabled();
+
+
+        //Test that clear button works
         var clear = GetInputButton("Clear All", Pane.Left).AssertIsEnabled();
         Click(clear);
         GetInputButton("Clear All", Pane.Left).AssertIsDisabled();
