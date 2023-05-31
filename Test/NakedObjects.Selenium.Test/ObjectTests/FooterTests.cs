@@ -89,22 +89,22 @@ public abstract class FooterTests : AWTest {
         WaitForView(Pane.Single, PaneType.Object, "Long-Sleeve Logo Jersey, S");
         ClickRecentButton();
         WaitForView(Pane.Single, PaneType.Recent);
-        var el = WaitForCssNo("tr td:nth-child(1)", 0);
+        var el = WaitForCssNo("tr td:nth-child(2)", 0);
         Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
-        el = WaitForCssNo("tr td:nth-child(1)", 1);
+        el = WaitForCssNo("tr td:nth-child(2)", 1);
         Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
-        el = WaitForCssNo("tr td:nth-child(1)", 2);
+        el = WaitForCssNo("tr td:nth-child(2)", 2);
         Assert.AreEqual("Mechanical Sports Center, AW00000359", el.Text);
-        el = WaitForCssNo("tr td:nth-child(1)", 3);
+        el = WaitForCssNo("tr td:nth-child(2)", 3);
         Assert.AreEqual("Healthy Activity Store, AW00000042", el.Text);
 
         //Test left- and right-click navigation from Recent
-        el = WaitForCssNo("tr td:nth-child(1)", 0);
+        el = WaitForCssNo("tr td:nth-child(2)", 0);
         Assert.AreEqual("Long-Sleeve Logo Jersey, S", el.Text);
         RightClick(el);
         WaitForView(Pane.Right, PaneType.Object, "Long-Sleeve Logo Jersey, S");
         WaitForView(Pane.Left, PaneType.Recent);
-        el = WaitForCssNo("tr td:nth-child(1)", 1);
+        el = WaitForCssNo("tr td:nth-child(2)", 1);
         Assert.AreEqual("Marcus Collins, AW00022262", el.Text);
         Click(el);
         WaitForView(Pane.Left, PaneType.Object, "Marcus Collins, AW00022262");
@@ -113,9 +113,9 @@ public abstract class FooterTests : AWTest {
         ClickRecentButton();
         WaitForView(Pane.Left, PaneType.Recent);
         WaitForCss("tr td:nth-child(1)", 6);
-        var clear = GetInputButton("Clear", Pane.Left).AssertIsEnabled();
+        var clear = GetInputButton("Clear All", Pane.Left).AssertIsEnabled();
         Click(clear);
-        GetInputButton("Clear", Pane.Left).AssertIsDisabled();
+        GetInputButton("Clear All", Pane.Left).AssertIsDisabled();
         WaitForCss("tr td", 0);
     }
 
