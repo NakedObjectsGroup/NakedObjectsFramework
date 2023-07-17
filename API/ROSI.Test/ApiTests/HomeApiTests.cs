@@ -53,7 +53,7 @@ public class HomeApiTests : AbstractRosiApiTests {
         var version = home.GetVersion(TestInvokeOptions()).Result;
         Assert.AreEqual(2, version.GetLinks().Count());
         Assert.AreEqual("1.2", version.GetSpecVersion());
-        Assert.AreEqual("Naked Objects 14.0.0", version.GetImplVersion());
+        Assert.AreEqual("Naked Objects 14.2.0", version.GetImplVersion());
 
         Assert.AreEqual(0, version.GetExtensions().Extensions().Count);
     }
