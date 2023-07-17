@@ -25,7 +25,7 @@ let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"
 #if APPVEYOR 
 let server = appveyorServer
 #else
-let server = appveyorServer
+let server = localServer
 #endif
 
 let csAW = server + @"Initial Catalog=AdventureWorks;Integrated Security=True;Encrypt=False;"
