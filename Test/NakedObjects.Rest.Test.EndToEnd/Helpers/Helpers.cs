@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.RegularExpressions;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -157,6 +158,13 @@ public static class Helpers {
         // remove line endings so  it works on AV
         fileVersion = fileVersion.Replace("\r", "").Replace("\n", "");
         result = result.Replace("\r", "").Replace("\n", "");
+
+        // blank build version 
+
+        var buildPattern = new Regex(@"""appVersion"":\s*""\d+.\d+.\d+""");
+
+        fileVersion = buildPattern.Replace(fileVersion, "");
+        result = buildPattern.Replace(result, "");
 
         if (fileVersion != result) {
             if (WriteFileIfResponseDiffersFromExisting) {
