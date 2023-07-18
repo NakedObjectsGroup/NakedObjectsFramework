@@ -6,8 +6,10 @@ export class MenuItemViewModel implements IMenuHolderViewModel {
         public readonly name: string,
         public readonly actions: ActionViewModel[],
         public readonly menuItems: MenuItemViewModel[] | null
-    ) { }
+    ) {
+        this.navCollapsed = !!this.name;    
+     }
 
-    navCollapsed = !!this.name;
+    navCollapsed : boolean;
     readonly toggleCollapsed: () => void = () => this.navCollapsed = !this.navCollapsed;
 }
