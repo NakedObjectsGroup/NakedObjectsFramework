@@ -8,20 +8,38 @@ import map from 'lodash-es/map';
 import mapKeys from 'lodash-es/mapKeys';
 import mapValues from 'lodash-es/mapValues';
 import reduce from 'lodash-es/reduce';
-import { Command } from './Command';
+import { Command } from './command';
+import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
+import { CiceroContextService } from '../cicero-context.service';
+import { CiceroRendererService } from '../cicero-renderer.service';
+import { UrlManagerService, ContextService, MaskService, ErrorService, ConfigService } from '@nakedobjects/services';
 import { CommandResult } from './command-result';
 import * as Commandresult from './command-result';
 import * as Usermessages from '../user-messages';
 import { validateDate, validateMandatory, validateMandatoryAgainstType } from '../validate';
 import { supportedDateFormats } from '@nakedobjects/services';
+import { Location } from '@angular/common';
 
 export class Enter extends Command {
 
-    shortCommand = 'en';
-    fullCommand = Usermessages.enterCommand;
-    helpText = Usermessages.enterHelp;
-    protected minArguments = 2;
-    protected maxArguments = 2;
+    constructor(urlManager: UrlManagerService,
+        location: Location,
+        commandFactory: CiceroCommandFactoryService,
+        context: ContextService,
+        mask: MaskService,
+        error: ErrorService,
+        configService: ConfigService,
+        ciceroContext: CiceroContextService,
+        ciceroRenderer: CiceroRendererService,
+    )  {
+        super(urlManager, location, commandFactory, context, mask, error, configService, ciceroContext, ciceroRenderer);
+    }
+
+    override shortCommand = 'en';
+    override fullCommand = Usermessages.enterCommand;
+    override helpText = Usermessages.enterHelp;
+    protected override minArguments = 2;
+    protected override maxArguments = 2;
 
     isAvailableInCurrentContext(): boolean {
         return this.isDialog() || this.isEdit() || this.isTransient() || this.isForm();

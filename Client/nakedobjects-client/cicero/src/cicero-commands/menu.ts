@@ -1,17 +1,35 @@
 import * as Ro from '@nakedobjects/restful-objects';
 import filter from 'lodash-es/filter';
 import reduce from 'lodash-es/reduce';
-import { Command } from './Command';
+import { Command } from './command';
+import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
+import { CiceroContextService } from '../cicero-context.service';
+import { CiceroRendererService } from '../cicero-renderer.service';
+import { UrlManagerService, ContextService, MaskService, ErrorService, ConfigService } from '@nakedobjects/services';
 import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
+import { Location } from '@angular/common';
 
 export class Menu extends Command {
 
-    shortCommand = 'me';
-    fullCommand = Usermessages.menuCommand;
-    helpText = Usermessages.menuHelp;
-    protected minArguments = 0;
-    protected maxArguments = 1;
+    constructor(urlManager: UrlManagerService,
+        location: Location,
+        commandFactory: CiceroCommandFactoryService,
+        context: ContextService,
+        mask: MaskService,
+        error: ErrorService,
+        configService: ConfigService,
+        ciceroContext: CiceroContextService,
+        ciceroRenderer: CiceroRendererService,
+    )  {
+        super(urlManager, location, commandFactory, context, mask, error, configService, ciceroContext, ciceroRenderer);
+    }
+
+    override shortCommand = 'me';
+    override fullCommand = Usermessages.menuCommand;
+    override helpText = Usermessages.menuHelp;
+    protected override minArguments = 0;
+    protected override maxArguments = 1;
 
     isAvailableInCurrentContext(): boolean {
         return true;

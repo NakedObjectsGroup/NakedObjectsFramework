@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Command } from './cicero-commands/Command';
+import { Command } from './cicero-commands/command';
 
 @Injectable()
 export class CiceroContextService {

@@ -13,7 +13,7 @@ import {
 import reduce from 'lodash-es/reduce';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
-import { Command } from '../cicero-commands/Command';
+import { Command } from '../cicero-commands/command';
 import { Result } from '../cicero-commands/result';
 import { CiceroContextService } from '../cicero-context.service';
 import { CiceroRendererService } from '../cicero-renderer.service';

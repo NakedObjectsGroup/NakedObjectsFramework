@@ -1,20 +1,38 @@
 import * as Ro from '@nakedobjects/restful-objects';
-import { Dictionary } from 'lodash';
+import { Location } from '@angular/common';
+import { Dictionary, result } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import reduce from 'lodash-es/reduce';
-import { Command } from './Command';
 import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
+import { Command } from './command';
+import { CiceroCommandFactoryService } from '../cicero-command-factory.service';
+import { CiceroContextService } from '../cicero-context.service';
+import { CiceroRendererService } from '../cicero-renderer.service';
+import { UrlManagerService, ContextService, MaskService, ErrorService, ConfigService } from '@nakedobjects/services';
 
 export class Action extends Command {
 
-    shortCommand = 'ac';
-    fullCommand = Usermessages.actionCommand;
+    constructor(urlManager: UrlManagerService,
+        location: Location,
+        commandFactory: CiceroCommandFactoryService,
+        context: ContextService,
+        mask: MaskService,
+        error: ErrorService,
+        configService: ConfigService,
+        ciceroContext: CiceroContextService,
+        ciceroRenderer: CiceroRendererService,
+    )  {
+        super(urlManager, location, commandFactory, context, mask, error, configService, ciceroContext, ciceroRenderer);
+    }
 
-    helpText = Usermessages.actionHelp;
-    protected minArguments = 0;
-    protected maxArguments = 2;
+    override shortCommand = 'ac';
+    override fullCommand = Usermessages.actionCommand;
+
+    override helpText = Usermessages.actionHelp;
+    protected override minArguments = 0;
+    protected override maxArguments = 2;
 
     isAvailableInCurrentContext(): boolean {
         return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); // TODO add list

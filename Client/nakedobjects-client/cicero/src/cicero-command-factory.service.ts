@@ -11,7 +11,7 @@ import { Action } from './cicero-commands/action';
 import { Back } from './cicero-commands/back';
 import { Cancel } from './cicero-commands/cancel';
 import { Clipboard } from './cicero-commands/clipboard';
-import { Command } from './cicero-commands/Command';
+import { Command } from './cicero-commands/command';
 import { Edit } from './cicero-commands/edit';
 import { Enter } from './cicero-commands/enter';
 import { Forward } from './cicero-commands/forward';
@@ -54,15 +54,20 @@ export class CiceroCommandFactoryService {
         private readonly error: ErrorService,
         private readonly configService: ConfigService,
         private readonly ciceroContext: CiceroContextService,
-        private readonly ciceroRenderer: CiceroRendererService) { }
+        private readonly ciceroRenderer: CiceroRendererService) {
+         this.commandsInitialised = false;
+         this.commandTypes = [Action, Back, Cancel, Clipboard, Edit, Enter, Forward, Gemini, Goto, Help, Menu, OK, Page, Reload, Root, Save, Selection, Show, Where];
+         this.allCommands = map(this.commandTypes, T => new T(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext, this.ciceroRenderer));
+         this.commands = fromPairs(map(this.allCommands, c => [c.shortCommand, c]));
+         }
 
-    private commandsInitialised = false;
+    private commandsInitialised;
 
-    private commandTypes = [Action, Back, Cancel, Clipboard, Edit, Enter, Forward, Gemini, Goto, Help, Menu, OK, Page, Reload, Root, Save, Selection, Show, Where];
+    private commandTypes;
 
-    private allCommands: Command[] = map(this.commandTypes, T => new T(this.urlManager, this.location, this, this.context, this.mask, this.error, this.configService, this.ciceroContext, this.ciceroRenderer));
+    private allCommands: Command[];
 
-    private commands: Dictionary<Command> = fromPairs(map(this.allCommands, c => [c.shortCommand, c]));
+    private commands: Dictionary<Command>;
 
     private mapInputToCommands(input: string) {
         if (!input) {
