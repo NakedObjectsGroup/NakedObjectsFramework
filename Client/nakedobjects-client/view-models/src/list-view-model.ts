@@ -44,8 +44,8 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     listRep: Ro.ListRepresentation;
     size: number;
     header: string[] | null;
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    override actions: ActionViewModel[] = null;
+    override menuItems: MenuItemViewModel[] = null;
     description: () => string;
     readonly name = 'item';
 

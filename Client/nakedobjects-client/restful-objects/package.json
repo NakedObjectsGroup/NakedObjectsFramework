@@ -1,6 +1,6 @@
 {
     "name": "@nakedobjects/restful-objects",
-    "version": "14.2.0",
+    "version": "15.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -36,9 +36,9 @@
         "lodash-es": "~4.17.21"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "^15.2.2",
-        "@angular/cli": "^15.2.2",
-        "@angular/compiler-cli": "^15.2.2",
+        "@angular-devkit/build-angular": "^16.1.4",
+        "@angular/cli": "^16.1.4",
+        "@angular/compiler-cli": "^16.1.5",
         "@types/jasmine": "~4.3.1",
         "@types/node": "~18.15.1",
         "jasmine-core": "~4.5.0",

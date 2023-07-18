@@ -92,12 +92,6 @@ import { CreateNewDialogComponent } from './create-new-dialog/create-new-dialog.
         ObjectNotFoundErrorComponent,
         CallbackComponent,
     ],
-    entryComponents: [
-        ObjectComponent,
-        ListComponent,
-        ErrorComponent,
-        ObjectNotFoundErrorComponent,
-    ],
     imports: [
         BrowserModule,
         FormsModule,

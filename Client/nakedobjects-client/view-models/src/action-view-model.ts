@@ -47,6 +47,7 @@ export class ActionViewModel {
         this.description = this.disabled() ? actionRep.disabledReason() : actionRep.extensions().description();
         this.editProperties = actionRep.extensions().editProperties()?.split(',') ?? [];
         this.createNewProperties = actionRep.extensions().createNewProperties()?.split(',') ?? [];
+        this.doInvoke = this.showDialog() ? this.invokeWithDialog : this.invokeWithoutDialog;
     }
 
     readonly paneId: Pane;
@@ -56,7 +57,7 @@ export class ActionViewModel {
     readonly presentationHint: string;
     readonly editProperties: string[];
     readonly createNewProperties: string[];
-    readonly isCreateNew: boolean;
+    readonly isCreateNew: boolean | undefined;
     gotoResult = true;
     invokableActionRep: Ro.ActionRepresentation | Ro.InvokableActionMember;
 
@@ -119,7 +120,7 @@ export class ActionViewModel {
     // open dialog on current pane always - invoke action goes to pane indicated by click
     // note this can be modified by decorators
     // tslint:disable-next-line:member-ordering
-    doInvoke = this.showDialog() ? this.invokeWithDialog : this.invokeWithoutDialog;
+    doInvoke;
 
     private getInvokable() {
         if (this.invokableActionRep) {

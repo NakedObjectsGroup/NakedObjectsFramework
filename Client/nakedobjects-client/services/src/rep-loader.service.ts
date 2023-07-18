@@ -89,7 +89,9 @@ export class RepLoaderService {
     constructor(
         private readonly http: HttpClient,
         private readonly configService: ConfigService
-    ) { }
+    ) {
+        this.cache = new SimpleLruCache(configService.config.httpCacheDepth);
+     }
 
     private loadingCount = 0;
 
@@ -100,7 +102,7 @@ export class RepLoaderService {
     loadingCount$ = this.loadingCountSource.asObservable();
 
     // use our own LRU cache
-    private cache = new SimpleLruCache(this.configService.config.httpCacheDepth);
+    private cache : SimpleLruCache;
 
     private handleInvalidResponse(rc: ErrorCategory) {
         const rr = new ErrorWrapper(rc,

@@ -201,6 +201,8 @@ export class ContextService {
         private readonly configService: ConfigService,
         private readonly loggerService: LoggerService
     ) {
+        this.transientCache = new TransientCache(this.configService.config.transientCacheDepth);
+        this.recentcache = new RecentCache(this.keySeparator, this.configService.config.recentCacheDepth);
     }
 
     private pendingClearMessages = false;
@@ -229,7 +231,7 @@ export class ContextService {
     // cached values
 
     private currentObjects: [undefined, Ro.DomainObjectRepresentation | null, Ro.DomainObjectRepresentation | null] = [undefined, null, null]; // per pane
-    private transientCache = new TransientCache(this.configService.config.transientCacheDepth);
+    private transientCache : TransientCache;
 
     private currentMenuList: Dictionary<Ro.MenuRepresentation> = {};
     private currentServices: Ro.DomainServicesRepresentation | null = null;
@@ -237,7 +239,7 @@ export class ContextService {
     private currentVersion: Ro.VersionRepresentation | null = null;
     private currentUser: Ro.UserRepresentation | null = null;
 
-    private readonly recentcache = new RecentCache(this.keySeparator, this.configService.config.recentCacheDepth);
+    private readonly recentcache: RecentCache;
     private readonly dirtyList = new DirtyList();
     private currentLists: Dictionary<{ list: Ro.ListRepresentation; added: number }> = {};
     private readonly parameterCache = new ValueCache();
