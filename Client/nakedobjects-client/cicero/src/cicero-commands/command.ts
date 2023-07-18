@@ -41,7 +41,7 @@ export abstract class Command {
         protected ciceroContext: CiceroContextService,
         protected ciceroRenderer: CiceroRendererService,
     ) {
-        this.keySeparator = configService.config.keySeparator;
+       
     }
 
     argString: string | null;
@@ -52,7 +52,9 @@ export abstract class Command {
     helpText: string;
     protected minArguments: number;
     protected maxArguments: number;
-    protected keySeparator: string;
+    protected get keySeparator() { 
+        return this.configService.config.keySeparator;
+    }
 
     execute(): Promise<CommandResult> {
         const result = new CommandResult();
