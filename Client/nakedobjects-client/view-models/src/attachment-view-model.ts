@@ -12,7 +12,7 @@ export class AttachmentViewModel {
         public readonly onPaneId: Pane
     ) {
         this.href = link.href();
-        this.mimeType = link.type().asString;
+        this.mimeType = link.type()!.asString;
         this.title = link.title() || Msg.unknownFileTitle;
     }
 

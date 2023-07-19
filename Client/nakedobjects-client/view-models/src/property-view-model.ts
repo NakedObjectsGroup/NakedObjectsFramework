@@ -24,7 +24,7 @@ import { ViewModelFactoryService } from './view-model-factory.service';
 export class PropertyViewModel extends FieldViewModel implements IDraggableViewModel {
 
     readonly attachment: AttachmentViewModel | null;
-    refType: 'null' | 'navigable' | 'notNavigable';
+    refType?: 'null' | 'navigable' | 'notNavigable';
     // IDraggableViewModel
     readonly draggableType: string;
     readonly isLink: boolean;
@@ -106,7 +106,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         return null;
     }
 
-    private editAction: ActionViewModel;
+    private editAction?: ActionViewModel;
 
     readonly isEditByAction: boolean;
 
@@ -215,15 +215,15 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
 
     readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.reference, this.clickHandler.pane(this.onPaneId, right));
 
-    readonly doEditByAction = () => this.editAction.doInvoke();
+    readonly doEditByAction = () => this.editAction?.doInvoke();
 
     readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
 
     get editActionTooltip() {
-        return `${this.editAction.title} ${this.editAction.description}`.trim();
+        return `${this.editAction?.title} ${this.editAction?.description}`.trim();
     }
 
     get isEditActionDisabled() {
-        return this.editAction.disabled();
+        return this.editAction?.disabled();
     }
 }

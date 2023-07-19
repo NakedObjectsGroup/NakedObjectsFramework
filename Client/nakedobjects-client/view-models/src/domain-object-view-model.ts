@@ -46,36 +46,33 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         forceReload: boolean
     ) {
         super();
-        this.keySeparator = configService.config.keySeparator;
         this.reset(obj, routeData, forceReload);
     }
 
-    private readonly keySeparator: string;
-    private props: Dictionary<Ro.Value>;
-    private instanceId: string;
-    unsaved: boolean;
+    private props!: Dictionary<Ro.Value>;
+    unsaved!: boolean;
 
     // IDraggableViewModel
-    value: string;
-    reference: string;
-    selectedChoice: ChoiceViewModel | null;
-    color: string;
-    draggableType: string;
+    value!: string;
+    reference?: string;
+    selectedChoice!: ChoiceViewModel | null;
+    color?: string;
+    draggableType!: string;
 
-    domainObject: Ro.DomainObjectRepresentation;
-    onPaneId: Pane;
+    domainObject!: Ro.DomainObjectRepresentation;
+    onPaneId!: Pane;
 
-    title: string;
-    friendlyName: string;
-    presentationHint: string;
-    domainType: string;
+    title!: string;
+    friendlyName!: string;
+    presentationHint!: string;
+    domainType!: string;
 
-    isInEdit: boolean;
+    isInEdit!: boolean;
 
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
-    properties: PropertyViewModel[];
-    collections: CollectionViewModel[];
+    actions!: ActionViewModel[];
+    menuItems!: MenuItemViewModel[];
+    properties!: PropertyViewModel[];
+    collections!: CollectionViewModel[];
 
     draggableTitle = () => this.title;
 
@@ -85,7 +82,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     private readonly cancelHandler = () => this.isFormOrTransient() ? () => this.urlManager.popUrlState(this.onPaneId) : () => this.urlManager.setInteractionMode(InteractionMode.View, this.onPaneId);
 
-    private readonly saveHandler = (): (object: Ro.DomainObjectRepresentation, props: Object, paneId: Pane, viewSavedObject: boolean) => Promise<Ro.DomainObjectRepresentation> =>
+    private readonly saveHandler = (): (object: Ro.DomainObjectRepresentation, props: Dictionary<Ro.Value>, paneId: Pane, viewSavedObject: boolean) => Promise<Ro.DomainObjectRepresentation> =>
         this.domainObject.isTransient() ? this.contextService.saveObject : this.contextService.updateObject;
 
     private readonly validateHandler = () => this.domainObject.isTransient() ? this.contextService.validateSaveObject : this.contextService.validateUpdateObject;
@@ -108,7 +105,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
             const pairs = map(this.editProperties(), p => [p.id, p.getValue()]);
             const prps = fromPairs(pairs) as Dictionary<Ro.Value>;
 
-            const parmValueMap = mapValues(a.invokableActionRep.parameters(), p => ({ parm: p, value: prps[p.id()] }));
+            const parmValueMap = mapValues(a.invokableActionRep!.parameters(), p => ({ parm: p, value: prps[p.id()] }));
             const allpps = map(parmValueMap, o => this.viewModelFactory.parameterViewModel(o.parm, o.value, this.onPaneId));
             return wrappedInvoke(allpps, right)
                 .catch((reject: ErrorWrapper) => {
@@ -149,7 +146,6 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.friendlyName = this.domainObject.extensions().friendlyName();
         this.presentationHint = this.domainObject.extensions().presentationHint();
         this.domainType = this.domainObject.domainType()!;
-        this.instanceId = this.domainObject.instanceId()!;
         this.draggableType = this.domainObject.domainType()!;
 
         const selfAsValue = (): Ro.Value | null => {
@@ -180,7 +176,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     concurrency() {
         this.routeData = this.urlManager.getRouteData().pane(this.onPaneId)!;
-        this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode)
+        this.contextService.getObject(this.onPaneId, this.domainObject.getOid(), this.routeData.interactionMode!)
             .then((obj: Ro.DomainObjectRepresentation) => {
                 // cleared cached values so all values are from reloaded representation
                 this.contextService.clearObjectCachedValues(this.onPaneId);

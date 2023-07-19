@@ -59,17 +59,17 @@ export class ActionViewModel {
     readonly createNewProperties: string[];
     readonly isCreateNew: boolean | undefined;
     gotoResult = true;
-    invokableActionRep: Ro.ActionRepresentation | Ro.InvokableActionMember;
+    invokableActionRep?: Ro.ActionRepresentation | Ro.InvokableActionMember;
 
     // form actions should never show dialogs
     readonly showDialog = () => this.actionRep.extensions().hasParams() && (this.routeData.interactionMode !== InteractionMode.Form);
 
     private readonly incrementPendingPotentAction = () => {
-        Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
+        Helpers.incrementPendingPotentAction(this.context, this.invokableActionRep!, this.paneId);
     };
 
     private readonly decrementPendingPotentAction = () => {
-        Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep, this.paneId);
+        Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep!, this.paneId);
     };
 
     readonly invokeWithDialog = (right?: boolean) => {
@@ -152,7 +152,7 @@ export class ActionViewModel {
 
     private getParameters(invokableAction: Ro.ActionRepresentation | Ro.InvokableActionMember) {
         const parameters = pickBy(invokableAction.parameters(), p => !p.isCollectionContributed()) as Dictionary<Ro.Parameter>;
-        const parms = this.routeData.actionParams;
+        const parms = this.routeData.actionParams!;
         return map(parameters, parm => this.viewModelFactory.parameterViewModel(parm, parms[parm.id()], this.paneId));
     }
 

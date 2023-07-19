@@ -63,24 +63,24 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     clientValid = true;
     reference = '';
-    minLength: number;
-    color: string;
-    promptArguments: Dictionary<Ro.Value>;
-    currentValue: Ro.Value;
-    originalValue: Ro.Value;
-    localFilter: ILocalFilter;
-    formattedValue: string;
-    private currentChoice: ChoiceViewModel | null;
-    private currentMultipleChoices: ChoiceViewModel[];
+    minLength?: number;
+    color?: string;
+    promptArguments?: Dictionary<Ro.Value>;
+    currentValue?: Ro.Value;
+    originalValue?: Ro.Value;
+    localFilter?: ILocalFilter;
+    formattedValue?: string;
+    private currentChoice: ChoiceViewModel | null = null;
+    private currentMultipleChoices?: ChoiceViewModel[];
     private currentRawValue: Ro.ScalarValueType | Date | null = null;
     private choiceOptions: ChoiceViewModel[] = [];
     hasValue = false;
 
-    file: Ro.Link;
+    file?: Ro.Link;
 
-    refresh: (newValue: Ro.Value) => void;
-    prompt: (searchTerm: string) => Promise<ChoiceViewModel[]>;
-    conditionalChoices: (args: Dictionary<Ro.Value>) => Promise<ChoiceViewModel[]>;
+    abstract refresh: (newValue: Ro.Value) => void;
+    prompt?: (searchTerm: string) => Promise<ChoiceViewModel[]>;
+    conditionalChoices?: (args: Dictionary<Ro.Value>) => Promise<ChoiceViewModel[]>;
 
     readonly drop = (newValue: IDraggableViewModel) => Helpers.drop(this.context, this.error, this, newValue);
 
@@ -99,7 +99,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             this.selectedMultiChoices = filter(this.choiceOptions, c => some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
         } else if (this.entryType === Ro.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
-            this.selectedChoice = find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption));
+            this.selectedChoice = find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption)) ?? null;
         }
 
         if (!this.optional && !this.hasValue && this.entryType !== Ro.EntryType.AutoComplete) {

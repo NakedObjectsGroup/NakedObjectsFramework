@@ -45,25 +45,25 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
         this.reset(routeData, forceReload);
     }
 
-    private readonly template: string;
-    private readonly messages: string;
-    private readonly pluralName: string;
+    private readonly template?: string;
+    private readonly messages?: string;
+    private readonly pluralName?: string;
 
-    private color: string;
-    private editing: boolean;
+    private color?: string;
+    private editing?: boolean;
 
     readonly title: string;
     readonly name: string;
     readonly presentationHint: string;
 
-    details: string;
-    mayHaveItems: boolean;
-    header: string[];
-    currentState: CollectionViewState;
+    details?: string;
+    mayHaveItems?: boolean;
+    header?: string[];
+    currentState?: CollectionViewState;
 
     readonly reset = (routeData: PaneRouteData, resetting: boolean) => {
 
-        let state = routeData.collections[this.collectionRep.collectionId()];
+        let state = routeData.collections![this.collectionRep.collectionId()];
 
         // collections are always shown as summary on transient
         if (routeData.interactionMode === InteractionMode.Transient) {
@@ -102,7 +102,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
             } else if (getDetails) {
                 this.context.getCollectionDetails(this.collectionRep as Ro.CollectionMember, state, resetting).
                     then(details => {
-                        this.items = this.viewModelFactory.getItems(details.value(),
+                        this.items = this.viewModelFactory.getItems(details.value()!,
                             state === CollectionViewState.Table,
                             routeData,
                             this);
@@ -121,7 +121,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     readonly doTable = () => this.urlManager.setCollectionMemberState(this.collectionRep.collectionId(), CollectionViewState.Table, this.onPaneId);
     readonly hasTableData = () => this.items && some(this.items, (i: ItemViewModel) => i.tableRowViewModel);
 
-    readonly description = () => this.details.toString();
+    readonly description = () => this.details!.toString();
 
     readonly noActions = () => this.editing || !this.actions || this.actions.length === 0;
 

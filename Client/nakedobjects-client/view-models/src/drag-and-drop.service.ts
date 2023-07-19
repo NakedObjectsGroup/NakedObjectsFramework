@@ -8,11 +8,11 @@ export class DragAndDropService {
 
     constructor() { }
 
-    private copiedViewModelSource = new Subject<IDraggableViewModel>();
+    private copiedViewModelSource = new Subject<IDraggableViewModel | null>();
 
     copiedViewModel$ = this.copiedViewModelSource.asObservable();
 
-    private copiedViewModel: IDraggableViewModel | null;
+    private copiedViewModel: IDraggableViewModel | null = null;
 
     private dropZoneIds: string[] = [];
     // Use BehaviorSubject so that subscriptions pick up current values
@@ -22,7 +22,7 @@ export class DragAndDropService {
 
     setCopyViewModel(dvm: IDraggableViewModel | null) {
         this.copiedViewModel = dvm;
-        this.copiedViewModelSource.next(Ro.withUndefined(dvm));
+        this.copiedViewModelSource.next(dvm);
     }
 
     getCopyViewModel() {

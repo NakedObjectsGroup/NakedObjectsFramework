@@ -25,10 +25,10 @@ export class ErrorViewModel {
     }
 
     readonly originalError: ErrorWrapper | null;
-    readonly title: string;
-    readonly message: string;
-    readonly stackTrace: string[] | null;
-    readonly errorCode: string;
-    readonly description: string;
-    readonly isConcurrencyError: boolean;
+    readonly title?: string;
+    readonly message?: string;
+    readonly stackTrace?: string[] | null;
+    readonly errorCode?: string;
+    readonly description?: string;
+    readonly isConcurrencyError: boolean = false;
 }

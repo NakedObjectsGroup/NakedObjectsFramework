@@ -36,11 +36,11 @@ export class DialogViewModel extends MessageViewModel {
 
         const fields = this.context.getDialogCachedValues(this.actionMember().actionId(), this.onPaneId);
 
-        const parameters = pickBy(this.actionViewModel.invokableActionRep.parameters(), p => !p.isCollectionContributed()) as Dictionary<Ro.Parameter>;
+        const parameters = pickBy(this.actionViewModel.invokableActionRep!.parameters(), p => !p.isCollectionContributed()) as Dictionary<Ro.Parameter>;
         this.parameters = map(parameters, p => this.viewModelFactory.parameterViewModel(p, fields[p.id()], this.onPaneId));
 
         this.title = this.actionMember().extensions().friendlyName();
-        this.isQueryOnly = this.actionViewModel.invokableActionRep.isQueryOnly();
+        this.isQueryOnly = this.actionViewModel.invokableActionRep!.isQueryOnly();
         this.resetMessage();
         this.id = this.actionViewModel.actionRep.actionId();
 
@@ -64,13 +64,13 @@ export class DialogViewModel extends MessageViewModel {
 
     private incrementPendingPotentAction() {
         if (!this.isMultiLineDialogRow) {
-            Helpers.incrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep, this.onPaneId);
+            Helpers.incrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep!, this.onPaneId);
         }
     }
 
     private decrementPendingPotentAction() {
         if (!this.isMultiLineDialogRow && !this.closed) {
-            Helpers.decrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep, this.onPaneId);
+            Helpers.decrementPendingPotentAction(this.context, this.actionViewModel.invokableActionRep!, this.onPaneId);
         }
         this.closed = true;
     }

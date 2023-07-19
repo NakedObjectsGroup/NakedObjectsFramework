@@ -25,7 +25,7 @@ export class ChoiceViewModel {
         this.name === other.name &&
         this.wrapped.toValueString() === other.wrapped.toValueString();
 
-    readonly valuesEqual = (other: ChoiceViewModel): boolean => {
+    readonly valuesEqual = (other: ChoiceViewModel | null): boolean => {
         if (other instanceof ChoiceViewModel) {
             const thisValue = this.isEnum ? this.wrapped.toValueString().trim() : this.search.trim();
             const otherValue = this.isEnum ? other.wrapped.toValueString().trim() : other.search.trim();

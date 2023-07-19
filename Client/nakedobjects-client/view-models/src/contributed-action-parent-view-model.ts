@@ -43,9 +43,9 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
         super();
     }
 
-    items: ItemViewModel[];
-    actions: ActionViewModel[];
-    menuItems: MenuItemViewModel[];
+    items?: ItemViewModel[];
+    actions?: ActionViewModel[];
+    menuItems?: MenuItemViewModel[];
     readonly allSelected = () => every(this.items, item => item.selected);
 
     private isLocallyContributed(action: Ro.ActionRepresentation | Ro.InvokableActionMember) {

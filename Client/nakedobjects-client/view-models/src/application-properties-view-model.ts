@@ -12,10 +12,10 @@ export class ApplicationPropertiesViewModel {
         this.setUp();
     }
 
-    serverVersion: Ro.IVersionRepresentation;
-    user: Ro.IUserRepresentation;
-    serverUrl: string;
-    applicationName: string;
+    serverVersion?: Ro.IVersionRepresentation;
+    user?: Ro.IUserRepresentation;
+    serverUrl?: string;
+    applicationName?: string;
 
     get userName() {
         return this.user ? this.user.userName : Msg.noUserMessage;
