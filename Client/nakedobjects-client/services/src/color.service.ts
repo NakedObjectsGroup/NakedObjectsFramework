@@ -27,8 +27,8 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
         this.configureFromConfig();
     }
 
-    private configuredDefault: number;
-    private configuredMaxRandomIndex: number;
+    private configuredDefault = 0;
+    private configuredMaxRandomIndex?: number;
 
     private typeFromUrl(url: string): string {
         const oid = Ro.ObjectIdWrapper.fromHref(url, this.configService.config.keySeparator);
@@ -42,19 +42,19 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
 
     toColorNumberFromType = (type: string | null) => this.getResult(type);
 
-    addType(type: string, result: number) {
+    override addType(type: string, result: number) {
         super.addType(type, result);
     }
 
-    addMatch(matcher: RegExp, result: number) {
+    override addMatch(matcher: RegExp, result: number) {
         super.addMatch(matcher, result);
     }
 
-    addSubtype(type: string, result: number) {
+    override addSubtype(type: string, result: number) {
         super.addSubtype(type, result);
     }
 
-    setDefault(def: number) {
+    override setDefault(def: number) {
         this.configuredDefault = def;
         super.setDefault(def);
     }
@@ -69,10 +69,10 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     }
 
     getRandomColorNumber(type: string) {
-        return (this.simpleHash(type) % this.configuredMaxRandomIndex) + 1;
+        return (this.simpleHash(type) % this.configuredMaxRandomIndex!) + 1;
     }
 
-    getDefault(type: string) {
+    override getDefault(type: string) {
         return this.configuredMaxRandomIndex ?  this.getRandomColorNumber(type) : super.getDefault(type);
     }
 

@@ -85,31 +85,31 @@ export class PaneRouteData {
         private readonly doUrlValidation: boolean,
         private readonly loggerService: LoggerService) { }
 
-    rawParms: Dictionary<string>;
-    rawParmsWithoutReload: Dictionary<string>;
-    location: ViewType;
-    objectId: string;
-    menuId: string;
-    collections: Dictionary<CollectionViewState>;
-    selectedCollectionItems: Dictionary<boolean[]>;
-    actionsOpen: string;
-    actionId: string;
-    toCreate: string;
+    rawParms?: Dictionary<string>;
+    rawParmsWithoutReload?: Dictionary<string>;
+    location?: ViewType;
+    objectId?: string;
+    menuId?: string;
+    collections?: Dictionary<CollectionViewState>;
+    selectedCollectionItems?: Dictionary<boolean[]>;
+    actionsOpen?: string;
+    actionId?: string;
+    toCreate?: string;
     // Note that actionParams applies to executed actions. For dialogs see dialogFields
     // we have both because of contributed actions where we have to distinguish the action parms that
     // created the current list and the the parms for the contributed action
 
-    actionParams: Dictionary<Ro.Value>;
-    state: CollectionViewState;
-    dialogId: string;
-    dialogFields: Dictionary<Ro.Value>;
-    page: number;
-    pageSize: number;
-    interactionMode: InteractionMode;
-    errorCategory: ErrorCategory;
-    attachmentId: string;
+    actionParams?: Dictionary<Ro.Value>;
+    state?: CollectionViewState;
+    dialogId?: string;
+    dialogFields?: Dictionary<Ro.Value>;
+    page?: number;
+    pageSize?: number;
+    interactionMode?: InteractionMode;
+    errorCategory?: ErrorCategory;
+    attachmentId?: string;
 
-    private validatingUrl: string;
+    private validatingUrl?: string;
 
     private isNull = {
         condition: (val: any) => !val,

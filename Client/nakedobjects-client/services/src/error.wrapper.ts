@@ -93,11 +93,11 @@ export class ErrorWrapper {
         }
     }
 
-    title: string;
-    description: string;
-    errorCode: string;
-    httpErrorCode: HttpStatusCode;
-    clientErrorCode: ClientErrorCode;
+    title?: string;
+    description?: string;
+    errorCode?: string;
+    httpErrorCode?: HttpStatusCode;
+    clientErrorCode?: ClientErrorCode;
 
     message: string;
     error: Models.ErrorMap | Models.ErrorRepresentation | null;

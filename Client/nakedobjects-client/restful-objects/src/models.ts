@@ -312,7 +312,7 @@ export function typePlusTitle(obj: DomainObjectRepresentation) {
     return type + ': ' + title;
 }
 
-export function getPagingParms(page: number, pageSize: number): Dictionary<number> {
+export function getPagingParms(page?: number, pageSize?: number): Dictionary<number> {
     return (page && pageSize) ? { [roPage]: page, [roPageSize]: pageSize } : {};
 }
 

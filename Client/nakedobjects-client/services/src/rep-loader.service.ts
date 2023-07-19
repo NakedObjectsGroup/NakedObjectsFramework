@@ -1,10 +1,10 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as Ro from '@nakedobjects/restful-objects';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import reduce from 'lodash-es/reduce';
-import { Subject, lastValueFrom } from 'rxjs';
+import { Observable, Subject, lastValueFrom } from 'rxjs';
 import { ConfigService } from './config.service';
 import { ErrorWrapper, ClientErrorCode, ErrorCategory, HttpStatusCode } from './error.wrapper';
 import { SimpleLruCache } from './simple-lru-cache';
@@ -40,7 +40,7 @@ class RequestOptions {
         return new RequestOptions(map.getUrl(), map.method, map.getBody(), digest);
     }
 
-    static fromLink(link: Ro.Link, parms?: Dictionary<Object>) {
+    static fromLink(link: Ro.Link, parms?: Dictionary<unknown>) {
         let urlParms = '';
 
         if (parms) {
@@ -48,7 +48,7 @@ class RequestOptions {
             urlParms = urlParmString !== '' ? `?${urlParmString}` : '';
         }
 
-        return new RequestOptions(link.href() + urlParms, link.method());
+        return new RequestOptions(link.href() + urlParms, link.method()!);
     }
 
     static fromFile(url: string, method: 'GET' | 'POST', mt: string, body?: object) {
@@ -227,10 +227,10 @@ export class RepLoaderService {
         }
 
         this.loadingCountSource.next(++(this.loadingCount));
-        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache));
+        const request$ = this.http.request<Ro.IRepresentation>(options.toHttpRequest(this.allowBrowserCache)) as Observable<HttpResponse<Ro.IRepresentation>>;
 
         return lastValueFrom(request$)
-            .then((r: HttpResponse<Ro.IRepresentation>) => {
+            .then(r=> {
                 this.allowBrowserCache = true;
                 this.loadingCountSource.next(--(this.loadingCount));
 
@@ -268,7 +268,7 @@ export class RepLoaderService {
         return this.httpValidate(options);
     };
 
-    retrieveFromLink = <T extends Ro.IHateoasModel>(link: Ro.Link | null, parms?: Dictionary<Object>): Promise<T> => {
+    retrieveFromLink = <T extends Ro.IHateoasModel>(link: Ro.Link | null, parms?: Dictionary<unknown>): Promise<T> => {
 
         if (link) {
             const response = link.getTarget();
@@ -278,7 +278,7 @@ export class RepLoaderService {
         return Promise.reject('link must not be null');
     };
 
-    invoke = (action: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, urlParms: Dictionary<Object>): Promise<Ro.ActionResultRepresentation> => {
+    invoke = (action: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, urlParms: Dictionary<unknown>): Promise<Ro.ActionResultRepresentation> => {
         const invokeMap = action.getInvokeMap();
         if (invokeMap) {
             each(urlParms, (v, k) => invokeMap.setUrlParameter(k!, v));
@@ -309,10 +309,10 @@ export class RepLoaderService {
         }
 
         const options = RequestOptions.fromFile(url, 'GET', mt);
-        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache));
+        const request$ = this.http.request(options.toHttpRequest(this.allowBrowserCache)) as Observable<HttpResponse<Blob>>;
 
         return lastValueFrom(request$)
-            .then((r: HttpResponse<Blob>) => {
+            .then(r => {
                 this.allowBrowserCache = true;
                 const blob = r.body!;
                 this.cache.add(options.url!, blob);

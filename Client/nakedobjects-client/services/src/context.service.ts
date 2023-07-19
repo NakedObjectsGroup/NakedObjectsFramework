@@ -349,12 +349,9 @@ export class ContextService {
         return this.getServices()
             .then((services: Ro.DomainServicesRepresentation) => {
                 const service = services.getService(serviceType);
-                if (service) {
-                    return this.repLoader.populate(service);
-                }
-                return Promise.reject(`unknown service ${serviceType}`);
+                return service ? this.repLoader.populate<Ro.DomainObjectRepresentation>(service) : Promise.reject(`unknown service ${serviceType}`);
             })
-            .then((service: Ro.DomainObjectRepresentation) => {
+            .then(service => {
                 this.currentObjects[paneId] = service;
                 return Promise.resolve(service);
             });
@@ -406,11 +403,11 @@ export class ContextService {
             .then((menus: Ro.MenusRepresentation) => {
                 const menu = menus.getMenu(menuId);
                 if (menu) {
-                    return this.repLoader.populate(menu);
+                    return this.repLoader.populate<Ro.MenuRepresentation>(menu);
                 }
                 return Promise.reject(`couldn't find menu ${menuId}`);
             })
-            .then((menu: Ro.MenuRepresentation) => {
+            .then(menu => {
                 this.currentMenuList[menuId] = menu;
                 return Promise.resolve(menu);
             });
@@ -457,7 +454,7 @@ export class ContextService {
                 const ds = home.getDomainServices();
                 return this.repLoader.populate<Ro.DomainServicesRepresentation>(ds);
             })
-            .then((services: Ro.DomainServicesRepresentation) => {
+            .then(services => {
                 this.currentServices = services;
                 return Promise.resolve(services);
             });
@@ -473,7 +470,7 @@ export class ContextService {
                 const ds = home.getMenus();
                 return this.repLoader.populate<Ro.MenusRepresentation>(ds);
             })
-            .then((menus: Ro.MenusRepresentation) => {
+            .then(menus => {
                 this.currentMenus = menus;
                 return Promise.resolve(this.currentMenus);
             });
@@ -575,9 +572,9 @@ export class ContextService {
         this.getObject(paneId, oid, InteractionMode.View).then(object => Promise.resolve(object.actionMember(actionId).extensions()));
 
     getListFromMenu = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
-        const menuId = routeData.menuId;
-        const actionId = routeData.actionId;
-        const parms = routeData.actionParams;
+        const menuId = routeData.menuId!;
+        const actionId = routeData.actionId!;
+        const parms = routeData.actionParams!;
         const state = routeData.state;
         const paneId = routeData.paneId;
         const newPage = page || routeData.page;
@@ -589,13 +586,13 @@ export class ContextService {
         }
 
         const promise = () => this.getMenu(menuId).then(menu => this.getInvokableAction(menu.actionMember(actionId))).then(details => this.repLoader.invoke(details, parms, urlParms));
-        return this.getList(paneId, promise, newPage, newPageSize);
+        return this.getList(paneId, promise, newPage!, newPageSize!);
     };
 
     getListFromObject = (routeData: PaneRouteData, page?: number, pageSize?: number) => {
-        const objectId = routeData.objectId;
-        const actionId = routeData.actionId;
-        const parms = routeData.actionParams;
+        const objectId = routeData.objectId!;
+        const actionId = routeData.actionId!;
+        const parms = routeData.actionParams!;
         const state = routeData.state;
         const oid = Ro.ObjectIdWrapper.fromObjectId(objectId, this.keySeparator);
         const paneId = routeData.paneId;
@@ -611,7 +608,7 @@ export class ContextService {
             .then(object => this.getInvokableAction(object.actionMember(actionId)))
             .then(details => this.repLoader.invoke(details, parms, urlParms));
 
-        return this.getList(paneId, promise, newPage, newPageSize);
+        return this.getList(paneId, promise, newPage!, newPageSize!);
     };
 
     setObject = (paneId: Pane, co: Ro.DomainObjectRepresentation) => this.currentObjects[paneId] = co;
@@ -639,7 +636,9 @@ export class ContextService {
         promptMap.setMembers(objectValues);
         setupPrompt(promptMap);
         const addEmptyOption = field.entryType() !== Ro.EntryType.AutoComplete && field.extensions().optional();
-        return this.repLoader.retrieve(promptMap, Ro.PromptRepresentation, digest).then((p: Ro.PromptRepresentation) => p.choices(addEmptyOption));
+        return this.repLoader
+        .retrieve<Ro.PromptRepresentation>(promptMap, Ro.PromptRepresentation, digest)
+        .then(p => p.choices(addEmptyOption));
     };
 
     autoComplete = (field: Ro.IField, id: string, objectValues: () => Dictionary<Ro.Value>, searchTerm: string, digest?: string | null) =>
@@ -761,8 +760,8 @@ export class ContextService {
             invokeMap.inlineCollectionItems(true);
         }
 
-        return this.repLoader.retrieve(invokeMap, Ro.ActionResultRepresentation, action.parent.etagDigest)
-            .then((result: Ro.ActionResultRepresentation) => {
+        return this.repLoader.retrieve<Ro.ActionResultRepresentation>(invokeMap, Ro.ActionResultRepresentation, action.parent?.etagDigest)
+            .then(result => {
                 setDirty();
                 this.setMessages(result);
                 if (gotoResult) {
@@ -870,8 +869,8 @@ export class ContextService {
 
         each(props, (v, k) => update.setProperty(k!, v));
 
-        return this.repLoader.retrieve(update, Ro.DomainObjectRepresentation, object.etagDigest)
-            .then((updatedObject: Ro.DomainObjectRepresentation) => {
+        return this.repLoader.retrieve<Ro.DomainObjectRepresentation>(update, Ro.DomainObjectRepresentation, object.etagDigest)
+            .then(updatedObject => {
                 this.setDirtyIfNecessary();
                 // This is a kludge because updated object has no self link.
                 const rawLinks = object.wrapped().links;
@@ -886,8 +885,8 @@ export class ContextService {
 
         each(props, (v, k) => persist.setMember(k!, v));
 
-        return this.repLoader.retrieve(persist, Ro.DomainObjectRepresentation, object.etagDigest)
-            .then((updatedObject: Ro.DomainObjectRepresentation) => {
+        return this.repLoader.retrieve<Ro.DomainObjectRepresentation>(persist, Ro.DomainObjectRepresentation, object.etagDigest)
+            .then(updatedObject => {
                 this.setDirtyIfNecessary();
                 this.transientCache.remove(paneId, object.domainType()!, object.id());
                 this.setNewObject(updatedObject, paneId, viewSavedObject);
@@ -917,8 +916,8 @@ export class ContextService {
 
         const isSubTypeOf = new Ro.DomainTypeActionInvokeRepresentation(againstType, toCheckType, this.configService.config.appPath);
 
-        const promise = this.repLoader.populate(isSubTypeOf, true)
-            .then((updatedObject: Ro.DomainTypeActionInvokeRepresentation) => {
+        const promise = this.repLoader.populate<Ro.DomainTypeActionInvokeRepresentation>(isSubTypeOf, true)
+            .then(updatedObject => {
                 return updatedObject.value();
             })
             .catch((reject: ErrorWrapper) => {
