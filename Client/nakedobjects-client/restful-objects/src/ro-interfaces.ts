@@ -127,6 +127,7 @@ export interface IValueMap {
 export interface IObjectOfType {
     members: IValueMap;
     'x-ro-invalidReason'?: string;
+    'x-ro-validate-only'?: boolean;
 }
 
 export interface IPromptMap {
