@@ -49,26 +49,5 @@
         "@nakedobjects/restful-objects": "~15.0.0",
         "rxjs": "~7.8.1",
         "zone.js": "~0.13.1"
-    },
-    "devDependencies": {
-        "@angular-devkit/build-angular": "^16.1.4",
-        "@angular/cli": "^16.1.4",
-        "@angular/compiler-cli": "^16.1.5",
-        "@types/jasmine": "~4.3.1",
-        "@types/node": "~18.15.1",
-        "jasmine-core": "~4.5.0",
-        "karma": "~6.4.1",
-        "karma-chrome-launcher": "~3.1.1",
-        "karma-coverage": "~2.2.0",
-        "karma-jasmine": "~5.1.0",
-        "karma-jasmine-html-reporter": "~2.0.0",
-        "typescript": "~4.9.5",
-        "ng-packagr": "^15.2.2",
-        "@types/lodash": "~4.14.191",
-        "@types/lodash-es": "~4.17.6",
-        "cpr": "~3.0.1",
-        "find-in-files": "~0.5.0",
-        "replace-in-file": "~6.3.5",
-        "rimraf": "~4.4.0"
     }
 }
