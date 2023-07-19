@@ -44,14 +44,14 @@ export abstract class Command {
        
     }
 
-    argString: string | null;
-    chained: boolean;
+    argString: string | null = null;
+    chained = false;
 
-    shortCommand: string;
-    fullCommand: string;
-    helpText: string;
-    protected minArguments: number;
-    protected maxArguments: number;
+    abstract shortCommand: string;
+    abstract fullCommand: string;
+    abstract helpText: string;
+    protected abstract minArguments: number;
+    protected abstract maxArguments: number;
     protected get keySeparator() { 
         return this.configService.config.keySeparator;
     }
@@ -77,7 +77,7 @@ export abstract class Command {
                 return this.returnResult('', Usermessages.tooManyArguments);
             }
         }
-        return this.doExecute(this.argString, this.chained, result);
+        return this.doExecute(this.argString!, this.chained, result);
     }
 
     protected returnResult(input: string | null, output: string | null, changeState?: () => void, stopChain?: boolean): Promise<CommandResult> {
@@ -185,10 +185,10 @@ export abstract class Command {
     }
 
     protected getObject(): Promise<Ro.DomainObjectRepresentation> {
-        const oid = Ro.ObjectIdWrapper.fromObjectId(this.routeData().objectId, this.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(this.routeData().objectId!, this.keySeparator);
         // TODO: Consider view model & transient modes?
 
-        return this.context.getObject(1, oid, this.routeData().interactionMode).then((obj: Ro.DomainObjectRepresentation) => {
+        return this.context.getObject(1, oid, this.routeData().interactionMode!).then((obj: Ro.DomainObjectRepresentation) => {
             if (this.routeData().interactionMode === InteractionMode.Edit) {
                 return this.context.getObjectForEdit(1, obj);
             } else {
@@ -212,7 +212,7 @@ export abstract class Command {
     }
 
     protected getMenu(): Promise<Ro.MenuRepresentation> {
-        return this.context.getMenu(this.routeData().menuId);
+        return this.context.getMenu(this.routeData().menuId!);
     }
 
     protected isDialog(): boolean {
@@ -227,9 +227,9 @@ export abstract class Command {
     protected getActionForCurrentDialog(): Promise<Ro.InvokableActionMember | Ro.ActionRepresentation> {
         const dialogId = this.routeData().dialogId;
         if (this.isObject()) {
-            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId)));
+            return this.getObject().then((obj: Ro.DomainObjectRepresentation) => this.context.getInvokableAction(obj.actionMember(dialogId!)));
         } else if (this.isMenu()) {
-            return this.getMenu().then((menu: Ro.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId))); // i.e. return a promise
+            return this.getMenu().then((menu: Ro.MenuRepresentation) => this.context.getInvokableAction(menu.actionMember(dialogId!))); // i.e. return a promise
         }
         return Promise.reject(new ErrorWrapper(ErrorCategory.ClientError, ClientErrorCode.NotImplemented, 'List actions not implemented yet'));
     }
@@ -457,7 +457,7 @@ export abstract class Command {
     }
 
     protected setFieldValueInContext(field: Ro.Parameter, val: Ro.Value) {
-        this.context.cacheFieldValue(this.routeData().dialogId, field.id(), val);
+        this.context.cacheFieldValue(this.routeData().dialogId!, field.id(), val);
     }
 
     protected setPropertyValueinContext(obj: Ro.DomainObjectRepresentation, property: Ro.PropertyMember, urlVal: Ro.Value) {

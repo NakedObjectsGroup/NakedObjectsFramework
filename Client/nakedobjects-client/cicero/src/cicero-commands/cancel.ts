@@ -39,7 +39,7 @@ export class Cancel extends Command {
         }
 
         if (this.isDialog()) {
-            return this.returnResult('', '', () => this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId));
+            return this.returnResult('', '', () => this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId!));
         }
 
         return this.returnResult('', 'some sort of error'); // todo

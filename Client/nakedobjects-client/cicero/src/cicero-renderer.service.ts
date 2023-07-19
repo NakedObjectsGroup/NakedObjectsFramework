@@ -38,9 +38,9 @@ export class CiceroRendererService {
 
     renderObject(routeData: PaneRouteData): Promise<Result> {
 
-        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId!, this.keySeparator);
 
-        return this.context.getObject(1, oid, routeData.interactionMode) // TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
+        return this.context.getObject(1, oid, routeData.interactionMode!) // TODO: move following code out into a ICireroRenderers service with methods for rendering each context type
             .then((obj: Ro.DomainObjectRepresentation) => {
                 const openCollIds = this.openCollectionIds(routeData);
                 if (some(openCollIds)) {
@@ -60,11 +60,11 @@ export class CiceroRendererService {
         const listPromise = this.context.getListFromMenu(routeData, routeData.page, routeData.pageSize);
         return listPromise.
             then((list: Ro.ListRepresentation) =>
-                this.context.getMenu(routeData.menuId).
+                this.context.getMenu(routeData.menuId!).
                     then(menu => {
                         const count = list.value().length;
                         const description = this.getListDescription(list, count);
-                        const actionMember = menu.actionMember(routeData.actionId);
+                        const actionMember = menu.actionMember(routeData.actionId!);
                         const actionName = actionMember.extensions().friendlyName();
                         const output = `Result from ${actionName}:\n${description}`;
 
@@ -136,7 +136,7 @@ export class CiceroRendererService {
 
     private renderOpenMenu(routeData: PaneRouteData): Promise<Result> {
 
-        return this.context.getMenu(routeData.menuId).then(menu => {
+        return this.context.getMenu(routeData.menuId!).then(menu => {
             const prefix = Msg.menuTitle(menu.title());
             if (routeData.dialogId) {
                 return this.context.getInvokableAction(menu.actionMember(routeData.dialogId)).then(invokableAction => {
@@ -204,7 +204,7 @@ export class CiceroRendererService {
     }
 
     openCollectionIds(routeData: PaneRouteData): string[] {
-        return filter(keys(routeData.collections), k => routeData.collections[k] !== CollectionViewState.Summary);
+        return filter(keys(routeData.collections), k => routeData.collections![k] !== CollectionViewState.Summary);
     }
 
     // Handles empty values, and also enum conversion

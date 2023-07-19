@@ -39,6 +39,6 @@ export function getFields(field: Ro.IField): Ro.IField[] {
 }
 
 export class CommandResult extends Result {
-    stopChain: boolean;
+    stopChain?: boolean;
     changeState: () => void = () => { };
 }
