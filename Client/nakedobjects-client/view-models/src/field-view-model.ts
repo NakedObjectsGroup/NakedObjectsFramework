@@ -64,7 +64,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     clientValid = true;
     reference = '';
     minLength?: number;
-    color?: string;
+    color = "";
     promptArguments?: Dictionary<Ro.Value>;
     currentValue?: Ro.Value;
     originalValue?: Ro.Value;
@@ -78,7 +78,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     file?: Ro.Link;
 
-    abstract refresh: (newValue: Ro.Value) => void;
+    refresh?: (newValue: Ro.Value) => void;
     prompt?: (searchTerm: string) => Promise<ChoiceViewModel[]>;
     conditionalChoices?: (args: Dictionary<Ro.Value>) => Promise<ChoiceViewModel[]>;
 

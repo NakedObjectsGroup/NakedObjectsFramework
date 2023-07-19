@@ -54,9 +54,9 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
     // IDraggableViewModel
     value!: string;
-    reference?: string;
+    reference = "";
     selectedChoice!: ChoiceViewModel | null;
-    color?: string;
+    color = "";
     draggableType!: string;
 
     domainObject!: Ro.DomainObjectRepresentation;
