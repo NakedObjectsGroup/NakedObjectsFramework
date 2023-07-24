@@ -140,7 +140,7 @@ export function drop(context: ContextService, error: ErrorService, vm: FieldView
         catch((reject: ErrorWrapper) => error.handleError(reject));
 }
 
-function validateAgainstType(model: Ro.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, localFilter: ILocalFilter): string {
+function validateAgainstType(model: Ro.IHasExtensions, modelValue: string | ChoiceViewModel | string[] | ChoiceViewModel[], viewValue: string, localFilter?: ILocalFilter): string {
     // first check
 
     const mandatory = validateMandatory(model, viewValue);
@@ -178,7 +178,7 @@ export function dirtyMarker(context: ContextService, configService: ConfigServic
     return (configService.config.showDirtyFlag && context.getIsDirty(oid)) ? '*' : '';
 }
 
-export function createChoiceViewModels(id: string, searchTerm: string, choices: Dictionary<Ro.Value>) {
+export function createChoiceViewModels(id: string, choices: Dictionary<Ro.Value>, searchTerm?: string) {
     return Promise.resolve(map(choices, (v, k) => new ChoiceViewModel(v, id, k, searchTerm)));
 }
 

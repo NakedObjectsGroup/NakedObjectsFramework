@@ -14,7 +14,7 @@ function getDate(val: string): Date | null {
     return dt1.isValid ? dt1.toJSDate() : null;
 }
 
-export function validateNumber(model: Models.IHasExtensions, newValue: number, filter: ILocalFilter): string {
+export function validateNumber(model: Models.IHasExtensions, newValue: number, filter?: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -63,7 +63,7 @@ export function validateDateTimeFormat(model: Models.IHasExtensions, newValue: s
     return '';
 }
 
-export function validateDateFormat(model: Models.IHasExtensions, newValue: string, filter: ILocalFilter): string {
+export function validateDateFormat(model: Models.IHasExtensions, newValue: string, filter?: ILocalFilter): string {
     const range = model.extensions().range();
     const newDate = getDate(newValue);
 
@@ -87,7 +87,7 @@ export function validateTimeFormat(model: Models.IHasExtensions, newValue: strin
     return '';
 }
 
-export function validateString(model: Models.IHasExtensions, newValue: string, filter: ILocalFilter): string {
+export function validateString(model: Models.IHasExtensions, newValue: string, filter?: ILocalFilter): string {
     const format = model.extensions().format();
 
     switch (format) {
@@ -115,7 +115,7 @@ export function validateMandatory(model: Models.IHasExtensions, viewValue: strin
     return '';
 }
 
-export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewValue: string, filter: ILocalFilter): string {
+export function validateMandatoryAgainstType(model: Models.IHasExtensions, viewValue: string, filter?: ILocalFilter): string {
 
     // check type
     const returnType = model.extensions().returnType();

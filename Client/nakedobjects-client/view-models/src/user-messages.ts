@@ -46,7 +46,7 @@ export const logOffMessage = (u: string) => `Please confirm logoff of user: ${u}
 
 export const submittedCount = (c: number) => ` with ${c} lines submitted.`;
 
-export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
+export const outOfRange = (val: any, min: any, max: any, filter?: ILocalFilter) => {
     const minVal = filter ? filter.filter(min) : min;
     const maxVal = filter ? filter.filter(max) : max;
 

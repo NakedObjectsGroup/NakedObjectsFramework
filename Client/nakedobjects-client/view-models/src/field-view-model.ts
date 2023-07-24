@@ -8,7 +8,6 @@ import filter from 'lodash-es/filter';
 import find from 'lodash-es/find';
 import fromPairs from 'lodash-es/fromPairs';
 import map from 'lodash-es/map';
-import partial from 'lodash-es/partial';
 import some from 'lodash-es/some';
 import { ChoiceViewModel } from './choice-view-model';
 import * as Helpers from './helpers-view-models';
@@ -78,7 +77,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     file?: Ro.Link;
 
-    refresh?: (newValue: Ro.Value) => void;
+    refresh: (newValue: Ro.Value) => void = () => { throw new Error("Uninitialized"); };
     prompt?: (searchTerm: string) => Promise<ChoiceViewModel[]>;
     conditionalChoices?: (args: Dictionary<Ro.Value>) => Promise<ChoiceViewModel[]>;
 
@@ -132,7 +131,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         this.update();
     }
 
-    get selectedMultiChoices(): ChoiceViewModel[] {
+    get selectedMultiChoices(): ChoiceViewModel[] | undefined {
         return this.currentMultipleChoices;
     }
 
@@ -204,7 +203,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     protected setupAutocomplete(rep: Ro.IField, parentValues: () => Dictionary<Ro.Value>, digest?: string | null) {
 
         this.prompt = (searchTerm: string) => {
-            const createcvm = partial(Helpers.createChoiceViewModels, this.id, searchTerm);
+            const createcvm = (choices : Dictionary<Ro.Value>) => Helpers.createChoiceViewModels(this.id, choices, searchTerm);
             return this.context.autoComplete(rep, this.id, parentValues, searchTerm, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Ro.Link; // always
@@ -215,7 +214,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     protected setupConditionalChoices(rep: Ro.IField, digest?: string | null) {
 
         this.conditionalChoices = (args: Dictionary<Ro.Value>) => {
-            const createcvm = partial(Helpers.createChoiceViewModels, this.id, null);
+            const createcvm = (choices : Dictionary<Ro.Value>) => Helpers.createChoiceViewModels(this.id, choices, undefined);
             return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Ro.Value>>{}, args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Ro.Link;
@@ -276,7 +275,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     readonly getValue = () => {
 
         if (this.entryType === Ro.EntryType.File) {
-            return new Ro.Value(this.file);
+            return new Ro.Value(this.file!);
         }
 
         if (this.entryType !== Ro.EntryType.FreeForm || this.isCollectionContributed) {
