@@ -17,16 +17,18 @@ export class AutoCompleteComponent implements OnDestroy {
         private readonly dragAndDrop: DragAndDropService
     ) { }
 
-    private fieldViewModel: FieldViewModel;
-    private bSubject: BehaviorSubject<any>;
-    private sub: ISubscription;
+    private fieldViewModel!: FieldViewModel;
+    private bSubject?: BehaviorSubject<any>;
+    private sub?: ISubscription;
     private currentIndex = -1;
+
     @ViewChild('focus', {static: false})
-    inputField: ElementRef;
+    inputField?: ElementRef;
+    
     canDrop = false;
     dragOver = false;
 
-    @Input()
+    @Input({required : true})
     set model(m: FieldViewModel) {
         this.fieldViewModel = m;
         this.dragAndDrop.setDropZoneId(this.modelPaneId);
@@ -36,8 +38,8 @@ export class AutoCompleteComponent implements OnDestroy {
         return this.fieldViewModel;
     }
 
-    @Input()
-    form: FormGroup;
+    @Input({required : true})
+    form!: FormGroup;
 
 
     get modelPaneId() {
@@ -117,7 +119,7 @@ export class AutoCompleteComponent implements OnDestroy {
             this.bSubject = new BehaviorSubject(initialValue);
 
             this.sub = this.control.valueChanges.subscribe((data) => {
-                this.bSubject.next(data);
+                this.bSubject!.next(data);
                 this.currentIndex = -1;
             });
         }

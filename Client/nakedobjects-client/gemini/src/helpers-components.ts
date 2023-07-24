@@ -20,8 +20,8 @@ function safeFocus(nativeElement: any) {
     }
 }
 
-export function focus(element: ElementRef) {
-    setTimeout(() => safeFocus(element.nativeElement));
+export function focus(element?: ElementRef) {
+    setTimeout(() => safeFocus(element?.nativeElement));
     return true;
 }
 

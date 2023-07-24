@@ -15,14 +15,12 @@ export class AttachmentPropertyComponent {
         private readonly clickHandlerService: ClickHandlerService
     ) { }
 
-    private attach: AttachmentViewModel;
+    private attach: AttachmentViewModel | null = null;
 
     @Input()
-    set attachment(avm: AttachmentViewModel) {
+    set attachment(avm: AttachmentViewModel | null) {
         this.attach = avm;
-        if (this.attach) {
-            this.setup();
-        }
+        this.setup();
     }
 
     get attachment() {
@@ -33,14 +31,14 @@ export class AttachmentPropertyComponent {
     image?: string;
 
     doAttachmentClick = (right?: boolean) => {
-        if (this.attachment.empty && !this.image) {
+        if (this.attachment!.empty && !this.image) {
             return;
         }
 
-        if (this.attachment.displayInline()) {
-            this.urlManager.setAttachment(this.attachment.link, this.clickHandlerService.pane(this.attachment.onPaneId, right));
+        if (this.attachment!.displayInline()) {
+            this.urlManager.setAttachment(this.attachment!.link, this.clickHandlerService.pane(this.attachment!.onPaneId, right));
         } else {
-            this.attachment.downloadFile()
+            this.attachment!.downloadFile()
                 .then(blob => {
                     const burl = URL.createObjectURL(blob);
                     window.open(burl);
@@ -50,10 +48,12 @@ export class AttachmentPropertyComponent {
     };
 
     private setup() {
-        if (this.attachment.displayInline()) {
-            this.attachment.setImage(this);
-        } else {
-            this.attachment.setTitle(this);
+        if (this.attachment) {
+            if (this.attachment.displayInline()) {
+                this.attachment.setImage(this);
+            } else {
+                this.attachment.setTitle(this);
+            }
         }
     }
 }

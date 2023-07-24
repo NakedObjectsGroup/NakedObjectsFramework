@@ -28,11 +28,12 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
         private readonly formBuilder: FormBuilder) {
     }
 
-    private parentViewModel: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
-    private parms: Dictionary<ParameterViewModel>;
-    private formSub: ISubscription;
-    protected sub: ISubscription;
-    private createFormSub: ISubscription;
+    private parentViewModel?: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel;
+    private parms?: Dictionary<ParameterViewModel>;
+    
+    private formSub?: ISubscription;
+    protected sub?: ISubscription;
+    private createFormSub?: ISubscription;
 
     protected set parent(parent: MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel) {
         this.parentChanged = this.parentViewModel !== parent;
@@ -40,24 +41,24 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
     }
 
     protected get parent(): MenuViewModel | DomainObjectViewModel | ListViewModel | CollectionViewModel {
-        return this.parentViewModel;
+        return this.parentViewModel!;
     }
 
-    private currentDialogId: string;
-    private parentChanged: boolean;
+    private currentDialogId?: string;
+    private parentChanged = false;
 
     @Input()
-    set selectedDialogId(id: string) {
+    set selectedDialogId(id: string | undefined) {
         this.currentDialogId = id;
     }
 
-    get selectedDialogId(): string {
+    get selectedDialogId(): string | undefined {
         return this.currentDialogId;
     }
 
-    dialog: DialogViewModel | null;
+    dialog: DialogViewModel | null = null;
 
-    form: FormGroup;
+    form?: FormGroup;
 
     get title() {
         const dialog = this.dialog;
@@ -84,7 +85,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
             forEach(this.parms,
                 (p, _) => {
                     if (p.isEditable) {
-                        const newValue = this.form.value[p.id];
+                        const newValue = this.form!.value[p.id];
                         p.setValueFromControl(newValue);
                     }
                 });
@@ -167,7 +168,7 @@ export class BaseDialogComponent implements OnDestroy, OnChanges {
                         if (this.currentDialogId) {
                             // must be a change
                             this.closeExistingDialog();
-                            const dialogViewModel = this.viewModelFactory.dialogViewModel(this.parent.routeData, details, actionViewModel, false);
+                            const dialogViewModel = this.viewModelFactory.dialogViewModel(this.parent!.routeData, details, actionViewModel, false);
                             this.createForm(dialogViewModel);
                         }
                     })
