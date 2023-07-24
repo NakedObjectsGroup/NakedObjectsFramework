@@ -30,11 +30,11 @@ export function validateNumber(model: Models.IHasExtensions, newValue: number, f
         const min = range.min;
         const max = range.max;
 
-        if (min && newValue < min) {
+        if (typeof min === 'number' && newValue < min) {
             return Msg.outOfRange(newValue, min, max, filter);
         }
 
-        if (max && newValue > max) {
+        if (typeof max === 'number' && newValue > max) {
             return Msg.outOfRange(newValue, min, max, filter);
         }
     }

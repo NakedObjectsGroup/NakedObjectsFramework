@@ -191,8 +191,8 @@ export class ViewModelFactoryService {
 
             const getActionExtensions = routeData.objectId
                 ? (): Promise<Ro.Extensions> =>
-                    this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
-                : (): Promise<Ro.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+                    this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId!, this.configService.config.keySeparator), routeData.actionId!)
+                : (): Promise<Ro.Extensions> => this.context.getActionExtensionsFromMenu(routeData.menuId!, routeData.actionId!);
 
             const getExtensions = listViewModel instanceof CollectionViewModel ? () => Promise.resolve(listViewModel.collectionRep.extensions()) : getActionExtensions;
 
@@ -203,16 +203,15 @@ export class ViewModelFactoryService {
                 getExtensions().
                     then((ext: Ro.Extensions) => {
                         forEach(items, itemViewModel => {
-                            itemViewModel.tableRowViewModel.conformColumns(ext.tableViewTitle(), ext.tableViewColumns());
+                            itemViewModel.tableRowViewModel?.conformColumns(ext.tableViewTitle(), ext.tableViewColumns());
                         });
 
-                        if (!listViewModel.header) {
-                            const firstItem = items[0].tableRowViewModel;
-
+                        const firstItem = items[0].tableRowViewModel;
+                        if (!listViewModel.header && firstItem) {
                             const propertiesHeader =
-                                map(firstItem.properties, (p, i) => {
-                                    const match = find(items, item => !!item.tableRowViewModel.properties[i].title);
-                                    return match ? match.tableRowViewModel.properties[i].title : firstItem.properties[i].id;
+                                map(firstItem?.properties, (p, i) => {
+                                    const match = find(items, item => !!item.tableRowViewModel?.properties[i].title);
+                                    return match ? match.tableRowViewModel!.properties[i].title : firstItem.properties[i].id;
                                 });
 
                             listViewModel.header = firstItem.showTitle ? [''].concat(propertiesHeader) : propertiesHeader;
