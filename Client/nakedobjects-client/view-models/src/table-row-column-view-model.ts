@@ -52,7 +52,7 @@ export class TableRowColumnViewModel {
                     } else if (isPassword) {
                         this.formattedValue = Msg.obscuredText;
                     } else {
-                        this.formattedValue = localFilter.filter(this.value);
+                        this.formattedValue = localFilter.filter(this.value!);
                     }
                 } else {
                     // is reference
@@ -68,9 +68,9 @@ export class TableRowColumnViewModel {
         }
     }
 
-    readonly type: 'ref' | 'scalar';
-    readonly returnType: string;
-    readonly value: Ro.ScalarValueType | Date;
-    readonly formattedValue: string;
+    readonly type!: 'ref' | 'scalar';
+    readonly returnType?: string;
+    readonly value: Ro.ScalarValueType | Date = null;
+    readonly formattedValue: string = '';
     readonly title: string;
 }

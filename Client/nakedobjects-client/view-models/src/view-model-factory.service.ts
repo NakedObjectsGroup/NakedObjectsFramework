@@ -184,8 +184,8 @@ export class ViewModelFactoryService {
 
         const collection = listViewModel instanceof CollectionViewModel ? listViewModel : null;
         const id = collection ? collection.name : '';
-        const selectedItems = routeData.selectedCollectionItems[id];
-        const items = map(links, (link, i) => this.itemViewModel(link, routeData.paneId, selectedItems && selectedItems[i], i, id));
+        const selectedItems = routeData.selectedCollectionItems ? routeData.selectedCollectionItems[id] : undefined;
+        const items = map(links, (link, i) => this.itemViewModel(link, routeData.paneId, !!selectedItems && selectedItems[i], i, id));
 
         if (tableView) {
 

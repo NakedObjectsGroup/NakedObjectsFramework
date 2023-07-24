@@ -210,14 +210,14 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         });
     }
 
-    readonly draggableTitle = () => this.formattedValue;
+    readonly draggableTitle = () => this.formattedValue ?? "";
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 
     readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.reference, this.clickHandler.pane(this.onPaneId, right));
 
     readonly doEditByAction = () => this.editAction?.doInvoke();
 
-    readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue.toValueString();
+    readonly isDirty = () => !!this.previousValue || this.getValue().toValueString() !== this.originalValue?.toValueString();
 
     get editActionTooltip() {
         return `${this.editAction?.title} ${this.editAction?.description}`.trim();

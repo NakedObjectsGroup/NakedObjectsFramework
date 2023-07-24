@@ -73,7 +73,7 @@ export class RecentItemsViewModel {
     };
 
     readonly clearSelected = (routeData?: PaneRouteData) => {
-        const toClear = routeData?.selectedCollectionItems[''] || [];
+        const toClear = routeData?.selectedCollectionItems?.[''] || [];
         this.context.clearSelectedRecentlyViewed(toClear);
         this.urlManager.setAllItemsSelected(false, '', this.onPaneId);
     };

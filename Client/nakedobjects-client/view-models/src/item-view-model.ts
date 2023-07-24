@@ -29,13 +29,13 @@ export class ItemViewModel extends LinkViewModel {
         }
     }
 
-    readonly tableRowViewModel: TableRowViewModel;
+    readonly tableRowViewModel?: TableRowViewModel;
 
     readonly selectionChange = () => {
         this.urlManager.setItemSelected(this.index, this.selected, this.id, this.paneId);
     };
 
-    readonly doClick = (right?: boolean) => {
+    override readonly doClick = (right?: boolean) => {
         const currentPane = this.clickHandler.pane(this.paneId, right);
         this.urlManager.setItem(this.link, currentPane);
     };

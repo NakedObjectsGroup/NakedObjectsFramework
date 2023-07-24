@@ -10,11 +10,9 @@ import {
     UrlManagerService
 } from '@nakedobjects/services';
 import find from 'lodash-es/find';
-import { ActionViewModel } from './action-view-model';
 import { ContributedActionParentViewModel } from './contributed-action-parent-view-model';
 import * as Helpers from './helpers-view-models';
 import { IMenuHolderViewModel } from './imenu-holder-view-model';
-import { MenuItemViewModel } from './menu-item-view-model';
 import * as Msg from './user-messages';
 import { ViewModelFactoryService } from './view-model-factory.service';
 
@@ -36,17 +34,15 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         this.setActions(actions, routeData);
     }
 
-    private page: number;
-    private pageSize: number;
-    private numPages: number;
-    private state: CollectionViewState;
-    id: string;
-    listRep: Ro.ListRepresentation;
-    size: number;
-    header: string[] | null;
-    override actions: ActionViewModel[] = null;
-    override menuItems: MenuItemViewModel[] = null;
-    description: () => string;
+    private page!: number;
+    private pageSize!: number;
+    private numPages!: number;
+    private state!: CollectionViewState;
+    id!: string;
+    listRep!: Ro.ListRepresentation;
+    size!: number;
+    header: string[] | null = null;
+    description!: () => string;
     readonly name = 'item';
 
     private readonly earlierDisabled = () => this.page === 1 || this.numPages === 1;
@@ -68,10 +64,10 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
 
     readonly currentPaneData = () => this.urlManager.getRouteData().pane(this.onPaneId)!;
 
-    private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState?: CollectionViewState) => {
+    private readonly pageOrRecreate = (newPage: number, newPageSize: number, newState: CollectionViewState) => {
         this.recreate(newPage, newPageSize)
             .then((list: Ro.ListRepresentation) => {
-                this.urlManager.setListPaging(newPage, newPageSize, newState || this.routeData.state, this.onPaneId);
+                this.urlManager.setListPaging(newPage, newPageSize, newState, this.onPaneId);
                 this.routeData = this.currentPaneData();
                 this.reset(list, this.routeData);
             })
@@ -118,7 +114,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
                         this.error.handleError(reject);
                     });
             } else {
-                this.state = routeData.state;
+                this.state = routeData.state ?? CollectionViewState.List;
                 this.updateItems(this.listRep.value());
             }
         }
@@ -128,7 +124,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
         this.listRep = list;
         this.routeData = routeData;
 
-        this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
+        this.id = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page!, routeData.pageSize!);
 
         this.page = this.listRep.pagination()!.page;
         this.pageSize = this.listRep.pagination()!.pageSize;
@@ -176,7 +172,7 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
     };
 
     readonly reload = () => {
-        this.context.clearCachedList(this.onPaneId, this.routeData.page, this.routeData.pageSize);
+        this.context.clearCachedList(this.onPaneId, this.routeData.page!, this.routeData.pageSize!);
         this.setPage(this.page, this.state);
     };
 

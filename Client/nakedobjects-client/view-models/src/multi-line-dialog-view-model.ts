@@ -31,7 +31,10 @@ export class MultiLineDialogViewModel {
 
         this.dialogs = map(range(initialCount), i => this.createRow(i));
         this.title = this.dialogs[0].title;
-        this.action.parent.etagDigest = '*';
+
+        if (this.action.parent){
+            this.action.parent.etagDigest = '*';
+        }
     }
 
     readonly objectFriendlyName: string = '';
