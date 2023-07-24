@@ -140,10 +140,10 @@ export class Enter extends Command {
     }
 
     private clearField(field: Ro.IField): void {
-        this.context.cacheFieldValue(this.routeData().dialogId, field.id(), new Ro.Value(null));
+        this.context.cacheFieldValue(this.routeData().dialogId!, field.id(), new Ro.Value(null));
 
         if (field instanceof Ro.Parameter) {
-            this.context.cacheFieldValue(this.routeData().dialogId, field.id(), new Ro.Value(null));
+            this.context.cacheFieldValue(this.routeData().dialogId!, field.id(), new Ro.Value(null));
         } else if (field instanceof Ro.PropertyMember) {
             const parent = field.parent as Ro.DomainObjectRepresentation;
             this.context.cachePropertyValue(parent, field, new Ro.Value(null));

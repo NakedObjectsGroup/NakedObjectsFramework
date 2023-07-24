@@ -9,6 +9,7 @@ import { UrlManagerService, ContextService, MaskService, ErrorService, ConfigSer
 import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
 import { Location } from '@angular/common';
+import { messageFrom } from '../helpers-components';
 
 export class Show extends Command {
 
@@ -46,7 +47,7 @@ export class Show extends Command {
                     return this.renderCollectionItems(coll, start, end);
                 });
             } catch (e1) {
-                return this.returnResult('', e1.message);
+                return this.returnResult('', messageFrom(e1));
             }
         } else if (this.isList()) {
             const arg = this.argumentAsString(args, 0, true);
@@ -54,7 +55,7 @@ export class Show extends Command {
                 const { start, end } = this.parseRange(arg);
                 return this.getList().then(list => this.renderItems(list, start, end));
             } catch (e2) {
-                return this.returnResult('', e2.message);
+                return this.returnResult('', messageFrom(e2));
             }
         } else if (this.isObject()) {
             const fieldName = this.argumentAsString(args, 0);

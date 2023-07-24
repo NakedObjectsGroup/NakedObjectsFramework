@@ -176,7 +176,7 @@ export class PaneRouteData {
         }
     }
 
-    isEqual(other: PaneRouteData) {
+    isEqual(other?: PaneRouteData) {
         if (!this.rawParms || !other || !other.rawParms) {
             return false;
         }
@@ -184,7 +184,7 @@ export class PaneRouteData {
         return isEqual(this.rawParms, other.rawParms);
     }
 
-    isEqualIgnoringReload(other: PaneRouteData) {
+    isEqualIgnoringReload(other?: PaneRouteData) {
         if (!this.rawParmsWithoutReload || !other || !other.rawParmsWithoutReload) {
             return false;
         }

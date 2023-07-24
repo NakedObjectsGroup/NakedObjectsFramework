@@ -54,13 +54,13 @@ export class Page extends Command {
                 if (page === 1) {
                     return this.returnResult('', Usermessages.alreadyOnFirst);
                 } else {
-                    return this.returnResult(null, null, () => this.setPage(page - 1));
+                    return this.returnResult(null, null, () => this.setPage(page! - 1));
                 }
             } else if (Usermessages.pageNext.indexOf(arg) === 0) {
                 if (page === numPages) {
                     return this.returnResult('', Usermessages.alreadyOnLast);
                 } else {
-                    return this.returnResult(null, null, () => this.setPage(page + 1));
+                    return this.returnResult(null, null, () => this.setPage(page! + 1));
                 }
             } else if (Usermessages.pageLast.indexOf(arg) === 0) {
                 return this.returnResult(null, null, () => this.setPage(numPages));
@@ -79,6 +79,6 @@ export class Page extends Command {
 
     private setPage(page: number) {
         const pageSize = this.routeData().pageSize;
-        this.urlManager.setListPaging(page, pageSize, CollectionViewState.List);
+        this.urlManager.setListPaging(page, pageSize!, CollectionViewState.List);
     }
 }

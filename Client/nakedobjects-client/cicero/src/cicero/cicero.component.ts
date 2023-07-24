@@ -35,23 +35,23 @@ export class CiceroComponent implements OnInit, OnDestroy {
         private readonly context: ContextService) {
     }
 
-    private warnings: string[];
-    private messages: string[];
-    private paneRouteDataSub: ISubscription;
-    private warnSub: ISubscription;
-    private errorSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
-    private previousInput: string;
+    private warnings: string[] = [];
+    private messages: string[] = [];
+    private paneRouteDataSub?: ISubscription;
+    private warnSub?: ISubscription;
+    private errorSub?: ISubscription;
+    private lastPaneRouteData?: PaneRouteData;
+    private previousInput = '';
 
     @ViewChild('inputField', {static: false})
-    inputField: ElementRef;
+    inputField?: ElementRef;
 
     // template API
-    inputText: string;
-    outputText: string;
+    inputText = '';
+    outputText= '';
 
     private render() {
-        switch (this.lastPaneRouteData.location) {
+        switch (this.lastPaneRouteData?.location) {
             case ViewType.Home:
                 return this.ciceroRendererService.renderHome(this.lastPaneRouteData);
             case ViewType.Object:
@@ -110,7 +110,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
             });
     }
 
-    private executeCommands(cmds: Command[]) {
+    private executeCommands(cmds?: Command[]) {
         if (cmds && cmds.length > 0) {
             const [cmd, ...chained] = cmds;
             this.ciceroContext.chainedCommands = chained;

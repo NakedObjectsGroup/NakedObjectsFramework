@@ -10,6 +10,7 @@ import { UrlManagerService, ContextService, MaskService, ErrorService, ConfigSer
 import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
 import { Location } from '@angular/common';
+import { messageFrom } from '../helpers-components';
 
 export class Goto extends Command {
 
@@ -48,7 +49,7 @@ export class Goto extends Command {
             try {
                 itemNo = this.parseInt(arg0);
             } catch (e) {
-                return this.returnResult('', e.message);
+                return this.returnResult('', messageFrom(e));
             }
             return this.getList().then((list: Ro.ListRepresentation) => this.attemptGotoLinkNumber(itemNo, list.value()));
         }
@@ -60,7 +61,7 @@ export class Goto extends Command {
                     const openCollIds = this.ciceroRenderer.openCollectionIds(this.routeData());
                     const coll = obj.collectionMember(openCollIds[0]);
                     // Safe to assume always a List (Cicero doesn't support tables as such & must be open)
-                    return this.context.getCollectionDetails(coll, CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()));
+                    return this.context.getCollectionDetails(coll, CollectionViewState.List, false).then(details => this.attemptGotoLinkNumber(itemNo, details.value()!));
 
                 } else {
                     const matchingProps = this.matchingProperties(obj, arg0);

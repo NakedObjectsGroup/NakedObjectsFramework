@@ -31,6 +31,7 @@ import { Where } from './cicero-commands/where';
 import { CiceroContextService } from './cicero-context.service';
 import { CiceroRendererService } from './cicero-renderer.service';
 import * as Msg from './user-messages';
+import { hasMessage, messageFrom } from './helpers-components';
 
 export class ParseResult {
     commands?: Command[];
@@ -82,7 +83,7 @@ export class CiceroCommandFactoryService {
         try {
             return ParseResult.create(this.mapInputToCommands(input));
         } catch (e) {
-            return ParseResult.createError(e.message);
+            return ParseResult.createError(hasMessage(e) ? e.message : 'unknown error');
         }
     }
 
@@ -117,7 +118,7 @@ export class CiceroCommandFactoryService {
             const earlierChain = input.substr(0, input.length - charsTyped);
             return Result.create(`${earlierChain}${command.fullCommand} `, null);
         } catch (e) {
-            return Result.create('', e.message);
+            return Result.create('', messageFrom(e));
         }
     };
 

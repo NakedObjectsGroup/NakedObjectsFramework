@@ -50,10 +50,10 @@ export class Menu extends Command {
                     case 0:
                         return this.returnResult('', Usermessages.doesNotMatchMenu(name));
                     case 1: {
-                        const menuId = links[0].rel().parms[0].value!;
+                        const menuId = links[0].rel()?.parms[0].value;
                         this.urlManager.setHome();
                         this.urlManager.clearUrlState(1);
-                        return this.returnResult('', '', () => this.urlManager.setMenu(menuId));
+                        return this.returnResult('', '', () => { if (menuId) { this.urlManager.setMenu(menuId);}});
                     }
                     default: {
                         const label = name ? `${Usermessages.matchingMenus}\n` : `${Usermessages.allMenus}\n`;

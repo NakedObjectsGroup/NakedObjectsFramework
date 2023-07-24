@@ -6,6 +6,7 @@ import { UrlManagerService, ContextService, MaskService, ErrorService, ConfigSer
 import { CommandResult } from './command-result';
 import * as Usermessages from '../user-messages';
 import { Location } from '@angular/common';
+import { messageFrom } from '../helpers-components';
 
 export class Help extends Command {
 
@@ -44,7 +45,7 @@ export class Help extends Command {
                 const c = this.commandFactory.getCommand(arg);
                 return this.returnResult('', `${c.fullCommand} command:\n${c.helpText}`);
             } catch (e) {
-                return this.returnResult('', e.message);
+                return this.returnResult('', messageFrom(e));
             }
         }
     }
