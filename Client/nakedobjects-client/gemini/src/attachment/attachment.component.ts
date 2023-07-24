@@ -24,18 +24,18 @@ export class AttachmentComponent extends PaneComponent {
     }
 
     // template API
-    image: string;
-    title: string;
+    image?: string;
+    title = "";
 
     protected setup(routeData: PaneRouteData) {
 
-        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
+        const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId!, this.configService.config.keySeparator);
 
-        this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
+        this.context.getObject(routeData.paneId, oid, routeData.interactionMode!)
             .then((object: Ro.DomainObjectRepresentation) => {
 
                 const attachmentId = routeData.attachmentId;
-                const attachment = object.propertyMember(attachmentId);
+                const attachment = attachmentId ? object.propertyMember(attachmentId) : undefined;
 
                 if (attachment) {
                     const avm = this.viewModelFactory.attachmentViewModel(attachment, routeData.paneId);

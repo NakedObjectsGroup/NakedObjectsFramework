@@ -16,7 +16,7 @@ import { safeUnsubscribe } from '../helpers-components';
 export class ActionBarComponent implements OnDestroy, AfterViewInit {
 
     @Input()
-    actions: IActionHolder[];
+    actions?: IActionHolder[];
 
     @Input()
     set menuHolder(mhvm: IMenuHolderViewModel) {
@@ -26,16 +26,16 @@ export class ActionBarComponent implements OnDestroy, AfterViewInit {
     }
 
     @ViewChildren(ActionComponent)
-    actionChildren: QueryList<ActionComponent>;
+    actionChildren?: QueryList<ActionComponent>;
 
-    private sub: ISubscription;
+    private sub?: ISubscription;
 
     classes(action: IActionHolder) {
         const hint = action.presentationHint ?? '';
         return hint.trim();
     }
 
-    focusOnFirstAction(actions: QueryList<ActionComponent>) {
+    focusOnFirstAction(actions?: QueryList<ActionComponent>) {
         if (actions) {
             // until first element returns true
             some(actions.toArray(), i => i.focus());
@@ -44,7 +44,7 @@ export class ActionBarComponent implements OnDestroy, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.focusOnFirstAction(this.actionChildren);
-        this.sub = this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
+        this.sub = this.actionChildren?.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstAction(ql));
     }
 
     ngOnDestroy(): void {

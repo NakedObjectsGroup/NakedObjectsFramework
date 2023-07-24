@@ -12,34 +12,34 @@ export class ApplicationPropertiesComponent implements OnInit {
     constructor(private readonly viewModelFactory: ViewModelFactoryService) { }
 
     get applicationName() {
-        return this.applicationProperties.applicationName;
+        return this.applicationProperties?.applicationName ?? '';
     }
 
     get userName() {
-        return this.applicationProperties.userName;
+        return this.applicationProperties?.userName ?? '';
     }
 
     get serverUrl() {
-        return this.applicationProperties.serverUrl;
+        return this.applicationProperties?.serverUrl ?? '';
     }
 
     get implVersion() {
-        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.implVersion : '';
+        return  this.applicationProperties?.serverVersion?.implVersion ?? '';
     }
 
     get apiVersion() {
-        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.specVersion : '';
+        return this.applicationProperties?.serverVersion?.specVersion ?? '';
     }
 
     get appVersion() {
-        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.appVersion : '';
+        return this.applicationProperties?.serverVersion?.appVersion ?? '';
     }
 
     get clientVersion() {
         return clientVersion;
     }
 
-    private applicationProperties: ApplicationPropertiesViewModel;
+    private applicationProperties?: ApplicationPropertiesViewModel;
 
     ngOnInit(): void {
         this.applicationProperties = this.viewModelFactory.applicationPropertiesViewModel();

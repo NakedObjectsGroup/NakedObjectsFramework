@@ -18,11 +18,11 @@ import { safeUnsubscribe } from '../helpers-components';
 export class ActionListComponent implements AfterViewInit, OnDestroy {
 
     private previousActionChildrenNames: string[] = [];
-    private holder: IMenuHolderViewModel;
-    private sub: ISubscription;
+    private holder!: IMenuHolderViewModel;
+    private sub?: ISubscription;
 
     @ViewChildren(ActionComponent)
-    actionChildren: QueryList<ActionComponent>;
+    actionChildren?: QueryList<ActionComponent>;
 
     @Input()
     set menuHolder(mh: IMenuHolderViewModel) {
@@ -86,7 +86,7 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
         }
     }
 
-    focus(actions: QueryList<ActionComponent>) {
+    focus(actions?: QueryList<ActionComponent>) {
         if (actions && actions.length > 0) {
             const actionChildrenNames = map(actions.toArray(), a => a.action.value);
             const newActions = difference(actionChildrenNames, this.previousActionChildrenNames);
@@ -104,7 +104,7 @@ export class ActionListComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.focus(this.actionChildren);
-        this.sub = this.actionChildren.changes.subscribe((ql: QueryList<ActionComponent>) => this.focus(ql));
+        this.sub = this.actionChildren?.changes.subscribe((ql: QueryList<ActionComponent>) => this.focus(ql));
     }
 
     ngOnDestroy(): void {

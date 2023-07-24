@@ -37,11 +37,11 @@ export function wrapAction(a: ActionViewModel): IActionHolder {
 })
 export class ActionComponent {
 
-    @Input()
-    action: IActionHolder;
+    @Input({required : true})
+    action!: IActionHolder;
 
     @ViewChildren('focus')
-    focusList: QueryList<ElementRef>;
+    focusList?: QueryList<ElementRef>;
 
     private canClick() {
         return !(this.disabled() || this.tempDisabled());
@@ -67,7 +67,7 @@ export class ActionComponent {
     }
 
     show() {
-        return this.action && this.action.show();
+        return this.action.show();
     }
 
     disabled() {
