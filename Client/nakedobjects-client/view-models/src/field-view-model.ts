@@ -135,7 +135,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         return this.currentMultipleChoices;
     }
 
-    set selectedMultiChoices(choices: ChoiceViewModel[]) {
+    set selectedMultiChoices(choices: ChoiceViewModel[] | undefined) {
         this.currentMultipleChoices = choices;
         this.update();
     }
