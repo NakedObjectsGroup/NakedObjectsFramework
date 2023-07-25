@@ -59,7 +59,7 @@ export class CollectionViewModel extends ContributedActionParentViewModel {
     details?: string;
     mayHaveItems?: boolean;
     header?: string[];
-    currentState?: CollectionViewState;
+    currentState: CollectionViewState = CollectionViewState.Summary;
 
     readonly reset = (routeData: PaneRouteData, resetting: boolean) => {
 

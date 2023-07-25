@@ -33,15 +33,15 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
     }
 
     @ViewChildren(EditParameterComponent)
-    parmComponents: QueryList<EditParameterComponent>;
+    parmComponents?: QueryList<EditParameterComponent>;
 
-    @Input()
+    @Input({required : true})
     set toCreateClass(cls: string) {
         this.toCreate = cls;
         this.colorService.toColorNumberFromType(cls).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
     }
 
-    @Input()
+    @Input({required : true})
     set parentMenu(parent: MenuViewModel | DomainObjectViewModel) {
         this.parent = parent;
     }
@@ -57,7 +57,7 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
          return this.pendingColor;
     }
 
-    toCreate: string;
+    toCreate!: string;
 
     private saveButton: IActionHolder = {
         value: 'Save',
@@ -91,7 +91,7 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
     }
 
     get parametersProperties(): (ParameterViewModel | string)[] {
-        const properties = this.dialog.actionViewModel.createNewProperties;
+        const properties = this.dialog?.actionViewModel.createNewProperties;
         const parmMap = fromPairs(this.parameters.map((p) => [p.title.toLowerCase(), p]));
         return map(properties, (p) => parmMap[p.toLowerCase()] ?? p);
     }
@@ -121,7 +121,7 @@ export class CreateNewDialogComponent extends BaseDialogComponent implements Aft
     }
 
     ngAfterViewInit(): void {
-        this.sub = this.parmComponents.changes.subscribe(() => this.focus());
+        this.sub = this.parmComponents?.changes.subscribe(() => this.focus());
     }
 
     focus() {

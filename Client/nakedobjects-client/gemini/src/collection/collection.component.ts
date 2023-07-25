@@ -14,7 +14,7 @@ type State = 'summary' | 'list' | 'table';
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 
-    private ddSub: ISubscription;
+    private ddSub?: ISubscription;
     dropZones: string[] = [];
 
     constructor(
@@ -22,14 +22,14 @@ export class CollectionComponent implements OnInit, OnDestroy {
         private readonly dragAndDrop: DragAndDropService
     ) { }
 
-    @Input()
-    collection: CollectionViewModel;
+    @Input({required : true})
+    collection!: CollectionViewModel;
 
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
-    private currentOid: string;
+    private paneRouteDataSub?: ISubscription;
+    private lastPaneRouteData?: PaneRouteData;
+    private currentOid?: string;
 
-    selectedDialogId: string;
+    selectedDialogId?: string;
 
     get currentState() {
         return this.collection.currentState;
@@ -56,7 +56,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
 
     get items(): ItemViewModel[] {
-        return this.collection.items;
+        return this.collection.items ?? [];
     }
 
     get message() {

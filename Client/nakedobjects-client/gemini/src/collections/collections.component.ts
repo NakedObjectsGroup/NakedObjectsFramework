@@ -8,8 +8,8 @@ import { CollectionViewModel } from '@nakedobjects/view-models';
 })
 export class CollectionsComponent {
 
-    @Input()
-    collections: CollectionViewModel[];
+    @Input({required: true})
+    collections!: CollectionViewModel[];
 
     classes(coll: CollectionViewModel) {
         const hint = coll.presentationHint ?? '';
