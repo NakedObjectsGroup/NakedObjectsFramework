@@ -123,7 +123,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
     }
 
     private clearSelectedDisabled() {
-        return !this.paneRouteData?.selectedCollectionItems['']?.reduce((p, c) => p || c);
+        return !this.paneRouteData?.selectedCollectionItems?.['']?.reduce((p, c) => p || c);
     }
 
     private sortByUsage() {
@@ -165,7 +165,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
     protected override setup(routeData: PaneRouteData) {
         this.paneRouteData = routeData;
         if (!this.recent) {
-            this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId);
+            this.recent = this.viewModelFactory.recentItemsViewModel(this.paneId!);
             this.title = this.recent.title;
         }
     }

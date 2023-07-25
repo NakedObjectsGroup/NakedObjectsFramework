@@ -11,17 +11,17 @@ import { EditParameterComponent } from '../edit-parameter/edit-parameter.compone
 })
 export class ParametersComponent {
 
-    @Input()
-    parent: DialogViewModel;
+    @Input({required : true})
+    parent!: DialogViewModel;
 
     @Input()
-    form: FormGroup;
+    form?: FormGroup;
 
-    @Input()
-    parameters: ParameterViewModel[];
+    @Input({required : true})
+    parameters!: ParameterViewModel[];
 
     @ViewChildren(EditParameterComponent)
-    parmComponents: QueryList<EditParameterComponent>;
+    parmComponents?: QueryList<EditParameterComponent>;
 
     private hasHint(parm: ParameterViewModel) {
         return parm?.presentationHint !== null && parm.presentationHint !== undefined;

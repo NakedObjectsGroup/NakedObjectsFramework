@@ -27,7 +27,7 @@ export class RowComponent {
     isTable: boolean;
 
     @ViewChildren('focus')
-    rowChildren: QueryList<ElementRef>;
+    rowChildren?: QueryList<ElementRef>;
 
     get id() {
         return `${this.item.id || 'item'}${this.item.paneId}-${this.row}`;

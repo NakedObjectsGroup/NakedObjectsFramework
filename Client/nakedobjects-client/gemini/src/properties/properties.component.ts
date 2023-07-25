@@ -12,16 +12,16 @@ import { EditPropertyComponent } from '../edit-property/edit-property.component'
 export class PropertiesComponent {
 
     @Input()
-    parent: DomainObjectViewModel;
+    parent?: DomainObjectViewModel;
 
     @Input()
-    form: FormGroup;
+    form?: FormGroup;
 
-    @Input()
-    properties: PropertyViewModel[];
+    @Input({required : true})
+    properties!: PropertyViewModel[];
 
     @ViewChildren(EditPropertyComponent)
-    propComponents: QueryList<EditPropertyComponent>;
+    propComponents?: QueryList<EditPropertyComponent>;
 
     classes(prop: PropertyViewModel) {
         const hint = prop.presentationHint ?? '';
