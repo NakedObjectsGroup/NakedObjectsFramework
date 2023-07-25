@@ -35,18 +35,18 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, OnD
         super(loggerService, renderer, dragAndDrop);
     }
 
-    private prop: PropertyViewModel;
+    private prop!: PropertyViewModel;
 
     @ViewChildren('focus')
-    focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
+    focusList?: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
     @ViewChildren('checkbox')
-    checkboxList: QueryList<ElementRef>;
+    checkboxList?: QueryList<ElementRef>;
 
-    @Input()
-    parent: DomainObjectViewModel;
+    @Input({required: true})
+    parent!: DomainObjectViewModel;
 
-    @Input()
+    @Input({required: true})
     set property(value: PropertyViewModel) {
         this.prop = value;
         if (this.propertyEntryType === Ro.EntryType.FreeForm) {
@@ -126,7 +126,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, OnD
         return this.property.description;
     }
 
-    get message() {
+    override get message() {
         return this.property.getMessage();
     }
 
@@ -173,7 +173,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, OnD
         this.populateBoolean();
     }
 
-    ngOnDestroy(): void {
+    override ngOnDestroy(): void {
         this.dragAndDrop.clearDropZoneId(this.propertyPaneId);
         super.ngOnDestroy();
     }

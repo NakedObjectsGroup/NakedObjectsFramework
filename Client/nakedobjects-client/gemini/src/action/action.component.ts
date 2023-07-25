@@ -37,7 +37,7 @@ export function wrapAction(a: ActionViewModel): IActionHolder {
 })
 export class ActionComponent {
 
-    @Input({required : true})
+    @Input({ required: true })
     action!: IActionHolder;
 
     @ViewChildren('focus')

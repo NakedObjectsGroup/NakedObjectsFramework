@@ -14,7 +14,7 @@ import { PaneComponent } from '../pane/pane';
 export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
 
     @ViewChild('parent', { read: ViewContainerRef, static : true })
-    parent: ViewContainerRef;
+    parent?: ViewContainerRef;
 
     constructor(
         activatedRoute: ActivatedRoute,
@@ -26,7 +26,7 @@ export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
         super(activatedRoute, urlManager, context);
     }
 
-    private lastOid: string;
+    private lastOid?: string;
 
     protected setup(routeData: PaneRouteData) {
         if (!routeData.objectId) {
@@ -36,17 +36,17 @@ export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
 
         if (oid.domainType !== this.lastOid) {
             this.lastOid = oid.domainType;
-            this.parent.clear();
+            this.parent?.clear();
 
             this.customComponentService.getCustomComponent(this.lastOid, ViewType.Object).then((c: Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
-                this.parent.createComponent(childComponent);
+                this.parent?.createComponent(childComponent);
             });
         }
     }
 
-    ngOnDestroy(): void {
+    override ngOnDestroy(): void {
         super.ngOnDestroy();
-        this.parent.clear();
+        this.parent?.clear();
     }
 }

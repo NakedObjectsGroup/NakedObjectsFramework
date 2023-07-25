@@ -16,21 +16,21 @@ export class ErrorComponent implements OnInit {
 
     // template API
 
-    title: string;
-    message: string;
-    errorCode: string;
-    description: string;
-    stackTrace: string[] | null;
+    title = '';
+    message = '';
+    errorCode = '';
+    description = '';
+    stackTrace: string[] = [];
 
     ngOnInit(): void {
         // expect dynamic-error to  have checked if the context has an error
         const errorWrapper = this.context.getError();
         const error = this.viewModelFactory.errorViewModel(errorWrapper);
 
-        this.title = error.title;
-        this.message = error.message;
-        this.errorCode = error.errorCode;
-        this.description = error.description;
-        this.stackTrace = error.stackTrace;
+        this.title = error.title ?? '';
+        this.message = error.message ?? '';
+        this.errorCode = error.errorCode ?? '';
+        this.description = error.description ?? '';
+        this.stackTrace = error.stackTrace ?? [];
     }
 }

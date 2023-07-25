@@ -35,18 +35,18 @@ export class EditParameterComponent extends FieldComponent implements OnInit, On
         super(loggerService, renderer, dragAndDrop);
     }
 
-    parm: ParameterViewModel;
+    parm!: ParameterViewModel;
 
     @ViewChildren('focus')
-    focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
+    focusList?: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
     @ViewChildren('checkbox')
-    checkboxList: QueryList<ElementRef>;
+    checkboxList?: QueryList<ElementRef>;
 
-    @Input()
-    parent: DialogViewModel | MenuViewModel | DomainObjectViewModel;
+    @Input({required : true})
+    parent!: DialogViewModel | MenuViewModel | DomainObjectViewModel;
 
-    @Input()
+    @Input({required : true})
     set parameter(value: ParameterViewModel) {
         this.parm = value;
         if (this.parameterEntryType === Ro.EntryType.FreeForm) {
@@ -172,7 +172,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit, On
         this.populateBoolean();
     }
 
-    ngOnDestroy(): void {
+    override ngOnDestroy(): void {
         this.dragAndDrop.clearDropZoneId(this.parameterPaneId);
         super.ngOnDestroy();
     }

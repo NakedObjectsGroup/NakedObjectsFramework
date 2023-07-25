@@ -82,8 +82,8 @@ export abstract class FieldComponent implements OnDestroy {
     canDrop = false;
     dragOver = false;
 
-    abstract checkboxList: QueryList<ElementRef>;
-    abstract focusList: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
+    abstract checkboxList?: QueryList<ElementRef>;
+    abstract focusList?: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
     protected init(vmParent: DialogViewModel | DomainObjectViewModel | MenuViewModel,
         vm: ParameterViewModel | PropertyViewModel,

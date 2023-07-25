@@ -28,13 +28,13 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
             super(viewModelFactory, error, context, formBuilder);
     }
 
-    @Input()
-    properties: PropertyViewModel[];
+    @Input({required: true})
+    properties!: PropertyViewModel[];
 
     @ViewChildren(EditParameterComponent)
-    parmComponents: QueryList<EditParameterComponent>;
+    parmComponents?: QueryList<EditParameterComponent>;
 
-    @Input()
+    @Input({required: true})
     set parentObject(obj : DomainObjectViewModel) {
         this.parent = obj;
     }
@@ -113,7 +113,7 @@ export class EditDialogComponent  extends BaseDialogComponent implements AfterVi
     }
 
     ngAfterViewInit(): void {
-        this.sub = this.parmComponents.changes.subscribe(() => this.focus());
+        this.sub = this.parmComponents?.changes.subscribe(() => this.focus());
     }
 
     focus() {
