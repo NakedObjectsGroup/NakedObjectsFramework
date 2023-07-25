@@ -33,7 +33,7 @@ export class DialogComponent extends BaseDialogComponent  implements AfterViewIn
     }
 
     @ViewChildren(ParametersComponent)
-    parmComponents: QueryList<ParametersComponent>;
+    parmComponents?: QueryList<ParametersComponent>;
 
     focus(parms: QueryList<ParametersComponent>) {
         if (parms && parms.length > 0) {
@@ -42,6 +42,6 @@ export class DialogComponent extends BaseDialogComponent  implements AfterViewIn
     }
 
     ngAfterViewInit(): void {
-        this.sub = this.parmComponents.changes.subscribe(ql => this.focus(ql));
+        this.sub = this.parmComponents?.changes.subscribe(ql => this.focus(ql));
     }
 }

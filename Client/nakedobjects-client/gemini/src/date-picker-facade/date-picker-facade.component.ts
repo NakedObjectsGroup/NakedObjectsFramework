@@ -22,15 +22,15 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         this.datePickerOptions.format = configService.config.dateInputFormat;
     }
 
-    @Input()
-    control: AbstractControl;
+    @Input({required: true})
+    control!: AbstractControl;
 
-    @Input()
-    form: FormGroup;
+    @Input({required: true})
+    form!: FormGroup;
 
-    private fieldViewModel: FieldViewModel;
+    private fieldViewModel!: FieldViewModel;
 
-    @Input()
+    @Input({required: true})
     set model(m: FieldViewModel) {
         this.fieldViewModel = m;
         this.datePickerOptions.class = m instanceof PropertyViewModel ? 'datepicker-property' : 'datepicker-parameter';
@@ -41,7 +41,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     }
 
     @ViewChild('dp', {static: false})
-    datepicker: DatePickerComponent;
+    datepicker?: DatePickerComponent;
 
     inputEvents: EventEmitter<IDatePickerInputEvent>;
 
@@ -67,7 +67,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     handleDefaultEvent(data: string) {
         if (this.control) {
             if (data === 'closed') {
-                const dateModel = this.datepicker.dateModel;
+                const dateModel = this.datepicker?.dateModel ?? null;
                 this.setValueIfChanged(dateModel);
             }
         }
@@ -122,6 +122,6 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     }
 
     focus() {
-        return this.datepicker.focus();
+        return this.datepicker?.focus();
     }
 }

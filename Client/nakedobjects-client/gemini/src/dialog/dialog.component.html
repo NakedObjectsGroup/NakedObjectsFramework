@@ -2,7 +2,7 @@
 	<div class="title">
 		{{title}}
 	</div>
-	<form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
+	<form *ngIf="form" (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
 		<nof-parameters class="parameters" [parameters]="parameters" [parent]="dialog" [form]="form"></nof-parameters>
         <div class="co-validation">{{message}}</div>
 		<div class="form-row">

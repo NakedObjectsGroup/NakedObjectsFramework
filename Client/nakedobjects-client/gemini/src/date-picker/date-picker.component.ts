@@ -82,26 +82,26 @@ export interface ICalendarDate {
 })
 export class DatePickerComponent implements OnInit, OnDestroy {
 
-    @Input()
+    @Input({required : true})
     options: DatePickerOptions;
 
-    @Input()
-    inputEvents: EventEmitter<IDatePickerInputEvent>;
+    @Input({required : true})
+    inputEvents!: EventEmitter<IDatePickerInputEvent>;
 
     @Output()
     outputEvents: EventEmitter<IDatePickerOutputEvent>;
 
-    @Input()
-    id: string;
+    @Input({required : true})
+    id!: string;
 
-    @Input()
-    description: string;
+    @Input({required : true})
+    description!: string;
 
     opened: boolean;
     days: ICalendarDate[];
 
     @ViewChild('inp', {static: false})
-    inputField: ElementRef;
+    inputField?: ElementRef;
 
     constructor() {
         this.opened = false;
@@ -115,10 +115,10 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     private validInputFormats = supportedDateFormats.concat(fixedDateFormat);
 
     private dateModelValue: DateTime | null;
-    private modelValue: string;
+    private modelValue = '';
 
-    private bSubject: BehaviorSubject<string>;
-    private sub: ISubscription;
+    private bSubject?: BehaviorSubject<string>;
+    private sub?: ISubscription;
 
     set model(s: string) {
         this.modelValue = s;
@@ -150,7 +150,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         return this.dateModelValue;
     }
 
-    private eventsSub: ISubscription;
+    private eventsSub?: ISubscription;
 
     private validateDate(newValue: string) {
         return validateDate(newValue, this.validInputFormats);
@@ -349,7 +349,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     classes(): Dictionary<boolean | null> {
         return {
             'datepicker-input': true,
-            [this.options.class]: !!(this.options && this.options.class)
+            [this.options.class ?? '']: !!(this.options && this.options.class)
         };
     }
 

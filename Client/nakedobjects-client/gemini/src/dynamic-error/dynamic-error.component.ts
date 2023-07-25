@@ -11,7 +11,7 @@ import { CustomComponentService } from '../custom-component.service';
 export class DynamicErrorComponent implements OnInit {
 
     @ViewChild('parent', { read: ViewContainerRef, static : true })
-    parent: ViewContainerRef;
+    parent?: ViewContainerRef;
 
     constructor(
         private readonly context: ContextService,
@@ -24,8 +24,9 @@ export class DynamicErrorComponent implements OnInit {
     ngOnInit() {
 
         const errorWrapper = this.context.getError();
-        if (errorWrapper) {
-            this.customComponentService.getCustomErrorComponent(errorWrapper.category, errorWrapper.httpErrorCode || errorWrapper.clientErrorCode).then((c: Type<any>) => {
+        const code = errorWrapper.httpErrorCode || errorWrapper.clientErrorCode;
+        if (errorWrapper && code) {
+            this.customComponentService.getCustomErrorComponent(errorWrapper.category, code).then((c: Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
                 this.parent.createComponent(childComponent);
             });

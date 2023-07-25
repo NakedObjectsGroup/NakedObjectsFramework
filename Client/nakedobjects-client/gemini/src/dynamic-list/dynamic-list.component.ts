@@ -15,7 +15,7 @@ import { PaneComponent } from '../pane/pane';
 export class DynamicListComponent extends PaneComponent implements OnDestroy {
 
     @ViewChild('parent', { read: ViewContainerRef, static : true })
-    parent: ViewContainerRef;
+    parent?: ViewContainerRef;
 
     constructor(
         activatedRoute: ActivatedRoute,
@@ -40,21 +40,21 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
         showDialog: () => false
     };
 
-    private lastOid: string | null;
+    private lastOid: string | null = null;
     title = '';
     showPlaceholder = true;
-    private cachedRouteData: PaneRouteData;
+    private cachedRouteData!: PaneRouteData;
 
     getActionExtensions(routeData: PaneRouteData): Promise<Ro.Extensions> {
         return routeData.objectId
-            ? this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
-            : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId!)
+            : this.context.getActionExtensionsFromMenu(routeData.menuId!, routeData.actionId!);
     }
 
     reload() {
 
         const recreate = () =>
-            this.cachedRouteData.objectId
+            this.cachedRouteData!.objectId
                 ? this.context.getListFromObject(this.cachedRouteData)
                 : this.context.getListFromMenu(this.cachedRouteData);
 
@@ -69,14 +69,14 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
         return [this.reloadPlaceholderButton];
     }
 
-    protected doSetup(routeData: PaneRouteData) {
+    protected override doSetup(routeData: PaneRouteData) {
         return super.doSetup(routeData) ||
-            this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize) == null;
+            this.context.getCachedList(routeData.paneId, routeData.page!, routeData.pageSize!) == null;
     }
 
     protected setup(routeData: PaneRouteData) {
         this.cachedRouteData = routeData;
-        const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
+        const cachedList = this.context.getCachedList(routeData.paneId, routeData.page!, routeData.pageSize!);
 
         if (cachedList) {
             this.showPlaceholder = false;
@@ -84,17 +84,17 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
 
             if (et && et !== this.lastOid) {
                 this.lastOid = et;
-                this.parent.clear();
+                this.parent?.clear();
                 this.customComponentService.getCustomComponent(et, ViewType.List).then((c: Type<any>) => {
                     const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
-                    this.parent.createComponent(childComponent);
+                    this.parent?.createComponent(childComponent);
                 });
             }
 
         } else {
             this.showPlaceholder = true;
             this.title = 'List';
-            this.parent.clear();
+            this.parent?.clear();
             this.lastOid = null; // so we recreate child after reload
             this.getActionExtensions(routeData)
                 .then((ext: Ro.Extensions) =>
@@ -104,8 +104,8 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
         }
     }
 
-    ngOnDestroy(): void {
+    override ngOnDestroy(): void {
         super.ngOnDestroy();
-        this.parent.clear();
+        this.parent?.clear();
     }
 }
