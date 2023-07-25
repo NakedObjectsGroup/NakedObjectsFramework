@@ -146,7 +146,7 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, OnD
         };
     }
 
-    @Input()
+    @Input({required: true})
     set form(fm: FormGroup) {
         this.formGroup = fm;
     }

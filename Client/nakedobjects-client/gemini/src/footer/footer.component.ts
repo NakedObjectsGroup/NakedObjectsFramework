@@ -32,19 +32,17 @@ export class FooterComponent implements OnInit, OnDestroy {
         private readonly dragAndDrop: DragAndDropService
     ) { }
 
-    private warnSub: ISubscription;
-    private messageSub: ISubscription;
-    private cvmSub: ISubscription;
-    private lcSub: ISubscription;
-    private ddSub: ISubscription;
+    private warnSub?: ISubscription;
+    private messageSub?: ISubscription;
+    private cvmSub?: ISubscription;
+    private lcSub?: ISubscription;
+    private ddSub?: ISubscription;
 
-    loading: boolean;
-    template: string;
-    footerTemplate: string;
-    userName: string;
-    warnings: string[];
-    messages: string[];
-    copyViewModel: IDraggableViewModel;
+    loading?: boolean;
+    userName = "";
+    warnings: string[] = [];
+    messages: string[] = [];
+    copyViewModel?: IDraggableViewModel;
     dropZones: string[] = [];
 
     goHome = (right?: boolean) => {
@@ -94,11 +92,11 @@ export class FooterComponent implements OnInit, OnDestroy {
     };
 
     get currentCopyColor() {
-        return this.copyViewModel.color;
+        return this.copyViewModel?.color;
     }
 
     get currentCopyTitle() {
-        return this.copyViewModel.draggableTitle();
+        return this.copyViewModel?.draggableTitle();
     }
 
     setDropZones(ids: string[]) {

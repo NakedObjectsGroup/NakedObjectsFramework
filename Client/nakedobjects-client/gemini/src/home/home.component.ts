@@ -26,17 +26,17 @@ export class HomeComponent extends PaneComponent {
     }
 
     get menuItems(): LinkViewModel[] {
-        return this.menus.items;
+        return this.menus?.items ?? [];
     }
 
-    selectedMenu: MenuViewModel | null;
-    selectedDialogId: string | null;
+    selectedMenu: MenuViewModel | null = null;
+    selectedDialogId: string | null = null;
 
     hasAuthorisedMenus = true;
     isCreateNew = false;
-    toCreateClass: string;
+    toCreateClass?: string;
 
-    private menus: MenusViewModel;
+    private menus?: MenusViewModel;
 
     getMenus(paneRouteData: PaneRouteData) {
         this.context.getMenus()
@@ -55,7 +55,7 @@ export class HomeComponent extends PaneComponent {
             this.context.getMenu(menuId)
                 .then((menu: Ro.MenuRepresentation) => {
                     this.selectedMenu = this.viewModelFactory.menuViewModel(menu, paneRouteData);
-                    this.selectedDialogId = paneRouteData.dialogId;
+                    this.selectedDialogId = paneRouteData.dialogId ?? null;
                 })
                 .catch((reject: ErrorWrapper) => {
                     this.errorService.handleError(reject);

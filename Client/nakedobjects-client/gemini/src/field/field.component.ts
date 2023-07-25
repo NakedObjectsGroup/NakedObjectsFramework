@@ -11,7 +11,7 @@ import {
     MenuViewModel,
     ParameterViewModel,
     PropertyViewModel
-    } from '@nakedobjects/view-models';
+} from '@nakedobjects/view-models';
 import { Dictionary } from 'lodash';
 import every from 'lodash-es/every';
 import find from 'lodash-es/find';
@@ -26,7 +26,7 @@ import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-compon
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { CdkDrag, CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 
-@Component({template : "<div></div>"})
+@Component({ template: "<div></div>" })
 export abstract class FieldComponent implements OnDestroy {
 
     protected constructor(
@@ -59,26 +59,26 @@ export abstract class FieldComponent implements OnDestroy {
             this.bSubject = new BehaviorSubject(initialValue);
 
             this.sub = this.control.valueChanges.subscribe((data) => {
-                this.bSubject.next(data);
+                this.bSubject!.next(data);
             });
         }
 
         return this.bSubject;
     }
 
-    private formGrp: FormGroup;
-    private vmParent: DialogViewModel | DomainObjectViewModel | MenuViewModel;
-    private model: ParameterViewModel | PropertyViewModel;
-    private isConditionalChoices: boolean;
-    private isAutoComplete: boolean;
-    private bSubject: BehaviorSubject<any>;
-    private sub: ISubscription;
-    private lastArgs: Dictionary<Ro.Value>;
+    private formGrp!: FormGroup;
+    private vmParent!: DialogViewModel | DomainObjectViewModel | MenuViewModel;
+    private model!: ParameterViewModel | PropertyViewModel;
+    private isConditionalChoices?: boolean;
+    private isAutoComplete?: boolean;
+    private bSubject?: BehaviorSubject<any>;
+    private sub?: ISubscription;
+    private lastArgs?: Dictionary<Ro.Value>;
 
-    control: AbstractControl;
+    control!: AbstractControl;
     currentOptions: ChoiceViewModel[] = [];
-    pArgs: Dictionary<Ro.Value>;
-    paneId: Pane;
+    pArgs?: Dictionary<Ro.Value>;
+    paneId?: Pane;
     canDrop = false;
     dragOver = false;
 
@@ -136,8 +136,8 @@ export abstract class FieldComponent implements OnDestroy {
         return object && 'properties' in object;
     }
 
-    private mapValues(args: Dictionary<Ro.Value>, parmsOrProps: { argId: string, getValue: () => Ro.Value }[]) {
-        return mapValues(this.pArgs,
+    private mapValues(args: Dictionary<Ro.Value> | undefined, parmsOrProps: { argId: string, getValue: () => Ro.Value }[]) {
+        return mapValues(args,
             (v, n) => {
                 const pop = find(parmsOrProps, p => p.argId === n);
                 return pop!.getValue();
@@ -176,30 +176,32 @@ export abstract class FieldComponent implements OnDestroy {
     private populateDropdown() {
         const nArgs = this.populateArguments();
         if (this.argsChanged(nArgs)) {
-            const prompts = this.model.conditionalChoices(nArgs);
-            prompts.
-                then((cvms: ChoiceViewModel[]) => {
-                    // if unchanged return
-                    if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
-                        return;
-                    }
-                    this.model.choices = cvms;
-                    this.currentOptions = cvms;
-
-                    if (this.isConditionalChoices) {
-                        // need to reset control to find the selected options
-                        if (this.model.entryType === Ro.EntryType.MultipleConditionalChoices) {
-                            this.control.reset(this.model.selectedMultiChoices);
-                        } else {
-                            this.control.reset(this.model.selectedChoice);
+            const prompts = this.model.conditionalChoices;
+            if (prompts) {
+                prompts(nArgs).
+                    then((cvms: ChoiceViewModel[]) => {
+                        // if unchanged return
+                        if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
+                            return;
                         }
-                    }
-                }).
-                catch(() => {
-                    // error clear everything
-                    this.model.selectedChoice = null;
-                    this.currentOptions = [];
-                });
+                        this.model.choices = cvms;
+                        this.currentOptions = cvms;
+
+                        if (this.isConditionalChoices) {
+                            // need to reset control to find the selected options
+                            if (this.model.entryType === Ro.EntryType.MultipleConditionalChoices) {
+                                this.control.reset(this.model.selectedMultiChoices);
+                            } else {
+                                this.control.reset(this.model.selectedChoice);
+                            }
+                        }
+                    }).
+                    catch(() => {
+                        // error clear everything
+                        this.model.selectedChoice = null;
+                        this.currentOptions = [];
+                    });
+            }
         }
     }
 
@@ -226,8 +228,10 @@ export abstract class FieldComponent implements OnDestroy {
             return;
         }
 
-        if (input && input.length > 0 && input.length >= this.model.minLength) {
-            this.model.prompt(input)
+        const prompt = this.model.prompt;
+
+        if (prompt && input && input.length > 0 && input.length >= (this.model.minLength ?? 0)) {
+            prompt(input)
                 .then((cvms: ChoiceViewModel[]) => {
                     if (cvms.length === this.currentOptions.length && every(cvms, (c, i) => c.equals(this.currentOptions[i]))) {
                         return;
@@ -253,7 +257,7 @@ export abstract class FieldComponent implements OnDestroy {
         // editable booleans only
         if (this.isBoolean && this.control) {
             const input = this.control.value;
-            const element = this.checkboxList.first.nativeElement;
+            const element = this.checkboxList?.first.nativeElement;
             if (input == null) {
                 this.renderer.setProperty(element, 'indeterminate', true);
                 this.renderer.setProperty(element, 'checked', null);

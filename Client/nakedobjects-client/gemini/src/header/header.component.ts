@@ -10,11 +10,11 @@ import { CollectionViewModel, ListViewModel } from '@nakedobjects/view-models';
 })
 export class HeaderComponent {
 
-    @Input()
-    collection: CollectionViewModel | ListViewModel;
+    @Input({required: true})
+    collection!: CollectionViewModel | ListViewModel;
 
     @Input()
-    state: CollectionViewState;
+    state?: CollectionViewState;
 
     allSelected = () => this.collection.allSelected();
     selectAll = () => this.collection.selectAll();

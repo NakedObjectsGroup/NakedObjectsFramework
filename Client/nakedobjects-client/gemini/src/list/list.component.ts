@@ -24,7 +24,7 @@ import { safeUnsubscribe } from '../helpers-components';
 })
 export class ListComponent implements OnInit, OnDestroy {
 
-    private ddSub: ISubscription;
+    private ddSub?: ISubscription;
     dropZones: string[] = [];
 
     constructor(
@@ -39,10 +39,10 @@ export class ListComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    collection: ListViewModel;
+    collection!: ListViewModel;
     title = '';
-    currentState = CollectionViewState.List;
-    selectedDialogId: string;
+    currentState? = CollectionViewState.List;
+    selectedDialogId?: string;
 
     private actionButton: IActionHolder = {
         value: 'Actions',
@@ -116,10 +116,10 @@ export class ListComponent implements OnInit, OnDestroy {
         showDialog: () => false
     };
 
-    private cachedRouteData: PaneRouteData;
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
+    
+    private activatedRouteDataSub?: ISubscription;
+    private paneRouteDataSub?: ISubscription;
+    private lastPaneRouteData?: PaneRouteData;
 
     toggleActionMenu = () => this.collection.toggleActionMenu();
     reloadList = () => this.collection.reload();
@@ -129,7 +129,7 @@ export class ListComponent implements OnInit, OnDestroy {
     pageLast = () => this.collection.pageLast();
 
     disableActions = () => this.collection.noActions() ? true : null;
-    hideAllCheckbox = () => this.collection.noActions() || this.collection.items.length === 0;
+    hideAllCheckbox = () => this.collection.noActions() || !this.collection.items || this.collection.items.length === 0;
 
     pageFirstDisabled = () => this.collection.pageFirstDisabled() ? true : null;
     pagePreviousDisabled = () => this.collection.pagePreviousDisabled() ? true : null;
@@ -161,7 +161,7 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     get items(): ItemViewModel[] {
-        return this.collection.items;
+        return this.collection.items ?? [];
     }
 
     get header() {
@@ -173,25 +173,24 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     get state() {
-        return CollectionViewState[this.currentState].toString().toLowerCase();
+        return CollectionViewState[this.currentState!].toString().toLowerCase();
     }
 
     getActionExtensions(routeData: PaneRouteData): Promise<Ro.Extensions> {
         return routeData.objectId
-            ? this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId)
-            : this.context.getActionExtensionsFromMenu(routeData.menuId, routeData.actionId);
+            ? this.context.getActionExtensionsFromObject(routeData.paneId, Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator), routeData.actionId!)
+            : this.context.getActionExtensionsFromMenu(routeData.menuId!, routeData.actionId!);
     }
 
     protected setup(routeData: PaneRouteData) {
-        this.cachedRouteData = routeData;
-        const cachedList = this.context.getCachedList(routeData.paneId, routeData.page, routeData.pageSize);
+        const cachedList = this.context.getCachedList(routeData.paneId, routeData.page!, routeData.pageSize!);
 
         this.getActionExtensions(routeData)
             .then((ext: Ro.Extensions) =>
                 this.title = ext.friendlyName())
             .catch((reject: ErrorWrapper) => this.error.handleError(reject));
 
-        const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page, routeData.pageSize);
+        const listKey = this.urlManager.getListCacheIndex(routeData.paneId, routeData.page!, routeData.pageSize!);
 
         if (this.collection && this.collection.id === listKey) {
             // same collection/page
@@ -225,8 +224,8 @@ export class ListComponent implements OnInit, OnDestroy {
 
     // now this is a child investigate reworking so object is passed in from parent
     ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
-
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(d => {
+            const data = d as ICustomActivatedRouteData;
             const paneId = data.pane;
 
             if (!this.paneRouteDataSub) {

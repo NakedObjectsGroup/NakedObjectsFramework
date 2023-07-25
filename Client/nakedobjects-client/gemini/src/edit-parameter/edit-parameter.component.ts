@@ -128,7 +128,7 @@ export class EditParameterComponent extends FieldComponent implements OnInit, On
         };
     }
 
-    @Input()
+    @Input({required: true})
     set form(fm: FormGroup) {
         this.formGroup = fm;
     }
