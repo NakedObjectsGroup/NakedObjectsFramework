@@ -35,12 +35,12 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
     }
 
     @ViewChildren(ParametersComponent)
-    parmComponents: QueryList<ParametersComponent>;
+    parmComponents?: QueryList<ParametersComponent>;
 
-    private sub: ISubscription;
-    dialog: MultiLineDialogViewModel;
+    private sub?: ISubscription;
+    dialog!: MultiLineDialogViewModel;
 
-    rowData: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub: ISubscription }[];
+    rowData!: { form: FormGroup, dialog: DialogViewModel, parms: Dictionary<ParameterViewModel>, sub: ISubscription }[];
 
     form = (i: number) => {
         const rowData = this.rowData[i];
@@ -132,26 +132,26 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
         if (routeData.menuId) {
             this.context.getMenu(routeData.menuId)
                 .then((menu: Ro.MenuRepresentation) => {
-                    this.setMultiLineDialog(menu, routeData.dialogId, routeData);
+                    this.setMultiLineDialog(menu, routeData.dialogId!, routeData);
                 })
                 .catch((reject: ErrorWrapper) => {
                     this.error.handleError(reject);
                 });
         } else if (routeData.objectId) {
             const oid = Ro.ObjectIdWrapper.fromObjectId(routeData.objectId, this.configService.config.keySeparator);
-            this.context.getObject(routeData.paneId, oid, routeData.interactionMode).
+            this.context.getObject(routeData.paneId, oid, routeData.interactionMode!).
                 then((object: Ro.DomainObjectRepresentation) => {
 
                     const ovm = this.viewModelFactory.domainObjectViewModel(object, routeData, false);
                     const newDialogId = routeData.dialogId;
 
-                    const lcaCollection = find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId));
+                    const lcaCollection = find(ovm.collections, c => c.hasMatchingLocallyContributedAction(newDialogId!));
 
                     if (lcaCollection) {
                         const actionViewModel = find(lcaCollection.actions, a => a.actionRep.actionId() === newDialogId);
-                        this.setMultiLineDialog(lcaCollection, newDialogId, routeData, actionViewModel);
+                        this.setMultiLineDialog(lcaCollection, newDialogId!, routeData, actionViewModel);
                     } else {
-                        this.setMultiLineDialog(object, newDialogId, routeData);
+                        this.setMultiLineDialog(object, newDialogId!, routeData);
                     }
 
                 }).
@@ -168,10 +168,10 @@ export class MultiLineDialogComponent extends PaneComponent implements AfterView
     }
 
     ngAfterViewInit(): void {
-        this.sub = this.parmComponents.changes.subscribe(ql => this.focus(ql));
+        this.sub = this.parmComponents?.changes.subscribe(ql => this.focus(ql));
     }
 
-    ngOnDestroy(): void {
+    override ngOnDestroy(): void {
         safeUnsubscribe(this.sub);
         each(this.rowData, rd => safeUnsubscribe(rd.sub));
         super.ngOnDestroy();

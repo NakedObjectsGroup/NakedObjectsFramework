@@ -17,9 +17,9 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
     constructor(private readonly urlManager: UrlManagerService) { }
 
     @ViewChildren(ActionComponent)
-    actionComponents: QueryList<ActionComponent>;
+    actionComponents?: QueryList<ActionComponent>;
 
-    private sub: ISubscription;
+    private sub?: ISubscription;
 
     @Input()
     set menus(links: LinkViewModel[]) {
@@ -28,7 +28,7 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
             link => ({
                 value: link.title,
                 doClick: () => {
-                    const menuId = link.link.rel().parms[0].value;
+                    const menuId = link.link.rel()!.parms[0].value;
                     this.urlManager.setMenu(menuId!, link.paneId);
                 },
                 doRightClick: () => { },
@@ -42,9 +42,9 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
             }));
     }
 
-    actions: IActionHolder[];
+    actions: IActionHolder[] = [];
 
-    focusOnFirstMenu(menusList: QueryList<ActionComponent>) {
+    focusOnFirstMenu(menusList?: QueryList<ActionComponent>) {
         if (menusList) {
             // until first element returns true
             some(menusList.toArray(), i => i.focus());
@@ -53,7 +53,7 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.focusOnFirstMenu(this.actionComponents);
-        this.sub = this.actionComponents.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstMenu(ql));
+        this.sub = this.actionComponents?.changes.subscribe((ql: QueryList<ActionComponent>) => this.focusOnFirstMenu(ql));
     }
 
     ngOnDestroy() {

@@ -123,32 +123,32 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         showDialog: () => false
     };
 
-    private actionButtons: IActionHolder[] | null;
+    private actionButtons: IActionHolder[] | null = null;
     private viewButtons = [this.actionButton, this.editButton, this.reloadButton];
     private saveButtons = [this.saveButton, this.saveAndCloseButton, this.cancelButton];
 
-    private lastPaneRouteData: PaneRouteData;
+    private lastPaneRouteData?: PaneRouteData;
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private concurrencyErrorSub: ISubscription;
-    private formSub: ISubscription;
-    private focusSub: ISubscription;
-    private ddSub: ISubscription;
+    private activatedRouteDataSub?: ISubscription;
+    private paneRouteDataSub?: ISubscription;
+    private concurrencyErrorSub?: ISubscription;
+    private formSub?: ISubscription;
+    private focusSub?: ISubscription;
+    private ddSub?: ISubscription;
 
-    selectedDialogId: string;
+    selectedDialogId?: string;
     dropZones: string[] = [];
 
     @ViewChildren(PropertiesComponent)
-    propComponents: QueryList<PropertiesComponent>;
+    propComponents?: QueryList<PropertiesComponent>;
 
     // template API
     expiredTransient = false;
-    object: DomainObjectViewModel | null;
-    toCreateClass = '';
+    object: DomainObjectViewModel | null = null;
+    toCreateClass? = '';
 
-    private mode: InteractionMode | null;
-    form: FormGroup | null;
+    private mode: InteractionMode | null = null;
+    form: FormGroup | null = null;
 
     get viewMode() {
         return this.mode == null ? '' : InteractionMode[this.mode];
@@ -188,8 +188,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         return obj ? obj.tooltip() : '';
     }
 
-    isEditDialog(selectedDialogId: string) {
-        if (this.object.domainObject.hasActionMember(selectedDialogId)) {
+    isEditDialog(selectedDialogId?: string) {
+        if (selectedDialogId &&  this.object?.domainObject.hasActionMember(selectedDialogId)) {
             const action = this.object.domainObject.actionMember(selectedDialogId);
             return !!action.extensions().editProperties();
         }
@@ -216,7 +216,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
     title() {
         const obj = this.object;
-        return obj ? obj.getTitle(this.mode) : '';
+        return obj ? obj.getTitle(this.mode ?? undefined) : '';
     }
 
     disableActions = () => {
@@ -329,7 +329,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 
         const modeChanging = this.mode !== routeData.interactionMode;
 
-        this.mode = routeData.interactionMode;
+        this.mode = routeData.interactionMode ?? null;
 
         const wasDirty = this.isDirty(routeData, oid);
 
@@ -344,7 +344,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
             // set pendingColor at once to smooth transition
             this.colorService.toColorNumberFromType(oid.domainType).then(c => this.pendingColor = `${this.configService.config.objectColor}${c}`);
 
-            this.context.getObject(routeData.paneId, oid, routeData.interactionMode)
+            this.context.getObject(routeData.paneId, oid, routeData.interactionMode!)
                 .then((object: Ro.DomainObjectRepresentation) => {
 
                     // only change the object property if the object has changed
@@ -392,7 +392,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     isDirty(paneRouteData: PaneRouteData, oid?: Ro.ObjectIdWrapper) {
-        oid = oid || Ro.ObjectIdWrapper.fromObjectId(paneRouteData.objectId, this.configService.config.keySeparator);
+        oid = oid || Ro.ObjectIdWrapper.fromObjectId(paneRouteData.objectId!, this.configService.config.keySeparator);
         return this.context.getIsDirty(oid);
     }
 
@@ -401,8 +401,8 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
-
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(d => {
+            const data = d as ICustomActivatedRouteData;
             const paneId = data.pane;
 
             if (!this.paneRouteDataSub) {
@@ -437,7 +437,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.focusSub = this.propComponents.changes.subscribe(ql => this.focus(ql));
+        this.focusSub = this.propComponents?.changes.subscribe(ql => this.focus(ql));
     }
 
     ngOnDestroy(): void {

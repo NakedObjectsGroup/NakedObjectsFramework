@@ -18,7 +18,7 @@ export class LogoffComponent implements OnInit {
         private readonly location: Location,
     ) { }
 
-    userId: string;
+    userId = '';
 
     isActive = true;
 

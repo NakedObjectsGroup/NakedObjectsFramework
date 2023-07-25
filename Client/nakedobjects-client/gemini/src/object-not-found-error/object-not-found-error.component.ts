@@ -11,8 +11,8 @@ export class ObjectNotFoundErrorComponent implements OnInit {
 
     // template API
 
-    title: string;
-    message: string;
+    title = '';
+    message = '';
 
     ngOnInit(): void {
 

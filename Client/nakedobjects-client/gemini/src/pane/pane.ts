@@ -14,15 +14,15 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    private activatedRouteDataSub: ISubscription;
-    private paneRouteDataSub: ISubscription;
-    private lastPaneRouteData: PaneRouteData;
+    private activatedRouteDataSub?: ISubscription;
+    private paneRouteDataSub?: ISubscription;
+    private lastPaneRouteData?: PaneRouteData;
 
     // pane API
-    paneId: Pane;
-    paneType: PaneType;
-    paneIdName: PaneName;
-    arData: ICustomActivatedRouteData;
+    paneId?: Pane;
+    paneType?: PaneType;
+    paneIdName?: PaneName;
+    arData?: ICustomActivatedRouteData;
 
     onChild() {
         setTimeout(() => this.paneType = 'split');
@@ -38,7 +38,8 @@ export abstract class PaneComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.activatedRouteDataSub = this.activatedRoute.data.subscribe((data: ICustomActivatedRouteData) => {
+        this.activatedRouteDataSub = this.activatedRoute.data.subscribe(d => {
+            const data = d as ICustomActivatedRouteData;
             this.arData = data;
             this.paneId = data.pane;
             this.paneType = data.paneType;
