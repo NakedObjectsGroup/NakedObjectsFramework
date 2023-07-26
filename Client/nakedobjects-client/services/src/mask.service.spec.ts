@@ -176,7 +176,7 @@ describe('MaskService', () => {
 
         function testFormat(toTest: string, valid: boolean, expected: Date) {
 
-            const m = format(toTest, supportedDateFormats);
+            const m = format(toTest, supportedDateFormats)!;
 
             expect(m.isValid).toBe(valid);
 

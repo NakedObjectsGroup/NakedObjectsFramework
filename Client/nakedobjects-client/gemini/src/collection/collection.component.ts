@@ -36,7 +36,7 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
 
     get state() {
-        return CollectionViewState[this.currentState].toString().toLowerCase() as State;
+        return CollectionViewState[this.currentState!].toString().toLowerCase() as State;
     }
 
     get title() {
