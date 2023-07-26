@@ -20,8 +20,8 @@ export class AuthService implements CanActivate {
     }
 
     private get auth0() {
-        const clientID = this.configService.config.authClientId;
-        const domain = this.configService.config.authDomain;
+        const clientID = this.configService.config.authClientId!;
+        const domain = this.configService.config.authDomain!;
         const url = (window as any).location.origin;
         const redirectUrl = this.redirectUrl || `${url}/gemini/callback`;
 
