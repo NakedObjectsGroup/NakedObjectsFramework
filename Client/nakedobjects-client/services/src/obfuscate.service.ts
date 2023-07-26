@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ObfuscateService  {
+export class ObfuscateService {
     public obfuscate(s: string) {
         return s;
     }

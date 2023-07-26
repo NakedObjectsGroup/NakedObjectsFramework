@@ -1,4 +1,4 @@
-﻿import {  HttpClientModule } from '@angular/common/http';
+﻿import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import * as Ro from '@nakedobjects/restful-objects';

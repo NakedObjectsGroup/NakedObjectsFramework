@@ -23,6 +23,7 @@
       "rules": {
         "semi": 2,
         "quotes": ["error", "single"],
+        "no-multi-spaces": "error",
         "@typescript-eslint/no-non-null-assertion" : 0,
         "@typescript-eslint/no-unused-vars": [
           "error", { "argsIgnorePattern": "^_" }

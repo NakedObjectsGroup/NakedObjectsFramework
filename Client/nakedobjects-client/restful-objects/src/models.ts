@@ -335,7 +335,7 @@ export function urlWithInlinePropertyDetailsFalse(obj: DomainObjectRepresentatio
 // helper functions
 
 function isAutoComplete(args: Ro.IValue | Ro.IValueMap | Ro.IObjectOfType | Ro.IPromptMap | null) {
-    return args &&  Object.prototype.hasOwnProperty.call(args, roSearchTerm);
+    return args && Object.prototype.hasOwnProperty.call(args, roSearchTerm);
 }
 
 function isScalarType(typeName: string | null) {
@@ -772,7 +772,7 @@ export class Value {
     private decompress(shortCutMarker: string, urlShortCuts: string[]): Value {
         if (this.isReference()) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const link = this.link()!.decompress(shortCutMarker, urlShortCuts);  // know true
+            const link = this.link()!.decompress(shortCutMarker, urlShortCuts); // know true
             return new Value(link);
         }
         if (this.isList()) {
@@ -792,7 +792,7 @@ export class Value {
     toValueString(): string {
         if (this.isReference()) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            return this.link()!.href();  // know true
+            return this.link()!.href(); // know true
         }
         return (this.wrapped == null) ? '' : this.wrapped.toString();
     }
@@ -2490,7 +2490,7 @@ export class Link {
     }
 
     rel(): Rel | undefined {
-        return  this.wrapped.rel ? new Rel(this.wrapped.rel) : undefined;
+        return this.wrapped.rel ? new Rel(this.wrapped.rel) : undefined;
     }
 
     type(): MediaType | undefined {
@@ -2522,7 +2522,7 @@ export class Link {
 
     copyToHateoasModel(hateoasModel: IHateoasModel): void {
         hateoasModel.hateoasUrl = this.href();
-        hateoasModel.method =  throwIfNotExists(this.method());
+        hateoasModel.method = throwIfNotExists(this.method());
     }
 
     private getHateoasTarget(targetType: string): IHateoasModel {

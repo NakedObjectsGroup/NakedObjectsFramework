@@ -18,7 +18,7 @@ import { LoggerService } from './logger.service';
 import { RepLoaderService } from './rep-loader.service';
 import { CollectionViewState, InteractionMode, Pane, PaneRouteData } from './route-data';
 import { UrlManagerService } from './url-manager.service';
-import { ErrorWrapper,  ClientErrorCode, ErrorCategory } from './error.wrapper';
+import { ErrorWrapper, ClientErrorCode, ErrorCategory } from './error.wrapper';
 
 enum DirtyState {
     DirtyMustReload = 1,
@@ -721,7 +721,7 @@ export class ContextService {
     decPendingPotentActionOrReload(paneId: Pane) {
         let count = this.pendingPotentActionCount[paneId]! - 1;
 
-        if (count < 0) {  // should never happen
+        if (count < 0) { // should never happen
             count = 0;
             this.loggerService.warn('ContextService:decPendingPotentActionOrReload count less than 0');
         }

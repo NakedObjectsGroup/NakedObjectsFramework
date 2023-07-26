@@ -128,7 +128,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
 
         // don't show editActions in menu
         const editActions = allActions.filter(avm => avm.editProperties.length > 0);
-        this.actions =  without(allActions, ...editActions);
+        this.actions = without(allActions, ...editActions);
 
         const editActionTuples: [ActionViewModel, string[]][] = map(editActions, a => [a, a.editProperties]);
 

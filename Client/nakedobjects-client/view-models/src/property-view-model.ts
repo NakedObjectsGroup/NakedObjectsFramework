@@ -89,7 +89,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         this.description = this.getRequiredIndicator() + this.description;
 
         const editActions = editActionTuples.filter(t => t[1].includes(id)).map(t => t[0]);
-        this.isEditByAction =  editActions.length > 0;
+        this.isEditByAction = editActions.length > 0;
         if (this.isEditByAction) {
             this.editAction = editActions[0];
         }

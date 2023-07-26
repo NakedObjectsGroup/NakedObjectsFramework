@@ -73,7 +73,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     }
 
     override getDefault(type: string) {
-        return this.configuredMaxRandomIndex ?  this.getRandomColorNumber(type) : super.getDefault(type);
+        return this.configuredMaxRandomIndex ? this.getRandomColorNumber(type) : super.getDefault(type);
     }
 
     configureFromConfig(): void {

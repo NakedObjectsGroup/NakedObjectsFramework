@@ -73,7 +73,7 @@ class RequestOptions {
 
     toHttpRequest(allowBrowserCache: boolean) {
         if (!allowBrowserCache) {
-            const ccHeaders =  ['max-age=0', 'must-revalidate'];
+            const ccHeaders = ['max-age=0', 'must-revalidate'];
             this.init.headers = this.init.headers
                 ? this.init.headers.append('Cache-Control', ccHeaders)
                 : new HttpHeaders({'Cache-Control' : ccHeaders });

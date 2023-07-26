@@ -123,7 +123,7 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
 
     doClick = (right?: boolean) => this.property?.doClick(right);
 
-    doEdit = () =>  {
+    doEdit = () => {
         if (!this.property?.isEditActionDisabled) {
           this.property?.doEditByAction();
         }

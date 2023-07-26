@@ -260,7 +260,7 @@ export class UrlManagerService {
         const rawErrorCategory = this.getId(akm.errorCat + paneId, routeParams);
         paneRouteData.errorCategory = rawErrorCategory ? (<any>ErrorCategory)[rawErrorCategory] : null;
 
-        paneRouteData.objectId =  this.deobfuscate(this.getId(akm.object + paneId, routeParams));
+        paneRouteData.objectId = this.deobfuscate(this.getId(akm.object + paneId, routeParams));
         paneRouteData.actionsOpen = this.getId(akm.actions + paneId, routeParams);
 
         const rawCollectionState = this.getId(akm.collection + paneId, routeParams);
@@ -282,7 +282,7 @@ export class UrlManagerService {
         paneRouteData.pageSize = parseInt(this.getId(akm.pageSize + paneId, routeParams), 10);
 
         paneRouteData.attachmentId = this.getId(akm.attachment + paneId, routeParams);
-        paneRouteData.toCreate =  this.getId(akm.toCreate + paneId, routeParams);
+        paneRouteData.toCreate = this.getId(akm.toCreate + paneId, routeParams);
     }
 
     private setPaneRouteData(paneRouteData: PaneRouteData, paneId: Pane) {
@@ -621,7 +621,7 @@ export class UrlManagerService {
     };
 
     setObjectWithMode = (resultObject: Ro.DomainObjectRepresentation, newMode: InteractionMode, paneId: Pane = Pane.Pane1) => {
-        const oid =  this.obfuscate(resultObject.id());
+        const oid = this.obfuscate(resultObject.id());
         const okey = `${akm.object}${paneId}`;
         const mkey = `${akm.interactionMode}${paneId}`;
         const newValues = zipObject([okey, mkey], [oid, InteractionMode[newMode]]) as Dictionary<string>;

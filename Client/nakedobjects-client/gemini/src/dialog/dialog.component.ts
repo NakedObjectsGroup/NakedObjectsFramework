@@ -17,7 +17,7 @@ import { ParametersComponent } from '../parameters/parameters.component';
     templateUrl: 'dialog.component.html',
     styleUrls: ['dialog.component.css']
 })
-export class DialogComponent extends BaseDialogComponent  implements AfterViewInit, OnDestroy, OnChanges {
+export class DialogComponent extends BaseDialogComponent implements AfterViewInit, OnDestroy, OnChanges {
 
     constructor(
         viewModelFactory: ViewModelFactoryService,

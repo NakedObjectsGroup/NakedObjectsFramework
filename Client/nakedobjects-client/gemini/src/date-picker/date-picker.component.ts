@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { validateDate } from '@nakedobjects/view-models';
 import concat from 'lodash-es/concat';
-import { DateTime }  from 'luxon';
+import { DateTime } from 'luxon';
 import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { focus, safeUnsubscribe } from '../helpers-components';

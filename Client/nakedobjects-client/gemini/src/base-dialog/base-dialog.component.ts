@@ -1,4 +1,4 @@
-import {  Component, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
 import { ContextService, ErrorService, ErrorWrapper } from '@nakedobjects/services';

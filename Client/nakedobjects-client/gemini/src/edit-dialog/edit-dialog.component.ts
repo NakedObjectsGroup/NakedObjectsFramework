@@ -18,7 +18,7 @@ import { EditParameterComponent } from '../edit-parameter/edit-parameter.compone
     templateUrl: 'edit-dialog.component.html',
     styleUrls: ['edit-dialog.component.css']
 })
-export class EditDialogComponent  extends BaseDialogComponent implements AfterViewInit, OnDestroy, OnChanges {
+export class EditDialogComponent extends BaseDialogComponent implements AfterViewInit, OnDestroy, OnChanges {
 
     constructor(
         viewModelFactory: ViewModelFactoryService,

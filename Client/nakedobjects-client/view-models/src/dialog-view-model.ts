@@ -1,5 +1,5 @@
 ﻿import * as Ro from '@nakedobjects/restful-objects';
-import {  ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
+import { ContextService, ErrorService, ErrorWrapper, Pane, PaneRouteData, UrlManagerService } from '@nakedobjects/services';
 import { Dictionary } from 'lodash';
 import each from 'lodash-es/each';
 import every from 'lodash-es/every';

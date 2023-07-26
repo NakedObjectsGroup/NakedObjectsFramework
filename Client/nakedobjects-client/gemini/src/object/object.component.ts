@@ -189,7 +189,7 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     isEditDialog(selectedDialogId?: string) {
-        if (selectedDialogId &&  this.object?.domainObject.hasActionMember(selectedDialogId)) {
+        if (selectedDialogId && this.object?.domainObject.hasActionMember(selectedDialogId)) {
             const action = this.object.domainObject.actionMember(selectedDialogId);
             return !!action.extensions().editProperties();
         }

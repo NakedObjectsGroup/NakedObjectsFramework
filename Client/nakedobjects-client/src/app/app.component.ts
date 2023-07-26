@@ -16,5 +16,5 @@ export class AppComponent {
         auth.handleAuthentication();
      }
 
-    isGemini = () =>  this.urlManager.isGemini();
+    isGemini = () => this.urlManager.isGemini();
 }

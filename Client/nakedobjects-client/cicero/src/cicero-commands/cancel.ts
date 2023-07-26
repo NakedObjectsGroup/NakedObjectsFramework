@@ -19,7 +19,7 @@ export class Cancel extends Command {
         configService: ConfigService,
         ciceroContext: CiceroContextService,
         ciceroRenderer: CiceroRendererService,
-    )  {
+    ) {
         super(urlManager, location, commandFactory, context, mask, error, configService, ciceroContext, ciceroRenderer);
     }
 
