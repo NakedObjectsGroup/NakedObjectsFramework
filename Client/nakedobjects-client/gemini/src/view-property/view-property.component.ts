@@ -11,7 +11,7 @@ import { safeUnsubscribe } from '../helpers-components';
 })
 export class ViewPropertyComponent implements OnInit, OnDestroy {
 
-    private ddSub: ISubscription;
+    private ddSub?: ISubscription;
 
     constructor(
         private readonly dragAndDrop: DragAndDropService,
@@ -23,10 +23,10 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     // template inputs
 
     @Input()
-    property: PropertyViewModel;
+    property?: PropertyViewModel;
 
     @Input()
-    propertyName: string;
+    propertyName?: string;
 
     // template listeners
 
@@ -51,7 +51,7 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     get propertyRefType() {
-        return this.property.refType;
+        return this.property?.refType;
     }
 
     get propertyReturnType() {
@@ -63,31 +63,31 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     get value() {
-        return this.property.value;
+        return this.property?.value;
     }
 
     get format() {
-        return this.property.format;
+        return this.property?.format;
     }
 
     get isBlob() {
-        return this.property.format === 'blob';
+        return this.property?.format === 'blob';
     }
 
     get isMultiline() {
-        return !(this.property.multipleLines === 1);
+        return !(this.property?.multipleLines === 1);
     }
 
     get multilineHeight() {
-        return `${this.property.multipleLines * 20}px`;
+        return `${(this.property?.multipleLines ?? 1) * 20}px`;
     }
 
     get color() {
-        return this.property.color;
+        return this.property?.color;
     }
 
     get attachment(): AttachmentViewModel | null {
-        return this.property.attachment;
+        return this.property?.attachment ?? null;
     }
 
     get isEditByAction() {
@@ -95,21 +95,21 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
     }
 
     get editActionTooltip() {
-        return this.property.editActionTooltip;
+        return this.property?.editActionTooltip;
     }
 
     get isLink() {
-        return this.property.isLink;
+        return this.property?.isLink;
     }
 
     get linkValue() {
-        const lp = this.property.linkProperties();
+        const lp = this.property?.linkProperties();
         return lp?.[1] || this.value;
     }
 
     doLinkClick(newPane?: boolean) {
         const href = this.value as string;
-        if (newPane || this.property.linkProperties()?.[0]) {
+        if (newPane || this.property?.linkProperties()?.[0]) {
             window.open(href, '_blank');
         }
         else if (href.startsWith('http')) {
@@ -121,11 +121,11 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
         }
     }
 
-    doClick = (right?: boolean) => this.property.doClick(right);
+    doClick = (right?: boolean) => this.property?.doClick(right);
 
     doEdit = () =>  {
-        if (!this.property.isEditActionDisabled) {
-          this.property.doEditByAction();
+        if (!this.property?.isEditActionDisabled) {
+          this.property?.doEditByAction();
         }
     };
 
@@ -142,7 +142,7 @@ export class ViewPropertyComponent implements OnInit, OnDestroy {
 
     get editActionClass() {
         return ({
-            tempdisabled: this.property.isEditActionDisabled,
+            tempdisabled: this.property?.isEditActionDisabled,
         });
     }
 

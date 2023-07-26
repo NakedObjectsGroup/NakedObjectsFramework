@@ -14,17 +14,17 @@ export class RowComponent {
         private readonly dragAndDrop: DragAndDropService,
     ) { }
 
-    @Input()
-    item: ItemViewModel;
+    @Input({required : true})
+    item!: ItemViewModel;
 
-    @Input()
-    row: number;
+    @Input({required : true})
+    row!: number;
 
-    @Input()
-    withCheckbox: boolean;
+    @Input({required : true})
+    withCheckbox!: boolean;
 
-    @Input()
-    isTable: boolean;
+    @Input({required : true})
+    isTable!: boolean;
 
     @ViewChildren('focus')
     rowChildren?: QueryList<ElementRef>;
@@ -63,8 +63,8 @@ export class RowComponent {
     }
 
     tableTitle = () => this.item.tableRowViewModel ? this.item.tableRowViewModel.title : this.title;
-    hasTableTitle = () => (this.item.tableRowViewModel && this.item.tableRowViewModel.showTitle) || (this.item instanceof RecentItemViewModel && this.item.title);
-    tableProperties = (): TableRowColumnViewModel[] => this.item.tableRowViewModel && this.item.tableRowViewModel.properties;
+    hasTableTitle = () => this.item.tableRowViewModel?.showTitle || !!(this.item instanceof RecentItemViewModel && this.item.title);
+    tableProperties = (): TableRowColumnViewModel[] => this.item.tableRowViewModel?.properties ?? [];
 
     propertyType = (property: TableRowColumnViewModel) => property.type;
     propertyValue = (property: TableRowColumnViewModel) => property.value;

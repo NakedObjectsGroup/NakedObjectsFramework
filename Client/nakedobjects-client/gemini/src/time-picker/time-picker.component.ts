@@ -31,27 +31,27 @@ export interface ITimePickerInputEvent {
 })
 export class TimePickerComponent implements OnInit, OnDestroy {
 
-    @Input()
-    inputEvents: EventEmitter<ITimePickerInputEvent>;
+    @Input({required : true})
+    inputEvents!: EventEmitter<ITimePickerInputEvent>;
 
     @Output()
     outputEvents: EventEmitter<ITimePickerOutputEvent>;
 
-    @Input()
-    id: string;
+    @Input({required : true})
+    id!: string;
 
     @ViewChild('focus', {static: false})
-    inputField: ElementRef;
+    inputField?: ElementRef;
 
     constructor() {
         this.outputEvents = new EventEmitter<ITimePickerOutputEvent>();
     }
 
-    private timeValue: DateTime | null;
-    private modelValue: string;
-    private eventsSub: ISubscription;
-    private bSubject: BehaviorSubject<string>;
-    private sub: ISubscription;
+    private timeValue: DateTime | null = null;
+    private modelValue = '';
+    private eventsSub?: ISubscription;
+    private bSubject?: BehaviorSubject<string>;
+    private sub?: ISubscription;
 
     set model(s: string) {
         this.modelValue = s;

@@ -8,11 +8,11 @@ import { DialogViewModel, ParameterViewModel } from '@nakedobjects/view-models';
 })
 export class ViewParameterComponent {
 
-    @Input()
-    parent: DialogViewModel;
+    @Input({required : true})
+    parent!: DialogViewModel;
 
-    @Input()
-    parameter: ParameterViewModel;
+    @Input({required : true})
+    parameter!: ParameterViewModel;
 
     get title() {
         return this.parameter.title;

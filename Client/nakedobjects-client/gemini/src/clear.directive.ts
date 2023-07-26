@@ -22,14 +22,13 @@ export class ClearDirective implements OnInit, OnDestroy {
         this.nativeEl = this.el.nativeElement;
     }
 
-    // tslint:disable-next-line:no-input-rename
     @Input('nofClear')
-    subject: BehaviorSubject<any>;
+    subject!: BehaviorSubject<any>;
 
     @Output()
     clear = new EventEmitter();
 
-    private sub: ISubscription;
+    private sub?: ISubscription;
 
     ngOnInit(): void {
         this.onChange();

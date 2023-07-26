@@ -43,8 +43,8 @@ export class EditPropertyComponent extends FieldComponent implements OnInit, OnD
     @ViewChildren('checkbox')
     checkboxList?: QueryList<ElementRef>;
 
-    @Input({required: true})
-    parent!: DomainObjectViewModel;
+    @Input()
+    parent?: DomainObjectViewModel;
 
     @Input({required: true})
     set property(value: PropertyViewModel) {

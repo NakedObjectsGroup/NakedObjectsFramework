@@ -15,17 +15,17 @@ export class TimePickerFacadeComponent implements AfterViewInit {
         this.inputEvents = new EventEmitter<ITimePickerInputEvent>();
     }
 
-    @Input()
-    control: AbstractControl;
+    @Input({required : true})
+    control!: AbstractControl;
 
-    @Input()
-    form: FormGroup;
+    @Input({required : true})
+    form!: FormGroup;
 
-    @Input()
-    model: FieldViewModel;
+    @Input({required : true})
+    model!: FieldViewModel;
 
     @ViewChild('tp', {static : false})
-    timepicker: TimePickerComponent;
+    timepicker?: TimePickerComponent;
 
     inputEvents: EventEmitter<ITimePickerInputEvent>;
 
