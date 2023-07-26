@@ -67,7 +67,7 @@ export abstract class FieldComponent implements OnDestroy {
     }
 
     private formGrp!: FormGroup;
-    private vmParent!: DialogViewModel | DomainObjectViewModel | MenuViewModel;
+    private vmParent?: DialogViewModel | DomainObjectViewModel | MenuViewModel;
     private model!: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices?: boolean;
     private isAutoComplete?: boolean;
@@ -85,7 +85,8 @@ export abstract class FieldComponent implements OnDestroy {
     abstract checkboxList?: QueryList<ElementRef>;
     abstract focusList?: QueryList<ElementRef | DatePickerFacadeComponent | TimePickerFacadeComponent | AutoCompleteComponent>;
 
-    protected init(vmParent: DialogViewModel | DomainObjectViewModel | MenuViewModel,
+    protected init(
+        vmParent: DialogViewModel | DomainObjectViewModel | MenuViewModel | undefined,
         vm: ParameterViewModel | PropertyViewModel,
         control: AbstractControl) {
 

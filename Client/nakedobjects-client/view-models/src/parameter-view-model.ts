@@ -199,7 +199,8 @@ export class ParameterViewModel extends FieldViewModel {
                     }
                     break;
                 }
-            // fall through
+                this.formattedValue = this.selectedChoice ? this.selectedChoice.toString() : '';
+                break;
             case (Ro.EntryType.AutoComplete):
             case (Ro.EntryType.Choices):
             case (Ro.EntryType.ConditionalChoices):

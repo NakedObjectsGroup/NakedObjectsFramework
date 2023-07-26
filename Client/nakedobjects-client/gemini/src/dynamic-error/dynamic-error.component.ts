@@ -25,10 +25,10 @@ export class DynamicErrorComponent implements OnInit {
 
         const errorWrapper = this.context.getError();
         const code = errorWrapper.httpErrorCode || errorWrapper.clientErrorCode;
-        if (errorWrapper && code) {
+        if (errorWrapper && code && this.parent) {
             this.customComponentService.getCustomErrorComponent(errorWrapper.category, code).then((c: Type<any>) => {
                 const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
-                this.parent.createComponent(childComponent);
+                this.parent!.createComponent(childComponent);
             });
         } else {
             this.loggerService.warn('No error found returning to home page');
