@@ -37,7 +37,7 @@ export class Goto extends Command {
         return this.isObject() || this.isList();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, _chained: boolean): Promise<CommandResult> {
         const arg0 = this.argumentAsString(args, 0);
 
         if (arg0 === undefined) {

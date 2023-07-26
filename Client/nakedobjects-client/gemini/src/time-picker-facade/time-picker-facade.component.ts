@@ -58,7 +58,7 @@ export class TimePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-    handleInvalidTimeEvent(data: string) {
+    handleInvalidTimeEvent() {
         if (this.control) {
             this.control.setValue('');
             this.model.setInvalidTime();
@@ -73,7 +73,7 @@ export class TimePickerFacadeComponent implements AfterViewInit {
                 this.handleTimeChangedEvent(e.data);
                 break;
             case ('timeInvalid'):
-                this.handleInvalidTimeEvent(e.data);
+                this.handleInvalidTimeEvent();
                 break;
             case ('timeCleared'):
                 this.handleTimeClearedEvent();

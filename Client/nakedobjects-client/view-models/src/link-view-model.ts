@@ -36,7 +36,7 @@ export class LinkViewModel implements IDraggableViewModel {
     private readonly domainType: string;
 
     // IDraggableViewModel
-    color= "";
+    color= '';
     readonly value: Ro.ScalarValueType;
     readonly reference: string;
     readonly selectedChoice: ChoiceViewModel;
@@ -47,7 +47,7 @@ export class LinkViewModel implements IDraggableViewModel {
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.domainType, targetType);
 
     // because may be clicking on menu already open so want to reset focus
-    readonly doClick = (right?: boolean) => {
+    readonly doClick = (_right?: boolean) => {
         const menuId = this.link.rel()?.parms[0].value;
         if (menuId) {
             this.urlManager.setMenu(menuId, this.paneId);

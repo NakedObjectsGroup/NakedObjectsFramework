@@ -123,7 +123,7 @@ export function withUndefined<T>(v: T | undefined | null): T | undefined {
 
 export function throwIfNotExists<T>(v: T | undefined | null): T {
     if (v == null){
-        throw new Error("Unexpected null/undefined value");
+        throw new Error('Unexpected null/undefined value');
     }
     return v;
 }
@@ -493,7 +493,7 @@ export abstract class HateosModel implements IHateoasModel {
     hateoasUrl = '';
     method: Ro.HttpMethodsType = 'GET';
     protected urlParms: Dictionary<unknown> = {};
-    keySeparator = "--";
+    keySeparator = '--';
 
     protected constructor(protected model?: Ro.IRepresentation) {
     }

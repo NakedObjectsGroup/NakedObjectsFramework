@@ -32,7 +32,7 @@ export class ClearDirective implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.onChange();
-        this.sub = this.subject.subscribe(data => this.onChange());
+        this.sub = this.subject.subscribe(_ => this.onChange());
     }
 
     // not need the ngClass directive on element even though it doesn't do anything

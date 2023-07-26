@@ -33,7 +33,7 @@ export class Selection extends Command {
         return this.isList();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(_args: string | null, _chained: boolean): Promise<CommandResult> {
         //    //TODO: Add in sub-commands: Add, Remove, All, Clear & Show
         //    const arg = this.argumentAsString(args, 0);
         //    const { start, end } = this.parseRange(arg); //'destructuring'

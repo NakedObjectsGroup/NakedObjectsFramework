@@ -27,7 +27,7 @@ export class AttachmentPropertyComponent {
         return this.attach;
     }
 
-    title = "Empty";
+    title = 'Empty';
     image?: string;
 
     doAttachmentClick = (right?: boolean) => {

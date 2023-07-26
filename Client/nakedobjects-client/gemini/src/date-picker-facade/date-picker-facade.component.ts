@@ -87,7 +87,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         }
     }
 
-    handleInvalidDateEvent(data: string) {
+    handleInvalidDateEvent(_: string) {
         if (this.control) {
             this.model.setInvalidDate();
             this.model.clientValid = false;

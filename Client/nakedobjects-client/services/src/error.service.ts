@@ -30,7 +30,7 @@ export class ErrorService {
 
     private preProcessors: ErrorPreprocessor[] = [];
 
-    private handleHttpServerError(reject: ErrorWrapper) {
+    private handleHttpServerError(_: ErrorWrapper) {
         this.urlManager.setError(ErrorCategory.HttpServerError);
     }
 

@@ -33,7 +33,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
         show: () => true,
         disabled: () => this.clearDisabled(),
         tempDisabled: () => null,
-        title: () => this.getMessage(this.clearDisabled(), "clearAll"),
+        title: () => this.getMessage(this.clearDisabled(), 'clearAll'),
         accesskey: 'c',
         presentationHint: '',
         showDialog: () => false
@@ -45,7 +45,7 @@ export class RecentComponent extends PaneComponent implements AfterViewInit, OnI
         show: () => true,
         disabled: () => this.clearSelectedDisabled(),
         tempDisabled: () => null,
-        title: () => this.getMessage(this.clearSelectedDisabled(), "clearSelected"),
+        title: () => this.getMessage(this.clearSelectedDisabled(), 'clearSelected'),
         accesskey: null,
         presentationHint: '',
         showDialog: () => false

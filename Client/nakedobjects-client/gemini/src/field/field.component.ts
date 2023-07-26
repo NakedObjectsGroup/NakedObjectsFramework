@@ -26,7 +26,7 @@ import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-compon
 import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-facade.component';
 import { CdkDrag, CdkDropList, CdkDragDrop } from '@angular/cdk/drag-drop';
 
-@Component({ template: "<div></div>" })
+@Component({ template: '<div></div>' })
 export abstract class FieldComponent implements OnDestroy {
 
     protected constructor(
@@ -37,7 +37,7 @@ export abstract class FieldComponent implements OnDestroy {
 
     set formGroup(fm: FormGroup) {
         this.formGrp = fm;
-        this.formGrp.valueChanges.pipe(debounceTime(200)).subscribe(data => this.onValueChanged());
+        this.formGrp.valueChanges.pipe(debounceTime(200)).subscribe(_ => this.onValueChanged());
         this.onValueChanged(); // (re)set validation messages now
     }
 
@@ -110,7 +110,7 @@ export abstract class FieldComponent implements OnDestroy {
     get accept() {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const _this = this;
-        return (cdkDrag: CdkDrag<IDraggableViewModel>, cdkDropList: CdkDropList) => {
+        return (cdkDrag: CdkDrag<IDraggableViewModel>, _cdkDropList: CdkDropList) => {
             return accept(_this.model, _this, cdkDrag.data);
         };
     }

@@ -33,7 +33,7 @@ export class Cancel extends Command {
         return this.isDialog() || this.isEdit();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(_args: string | null, _chained: boolean): Promise<CommandResult> {
         if (this.isEdit()) {
             return this.returnResult('', '', () => this.urlManager.setInteractionMode(InteractionMode.View));
         }

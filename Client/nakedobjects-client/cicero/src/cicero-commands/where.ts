@@ -32,7 +32,7 @@ export class Where extends Command {
         return true;
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(_args: string | null, _chained: boolean): Promise<CommandResult> {
         this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl();
         return this.returnResult(null, null);
     }

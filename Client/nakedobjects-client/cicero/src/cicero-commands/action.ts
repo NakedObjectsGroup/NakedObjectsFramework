@@ -1,6 +1,6 @@
 import * as Ro from '@nakedobjects/restful-objects';
 import { Location } from '@angular/common';
-import { Dictionary, result } from 'lodash';
+import { Dictionary } from 'lodash';
 import forEach from 'lodash-es/forEach';
 import map from 'lodash-es/map';
 import reduce from 'lodash-es/reduce';
@@ -38,7 +38,7 @@ export class Action extends Command {
         return (this.isMenu() || this.isObject() || this.isForm()) && !this.isDialog() && !this.isEdit(); // TODO add list
     }
 
-    doExecute(args: string | null, chained: boolean, result: CommandResult): Promise<CommandResult> {
+    doExecute(args: string | null, _chained: boolean, _result: CommandResult): Promise<CommandResult> {
         const match = this.argumentAsString(args, 0);
         const details = this.argumentAsString(args, 1, true);
         if (details && details !== '?') {

@@ -33,7 +33,7 @@ export class Page extends Command {
         return this.isList();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, _chained: boolean): Promise<CommandResult> {
         const arg = this.argumentAsString(args, 0);
         if (arg === undefined) {
             return this.returnResult('', Usermessages.pageArgumentWrong);

@@ -33,10 +33,10 @@ export class Reload extends Command {
         return this.isObject() || this.isList();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(_args: string | null, _chained: boolean): Promise<CommandResult> {
 
         return this.getObject()
             .then(o => this.context.reloadObject(1, o))
-            .then((updatedObject: Ro.DomainObjectRepresentation) => this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
+            .then((_updatedObject: Ro.DomainObjectRepresentation) => this.returnResult('', '', () => this.urlManager.triggerPageReloadByFlippingReloadFlagInUrl()));
     }
 }

@@ -160,7 +160,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         const currentDate = this.dateModel;
         if (!currentDate || !newDate.equals(currentDate)) {
             this.setValue(newDate);
-            setTimeout(() => this.model = this.formatDate(this.dateModel));
+            setTimeout(() => this.model = this.formatDate());
         }
     }
 
@@ -225,7 +225,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         const month = this.currentDate.month;
         const year = this.currentDate.year;
         let n = 1;
-        const firstdow = this.currentDate.startOf("month").weekday;
+        const firstdow = this.currentDate.startOf('month').weekday;
         let firstWeekDay = firstdow + 1;
 
         if (firstWeekDay === 8) {
@@ -262,7 +262,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         this.dateModel = date;
     }
 
-    private formatDate(date: DateTime | null) {
+    private formatDate() {
         return this.dateModel ? this.dateModel.toFormat(this.options.format) : '';
     }
 
@@ -270,7 +270,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
         if (e) { e.preventDefault(); }
         setTimeout(() => {
             this.setValue(date);
-            this.model = this.formatDate(this.dateModel);
+            this.model = this.formatDate();
         });
         this.opened = false;
     }
@@ -283,28 +283,28 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     prevMonth() {
         const date = this.currentDate.minus({month :1});
         this.setValue(date);
-        this.model = this.formatDate(this.dateModel);
+        this.model = this.formatDate();
         this.generateCalendar();
     }
 
     nextMonth() {
         const date = this.currentDate.plus({month:1});
         this.setValue(date);
-        this.model = this.formatDate(this.dateModel);
+        this.model = this.formatDate();
         this.generateCalendar();
     }
 
     prevYear() {
         const date = this.currentDate.minus({year:1});
         this.setValue(date);
-        this.model = this.formatDate(this.dateModel);
+        this.model = this.formatDate();
         this.generateCalendar();
     }
 
     nextYear() {
         const date = this.currentDate.plus({year:1});
         this.setValue(date);
-        this.model = this.formatDate(this.dateModel);
+        this.model = this.formatDate();
         this.generateCalendar();
     }
 

@@ -32,7 +32,7 @@ export class Root extends Command {
         return this.isCollection();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(_args: string | null, _chained: boolean): Promise<CommandResult> {
         return this.returnResult(null, null, () => this.closeAnyOpenCollections());
     }
 }

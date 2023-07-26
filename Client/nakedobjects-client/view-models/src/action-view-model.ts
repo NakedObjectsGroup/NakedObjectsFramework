@@ -72,7 +72,7 @@ export class ActionViewModel {
         Helpers.decrementPendingPotentAction(this.context, this.invokableActionRep!, this.paneId);
     };
 
-    readonly invokeWithDialog = (right?: boolean) => {
+    readonly invokeWithDialog = (_right?: boolean) => {
         // clear any previous dialog so we don't pick up values from it
         this.context.clearDialogCachedValues(this.paneId);
 

@@ -76,7 +76,7 @@ export class CiceroRendererService {
     renderError(message: string) {
         const err = this.context.getError();
         const errRep = err ? err.error : null;
-        const msg = (errRep instanceof Ro.ErrorRepresentation) ? errRep.message() : 'Unknown';
+        const msg = (errRep instanceof Ro.ErrorRepresentation) ? errRep.message() : message;
         return this.returnResult('', `Sorry, an application error has occurred. ${msg}`);
     }
 

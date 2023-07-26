@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as Ro from '@nakedobjects/restful-objects';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IDraggableViewModel } from './idraggable-view-model';
 

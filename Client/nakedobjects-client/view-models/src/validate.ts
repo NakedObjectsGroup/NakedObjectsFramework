@@ -59,7 +59,7 @@ export function validateStringFormat(model: Models.IHasExtensions, newValue: str
     return '';
 }
 
-export function validateDateTimeFormat(model: Models.IHasExtensions, newValue: string): string {
+export function validateDateTimeFormat(_model: Models.IHasExtensions, _newValue: string): string {
     return '';
 }
 
@@ -83,7 +83,7 @@ export function validateDateFormat(model: Models.IHasExtensions, newValue: strin
     return '';
 }
 
-export function validateTimeFormat(model: Models.IHasExtensions, newValue: string): string {
+export function validateTimeFormat(_model: Models.IHasExtensions, _newValue: string): string {
     return '';
 }
 

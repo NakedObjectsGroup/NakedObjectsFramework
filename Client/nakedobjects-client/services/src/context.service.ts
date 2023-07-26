@@ -704,7 +704,7 @@ export class ContextService {
 
                 const resultList = result.result().list()!;
                 const parms = this.parameterCache.getValues(action.actionId(), fromPaneId);
-                const search = this.urlManager.setList(action, parms, fromPaneId, toPaneId);
+                const search = this.urlManager.setList(action, parms, toPaneId);
                 const index = this.urlManager.getListCacheIndexFromSearch(search, toPaneId, page, pageSize);
                 this.cacheList(resultList, index);
             }
@@ -920,7 +920,7 @@ export class ContextService {
             .then(updatedObject => {
                 return updatedObject.value();
             })
-            .catch((reject: ErrorWrapper) => {
+            .catch((_) => {
                 return false;
             });
 

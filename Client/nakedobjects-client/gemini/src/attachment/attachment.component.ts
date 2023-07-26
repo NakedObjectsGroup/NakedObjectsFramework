@@ -25,7 +25,7 @@ export class AttachmentComponent extends PaneComponent {
 
     // template API
     image?: string;
-    title = "";
+    title = '';
 
     protected setup(routeData: PaneRouteData) {
 

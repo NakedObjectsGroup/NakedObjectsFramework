@@ -36,7 +36,7 @@ export class Show extends Command {
         return this.isObject() || this.isCollection() || this.isList();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, _chained: boolean): Promise<CommandResult> {
         if (this.isCollection()) {
             const arg = this.argumentAsString(args, 0, true);
             try {

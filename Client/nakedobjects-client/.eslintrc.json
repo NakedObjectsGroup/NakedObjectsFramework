@@ -22,8 +22,11 @@
       ],
       "rules": {
         "semi": 2,
+        "quotes": ["error", "single"],
         "@typescript-eslint/no-non-null-assertion" : 0,
-        "@typescript-eslint/no-unused-vars": 0,
+        "@typescript-eslint/no-unused-vars": [
+          "error", { "argsIgnorePattern": "^_" }
+        ],
         "@typescript-eslint/ban-types": 0,
         "@typescript-eslint/no-explicit-any" : 0,
         "@typescript-eslint/no-empty-function": 0,

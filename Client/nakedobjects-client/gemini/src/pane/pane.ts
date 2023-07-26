@@ -4,7 +4,7 @@ import { ContextService, ICustomActivatedRouteData, Pane, PaneName, PaneRouteDat
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { safeUnsubscribe } from '../helpers-components';
 
-@Component({template : "<div></div>"})
+@Component({template : '<div></div>'})
 export abstract class PaneComponent implements OnInit, OnDestroy {
 
     constructor(

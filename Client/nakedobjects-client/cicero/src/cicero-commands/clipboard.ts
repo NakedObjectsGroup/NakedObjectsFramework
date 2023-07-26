@@ -34,7 +34,7 @@ export class Clipboard extends Command {
         return true;
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, _chained: boolean): Promise<CommandResult> {
         const sub = this.argumentAsString(args, 0);
 
         if (sub === undefined) {

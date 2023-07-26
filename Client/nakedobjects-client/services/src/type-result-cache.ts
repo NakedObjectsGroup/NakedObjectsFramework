@@ -27,7 +27,7 @@ export abstract class TypeResultCache<T> {
         this.default = def;
     }
 
-    protected getDefault(type: string) {
+    protected getDefault(_: string) {
         return this.default;
     }
 

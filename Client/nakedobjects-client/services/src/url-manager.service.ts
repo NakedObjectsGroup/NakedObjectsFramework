@@ -629,7 +629,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.ToObjectWithMode, () => true);
     };
 
-    setList = (actionMember: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, fromPaneId = Pane.Pane1, toPaneId = Pane.Pane1) => {
+    setList = (actionMember: Ro.ActionRepresentation | Ro.InvokableActionMember, parms: Dictionary<Ro.Value>, toPaneId = Pane.Pane1) => {
         const newValues = {} as Dictionary<string>;
         const parent = actionMember.parent;
 

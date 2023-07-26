@@ -9,7 +9,7 @@ export class LoggerService {
     private readonly logInfo: boolean;
     private readonly logDebug: boolean;
 
-    private readonly noop = (message?: any, ...optionalParams: any[]): void => { };
+    private readonly noop = (_message?: any, ..._optionalParams: any[]): void => { };
 
     constructor(private readonly configService: ConfigService) {
         switch (configService.config.logLevel) {

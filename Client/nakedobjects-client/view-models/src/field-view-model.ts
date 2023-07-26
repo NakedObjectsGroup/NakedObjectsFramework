@@ -63,7 +63,7 @@ export abstract class FieldViewModel extends MessageViewModel {
     clientValid = true;
     reference = '';
     minLength?: number;
-    color = "";
+    color = '';
     promptArguments?: Dictionary<Ro.Value>;
     currentValue?: Ro.Value;
     originalValue?: Ro.Value;
@@ -77,7 +77,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
     file?: Ro.Link;
 
-    refresh: (newValue: Ro.Value) => void = () => { throw new Error("Uninitialized"); };
+    refresh: (newValue: Ro.Value) => void = () => { throw new Error('Uninitialized'); };
     prompt?: (searchTerm: string) => Promise<ChoiceViewModel[]>;
     conditionalChoices?: (args: Dictionary<Ro.Value>) => Promise<ChoiceViewModel[]>;
 

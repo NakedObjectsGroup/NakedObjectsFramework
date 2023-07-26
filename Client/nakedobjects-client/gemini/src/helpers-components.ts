@@ -53,7 +53,7 @@ export function accept(droppableVm: FieldViewModel, component: { canDrop: boolea
 export function dropOn(draggableVm: IDraggableViewModel, droppable: FieldViewModel, component: { canDrop: boolean, control: AbstractControl }) {
     if (component.canDrop) {
         droppable.drop(draggableVm)
-            .then((success) => {
+            .then(() => {
                 component.control.setValue(droppable.selectedChoice);
             });
     }
@@ -67,7 +67,7 @@ export function paste(event: KeyboardEvent, droppable: FieldViewModel, component
 
         if (cvm) {
             droppable.drop(cvm)
-                .then((success) => {
+                .then(() => {
                     component.control.setValue(droppable.selectedChoice);
                 });
             event.preventDefault();

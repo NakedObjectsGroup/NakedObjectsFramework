@@ -50,7 +50,7 @@ export class OK extends Command {
                 fieldMap = getParametersAndCurrentValue(action, this.context);
             }
 
-            return this.context.invokeAction(action, fieldMap).then((result: Ro.ActionResultRepresentation) => {
+            return this.context.invokeAction(action, fieldMap).then((_result: Ro.ActionResultRepresentation) => {
 
                 return this.returnResult('', null, () => this.urlManager.closeDialogReplaceHistory(this.routeData().dialogId!));
 

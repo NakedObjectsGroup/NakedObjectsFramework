@@ -45,7 +45,7 @@ export class Enter extends Command {
         return this.isDialog() || this.isEdit() || this.isTransient() || this.isForm();
     }
 
-    doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
+    doExecute(args: string | null, _chained: boolean): Promise<CommandResult> {
         const fieldName = this.argumentAsString(args, 0);
         const fieldEntry = this.argumentAsString(args, 1, false, false);
 
@@ -384,7 +384,7 @@ export class Enter extends Command {
         });
     }
 
-    private renderFieldDetails(field: Ro.IField, value: Ro.Value): string {
+    private renderFieldDetails(field: Ro.IField, _value: Ro.Value): string {
 
         const fieldName = Usermessages.fieldName(field.extensions().friendlyName());
         const desc = field.extensions().description();

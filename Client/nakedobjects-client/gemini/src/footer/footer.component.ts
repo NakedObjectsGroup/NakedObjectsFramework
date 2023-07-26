@@ -39,7 +39,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     private ddSub?: ISubscription;
 
     loading?: boolean;
-    userName = "";
+    userName = '';
     warnings: string[] = [];
     messages: string[] = [];
     copyViewModel?: IDraggableViewModel;

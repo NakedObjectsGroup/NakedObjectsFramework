@@ -131,7 +131,7 @@ export class MaskService implements IMaskServiceConfigurator {
             case ('string'):
                 return new LocalStringFilter();
             case ('date-time'):
-                return new LocalDateFilter(this.defaultLocale, `${defaultDateFormat} ${defaultTimeFormat}`, "utc");
+                return new LocalDateFilter(this.defaultLocale, `${defaultDateFormat} ${defaultTimeFormat}`, 'utc');
             case ('date'):
                 return new LocalDateFilter(this.defaultLocale, defaultDateFormat);
             case ('time'):

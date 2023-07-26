@@ -210,7 +210,7 @@ export class PropertyViewModel extends FieldViewModel implements IDraggableViewM
         });
     }
 
-    readonly draggableTitle = () => this.formattedValue ?? "";
+    readonly draggableTitle = () => this.formattedValue ?? '';
     readonly canDropOn = (targetType: string) => this.context.isSubTypeOf(this.returnType, targetType) as Promise<boolean>;
 
     readonly doClick = (right?: boolean) => this.urlManager.setProperty(this.reference, this.clickHandler.pane(this.onPaneId, right));

@@ -18,9 +18,9 @@ export class CustomComponentConfigService implements ICustomComponentConfigServi
 
     // Remember custom components need to be added to "entryComponents" in app.module.ts !
 
-    configureCustomObjects(custom: ICustomComponentConfigurator) { }
+    configureCustomObjects(_custom: ICustomComponentConfigurator) { }
 
-    configureCustomLists(custom: ICustomComponentConfigurator) { }
+    configureCustomLists(_custom: ICustomComponentConfigurator) { }
 
     configureCustomErrors(custom: ICustomErrorComponentConfigurator) {
         // by default configure page for 404 errors

@@ -18,7 +18,7 @@ import forEach from 'lodash-es/forEach';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { createForm, safeUnsubscribe } from '../helpers-components';
 
-@Component({template : "<div></div>"})
+@Component({template : '<div></div>'})
 export class BaseDialogComponent implements OnDestroy, OnChanges {
 
     constructor(
