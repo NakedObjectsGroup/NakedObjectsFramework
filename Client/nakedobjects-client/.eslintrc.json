@@ -21,17 +21,17 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "semi": 2,
+        "semi": ["error", "always"],
         "quotes": ["error", "single"],
         "no-multi-spaces": "error",
-        "@typescript-eslint/no-non-null-assertion" : 0,
+        "@typescript-eslint/no-non-null-assertion" : "off",
         "@typescript-eslint/no-unused-vars": [
           "error", { "argsIgnorePattern": "^_" }
         ],
-        "@typescript-eslint/ban-types": 0,
-        "@typescript-eslint/no-explicit-any" : 0,
-        "@typescript-eslint/no-empty-function": 0,
-        "@typescript-eslint/no-non-null-asserted-optional-chain" : 0,
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/no-explicit-any" : "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-non-null-asserted-optional-chain" : "off",
         "@angular-eslint/directive-selector": [
           "error",
           {
