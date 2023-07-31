@@ -1,4 +1,5 @@
-﻿import { ErrorHandler } from '@angular/core';
+﻿/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ErrorHandler } from '@angular/core';
 import { ContextService } from './context.service';
 import { ErrorWrapper, ClientErrorCode, ErrorCategory } from './error.wrapper';
 import { UrlManagerService } from './url-manager.service';

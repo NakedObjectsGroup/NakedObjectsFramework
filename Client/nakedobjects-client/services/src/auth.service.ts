@@ -65,13 +65,13 @@ export class AuthService implements CanActivate {
         }
     }
 
-    private setSession(authResult: any): void {
+    private setSession(authResult: auth0.Auth0DecodedHash): void {
         if (this.authenticate) {
             const expiresIn = this.timeout || authResult.expiresIn;
             // Set the time that the access token will expire at
-            const expiresAt = JSON.stringify((expiresIn * 1000) + new Date().getTime());
-            localStorage.setItem('access_token', authResult.accessToken);
-            localStorage.setItem('id_token', authResult.idToken);
+            const expiresAt = JSON.stringify((expiresIn! * 1000) + new Date().getTime());
+            localStorage.setItem('access_token', authResult.accessToken!);
+            localStorage.setItem('id_token', authResult.idToken!);
             localStorage.setItem('expires_at', expiresAt);
         }
     }

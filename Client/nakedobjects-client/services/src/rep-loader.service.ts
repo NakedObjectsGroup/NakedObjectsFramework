@@ -198,7 +198,7 @@ export class RepLoaderService {
         return data;
     }
 
-    private isValidResponse(data: any) {
+    private isValidResponse(data: unknown) {
         return Ro.isResourceRepresentation(data);
     }
 

@@ -44,12 +44,12 @@ describe('MaskService', () => {
     //     });
     // });
 
-    function testMask(maskService: MaskService, input: any, mask: string, format: Ro.FormatType, expectedResult: string) {
+    function testMask(maskService: MaskService, input: unknown, mask: string, format: Ro.FormatType, expectedResult: string) {
         const result = maskService.toLocalFilter(mask, format).filter(input);
         expect(result).toBe(expectedResult);
     }
 
-    function testDefaultMask(maskService: MaskService, input: any, format: Ro.FormatType, expectedResult: string) {
+    function testDefaultMask(maskService: MaskService, input: unknown, format: Ro.FormatType, expectedResult: string) {
         testMask(maskService, input, '', format, expectedResult);
     }
 

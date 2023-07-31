@@ -16,7 +16,7 @@ export interface IMaskServiceConfigurator {
 }
 
 export interface ILocalFilter {
-    filter(val: any): string;
+    filter(val: unknown): string;
 }
 
 export interface IMaskMap {
@@ -25,7 +25,7 @@ export interface IMaskMap {
 
 class LocalStringFilter implements ILocalFilter {
 
-    filter(val: any): string {
+    filter(val: unknown): string {
         return val ? val.toString() : '';
     }
 }
@@ -46,13 +46,16 @@ class LocalCurrencyFilter implements ILocalFilter {
         private readonly digits?: string,
     ) { }
 
-    filter(val: any): string {
+    filter(val: unknown): string {
         if (val == null || val === '') {
             return '';
         }
 
-        const pipe = new CurrencyPipe(this.locale);
-        return transform(() => pipe.transform(val, this.symbol, 'symbol', this.digits)) || '';
+        if (typeof val == 'string' || typeof val == 'number') {
+            const pipe = new CurrencyPipe(this.locale);
+            return transform(() => pipe.transform(val, this.symbol, 'symbol', this.digits)) || '';
+        }
+        return '';
     }
 }
 
@@ -90,13 +93,16 @@ class LocalNumberFilter implements ILocalFilter {
         private readonly digits?: string
     ) { }
 
-    filter(val: any): string {
+    filter(val: unknown): string {
         if (val == null || val === '') {
             return '';
         }
-        const pipe = new DecimalPipe(this.locale);
-        const result = transform(() => pipe.transform(val, this.digits));
-        return result == null ? '' : result;
+        if (typeof val == 'string' || typeof val == 'number') {
+            const pipe = new DecimalPipe(this.locale);
+            const result = transform(() => pipe.transform(val, this.digits));
+            return result == null ? '' : result;
+        }
+        return '';
     }
 }
 
