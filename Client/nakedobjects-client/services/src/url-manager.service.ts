@@ -95,7 +95,7 @@ const akm = {
 
 interface ITransitionResult {
     path: string;
-    search: any;
+    search : Record<string, string>;
     replace: boolean;
 }
 
@@ -123,7 +123,7 @@ export class UrlManagerService {
         return this.configService.config.keySeparator;
     }
 
-    private capturedPanes = [] as ({ paneType: PathSegment; search: object } | null)[];
+    private capturedPanes = [] as ({ paneType: PathSegment; search : Record<string, string> } | null)[];
 
     private currentPaneId: Pane = Pane.Pane1;
 
@@ -138,7 +138,7 @@ export class UrlManagerService {
         }
 
         const nLen = arr.length;
-        // tslint:disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         for (nFlag; nFlag < nLen; nMask |= (<any>arr)[nFlag] << nFlag++);
         return nMask;
     }
@@ -220,7 +220,7 @@ export class UrlManagerService {
     }
 
     private mapIds(ids: Dictionary<string>): Dictionary<string> {
-        return mapKeys(ids, (v: any, k: string) => k.substr(k.indexOf('_') + 1));
+        return mapKeys(ids, (_, k) => k.substr(k.indexOf('_') + 1));
     }
 
     private getAndMapIds(typeOfId: string, paneId: Pane) {
@@ -233,6 +233,7 @@ export class UrlManagerService {
     }
 
     private getInteractionMode(rawInteractionMode: string): InteractionMode {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
     }
 
@@ -258,19 +259,19 @@ export class UrlManagerService {
         paneRouteData.dialogId = this.getId(akm.dialog + paneId, routeParams);
 
         const rawErrorCategory = this.getId(akm.errorCat + paneId, routeParams);
-        paneRouteData.errorCategory = rawErrorCategory ? (<any>ErrorCategory)[rawErrorCategory] : null;
+        paneRouteData.errorCategory = rawErrorCategory ? ErrorCategory[rawErrorCategory as keyof typeof ErrorCategory] : undefined;
 
         paneRouteData.objectId = this.deobfuscate(this.getId(akm.object + paneId, routeParams));
         paneRouteData.actionsOpen = this.getId(akm.actions + paneId, routeParams);
 
         const rawCollectionState = this.getId(akm.collection + paneId, routeParams);
-        paneRouteData.state = rawCollectionState ? (<any>CollectionViewState)[rawCollectionState] : CollectionViewState.List;
+        paneRouteData.state = rawCollectionState ? CollectionViewState[rawCollectionState as keyof typeof CollectionViewState] : CollectionViewState.List;
 
         const rawInteractionMode = this.getId(akm.interactionMode + paneId, routeParams);
         paneRouteData.interactionMode = this.getInteractionMode(rawInteractionMode);
 
         const collKeyMap = this.getAndMapIds(akm.collection, paneId);
-        paneRouteData.collections = mapValues(collKeyMap, v => (<any>CollectionViewState)[v]);
+        paneRouteData.collections = mapValues(collKeyMap, v => CollectionViewState[v as keyof typeof CollectionViewState]);
 
         const collSelectedKeyMap = this.getAndMapIds(akm.selected, paneId);
         paneRouteData.selectedCollectionItems = mapValues(collSelectedKeyMap, v => this.arrayFromMask(v));
@@ -296,22 +297,22 @@ export class UrlManagerService {
         return this.getPath().split('/').length <= 3;
     }
 
-    private searchKeysForPane(search: any, paneId: Pane, raw: string[]) {
+    private searchKeysForPane(search : Record<string, string>, paneId: Pane, raw: string[]) {
         const ids = map(raw, s => s + paneId);
         return filter(keys(search), k => some(ids, id => k.indexOf(id) === 0));
     }
 
-    private allSearchKeysForPane(search: any, paneId: Pane) {
+    private allSearchKeysForPane(search : Record<string, string>, paneId: Pane) {
         const raw = values(akm) as string[];
         return this.searchKeysForPane(search, paneId, raw);
     }
 
-    private clearPane(search: any, paneId: Pane) {
+    private clearPane(search : Record<string, string>, paneId: Pane) {
         const toClear = this.allSearchKeysForPane(search, paneId);
         return omit(search, toClear) as Dictionary<string>;
     }
 
-    private clearSearchKeys(search: any, paneId: Pane, searchKeys: string[]) {
+    private clearSearchKeys(search : Record<string, string>, paneId: Pane, searchKeys: string[]) {
         const toClear = this.searchKeysForPane(search, paneId, searchKeys);
         return omit(search, toClear);
     }
@@ -379,23 +380,23 @@ export class UrlManagerService {
         return Ro.propertyIdFromUrl(href);
     }
 
-    private setValue(paneId: Pane, search: any, p: { id: () => string }, pv: Ro.Value, valueType: string) {
+    private setValue(paneId: Pane, search : Record<string, string>, p: { id: () => string }, pv: Ro.Value, valueType: string) {
         this.setId(`${valueType}${paneId}_${p.id()}`, pv.toJsonString(this.shortCutMarker, this.urlShortCuts), search);
     }
 
-    private setParameter(paneId: Pane, search: any, p: Ro.Parameter, pv: Ro.Value) {
+    private setParameter(paneId: Pane, search : Record<string, string>, p: Ro.Parameter, pv: Ro.Value) {
         this.setValue(paneId, search, p, pv, akm.parm);
     }
 
-    private getId(key: string, search: any) {
+    private getId(key: string, search : Record<string, string>) {
         return Ro.decompress(search[key], this.shortCutMarker, this.urlShortCuts);
     }
 
-    private setId(key: string, id: string, search: any) {
+    private setId(key: string, id: string, search : Record<string, string>) {
         search[key] = Ro.compress(id, this.shortCutMarker, this.urlShortCuts);
     }
 
-    private clearId(key: string, search: any) {
+    private clearId(key: string, search : Record<string, string>) {
         delete search[key];
     }
 
@@ -437,7 +438,7 @@ export class UrlManagerService {
         return [];
     }
 
-    private clearInvalidParmsFromSearch(paneId: Pane, search: any, path: string) {
+    private clearInvalidParmsFromSearch(paneId: Pane, search : Record<string, string>, path: string) {
         if (path) {
             const vks = this.validKeys(path);
             const ivks = without(values(akm), ...vks) as string[];
@@ -446,7 +447,7 @@ export class UrlManagerService {
         return search;
     }
 
-    private handleTransition(paneId: Pane, search: any, transition: Transition): ITransitionResult {
+    private handleTransition(paneId: Pane, search : Record<string, string>, transition: Transition): ITransitionResult {
 
         let replace = true;
         let path = this.getPath();
@@ -526,7 +527,7 @@ export class UrlManagerService {
         return { path: path, search: search, replace: replace };
     }
 
-    private executeTransition(newValues: Dictionary<string | null>, paneId: Pane, transition: Transition, condition: (search: any) => boolean) {
+    private executeTransition(newValues: Dictionary<string | null>, paneId: Pane, transition: Transition, condition: (search : Record<string, string>) => boolean) {
         this.currentPaneId = paneId;
         let search = this.getSearch();
         if (condition(search)) {
@@ -689,7 +690,7 @@ export class UrlManagerService {
         this.executeTransition(newValues, paneId, Transition.Null, () => true);
     };
 
-    private checkAndSetValue(paneId: Pane, check: (search: any) => boolean, set: (search: any) => void) {
+    private checkAndSetValue(paneId: Pane, check: (search : Record<string, string>) => boolean, set: (search : Record<string, string>) => void) {
         this.currentPaneId = paneId;
         const search = this.getSearch();
 
@@ -775,7 +776,7 @@ export class UrlManagerService {
         const mode = segments[1];
         const newPath = `/${mode}/error`;
 
-        const search: any = {};
+        const search : Record<string, string> = {};
         // always on pane 1
         search[akm.errorCat + Pane.Pane1] = ErrorCategory[errorCategory];
 
@@ -892,9 +893,9 @@ export class UrlManagerService {
         this.capturedPanes[paneId] = null;
     };
 
-    private swapSearchIds(search: any) {
+    private swapSearchIds(search : Record<string, string>) {
         return mapKeys(search,
-            (v: any, k: string) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === '1' ? '2' : '1'}${p3}`));
+            (_, k) => k.replace(/(\D+)(\d{1})(\w*)/, (match, p1, p2, p3) => `${p1}${p2 === '1' ? '2' : '1'}${p3}`));
     }
 
     swapPanes = () => {
@@ -1016,17 +1017,17 @@ export class UrlManagerService {
     isApplicationProperties = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, applicationPropertiesPath);
     isMultiLineDialog = (paneId: Pane = Pane.Pane1) => this.isLocation(paneId, multiLineDialogPath);
 
-    private toggleReloadFlagsForSwap(search: any, oldFlag1: string, oldFlag2: string) {
-        const newFlag1 = oldFlag1 === '1' ? 0 : 1;
-        const newFlag2 = oldFlag2 === '1' ? 0 : 1;
+    private toggleReloadFlagsForSwap(search: Record<string, string>, oldFlag1: string, oldFlag2: string) {
+        const newFlag1 = oldFlag1 === '1' ? '0' : '1';
+        const newFlag2 = oldFlag2 === '1' ? '0' : '1';
         search[akm.reload + Pane.Pane1] = newFlag1;
         search[akm.reload + Pane.Pane2] = newFlag2;
         return search;
     }
 
-    private toggleReloadFlag(search: any, paneId: Pane) {
+    private toggleReloadFlag(search: Record<string, string>, paneId: Pane) {
         const currentFlag = search[akm.reload + paneId];
-        const newFlag = currentFlag === '1' ? 0 : 1;
+        const newFlag = currentFlag === '1' ? '0' : '1';
         search[akm.reload + paneId] = newFlag;
         return search;
     }

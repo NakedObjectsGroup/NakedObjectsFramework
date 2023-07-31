@@ -46,7 +46,7 @@ export abstract class TypeResultCache<T> {
         return this.context.isSubTypeOf(subtype, entry.type).then(b => b ? Promise.resolve(entry.result) : this.isSubtypeOf(subtype, index + 1, count));
     }
 
-    private isSubtype(subtype: string): Promise<any> {
+    private isSubtype(subtype: string): Promise<unknown> {
 
         const subtypeChecks = this.subtypeCache.length;
 

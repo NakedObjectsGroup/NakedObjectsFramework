@@ -5,7 +5,7 @@ export const notANumber = 'Not a number';
 export const mandatory = 'Mandatory';
 export const noPatternMatch = 'Invalid entry';
 
-export const outOfRange = (val: any, min: any, max: any, filter: ILocalFilter) => {
+export const outOfRange = (_: unknown, min: unknown, max: unknown, filter: ILocalFilter) => {
     const minVal = filter ? filter.filter(min) : min;
     const maxVal = filter ? filter.filter(max) : max;
 

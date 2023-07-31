@@ -66,7 +66,7 @@ export class RouteData {
 }
 
 interface ICondition {
-    condition: (val: any) => boolean;
+    condition: (val: unknown) => boolean;
     name: string;
 }
 
@@ -112,22 +112,22 @@ export class PaneRouteData {
     private validatingUrl?: string;
 
     private isNull = {
-        condition: (val: any) => !val,
+        condition: (val: unknown) => !val,
         name: 'is null'
     };
 
     private isNotNull = {
-        condition: (val: any) => val,
+        condition: (val: unknown) => !!val,
         name: 'is not null'
     };
 
     private isLength0 = {
-        condition: (val: any) => val && val.length === 0,
+        condition: (val: unknown) => !!(val && val instanceof Object && 'length' in val && val.length === 0),
         name: 'is length 0'
     };
 
     private isEmptyMap = {
-        condition: (val: any) => keys(val).length === 0,
+        condition: (val: unknown) => keys(val).length === 0,
         name: 'is an empty map'
     };
 
@@ -142,7 +142,9 @@ export class PaneRouteData {
         this.isValid(context);
         this.isValid(name);
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if (contextCondition.condition((<any>this)[context])) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (!valueCondition.condition((<any>this)[name])) {
                 this.loggerService.throw(`PaneRouteData:assertMustBe Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name} within url "${this.validatingUrl}"`);
             }
