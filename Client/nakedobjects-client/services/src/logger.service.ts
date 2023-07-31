@@ -9,6 +9,7 @@ export class LoggerService {
     private readonly logInfo: boolean;
     private readonly logDebug: boolean;
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private readonly noop = (_message?: any, ..._optionalParams: any[]): void => { };
 
     constructor(private readonly configService: ConfigService) {

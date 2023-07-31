@@ -778,6 +778,7 @@ export class ContextService {
 
             const clearCacheIfNecessary = this.configService.config.clearCacheOnChange
                 ? () => this.markDirtyAfterChange()
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 : () => { };
 
             if (parent instanceof Ro.DomainObjectRepresentation) {
@@ -831,6 +832,7 @@ export class ContextService {
             };
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => { };
     }
 

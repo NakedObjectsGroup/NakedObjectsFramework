@@ -18,8 +18,10 @@ export class CustomComponentConfigService implements ICustomComponentConfigServi
 
     // Remember custom components need to be added to "entryComponents" in app.module.ts !
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     configureCustomObjects(_custom: ICustomComponentConfigurator) { }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     configureCustomLists(_custom: ICustomComponentConfigurator) { }
 
     configureCustomErrors(custom: ICustomErrorComponentConfigurator) {

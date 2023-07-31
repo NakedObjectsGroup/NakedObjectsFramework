@@ -31,6 +31,7 @@ export class MenuBarComponent implements AfterViewInit, OnDestroy {
                     const menuId = link.link.rel()!.parms[0].value;
                     this.urlManager.setMenu(menuId!, link.paneId);
                 },
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 doRightClick: () => { },
                 show: () => true,
                 disabled: () => null,

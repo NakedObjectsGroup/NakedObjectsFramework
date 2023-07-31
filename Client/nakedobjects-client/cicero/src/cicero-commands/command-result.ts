@@ -40,5 +40,6 @@ export function getFields(field: Ro.IField): Ro.IField[] {
 
 export class CommandResult extends Result {
     stopChain?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     changeState: () => void = () => { };
 }

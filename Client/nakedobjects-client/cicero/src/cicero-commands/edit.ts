@@ -35,6 +35,7 @@ export class Edit extends Command {
 
     doExecute(args: string | null, chained: boolean): Promise<CommandResult> {
         if (chained) {
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             return this.returnResult('', this.mayNotBeChained(), () => { }, true);
         }
         const newState = () => {

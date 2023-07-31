@@ -34,11 +34,10 @@ export class ErrorService {
         this.urlManager.setError(ErrorCategory.HttpServerError);
     }
 
-    private handleHttpClientError(reject: ErrorWrapper,
-        displayMessages: (em: Ro.ErrorMap) => void) {
+    private handleHttpClientError(reject: ErrorWrapper, displayMessages?: (em: Ro.ErrorMap) => void) {
         switch (reject.httpErrorCode) {
             case (HttpStatusCode.UnprocessableEntity):
-                displayMessages(reject.error as Ro.ErrorMap);
+                displayMessages?.(reject.error as Ro.ErrorMap);
                 break;
             default:
                 this.urlManager.setError(ErrorCategory.HttpClientError, reject.httpErrorCode);
@@ -50,10 +49,10 @@ export class ErrorService {
     }
 
     handleError(reject: ErrorWrapper) {
-        this.handleErrorAndDisplayMessages(reject, () => { });
+        this.handleErrorAndDisplayMessages(reject);
     }
 
-    handleErrorAndDisplayMessages(reject: ErrorWrapper, displayMessages: (em: Ro.ErrorMap) => void) {
+    handleErrorAndDisplayMessages(reject: ErrorWrapper, displayMessages?: (em: Ro.ErrorMap) => void) {
         this.preProcessors.forEach(p => p(reject));
 
         if (reject.handled) {

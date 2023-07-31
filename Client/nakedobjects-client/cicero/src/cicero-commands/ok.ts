@@ -39,6 +39,7 @@ export class OK extends Command {
         return this.getActionForCurrentDialog().then((action: Ro.ActionRepresentation | Ro.InvokableActionMember) => {
 
             if (chained && action.isNotQueryOnly()) {
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 return this.returnResult('', this.mayNotBeChained(Usermessages.queryOnlyRider), () => { }, true);
             }
 

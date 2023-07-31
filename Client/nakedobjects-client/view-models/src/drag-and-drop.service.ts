@@ -5,8 +5,6 @@ import { IDraggableViewModel } from './idraggable-view-model';
 @Injectable()
 export class DragAndDropService {
 
-    constructor() { }
-
     private copiedViewModelSource = new Subject<IDraggableViewModel | null>();
 
     copiedViewModel$ = this.copiedViewModelSource.asObservable();

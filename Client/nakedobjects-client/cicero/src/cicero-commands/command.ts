@@ -81,6 +81,7 @@ export abstract class Command {
     }
 
     protected returnResult(input: string | null, output: string | null, changeState?: () => void, stopChain?: boolean): Promise<CommandResult> {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         changeState = changeState ? changeState : () => { };
         return Promise.resolve({ input: input, output: output, changeState: changeState, stopChain: !!stopChain });
     }

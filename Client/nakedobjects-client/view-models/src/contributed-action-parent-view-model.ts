@@ -119,6 +119,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
                 });
 
         // make sure not invokable  while waiting for promise to assign correct function
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         actionViewModel.doInvoke = () => { };
 
         const invokeWithoutDialog = (right?: boolean) =>
