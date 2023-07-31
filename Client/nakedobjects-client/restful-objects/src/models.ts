@@ -1643,6 +1643,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
 
     setFromModifyMap(modifyMap: ModifyMap) {
         forOwn(modifyMap.valueMap, (v, k) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (<any>this.wrapped)[k] = v;
         });
     }
@@ -2526,6 +2527,7 @@ export class Link {
     }
 
     private getHateoasTarget(targetType: string): IHateoasModel {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const MatchingType = (<any>this.repTypeToModel)[targetType];
         const target: IHateoasModel = new MatchingType();
         return target;

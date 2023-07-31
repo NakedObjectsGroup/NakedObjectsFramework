@@ -5,7 +5,7 @@ import { ConfigService } from './config.service';
 import { LoggerService } from './logger.service';
 import { UrlManagerService } from './url-manager.service';
 
-(window as any).global = window;
+window.global = window;
 
 @Injectable()
 export class AuthService implements CanActivate {
@@ -22,7 +22,7 @@ export class AuthService implements CanActivate {
     private get auth0() {
         const clientID = this.configService.config.authClientId!;
         const domain = this.configService.config.authDomain!;
-        const url = (window as any).location.origin;
+        const url = window.location.origin;
         const redirectUrl = this.redirectUrl || `${url}/gemini/callback`;
 
         return new auth0.WebAuth({
