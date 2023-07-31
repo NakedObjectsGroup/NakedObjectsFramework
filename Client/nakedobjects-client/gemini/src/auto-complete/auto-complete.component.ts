@@ -18,7 +18,7 @@ export class AutoCompleteComponent implements OnDestroy {
     ) { }
 
     private fieldViewModel!: FieldViewModel;
-    private bSubject?: BehaviorSubject<any>;
+    private bSubject?: BehaviorSubject<unknown>;
     private sub?: ISubscription;
     private currentIndex = -1;
 

@@ -379,8 +379,10 @@ export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
         const editableProps = filter(props, p => p.isEditable);
         const editablePropsMap = zipObject(map(editableProps, p => p.id), map(editableProps, p => p)) as Dictionary<PropertyViewModel>;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const controls = mapValues(editablePropsMap, p => [p.getValueForControl(), (a: any) => p.validator(a)]) as Dictionary<any>;
         this.form = this.formBuilder.group(controls);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.formSub = this.form!.valueChanges.subscribe((data: any) => {
             // cache parm values
             const obj = this.object;

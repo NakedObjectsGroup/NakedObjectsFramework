@@ -14,8 +14,12 @@ export function safeUnsubscribe(sub?: ISubscription) {
     }
 }
 
-function safeFocus(nativeElement: any) {
-    if (nativeElement && nativeElement.focus) {
+function isFocusable(nativeElement: unknown): nativeElement is { focus: () => void } {
+    return !!(nativeElement && nativeElement instanceof Object && 'focus' in nativeElement);
+}
+
+function safeFocus(nativeElement: unknown) {
+    if (isFocusable(nativeElement)) {
         nativeElement.focus();
     }
 }
@@ -31,7 +35,8 @@ export function createForm(dialog: DialogViewModel, formBuilder: FormBuilder): {
     const controls = mapValues(parms, p => [p.getValueForControl(), (a: AbstractControl) => p.validator(a)]);
     const form = formBuilder.group(controls);
 
-    const sub = form.valueChanges.subscribe((data: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sub = form.valueChanges.subscribe((data : any) => {
         // cache parm values
         forEach(data, (v, k) => parms[k!].setValueFromControl(v));
         dialog.setParms();

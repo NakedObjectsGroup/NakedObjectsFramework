@@ -7,22 +7,22 @@ import { ListComponent } from './list/list.component';
 import { ObjectComponent } from './object/object.component';
 
 export interface ICustomComponentConfigurator {
-    addType: (type: string, result: Type<any>) => void;
+    addType: (type: string, result: Type<unknown>) => void;
 
-    addMatch: (matcher: RegExp, result: Type<any>) => void;
+    addMatch: (matcher: RegExp, result: Type<unknown>) => void;
 
-    addSubtype: (type: string, result: Type<any>) => void;
+    addSubtype: (type: string, result: Type<unknown>) => void;
 
-    setDefault: (def: Type<any>) => void;
+    setDefault: (def: Type<unknown>) => void;
 }
 
 export interface ICustomErrorComponentConfigurator {
-    addError(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, result: Type<any>): void;
+    addError(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, result: Type<unknown>): void;
 }
 
-class CustomComponentCache extends TypeResultCache<Type<any>> implements ICustomComponentConfigurator {
+class CustomComponentCache extends TypeResultCache<Type<unknown>> implements ICustomComponentConfigurator {
 
-    constructor(context: ContextService, def: Type<any>) {
+    constructor(context: ContextService, def: Type<unknown>) {
         super(context);
         this.setDefault(def);
     }
@@ -61,7 +61,7 @@ export class CustomComponentService implements ICustomErrorComponentConfigurator
         return this.customComponentCaches[ViewType.Error].getResult(key);
     }
 
-    addError(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, result: Type<any>) {
+    addError(rc: ErrorCategory, code: HttpStatusCode | ClientErrorCode, result: Type<unknown>) {
         const key = this.getErrorKey(rc, code);
         this.customComponentCaches[ViewType.Error].addType(key, result);
     }

@@ -115,7 +115,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const existingValue: any = this.control && this.control.value;
+        const existingValue = this.control && this.control.value;
         if (existingValue && (existingValue instanceof String || typeof existingValue === 'string')) {
             setTimeout(() => this.inputEvents.emit({ type: 'setDate', data: existingValue as string, }));
         }

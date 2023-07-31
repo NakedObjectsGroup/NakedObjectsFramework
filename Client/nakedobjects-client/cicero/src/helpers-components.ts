@@ -7,8 +7,12 @@ export function safeUnsubscribe(sub?: ISubscription) {
     }
 }
 
-function safeFocus(nativeElement?: any) {
-    if (nativeElement && nativeElement.focus) {
+function isFocusable(nativeElement: unknown): nativeElement is { focus: () => void } {
+    return !!(nativeElement && nativeElement instanceof Object && 'focus' in nativeElement);
+}
+
+function safeFocus(nativeElement?: unknown) {
+    if (isFocusable(nativeElement)) {
         nativeElement.focus();
     }
 }

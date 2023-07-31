@@ -1,5 +1,4 @@
-﻿import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Type } from '@angular/core';
+﻿import { Component, ComponentFactoryResolver, OnInit, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { ContextService, LoggerService, UrlManagerService } from '@nakedobjects/services';
 import { CustomComponentService } from '../custom-component.service';
 
@@ -26,8 +25,8 @@ export class DynamicErrorComponent implements OnInit {
         const errorWrapper = this.context.getError();
         const code = errorWrapper.httpErrorCode || errorWrapper.clientErrorCode;
         if (errorWrapper && code && this.parent) {
-            this.customComponentService.getCustomErrorComponent(errorWrapper.category, code).then((c: Type<any>) => {
-                const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
+            this.customComponentService.getCustomErrorComponent(errorWrapper.category, code).then(c => {
+                const childComponent = this.componentFactoryResolver.resolveComponentFactory(c as Type<unknown>);
                 this.parent!.createComponent(childComponent);
             });
         } else {

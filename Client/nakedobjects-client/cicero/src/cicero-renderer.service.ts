@@ -178,14 +178,14 @@ export class CiceroRendererService {
     private renderSingleChoice(field: Ro.IField, value: Ro.Value) {
         // This is to handle an enum: render it as text, not a number:
         const inverted = invert(field.choices()!);
-        return (<any>inverted)[value.toValueString()];
+        return inverted[value.toValueString()];
     }
 
     private renderMultipleChoicesCommaSeparated(field: Ro.IField, value: Ro.Value) {
         // This is to handle an enum: render it as text, not a number:
         const inverted = invert(field.choices()!);
         const values = value.list()!;
-        return reduce(values, (s, v) => `${s}${(<any>inverted)[v.toValueString()]},`, '');
+        return reduce(values, (s, v) => `${s}${inverted[v.toValueString()]},`, '');
     }
 
     // helpers

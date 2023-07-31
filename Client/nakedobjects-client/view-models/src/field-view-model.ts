@@ -95,7 +95,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
         if (this.entryType === Ro.EntryType.MultipleConditionalChoices) {
             const currentSelectedOptions = this.selectedMultiChoices;
-            this.selectedMultiChoices = filter(this.choiceOptions, c => some(currentSelectedOptions, (choiceToSet: any) => c.valuesEqual(choiceToSet)));
+            this.selectedMultiChoices = filter(this.choiceOptions, c => some(currentSelectedOptions, choiceToSet => c.valuesEqual(choiceToSet)));
         } else if (this.entryType === Ro.EntryType.ConditionalChoices) {
             const currentSelectedOption = this.selectedChoice;
             this.selectedChoice = find(this.choiceOptions, c => c.valuesEqual(currentSelectedOption)) ?? null;
@@ -148,7 +148,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             val = viewValue.getValue().toValueString();
         } else if (viewValue instanceof Array) {
             if (viewValue.length) {
-                return every(viewValue as (string | ChoiceViewModel)[], (v: any) => this.isValid(v));
+                return every(viewValue as (string | ChoiceViewModel)[], v => this.isValid(v));
             }
             val = '';
         } else {
@@ -174,7 +174,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         return this.validate(viewValue, val, !fullValidate);
     }
 
-    readonly validator = (c: AbstractControl): { [index: string]: any; } | null => {
+    readonly validator = (c: AbstractControl): { [index: string]: string; } | null => {
         const viewValue = c.value as string | ChoiceViewModel | string[] | ChoiceViewModel[];
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: 'invalid entry' };
@@ -218,7 +218,7 @@ export abstract class FieldViewModel extends MessageViewModel {
             return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Ro.Value>>{}, args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Ro.Link;
-        this.promptArguments = fromPairs(map(promptLink!.arguments()!, (v: any, key: string) => [key, new Ro.Value(v.value)]));
+        this.promptArguments = fromPairs(map(promptLink!.arguments()!, (v : Ro.IValue, key) => [key, new Ro.Value(v.value)]));
     }
 
     protected getRequiredIndicator() {

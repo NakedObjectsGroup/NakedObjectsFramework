@@ -246,7 +246,7 @@ export class Enter extends Command {
         const refType = ref.domainType();
         return this.context.isSubTypeOf(refType, paramType).then(isSubType => {
             if (isSubType) {
-                const obj = this.ciceroContext.ciceroClipboard as any;
+                const obj = this.ciceroContext.ciceroClipboard;
                 const selfLink = obj.selfLink();
                 // Need to add a title to the SelfLink as not there by default
                 selfLink.setTitle(obj.title());
@@ -361,7 +361,7 @@ export class Enter extends Command {
         }
 
         // TODO fix this any cast
-        const args = fromPairs(map(field.promptLink()!.arguments()! as any, (v: any, key: string) => [key, new Ro.Value(v.value)])) as Dictionary<Ro.Value>;
+        const args = fromPairs(map(field.promptLink()!.arguments()!, (v: Ro.IValue, key: string) => [key, new Ro.Value(v.value)])) as Dictionary<Ro.Value>;
         forEach(keys(args), key => args[key] = enteredFields[key]);
 
         let fieldEntryOrExistingValue: string;

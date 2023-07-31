@@ -85,8 +85,8 @@ export class DynamicListComponent extends PaneComponent implements OnDestroy {
             if (et && et !== this.lastOid) {
                 this.lastOid = et;
                 this.parent?.clear();
-                this.customComponentService.getCustomComponent(et, ViewType.List).then((c: Type<any>) => {
-                    const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
+                this.customComponentService.getCustomComponent(et, ViewType.List).then(c => {
+                    const childComponent = this.componentFactoryResolver.resolveComponentFactory(c as Type<unknown>);
                     this.parent?.createComponent(childComponent);
                 });
             }

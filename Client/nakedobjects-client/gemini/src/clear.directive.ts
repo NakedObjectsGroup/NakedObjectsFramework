@@ -23,7 +23,7 @@ export class ClearDirective implements OnInit, OnDestroy {
     }
 
     @Input('nofClear')
-    subject!: BehaviorSubject<any>;
+    subject!: BehaviorSubject<unknown>;
 
     @Output()
     clear = new EventEmitter();

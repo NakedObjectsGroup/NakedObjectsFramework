@@ -38,8 +38,8 @@ export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
             this.lastOid = oid.domainType;
             this.parent?.clear();
 
-            this.customComponentService.getCustomComponent(this.lastOid, ViewType.Object).then((c: Type<any>) => {
-                const childComponent = this.componentFactoryResolver.resolveComponentFactory(c);
+            this.customComponentService.getCustomComponent(this.lastOid, ViewType.Object).then(c => {
+                const childComponent = this.componentFactoryResolver.resolveComponentFactory(c as Type<unknown>);
                 this.parent?.createComponent(childComponent);
             });
         }

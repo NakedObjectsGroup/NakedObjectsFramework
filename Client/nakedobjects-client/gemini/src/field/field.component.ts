@@ -71,7 +71,7 @@ export abstract class FieldComponent implements OnDestroy {
     private model!: ParameterViewModel | PropertyViewModel;
     private isConditionalChoices?: boolean;
     private isAutoComplete?: boolean;
-    private bSubject?: BehaviorSubject<any>;
+    private bSubject?: BehaviorSubject<unknown>;
     private sub?: ISubscription;
     private lastArgs?: Dictionary<Ro.Value>;
 
@@ -133,8 +133,8 @@ export abstract class FieldComponent implements OnDestroy {
         this.dragOver = true;
     }
 
-    private isDomainObjectViewModel(object: any): object is DomainObjectViewModel {
-        return object && 'properties' in object;
+    private isDomainObjectViewModel(object: unknown): object is DomainObjectViewModel {
+        return !!(object && object instanceof Object && 'properties' in object);
     }
 
     private mapValues(args: Dictionary<Ro.Value> | undefined, parmsOrProps: { argId: string, getValue: () => Ro.Value }[]) {
@@ -319,7 +319,7 @@ export abstract class FieldComponent implements OnDestroy {
         }
     }
 
-    private triStateClick = (currentValue: any) => {
+    private triStateClick = (currentValue: unknown) => {
 
         switch (currentValue) {
             case false:
