@@ -123,7 +123,7 @@ export class UrlManagerService {
         return this.configService.config.keySeparator;
     }
 
-    private capturedPanes = [] as ({ paneType: PathSegment; search: Object } | null)[];
+    private capturedPanes = [] as ({ paneType: PathSegment; search: object } | null)[];
 
     private currentPaneId: Pane = Pane.Pane1;
 

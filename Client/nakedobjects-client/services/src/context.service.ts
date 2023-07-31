@@ -846,7 +846,7 @@ export class ContextService {
         return invokeOnMap(action);
     };
 
-    private setNewObject(updatedObject: Ro.DomainObjectRepresentation, paneId: Pane, viewSavedObject: Boolean) {
+    private setNewObject(updatedObject: Ro.DomainObjectRepresentation, paneId: Pane, viewSavedObject: boolean) {
         this.setObject(paneId, updatedObject);
         this.dirtyList.clearDirty(updatedObject.getOid());
 
