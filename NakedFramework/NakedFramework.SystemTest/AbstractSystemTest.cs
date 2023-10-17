@@ -31,7 +31,9 @@ public static class Constants {
 #endif
 }
 
+#pragma warning disable CS0618 // Type or member is obsolete
 public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
+#pragma warning restore CS0618 // Type or member is obsolete
     where TContext : DbContext {
     protected override bool EnforceProxies => false;
 

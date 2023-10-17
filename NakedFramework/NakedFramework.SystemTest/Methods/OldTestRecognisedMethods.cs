@@ -12,74 +12,41 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using NakedFramework.Architecture.Framework;
-using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework;
 using NakedFramework.Error;
-using NakedFramework.Persistor.EF6.Extensions;
-using NakedFramework.RATL.Classic.TestCase;
-using NakedFramework.RATL.Helpers;
-using NakedFramework.Rest.Extensions;
-using NakedObjects;
-using NakedObjects.Reflector.Extensions;
 using NakedObjects.Services;
-using NakedObjects.SystemTest;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using static TestObjectMenu.MenusDbContext;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
 
-namespace NakedFramework.SystemTest.Methods;
+namespace NakedObjects.SystemTest.Method;
 
 [TestFixture]
-public class TestRecognisedMethods : AcceptanceTestCase {
+public class OldTestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
     [SetUp]
-    public void SetUp() {
-        StartTest();
-        NakedFramework = ServiceScope.ServiceProvider.GetService<INakedFramework>();
-    }
+    public void SetUp() => StartTest();
 
     [TearDown]
     public void TearDown() => EndTest();
 
     [OneTimeSetUp]
     public void FixtureSetUp() {
+        MethodsDbContext.Delete();
+        var context = Activator.CreateInstance<MethodsDbContext>();
+
+        context.Database.Create();
         InitializeNakedObjectsFramework(this);
     }
 
     [OneTimeTearDown]
     public void FixtureTearDown() {
         CleanupNakedObjectsFramework(this);
+        MethodsDbContext.Delete();
     }
 
-    protected override void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services) {
-        services.AddControllers()
-                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
-        services.AddMvc(options => options.EnableEndpointRouting = false);
-        services.AddHttpContextAccessor();
-        services.AddNakedFramework(frameworkOptions => {
-            frameworkOptions.AddEF6Persistor(options => { options.ContextCreators = ContextCreators; });
-            frameworkOptions.AddRestfulObjects(restOptions => { });
-            frameworkOptions.AddNakedObjects(appOptions => {
-                appOptions.DomainModelTypes = ObjectTypes;
-                appOptions.DomainModelServices = Services;
-            });
-        });
-        services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
-        services.AddScoped(p => TestPrincipal);
-    }
-
-    protected INakedFramework NakedFramework { get; set; }
-
-    protected Func<IConfiguration, DbContext>[] ContextCreators =>
-        new Func<IConfiguration, DbContext>[] { config => new MethodsDbContext() };
-
-    protected  Type[] ObjectTypes =>
+    protected override Type[] ObjectTypes =>
         new[] {
             typeof(Sex),
             typeof(Auto1),
@@ -140,7 +107,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
             typeof(Validate5)
         };
 
-    protected  Type[] Services =>
+    protected override Type[] Services =>
         new[] {
             typeof(SimpleRepository<Auto1>),
             typeof(SimpleRepository<Auto2>),
@@ -200,10 +167,23 @@ public class TestRecognisedMethods : AcceptanceTestCase {
             typeof(SimpleRepository<Validate5>)
         };
 
+    private void CreateAuto2(string prop1) {
+        var obj2 = NewTestObject<Auto2>();
+        obj2.GetPropertyByName("Prop1").SetValue(prop1);
+        obj2.Save();
+    }
 
-    [Test, Ignore("")]
+    private void CreateChoices<T>(string prop1) {
+        var obj2 = NewTestObject<T>();
+        obj2.GetPropertyByName("Prop1").SetValue(prop1);
+        obj2.Save();
+    }
+
+    [Test]
     public virtual void AutoCompleteParameters() {
-     
+        CreateAuto2("Bar1");
+        CreateAuto2("Bar2");
+        CreateAuto2("Bar3");
 
         var obj1 = NewTestObject<Auto1>();
         var action = obj1.GetAction("Do Something");
@@ -216,9 +196,11 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual(2, cho2.Length);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void AutoCompleteReferenceProperty() {
-     
+        CreateAuto2("Foo1");
+        CreateAuto2("Foo2");
+        CreateAuto2("Foo3");
 
         var obj1 = NewTestObject<Auto1>();
         var prop = obj1.GetPropertyByName("Prop3");
@@ -227,7 +209,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Foo1", cho[0].Title);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void AutoCompleteStringProperty() {
         var obj1 = NewTestObject<Auto1>();
         var prop = obj1.GetPropertyByName("Prop2");
@@ -236,7 +218,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Fee", cho[0].Title);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void CalledWhenReferencePropertyCleared() {
         var obj3 = NewTestObject<Modify3>();
         obj3.GetPropertyByName("Prop1").SetValue("Foo");
@@ -258,7 +240,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         prop3.AssertValueIsEqual("Prop4 has been modified");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void CalledWhenValuePropertyIsCleared() {
         var obj = NewTestObject<Modify1>();
         var prop0 = obj.GetPropertyByName("Prop0");
@@ -303,7 +285,9 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
     [Test]
     public virtual void ChoicesParameters() {
-    
+        CreateChoices<Choices2>("Bar1");
+        CreateChoices<Choices2>("Bar2");
+        CreateChoices<Choices2>("Bar3");
 
         var obj1 = NewTestObject<Choices1>();
         var action = obj1.GetAction("Do Something");
@@ -322,7 +306,9 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
     [Test]
     public virtual void ChoicesReferenceProperty() {
-     
+        CreateChoices<Choices4>("Bar1");
+        CreateChoices<Choices4>("Bar2");
+        CreateChoices<Choices4>("Bar3");
 
         var obj1 = NewTestObject<Choices1>();
         var prop = obj1.GetPropertyByName("Prop3");
@@ -341,19 +327,19 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     }
 
     // Note Clear Prefix has been removed as a recognized prefix for complementary actions 
-    //[Test]
-    //public void ClearMethodDoesShowUpAsAnAction() {
-    //    var obj1 = NewTestObject<Clear1>();
-    //    var action = obj1.GetAction("Clear Prop1");
-    //    action.AssertHasFriendlyName("Clear Prop1");
-    //}
+    [Test]
+    public void ClearMethodDoesShowUpAsAnAction() {
+        var obj1 = NewTestObject<Clear1>();
+        var action = obj1.GetAction("Clear Prop1");
+        action.AssertHasFriendlyName("Clear Prop1");
+    }
 
-    //[Test]
-    //public void CreatedCalled() {
-    //    var obj1 = NewTestObject<Created1>();
-    //    var dom1 = (Created1)obj1.GetDomainObject();
-    //    Assert.IsTrue(dom1.CreatedCalled);
-    //}
+    [Test]
+    public void CreatedCalled() {
+        var obj1 = NewTestObject<Created1>();
+        var dom1 = (Created1)obj1.GetDomainObject();
+        Assert.IsTrue(dom1.CreatedCalled);
+    }
 
     [Test]
     public void CreatedDoesNotShowUpAsAnAction() {
@@ -387,17 +373,16 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void DefaultNumericMethodOverAnnotation() {
-        var obj1 = GetMainMenu("Default1s").GetAction("New Instance").InvokeReturnObject();
-
+        var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop4");
         var def = prop.GetDefault().Title;
         Assert.IsNotNull(def);
         Assert.AreEqual("8", def);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void DefaultNumericProperty() {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop1");
@@ -406,7 +391,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("8", def);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void DefaultParameters() {
         //Set up choices
         var obj2 = NewTestObject<Default4>();
@@ -434,7 +419,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Bar2", def2);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void DefaultParametersOverAnnotation() {
         var obj1 = NewTestObject<Default1>();
         var action = obj1.GetAction("Do Something Else");
@@ -447,7 +432,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Foo", def1);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void DefaultReferenceProperty() {
         //Set up choices
         var obj2 = NewTestObject<Default2>();
@@ -467,7 +452,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Bar2", def);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void DefaultStringMethodOverAnnotation() {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop5");
@@ -476,7 +461,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Foo", def);
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void DefaultStringProperty() {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop2");
@@ -485,17 +470,17 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         Assert.AreEqual("Foo", def);
     }
 
-    //[Test]
-    //public void DeletedCalled() {
-    //    var obj1 = NewTestObject<Deleted1>();
-    //    var dom1 = (Deleted1)obj1.GetDomainObject();
-    //    obj1.Save();
+    [Test]
+    public void DeletedCalled() {
+        var obj1 = NewTestObject<Deleted1>();
+        var dom1 = (Deleted1)obj1.GetDomainObject();
+        obj1.Save();
 
-    //    Assert.IsFalse(Deleted1.DeletedCalled);
-    //    obj1.GetAction("Delete").Invoke();
-    //    Assert.IsTrue(Deleted1.DeletedCalled);
-    //    Deleted1.DeletedCalled = false;
-    //}
+        Assert.IsFalse(Deleted1.DeletedCalled);
+        obj1.GetAction("Delete").Invoke();
+        Assert.IsTrue(Deleted1.DeletedCalled);
+        Deleted1.DeletedCalled = false;
+    }
 
     [Test]
     public void DeletedDoesNotShowUpAsAnAction() {
@@ -509,18 +494,18 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    //[Test]
-    //public void DeletingCalled() {
-    //    var obj1 = NewTestObject<Deleting1>();
-    //    var dom1 = (Deleting1)obj1.GetDomainObject();
-    //    obj1.Save();
+    [Test]
+    public void DeletingCalled() {
+        var obj1 = NewTestObject<Deleting1>();
+        var dom1 = (Deleting1)obj1.GetDomainObject();
+        obj1.Save();
 
-    //    Assert.IsFalse(Deleting1.DeletingCalled);
+        Assert.IsFalse(Deleting1.DeletingCalled);
 
-    //    obj1.GetAction("Delete").InvokeReturnObject();
+        obj1.GetAction("Delete").InvokeReturnObject();
 
-    //    Assert.IsTrue(Deleting1.DeletingCalled);
-    //}
+        Assert.IsTrue(Deleting1.DeletingCalled);
+    }
 
     [Test]
     public void DeletingDoesNotShowUpAsAnAction() {
@@ -534,7 +519,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void DisableAction() {
         var obj = NewTestObject<Disable3>();
         obj.GetPropertyByName("Prop4").SetValue("avalue");
@@ -600,7 +585,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.GetAction("Disable Prop8");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void DisableProperty() {
         var obj = NewTestObject<Disable3>();
         var prop6 = obj.GetPropertyByName("Prop6");
@@ -647,7 +632,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         //obj.GetPropertyByName("Prop5").AssertIsModifiable(); - collection disabled by default
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void HideAction() {
         var obj = NewTestObject<Hide3>();
         obj.Save();
@@ -656,7 +641,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.GetAction("Do Something").AssertIsInvisible();
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void HideActionDefault() {
         var obj = NewTestObject<Hide2>();
         obj.GetAction("Action1").AssertIsInvisible();
@@ -710,7 +695,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.GetAction("Hide Action2");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void HideProperty() {
         var obj = NewTestObject<Hide3>();
         var prop6 = obj.GetPropertyByName("Prop6");
@@ -723,7 +708,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         prop6.AssertIsInvisible();
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void HidePropertyDefault() {
         var obj = NewTestObject<Hide1>();
         obj.GetPropertyByName("Prop1").AssertIsInvisible();
@@ -770,56 +755,56 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    //[Test]
-    //public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
-    //    var obj1 = NewTestObject<Created2>();
-    //    var dom1 = (Created2)obj1.GetDomainObject();
-    //    Assert.IsFalse(dom1.CreatedCalled);
-    //    obj1.GetAction("Created");
-    //}
+    [Test]
+    public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
+        var obj1 = NewTestObject<Created2>();
+        var dom1 = (Created2)obj1.GetDomainObject();
+        Assert.IsFalse(dom1.CreatedCalled);
+        obj1.GetAction("Created");
+    }
 
-    //[Test]
-    //public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
-    //    var obj1 = NewTestObject<Deleted2>();
-    //    var dom1 = (Deleted2)obj1.GetDomainObject();
-    //    Assert.IsFalse(Deleted2.DeletedCalled);
+    [Test]
+    public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
+        var obj1 = NewTestObject<Deleted2>();
+        var dom1 = (Deleted2)obj1.GetDomainObject();
+        Assert.IsFalse(Deleted2.DeletedCalled);
 
-    //    try {
-    //        obj1.GetAction("Deleted");
-    //    }
-    //    catch (Exception e) {
-    //        Assert.AreEqual("Assert.Fail failed. No Action named 'Deleted'", e.Message);
-    //    }
-    //}
+        try {
+            obj1.GetAction("Deleted");
+        }
+        catch (Exception e) {
+            Assert.AreEqual("Assert.Fail failed. No Action named 'Deleted'", e.Message);
+        }
+    }
 
-    //[Test]
-    //public void LowerCaseDeletingNotRecognisedAndShowsAsAction() {
-    //    var obj1 = NewTestObject<Deleting2>().Save();
-    //    var dom1 = (Deleting2)obj1.GetDomainObject();
+    [Test]
+    public void LowerCaseDeletingNotRecognisedAndShowsAsAction() {
+        var obj1 = NewTestObject<Deleting2>().Save();
+        var dom1 = (Deleting2)obj1.GetDomainObject();
 
-    //    //Check method is visible as an action
-    //    obj1.GetAction("Deleting").AssertIsVisible();
+        //Check method is visible as an action
+        obj1.GetAction("Deleting").AssertIsVisible();
 
-    //    Assert.IsFalse(Deleting2.DeletingCalled);
-    //    obj1.GetAction("Delete").InvokeReturnObject();
-    //    Assert.IsFalse(Deleting2.DeletingCalled); //Still false
-    //}
+        Assert.IsFalse(Deleting2.DeletingCalled);
+        obj1.GetAction("Delete").InvokeReturnObject();
+        Assert.IsFalse(Deleting2.DeletingCalled); //Still false
+    }
 
-    //[Test]
-    //public void LowerCaseNotRecognisedAndShowsAsAction() {
-    //    var obj1 = NewTestObject<Updated2>();
-    //    var dom1 = (Updated2)obj1.GetDomainObject();
-    //    Assert.IsFalse(Updated2.UpdatedCalled);
-    //    obj1.GetAction("Updated");
-    //}
+    [Test]
+    public void LowerCaseNotRecognisedAndShowsAsAction() {
+        var obj1 = NewTestObject<Updated2>();
+        var dom1 = (Updated2)obj1.GetDomainObject();
+        Assert.IsFalse(Updated2.UpdatedCalled);
+        obj1.GetAction("Updated");
+    }
 
-    //[Test]
-    //public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
-    //    var obj1 = NewTestObject<Persisted2>();
-    //    var dom1 = (Persisted2)obj1.GetDomainObject();
-    //    Assert.IsFalse(dom1.PersistedCalled);
-    //    obj1.GetAction("Persisted");
-    //}
+    [Test]
+    public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
+        var obj1 = NewTestObject<Persisted2>();
+        var dom1 = (Persisted2)obj1.GetDomainObject();
+        Assert.IsFalse(dom1.PersistedCalled);
+        obj1.GetAction("Persisted");
+    }
 
     [Test]
     public void LowerCaseUpdatingNotRecognisedAndShowsAsAction() {
@@ -839,7 +824,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void ModifyMethodOnReferenceProperty() {
         var obj3 = NewTestObject<Modify3>();
         obj3.GetPropertyByName("Prop1").SetValue("Foo");
@@ -857,7 +842,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         prop3.AssertValueIsEqual("Prop4 has been modified");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void ModifyMethodOnValueProperty() {
         var obj = NewTestObject<Modify1>();
         var prop0 = obj.GetPropertyByName("Prop0");
@@ -871,7 +856,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         prop0.AssertValueIsEqual("Prop1 has been modified");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ObjectWithSimpleToString() {
         var obj = NewTestObject<Title1>();
         var prop1 = obj.GetPropertyByName("Prop1");
@@ -881,18 +866,18 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.AssertTitleEquals("Bar");
     }
 
-    //[Test]
-    //public void PersistedCalled() {
-    //    var obj1 = NewTestObject<Persisted1>();
-    //    var dom1 = (Persisted1)obj1.GetDomainObject();
-    //    try {
-    //        obj1.Save();
-    //        Assert.Fail("Shouldn't get to here");
-    //    }
-    //    catch (Exception e) {
-    //        Assert.AreEqual("Persisted called", e.Message);
-    //    }
-    //}
+    [Test]
+    public void PersistedCalled() {
+        var obj1 = NewTestObject<Persisted1>();
+        var dom1 = (Persisted1)obj1.GetDomainObject();
+        try {
+            obj1.Save();
+            Assert.Fail("Shouldn't get to here");
+        }
+        catch (Exception e) {
+            Assert.AreEqual("Persisted called", e.Message);
+        }
+    }
 
     [Test]
     public void PersistedDoesNotShowUpAsAnAction() {
@@ -906,7 +891,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void PersistedMarkedAsIgnoredIsNotCalledAndIsNotAnAction() {
         var obj = NewTestObject<Persisted3>();
         obj.Save(); //Would throw an exception if the Persisted had been called.
@@ -919,16 +904,16 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    //[Test]
-    //public void PersistingCalled() {
-    //    var obj1 = NewTestObject<Persisting1>();
-    //    var dom1 = (Persisting1)obj1.GetDomainObject();
-    //    Assert.IsFalse(Persisting1.PersistingCalled);
+    [Test]
+    public void PersistingCalled() {
+        var obj1 = NewTestObject<Persisting1>();
+        var dom1 = (Persisting1)obj1.GetDomainObject();
+        Assert.IsFalse(Persisting1.PersistingCalled);
 
-    //    obj1.Save();
+        obj1.Save();
 
-    //    Assert.IsTrue(Persisting1.PersistingCalled);
-    //}
+        Assert.IsTrue(Persisting1.PersistingCalled);
+    }
 
     [Test]
     public void PersistingDoesNotShowUpAsAnAction() {
@@ -986,7 +971,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void TitleMethod() {
         var obj = NewTestObject<Title3>();
         obj.AssertTitleEquals("Untitled Title3");
@@ -1003,19 +988,19 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.AssertTitleEquals("Untitled Title 11");
     }
 
-    //[Test]
-    //public virtual void TitleMethodTakesPrecedenceOverToString() {
-    //    var obj = NewTestObject<Title4>();
-    //    Equals("Bar", obj.GetDomainObject().ToString());
-    //    obj.AssertTitleEquals("Untitled Title4");
-    //    var prop1 = obj.GetPropertyByName("Prop1");
-    //    prop1.SetValue("Foo");
-    //    obj.AssertTitleEquals("Foo");
-    //    obj.Save();
-    //    obj.AssertTitleEquals("Foo");
-    //}
+    [Test]
+    public virtual void TitleMethodTakesPrecedenceOverToString() {
+        var obj = NewTestObject<Title4>();
+        Equals("Bar", obj.GetDomainObject().ToString());
+        obj.AssertTitleEquals("Untitled Title4");
+        var prop1 = obj.GetPropertyByName("Prop1");
+        prop1.SetValue("Foo");
+        obj.AssertTitleEquals("Foo");
+        obj.Save();
+        obj.AssertTitleEquals("Foo");
+    }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ToStringRecognisedAsATitle() {
         var obj = NewTestObject<Title5>();
         var prop1 = obj.GetPropertyByName("Prop1");
@@ -1025,7 +1010,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.AssertTitleEquals("Bar");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ToStringWithMask() {
         var obj = NewTestObject<Title12>();
         obj.AssertTitleEquals("Simple Title");
@@ -1109,20 +1094,20 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.GetAction("Validate 1 Do Something");
     }
 
-    //[Test]
-    //public void UpdatedCalled() {
-    //    var obj1 = NewTestObject<Updated1>();
-    //    var dom1 = (Updated1)obj1.GetDomainObject();
-    //    obj1.Save();
-    //    try {
-    //        NakedFramework.TransactionManager.StartTransaction();
-    //        obj1.GetPropertyByName("Prop1").SetValue("Foo");
-    //        NakedFramework.TransactionManager.EndTransaction();
+    [Test]
+    public void UpdatedCalled() {
+        var obj1 = NewTestObject<Updated1>();
+        var dom1 = (Updated1)obj1.GetDomainObject();
+        obj1.Save();
+        try {
+            NakedFramework.TransactionManager.StartTransaction();
+            obj1.GetPropertyByName("Prop1").SetValue("Foo");
+            NakedFramework.TransactionManager.EndTransaction();
 
-    //        Assert.Fail("Shouldn't get to here");
-    //    }
-    //    catch (Exception) { }
-    //}
+            Assert.Fail("Shouldn't get to here");
+        }
+        catch (Exception) { }
+    }
 
     [Test]
     public void UpdatedDoesNotShowUpAsAnAction() {
@@ -1136,21 +1121,21 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    //[Test]
-    //public void UpdatingCalled() {
-    //    var obj1 = NewTestObject<Updating1>();
-    //    var dom1 = (Updating1)obj1.GetDomainObject();
-    //    obj1.Save();
-    //    try {
-    //        NakedFramework.TransactionManager.StartTransaction();
+    [Test]
+    public void UpdatingCalled() {
+        var obj1 = NewTestObject<Updating1>();
+        var dom1 = (Updating1)obj1.GetDomainObject();
+        obj1.Save();
+        try {
+            NakedFramework.TransactionManager.StartTransaction();
 
-    //        obj1.GetPropertyByName("Prop1").SetValue("Foo");
-    //        NakedFramework.TransactionManager.EndTransaction();
+            obj1.GetPropertyByName("Prop1").SetValue("Foo");
+            NakedFramework.TransactionManager.EndTransaction();
 
-    //        Assert.Fail("Should not get to here");
-    //    }
-    //    catch (Exception) { }
-    //}
+            Assert.Fail("Should not get to here");
+        }
+        catch (Exception) { }
+    }
 
     [Test]
     public void UpdatingDoesNotShowUpAsAnAction() {
@@ -1200,7 +1185,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         action.Invoke("x", "x", "x", "x", "x", "x", "x");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail4() {
         var obj = NewTestObject<Validate4>();
         obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1215,7 +1200,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail5A() {
         var obj = NewTestObject<Validate5>();
         var obj4 = NewTestObject<Validate4>();
@@ -1233,7 +1218,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail5B() {
         var obj = NewTestObject<Validate5>();
         var obj4 = NewTestObject<Validate4>();
@@ -1251,7 +1236,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail5C() {
         var obj = NewTestObject<Validate5>();
         obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1268,7 +1253,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationSuccess4() {
         var obj = NewTestObject<Validate4>();
         obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1276,7 +1261,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.Save();
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationSuccess5() {
         var obj = NewTestObject<Validate5>();
         var obj4 = NewTestObject<Validate4>();
@@ -1316,7 +1301,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateNumericalProperty() {
         var obj = NewTestObject<Validate1>();
         var prop1 = obj.GetPropertyByName("Prop1");
@@ -1349,7 +1334,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void ValidateParametersCollectively() {
         var obj1 = NewTestObject<Validate1>();
         var action = obj1.GetAction("Do Something Else");
@@ -1366,7 +1351,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         action.AssertIsInvalidWithParms(5, "abar", obj2b).AssertLastMessageIs("Something amiss");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public void ValidateParametersIndividually() {
         var obj1 = NewTestObject<Validate1>();
         var action = obj1.GetAction("Do Something");
@@ -1399,7 +1384,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateReferenceProperty() {
         var obj1 = NewTestObject<Validate1>();
         var obj1Prop3 = obj1.GetPropertyByName("Prop3");
@@ -1421,7 +1406,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateStringProperty() {
         var obj = NewTestObject<Validate1>();
         var prop1 = obj.GetPropertyByName("Prop2");
@@ -1492,7 +1477,6 @@ public class MethodsDbContext : DbContext {
     public DbSet<Title9> Title9 { get; set; }
     public DbSet<Title10> Title10 { get; set; }
     public DbSet<Title11> Title11 { get; set; }
-    public DbSet<Title12> Title12 { get; set; }
     public DbSet<Updated1> Updated1 { get; set; }
     public DbSet<Updated2> Updated2 { get; set; }
     public DbSet<Updating1> Updating1 { get; set; }
@@ -1504,84 +1488,6 @@ public class MethodsDbContext : DbContext {
     public DbSet<Validate5> Validate5 { get; set; }
 
     public static void Delete() => Database.Delete(Cs);
-
-    protected override void OnModelCreating(DbModelBuilder modelBuilder) => Database.SetInitializer(new MethodsDatabaseInitializer());
-    public class MethodsDatabaseInitializer : DropCreateDatabaseAlways<MethodsDbContext> {
-        protected override void Seed(MethodsDbContext context) {
-            context.Auto2.Add(new Auto2 { Prop1 = "Foo1" });
-            context.Auto2.Add(new Auto2 { Prop1 = "Foo2" });
-            context.Auto2.Add(new Auto2 { Prop1 = "Foo3" });
-            context.Auto2.Add(new Auto2 { Prop1 = "Bar1" });
-            context.Auto2.Add(new Auto2 { Prop1 = "Bar2" });
-            context.Auto2.Add(new Auto2 { Prop1 = "Bar3" });
-
-            context.Choices2.Add(new Choices2 { Prop1 = "Bar1" });
-            context.Choices2.Add(new Choices2 { Prop1 = "Bar2" });
-            context.Choices2.Add(new Choices2 { Prop1 = "Bar3" });
-
-            context.Choices4.Add(new Choices4 { Prop1 = "Bar1" });
-            context.Choices4.Add(new Choices4 { Prop1 = "Bar2" });
-            context.Choices4.Add(new Choices4 { Prop1 = "Bar3" });
-
-            //context.Sex.Add(new Auto1());
-            context.Auto1.Add(new Auto1());
-            //context.Auto2.Add(new Auto2());
-            context.Auto3.Add(new Auto3());
-            context.Choices1.Add(new Choices1());
-            //context.Choices2.Add(new Choices2());
-            context.Choices3.Add(new Choices3());
-            //context.Choices4.Add(new Choices4());
-            context.Clear1.Add(new Clear1());
-            context.Clear2.Add(new Clear2());
-            context.Clear3.Add(new Clear3());
-            context.Created1.Add(new Created1());
-            context.Created2.Add(new Created2());
-            context.Default1.Add(new Default1());
-            context.Default2.Add(new Default2());
-            context.Default3.Add(new Default3());
-            context.Default4.Add(new Default4());
-            context.Deleted1.Add(new Deleted1());
-            context.Deleted2.Add(new Deleted2());
-            context.Deleting1.Add(new Deleting1());
-            context.Deleting2.Add(new Deleting2());
-            context.Disable1.Add(new Disable1());
-            context.Disable2.Add(new Disable2());
-            context.Disable3.Add(new Disable3());
-            context.Hide1.Add(new Hide1());
-            context.Hide2.Add(new Hide2());
-            context.Hide3.Add(new Hide3());
-            context.Modify1.Add(new Modify1());
-            context.Modify2.Add(new Modify2());
-            context.Modify3.Add(new Modify3());
-            context.Modify4.Add(new Modify4());
-            context.Persisted1.Add(new Persisted1());
-            context.Persisted2.Add(new Persisted2());
-            context.Persisted3.Add(new Persisted3());
-            context.Persisting1.Add(new Persisting1());
-            context.Persisting2.Add(new Persisting2());
-            context.Title1.Add(new Title1());
-            context.Title2.Add(new Title2());
-            context.Title3.Add(new Title3());
-            context.Title4.Add(new Title4());
-            context.Title5.Add(new Title5());
-            context.Title6.Add(new Title6());
-            context.Title7.Add(new Title7());
-            context.Title8.Add(new Title8());
-            context.Title9.Add(new Title9());
-            context.Title10.Add(new Title10());
-            context.Title11.Add(new Title11());
-            context.Title12.Add(new Title12());
-            context.Updated1.Add(new Updated1());
-            context.Updated2.Add(new Updated2());
-            context.Updating1.Add(new Updating1());
-            context.Updating2.Add(new Updating2());
-            context.Validate1.Add(new Validate1());
-            context.Validate2.Add(new Validate2());
-            context.Validate3.Add(new Validate3());
-            context.Validate4.Add(new Validate4());
-            context.Validate5.Add(new Validate5());
-        }
-    }
 }
 
 #region AutoComplete
@@ -1673,7 +1579,7 @@ public class Choices1 {
 
     public virtual string Prop2 { get; set; }
 
-    public virtual Choices4 Prop3 { get; set; }
+    public Choices4 Prop3 { get; set; }
 
     public List<int> ChoicesProp1() => new() { 4, 8, 9 };
 
@@ -1977,7 +1883,7 @@ public class Disable1 {
 
     public virtual string Prop1 { get; set; }
 
-    public virtual Disable1 Prop2 { get; set; }
+    public Disable1 Prop2 { get; set; }
 
     public virtual string Prop3 { get; set; }
 
