@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedFramework.Metamodel.Authorization;
-using NakedFramework.Security;
+using NakedObjects.Security;
 
 namespace NakedObjects.Reflector.Authorization;
 

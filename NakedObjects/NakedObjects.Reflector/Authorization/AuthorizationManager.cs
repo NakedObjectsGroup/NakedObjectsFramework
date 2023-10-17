@@ -17,7 +17,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Error;
 using NakedFramework.Core.Util;
 using NakedFramework.Metamodel.Authorization;
-using NakedFramework.Security;
+using NakedObjects.Security;
 
 namespace NakedObjects.Reflector.Authorization;
 

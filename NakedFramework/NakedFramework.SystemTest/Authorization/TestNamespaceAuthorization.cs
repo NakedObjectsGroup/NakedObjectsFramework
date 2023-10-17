@@ -19,7 +19,7 @@ using NakedFramework.Persistor.EF6.Extensions;
 using NakedFramework.RATL.Classic.TestCase;
 using NakedFramework.RATL.Helpers;
 using NakedFramework.Rest.Extensions;
-using NakedFramework.Security;
+using NakedObjects.Security;
 using NakedObjects;
 using NakedObjects.Reflector.Authorization;
 using NakedObjects.Reflector.Extensions;

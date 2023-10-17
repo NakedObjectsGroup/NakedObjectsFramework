@@ -15,7 +15,7 @@ using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Facet;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Metamodel.Authorization;
-using NakedFramework.Security;
+using NakedObjects.Security;
 using NakedObjects.Reflector.Authorization;
 
 namespace NakedObjects.Reflector.Test.Authorization;
