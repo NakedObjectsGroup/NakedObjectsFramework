@@ -1200,92 +1200,90 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         action.Invoke("x", "x", "x", "x", "x", "x", "x");
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail4() {
         var obj = NewTestObject<Validate4>();
-        obj.GetPropertyByName("Prop1").SetValue("value1");
-        obj.GetPropertyByName("Prop2").SetValue("value2");
-
+        
+        obj.GetPropertyByName("Prop1").SetValue("fail");
         try {
-            obj.Save();
+            obj.GetPropertyByName("Prop2").SetValue("fail");
             Assert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Expect prop1 == prop2", e.Message);
+            Assert.AreEqual("Assert.Fail failed. Cannot SetValue fail in the field Prop2: 199 RestfulObjects \"Expect fail\"", e.Message);
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail5A() {
         var obj = NewTestObject<Validate5>();
         var obj4 = NewTestObject<Validate4>();
-        obj.GetPropertyByName("Prop1").SetValue("value1");
-        obj.GetPropertyByName("Prop2").SetValue("value2");
-        obj.GetPropertyByName("Prop3").SetValue("1");
-        obj.GetPropertyByName("Prop4").SetObject(obj4);
 
         try {
-            obj.Save();
+            obj.GetPropertyByName("Prop1").SetValue("fail");
+            obj.GetPropertyByName("Prop2").SetValue("fail");
+            obj.GetPropertyByName("Prop3").SetValue("1");
+            obj.GetPropertyByName("Prop4").SetObject(obj4);
             Assert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
+            Assert.AreEqual("Assert.Fail failed. Cannot SetValue fail in the field Prop2: 199 RestfulObjects \"Condition Fail\"", e.Message);
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail5B() {
         var obj = NewTestObject<Validate5>();
         var obj4 = NewTestObject<Validate4>();
-        obj.GetPropertyByName("Prop1").SetValue("value1");
-        obj.GetPropertyByName("Prop2").SetValue("value1");
-        obj.GetPropertyByName("Prop3").SetValue("0");
-        obj.GetPropertyByName("Prop4").SetObject(obj4);
+        
 
         try {
-            obj.Save();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value1");
+            obj.GetPropertyByName("Prop3").SetValue("0");
+            obj.GetPropertyByName("Prop4").SetObject(obj4);
             Assert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
+            Assert.AreEqual("Assert.Fail failed. Cannot SetObject NakedFramework.RATL.Classic.NonDocumenting.TestObject in the field Prop4: 199 RestfulObjects \"Condition Fail\"", e.Message);
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationFail5C() {
         var obj = NewTestObject<Validate5>();
-        obj.GetPropertyByName("Prop1").SetValue("value1");
-        obj.GetPropertyByName("Prop2").SetValue("value1");
-        obj.GetPropertyByName("Prop3").SetValue("1");
-        obj.GetPropertyByName("Prop4").ClearObject();
-
+      
         try {
-            obj.Save();
+            obj.GetPropertyByName("Prop1").SetValue("value1");
+            obj.GetPropertyByName("Prop2").SetValue("value1");
+            obj.GetPropertyByName("Prop3").SetValue("1");
+            obj.GetPropertyByName("Prop4").ClearObject();
+
             Assert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Condition Fail", e.Message);
+            Assert.AreEqual("Assert.Fail failed. Cannot SetValue 1 in the field Prop3: 199 RestfulObjects \"Condition Fail\"", e.Message);
         }
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationSuccess4() {
-        var obj = NewTestObject<Validate4>();
-        obj.GetPropertyByName("Prop1").SetValue("value1");
-        obj.GetPropertyByName("Prop2").SetValue("value1");
-        obj.Save();
+        var obj = NewTestObject<Validate4>("2");
+        obj.GetPropertyByName("Prop1").SetValue("fail");
+        obj.GetPropertyByName("Prop2").SetValue("ok");
+       
     }
 
-    [Test, Ignore("")]
+    [Test]
     public virtual void ValidateCrossValidationSuccess5() {
-        var obj = NewTestObject<Validate5>();
+        var obj = NewTestObject<Validate5>("2");
         var obj4 = NewTestObject<Validate4>();
-        obj.GetPropertyByName("Prop1").SetValue("value1");
+        obj.GetPropertyByName("Prop1").SetValue("fail");
         obj.GetPropertyByName("Prop2").SetValue("value1");
-        obj.GetPropertyByName("Prop3").SetValue("1");
-        obj.GetPropertyByName("Prop4").SetObject(obj4);
+        obj.GetPropertyByName("Prop3").SetValue("0");
+        obj.GetPropertyByName("Prop4").ClearObject();
 
-        obj.Save();
+      
     }
 
     [Test]
@@ -1579,6 +1577,8 @@ public class MethodsDbContext : DbContext {
             context.Validate2.Add(new Validate2());
             context.Validate3.Add(new Validate3());
             context.Validate4.Add(new Validate4());
+            context.Validate4.Add(new Validate4());
+            context.Validate5.Add(new Validate5());
             context.Validate5.Add(new Validate5());
         }
     }
@@ -2649,8 +2649,8 @@ public class Validate4 {
     public virtual string Prop2 { get; set; }
 
     public string Validate(string prop1, string prop2) {
-        if (prop1 != prop2) {
-            return "Expect prop1 == prop2";
+        if (prop1 == "fail" && prop1 == prop2) {
+            return "Expect fail";
         }
 
         return null;
@@ -2670,7 +2670,7 @@ public class Validate5 {
     public virtual Validate4 Prop4 { get; set; }
 
     public string Validate(Validate4 prop4, string prop1, int prop3, string prop2) {
-        if (prop1 != prop2 || prop3 == 0 || prop4 == null) {
+        if (prop1 == "fail" && prop1 == prop2 || prop3 == 1 || prop4 != null) {
             return "Condition Fail";
         }
 
