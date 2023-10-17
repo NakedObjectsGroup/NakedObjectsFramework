@@ -51,6 +51,6 @@
         "@nakedobjects/services": "~15.0.0",
         "@nakedobjects/view-models": "~15.0.0",
         "rxjs": "~7.8.0",
-        "zone.js": "~0.14.0"
+        "zone.js": "~0.13.0"
     }
 }

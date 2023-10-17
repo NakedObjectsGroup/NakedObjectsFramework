@@ -49,6 +49,6 @@
         "@angular/router": "^16.2.0",
         "@nakedobjects/restful-objects": "~15.0.0",
         "rxjs": "~7.8.1",
-        "zone.js": "~0.14.0"
+        "zone.js": "~0.13.0"
     }
 }
