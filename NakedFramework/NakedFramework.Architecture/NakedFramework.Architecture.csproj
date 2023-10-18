@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
-    <PackageReference Include="NakedFramework.ProgrammingModel" Version="15.0.0" />
+    <PackageReference Include="NakedFramework.ProgrammingModel" Version="16.0.0" />
   </ItemGroup>
 
 </Project>

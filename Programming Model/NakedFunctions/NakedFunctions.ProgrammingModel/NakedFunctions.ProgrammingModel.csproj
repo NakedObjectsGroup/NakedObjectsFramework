@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>NakedFunctions</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NakedFramework.ProgrammingModel" Version="15.0.0" />
+    <PackageReference Include="NakedFramework.ProgrammingModel" Version="16.0.0" />
   </ItemGroup>
 
 </Project>

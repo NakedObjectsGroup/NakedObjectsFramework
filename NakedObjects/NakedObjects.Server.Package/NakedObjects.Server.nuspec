@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>NakedObjects.Server</id>
-		<version>15.0.0</version>
+		<version>16.0.0</version>
 		<authors>Naked Objects Group Ltd</authors>
 		<owners>Naked Objects Group Ltd</owners>
 		<license type="expression">Apache-2.0</license>
@@ -14,9 +14,9 @@
 		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
-			<group targetFramework="net6.0">
-				<dependency id="NakedObjects.ProgrammingModel" version="[15.0.0, 16)" />
-				<dependency id="NakedFramework" version="[15.0.0, 16)" />
+			<group targetFramework="net7.0">
+				<dependency id="NakedObjects.ProgrammingModel" version="[16.0.0, 17)" />
+				<dependency id="NakedFramework" version="[16.0.0, 17)" />
 			</group>
 		</dependencies>
 	</metadata>

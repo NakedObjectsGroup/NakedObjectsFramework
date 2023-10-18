@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<WarningsNotAsErrors>1701</WarningsNotAsErrors>
 	</PropertyGroup>
@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.23" />
-		<PackageReference Include="NOF2.ProgrammingModel" Version="3.0.0" />
+		<PackageReference Include="NOF2.ProgrammingModel" Version="4.0.0" />
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
