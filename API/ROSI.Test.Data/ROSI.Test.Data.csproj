@@ -13,9 +13,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
-		<PackageReference Include="NakedObjects.ProgrammingModel" Version="14.2.0" />
-		<PackageReference Include="NakedObjects.Server" Version="14.2.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
+		<PackageReference Include="NakedObjects.ProgrammingModel" Version="15.0.0" />
+		<PackageReference Include="NakedObjects.Server" Version="15.0.0" />
 	</ItemGroup>
 
 </Project>

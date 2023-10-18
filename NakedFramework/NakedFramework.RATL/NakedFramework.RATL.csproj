@@ -24,8 +24,8 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="NakedFramework" Version="14.2.0" />
-		<PackageReference Include="RestfulObjects.ROSI" Version="1.0.0-beta16" />
+		<PackageReference Include="NakedFramework" Version="15.0.0" />
+		<PackageReference Include="RestfulObjects.ROSI" Version="1.0.0-beta17" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	</ItemGroup>
 
