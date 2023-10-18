@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace />
     <OptionStrict>On</OptionStrict>
   </PropertyGroup>
@@ -35,8 +35,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
-    <PackageReference Include="NakedFramework.ProgrammingModel" Version="15.0.0" />
-    <PackageReference Include="NOF2.ProgrammingModel" Version="3.0.0" />
+    <PackageReference Include="NakedFramework.ProgrammingModel" Version="16.0.0" />
+    <PackageReference Include="NOF2.ProgrammingModel" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
