@@ -36,7 +36,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="NakedFramework.ProgrammingModel" Version="15.0.0" />
-    <PackageReference Include="NOF2.ProgrammingModel" Version="2.0.0" />
+    <PackageReference Include="NOF2.ProgrammingModel" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
