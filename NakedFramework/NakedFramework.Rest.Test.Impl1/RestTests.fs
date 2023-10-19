@@ -98,6 +98,28 @@ type Tests() =
                     |> ignore
             ()
         
+        // start work migrating tests 
+        //override x.ConfigureServices(hostBuilderContext, services) =
+        //    let principal = AcceptanceTestCase.TestPrincipal
+        //    services.AddControllers()
+        //            .AddNewtonsoftJson(fun options -> options.SerializerSettings.DateTimeZoneHandling <- DateTimeZoneHandling.Utc) |> ignore
+        //    services.AddMvc(fun options -> options.EnableEndpointRouting <- false) |> ignore
+        //    services.AddHttpContextAccessor() |> ignore
+        //    services.AddNakedFramework(fun frameworkOptions -> 
+        //        frameworkOptions.AddEF6Persistor(fun options -> options.ContextCreators <- x.ContextCreators)
+        //        frameworkOptions.AddRestfulObjects(fun restOptions -> ())
+        //        frameworkOptions.MainMenus <- Func<IMenuFactory,IMenu array> x.MainMenus
+        //        frameworkOptions.AddNakedObjects(fun appOptions -> 
+        //            appOptions.DomainModelTypes <- x.ObjectTypes
+        //            appOptions.DomainModelServices <- x.Services
+        //        )
+        //        frameworkOptions.SupportedSystemTypes <- x.SupportedSystemTypes
+        //    );
+        //    services.AddTransient<NakedFramework.RATL.Helpers.RestfulObjectsController, NakedFramework.RATL.Helpers.RestfulObjectsController>() |> ignore
+        //    services.AddScoped<System.Security.Principal.IPrincipal>(fun p -> principal) |> ignore
+
+
+
         [<OneTimeSetUp>]
         member x.FixtureSetup() =
             CodeFirstSetup()
