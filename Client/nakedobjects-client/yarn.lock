@@ -1784,48 +1784,6 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v15.0.0.tgz#14ffff63452825c8c431ad96a36da416c0bfa577"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
-"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v15.0.0.tgz#9524f136ebaf840fd4341cfc095ad42bef7b83c7"
-  dependencies:
-    auth0-js "^9.23.0"
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
-"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v15.0.0.tgz#ec97bca7e8d2e9b7711c358b52989db98a29604d"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "^2.3.0"
-
-"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v15.0.0.tgz#36b94e870bce7095a1570483fa7490544c4b8637"
-  dependencies:
-    auth0-js "^9.23.0"
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
-"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v15.0.0.tgz#4dc6fe3f974494c3edef39db5182ff82a05cb03d"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
 "@ngtools/webpack@16.2.6":
   version "16.2.6"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-16.2.6.tgz#dec54a45e18f391fcce325fd667e7e83bca05cd6"
@@ -2839,7 +2797,7 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-auth0-js@^9.23.0, auth0-js@~9.23.0:
+auth0-js@~9.23.0:
   version "9.23.0"
   resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-9.23.0.tgz#e0f825b12a43ab6696464790470944a59df9c28a"
   integrity sha512-AtvbseCU+9/hwCPTGbV9UI7iYc2EmT7rN1dPiRxNUyT4RXIFAnJRkuCSEwa0mhS20jlMPD4b28l5354vxBbYzw==
@@ -3498,9 +3456,9 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     which "^2.0.1"
 
 crypto-js@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
-  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 css-loader@6.8.1:
   version "6.8.1"
@@ -8239,9 +8197,9 @@ yocto-queue@^1.0.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-1.0.0.tgz#7f816433fb2cbc511ec8bf7d263c3b58a1a3c251"
   integrity sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==
 
-zone.js@~0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.14.0.tgz#ddab2133e8a88be4b225fc2a414e8357f9902a68"
-  integrity sha512-Sz0G0TjMuyApIcuTJeK742+xLLKEPjYtkdBEazBlYePHkICVp9DPKqI/4dJt3LCtQBd52sCxz23uAFJ2OJa6Ow==
+zone.js@~0.13.0:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.13.3.tgz#344c24098fa047eda6427a4c7ed486e391fd67b5"
+  integrity sha512-MKPbmZie6fASC/ps4dkmIhaT5eonHkEt6eAy80K42tAm0G2W+AahLJjbfi6X9NPdciOE9GRFTTM8u2IiF6O3ww==
   dependencies:
     tslib "^2.3.0"
