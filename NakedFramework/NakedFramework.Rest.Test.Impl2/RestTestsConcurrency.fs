@@ -199,7 +199,3 @@ type Tests() =
         member x.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch() = 
             ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch x.api
     end
-
-    // to avoid warning
-    [<EntryPoint>]
-    let main argv = 0
