@@ -28,6 +28,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using static TestObjectMenu.MenusDbContext;
 
 // ReSharper disable UnusedMember.Global
@@ -208,12 +209,12 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Auto1>();
         var action = obj1.GetAction("Do Something");
         var cho0 = action.Parameters[0].GetCompletions("any");
-        Assert.AreEqual(1, cho0.Length);
+        ClassicAssert.AreEqual(1, cho0.Length);
         var cho1 = action.Parameters[1].GetCompletions("any");
-        Assert.AreEqual(3, cho1.Length);
+        ClassicAssert.AreEqual(3, cho1.Length);
 
         var cho2 = action.Parameters[2].GetCompletions("bar");
-        Assert.AreEqual(2, cho2.Length);
+        ClassicAssert.AreEqual(2, cho2.Length);
     }
 
     [Test, Ignore("")]
@@ -223,8 +224,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Auto1>();
         var prop = obj1.GetPropertyByName("Prop3");
         var cho = prop.GetCompletions("foo");
-        Assert.AreEqual(3, cho.Length);
-        Assert.AreEqual("Foo1", cho[0].Title);
+        ClassicAssert.AreEqual(3, cho.Length);
+        ClassicAssert.AreEqual("Foo1", cho[0].Title);
     }
 
     [Test, Ignore("")]
@@ -232,8 +233,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Auto1>();
         var prop = obj1.GetPropertyByName("Prop2");
         var cho = prop.GetCompletions("any");
-        Assert.AreEqual(3, cho.Length);
-        Assert.AreEqual("Fee", cho[0].Title);
+        ClassicAssert.AreEqual(3, cho.Length);
+        ClassicAssert.AreEqual("Fee", cho[0].Title);
     }
 
     [Test, Ignore("")]
@@ -277,18 +278,18 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Choices1>();
         try {
             obj1.GetAction("Choices Prop1");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Choices Prop1'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Choices Prop1'", e.Message);
         }
 
         try {
             obj1.GetAction("Choices 0 Do Something");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Choices 0 Do Something'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Choices 0 Do Something'", e.Message);
         }
     }
 
@@ -297,8 +298,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Choices1>();
         var prop = obj1.GetPropertyByName("Prop1");
         var cho = prop.GetChoices();
-        Assert.AreEqual(3, cho.Length);
-        Assert.AreEqual("4", cho[0].Title);
+        ClassicAssert.AreEqual(3, cho.Length);
+        ClassicAssert.AreEqual("4", cho[0].Title);
     }
 
     [Test]
@@ -308,16 +309,16 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Choices1>();
         var action = obj1.GetAction("Do Something");
         var cho0 = action.Parameters[0].GetChoices();
-        Assert.AreEqual(3, cho0.Length);
-        Assert.AreEqual("4", cho0[0].Title);
+        ClassicAssert.AreEqual(3, cho0.Length);
+        ClassicAssert.AreEqual("4", cho0[0].Title);
 
         var cho1 = action.Parameters[1].GetChoices();
-        Assert.AreEqual(3, cho1.Length);
-        Assert.AreEqual("Fee", cho1[0].Title);
+        ClassicAssert.AreEqual(3, cho1.Length);
+        ClassicAssert.AreEqual("Fee", cho1[0].Title);
 
         var cho2 = action.Parameters[2].GetChoices();
-        Assert.AreEqual(3, cho2.Length);
-        Assert.AreEqual("Bar1", cho2[0].Title);
+        ClassicAssert.AreEqual(3, cho2.Length);
+        ClassicAssert.AreEqual("Bar1", cho2[0].Title);
     }
 
     [Test]
@@ -327,8 +328,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Choices1>();
         var prop = obj1.GetPropertyByName("Prop3");
         var cho = prop.GetChoices();
-        Assert.AreEqual(3, cho.Length);
-        Assert.AreEqual("Bar1", cho[0].Title);
+        ClassicAssert.AreEqual(3, cho.Length);
+        ClassicAssert.AreEqual("Bar1", cho[0].Title);
     }
 
     [Test]
@@ -336,8 +337,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Choices1>();
         var prop = obj1.GetPropertyByName("Prop2");
         var cho = prop.GetChoices();
-        Assert.AreEqual(3, cho.Length);
-        Assert.AreEqual("Fee", cho[0].Title);
+        ClassicAssert.AreEqual(3, cho.Length);
+        ClassicAssert.AreEqual("Fee", cho[0].Title);
     }
 
     // Note Clear Prefix has been removed as a recognized prefix for complementary actions 
@@ -352,7 +353,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //public void CreatedCalled() {
     //    var obj1 = NewTestObject<Created1>();
     //    var dom1 = (Created1)obj1.GetDomainObject();
-    //    Assert.IsTrue(dom1.CreatedCalled);
+    //    ClassicAssert.IsTrue(dom1.CreatedCalled);
     //}
 
     [Test]
@@ -360,10 +361,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Created1>();
         try {
             obj1.GetAction("Created");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Created'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Created'", e.Message);
         }
     }
 
@@ -372,18 +373,18 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Default1>();
         try {
             obj.GetAction("Default Prop1");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Default Prop1'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Default Prop1'", e.Message);
         }
 
         try {
             obj.GetAction("Default 0 Do Something");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Default 0 Do Something'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Default 0 Do Something'", e.Message);
         }
     }
 
@@ -393,8 +394,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
         var prop = obj1.GetPropertyByName("Prop4");
         var def = prop.GetDefault().Title;
-        Assert.IsNotNull(def);
-        Assert.AreEqual("8", def);
+        ClassicAssert.IsNotNull(def);
+        ClassicAssert.AreEqual("8", def);
     }
 
     [Test, Ignore("")]
@@ -402,8 +403,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop1");
         var def = prop.GetDefault().Title;
-        Assert.IsNotNull(def);
-        Assert.AreEqual("8", def);
+        ClassicAssert.IsNotNull(def);
+        ClassicAssert.AreEqual("8", def);
     }
 
     [Test, Ignore("")]
@@ -422,16 +423,16 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Default1>();
         var action = obj1.GetAction("Do Something");
         var def0 = action.Parameters[0].GetDefault().Title;
-        Assert.IsNotNull(def0);
-        Assert.AreEqual("8", def0);
+        ClassicAssert.IsNotNull(def0);
+        ClassicAssert.AreEqual("8", def0);
 
         var def1 = action.Parameters[1].GetDefault().Title;
-        Assert.IsNotNull(def1);
-        Assert.AreEqual("Foo", def1);
+        ClassicAssert.IsNotNull(def1);
+        ClassicAssert.AreEqual("Foo", def1);
 
         var def2 = action.Parameters[2].GetDefault().Title;
-        Assert.IsNotNull(def2);
-        Assert.AreEqual("Bar2", def2);
+        ClassicAssert.IsNotNull(def2);
+        ClassicAssert.AreEqual("Bar2", def2);
     }
 
     [Test, Ignore("")]
@@ -439,12 +440,12 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Default1>();
         var action = obj1.GetAction("Do Something Else");
         var def0 = action.Parameters[0].GetDefault().Title;
-        Assert.IsNotNull(def0);
-        Assert.AreEqual("8", def0);
+        ClassicAssert.IsNotNull(def0);
+        ClassicAssert.AreEqual("8", def0);
 
         var def1 = action.Parameters[1].GetDefault().Title;
-        Assert.IsNotNull(def1);
-        Assert.AreEqual("Foo", def1);
+        ClassicAssert.IsNotNull(def1);
+        ClassicAssert.AreEqual("Foo", def1);
     }
 
     [Test, Ignore("")]
@@ -463,8 +464,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop3");
         var def = prop.GetDefault().Title;
-        Assert.IsNotNull(def);
-        Assert.AreEqual("Bar2", def);
+        ClassicAssert.IsNotNull(def);
+        ClassicAssert.AreEqual("Bar2", def);
     }
 
     [Test, Ignore("")]
@@ -472,8 +473,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop5");
         var def = prop.GetDefault().Title;
-        Assert.IsNotNull(def);
-        Assert.AreEqual("Foo", def);
+        ClassicAssert.IsNotNull(def);
+        ClassicAssert.AreEqual("Foo", def);
     }
 
     [Test, Ignore("")]
@@ -481,8 +482,8 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Default1>();
         var prop = obj1.GetPropertyByName("Prop2");
         var def = prop.GetDefault().Title;
-        Assert.IsNotNull(def);
-        Assert.AreEqual("Foo", def);
+        ClassicAssert.IsNotNull(def);
+        ClassicAssert.AreEqual("Foo", def);
     }
 
     //[Test]
@@ -491,9 +492,9 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //    var dom1 = (Deleted1)obj1.GetDomainObject();
     //    obj1.Save();
 
-    //    Assert.IsFalse(Deleted1.DeletedCalled);
+    //    ClassicAssert.IsFalse(Deleted1.DeletedCalled);
     //    obj1.GetAction("Delete").Invoke();
-    //    Assert.IsTrue(Deleted1.DeletedCalled);
+    //    ClassicAssert.IsTrue(Deleted1.DeletedCalled);
     //    Deleted1.DeletedCalled = false;
     //}
 
@@ -502,10 +503,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Deleted1>();
         try {
             obj1.GetAction("Deleted");
-            Assert.Fail("Should not get here");
+            ClassicAssert.Fail("Should not get here");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Deleted'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Deleted'", e.Message);
         }
     }
 
@@ -515,11 +516,11 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //    var dom1 = (Deleting1)obj1.GetDomainObject();
     //    obj1.Save();
 
-    //    Assert.IsFalse(Deleting1.DeletingCalled);
+    //    ClassicAssert.IsFalse(Deleting1.DeletingCalled);
 
     //    obj1.GetAction("Delete").InvokeReturnObject();
 
-    //    Assert.IsTrue(Deleting1.DeletingCalled);
+    //    ClassicAssert.IsTrue(Deleting1.DeletingCalled);
     //}
 
     [Test]
@@ -527,10 +528,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Deleting1>();
         try {
             obj1.GetAction("Deleting");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Deleting'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Deleting'", e.Message);
         }
     }
 
@@ -566,10 +567,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Disable2>();
         try {
             obj.GetAction("Disable Action Default");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Disable Action Default'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Disable Action Default'", e.Message);
         }
     }
 
@@ -584,10 +585,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Disable3>();
         try {
             obj.GetAction("Disable Prop6");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Disable Prop6'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Disable Prop6'", e.Message);
         }
     }
 
@@ -633,10 +634,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Disable1>();
         try {
             obj.GetAction("Disable Property Default");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Disable Property Default'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Disable Property Default'", e.Message);
         }
     }
 
@@ -676,10 +677,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Hide2>();
         try {
             obj.GetAction("Hide Action Default");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Action Default'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Hide Action Default'", e.Message);
         }
     }
 
@@ -694,10 +695,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Hide3>();
         try {
             obj.GetAction("Hide Prop6");
-            Assert.Fail("'Hide Prop6' is showing as an action");
+            ClassicAssert.Fail("'Hide Prop6' is showing as an action");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Prop6'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Hide Prop6'", e.Message);
         }
     }
 
@@ -743,10 +744,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Hide1>();
         try {
             obj.GetAction("Hide Property Default");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Hide Property Default'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Hide Property Default'", e.Message);
         }
     }
 
@@ -774,7 +775,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
     //    var obj1 = NewTestObject<Created2>();
     //    var dom1 = (Created2)obj1.GetDomainObject();
-    //    Assert.IsFalse(dom1.CreatedCalled);
+    //    ClassicAssert.IsFalse(dom1.CreatedCalled);
     //    obj1.GetAction("Created");
     //}
 
@@ -782,13 +783,13 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
     //    var obj1 = NewTestObject<Deleted2>();
     //    var dom1 = (Deleted2)obj1.GetDomainObject();
-    //    Assert.IsFalse(Deleted2.DeletedCalled);
+    //    ClassicAssert.IsFalse(Deleted2.DeletedCalled);
 
     //    try {
     //        obj1.GetAction("Deleted");
     //    }
     //    catch (Exception e) {
-    //        Assert.AreEqual("Assert.Fail failed. No Action named 'Deleted'", e.Message);
+    //        ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Deleted'", e.Message);
     //    }
     //}
 
@@ -800,16 +801,16 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //    //Check method is visible as an action
     //    obj1.GetAction("Deleting").AssertIsVisible();
 
-    //    Assert.IsFalse(Deleting2.DeletingCalled);
+    //    ClassicAssert.IsFalse(Deleting2.DeletingCalled);
     //    obj1.GetAction("Delete").InvokeReturnObject();
-    //    Assert.IsFalse(Deleting2.DeletingCalled); //Still false
+    //    ClassicAssert.IsFalse(Deleting2.DeletingCalled); //Still false
     //}
 
     //[Test]
     //public void LowerCaseNotRecognisedAndShowsAsAction() {
     //    var obj1 = NewTestObject<Updated2>();
     //    var dom1 = (Updated2)obj1.GetDomainObject();
-    //    Assert.IsFalse(Updated2.UpdatedCalled);
+    //    ClassicAssert.IsFalse(Updated2.UpdatedCalled);
     //    obj1.GetAction("Updated");
     //}
 
@@ -817,7 +818,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
     //    var obj1 = NewTestObject<Persisted2>();
     //    var dom1 = (Persisted2)obj1.GetDomainObject();
-    //    Assert.IsFalse(dom1.PersistedCalled);
+    //    ClassicAssert.IsFalse(dom1.PersistedCalled);
     //    obj1.GetAction("Persisted");
     //}
 
@@ -832,10 +833,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Modify1>();
         try {
             obj1.GetAction("Modify Prop1");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Modify Prop1'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Modify Prop1'", e.Message);
         }
     }
 
@@ -887,10 +888,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //    var dom1 = (Persisted1)obj1.GetDomainObject();
     //    try {
     //        obj1.Save();
-    //        Assert.Fail("Shouldn't get to here");
+    //        ClassicAssert.Fail("Shouldn't get to here");
     //    }
     //    catch (Exception e) {
-    //        Assert.AreEqual("Persisted called", e.Message);
+    //        ClassicAssert.AreEqual("Persisted called", e.Message);
     //    }
     //}
 
@@ -899,10 +900,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Persisted1>();
         try {
             obj1.GetAction("Persisted");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Persisted'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Persisted'", e.Message);
         }
     }
 
@@ -912,10 +913,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.Save(); //Would throw an exception if the Persisted had been called.
         try {
             obj.GetAction("Persisted");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Persisted'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Persisted'", e.Message);
         }
     }
 
@@ -923,11 +924,11 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //public void PersistingCalled() {
     //    var obj1 = NewTestObject<Persisting1>();
     //    var dom1 = (Persisting1)obj1.GetDomainObject();
-    //    Assert.IsFalse(Persisting1.PersistingCalled);
+    //    ClassicAssert.IsFalse(Persisting1.PersistingCalled);
 
     //    obj1.Save();
 
-    //    Assert.IsTrue(Persisting1.PersistingCalled);
+    //    ClassicAssert.IsTrue(Persisting1.PersistingCalled);
     //}
 
     [Test]
@@ -935,10 +936,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Persisting1>();
         try {
             obj1.GetAction("Persisting");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Persisting'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Persisting'", e.Message);
         }
     }
 
@@ -947,42 +948,42 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Auto1>();
         try {
             var act = obj1.GetAction("Auto Complete Prop2");
-            Assert.Fail("Should not get to here!");
+            ClassicAssert.Fail("Should not get to here!");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete Prop2'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Auto Complete Prop2'", e.Message);
         }
 
         try {
             var act = obj1.GetAction("Auto Complete Prop3");
-            Assert.Fail("Should not get to here!");
+            ClassicAssert.Fail("Should not get to here!");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete Prop3'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Auto Complete Prop3'", e.Message);
         }
 
         try {
             obj1.GetAction("Auto Complete0 Do Something");
-            Assert.Fail("Should not get to here!");
+            ClassicAssert.Fail("Should not get to here!");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete0 Do Something'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Auto Complete0 Do Something'", e.Message);
         }
 
         try {
             obj1.GetAction("Auto Complete1 Do Something");
-            Assert.Fail("Should not get to here!");
+            ClassicAssert.Fail("Should not get to here!");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete1 Do Something'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Auto Complete1 Do Something'", e.Message);
         }
 
         try {
             obj1.GetAction("Auto Complete2 Do Something");
-            Assert.Fail("Should not get to here!");
+            ClassicAssert.Fail("Should not get to here!");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Auto Complete2 Do Something'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Auto Complete2 Do Something'", e.Message);
         }
     }
 
@@ -1032,7 +1033,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
         var prop1 = obj.GetPropertyByName(nameof(Title12.Masked));
 
-        Assert.AreEqual("Masked Title a mask", prop1.Title);
+        ClassicAssert.AreEqual("Masked Title a mask", prop1.Title);
     }
 
     [Test]
@@ -1119,7 +1120,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //        obj1.GetPropertyByName("Prop1").SetValue("Foo");
     //        NakedFramework.TransactionManager.EndTransaction();
 
-    //        Assert.Fail("Shouldn't get to here");
+    //        ClassicAssert.Fail("Shouldn't get to here");
     //    }
     //    catch (Exception) { }
     //}
@@ -1129,10 +1130,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Updated1>();
         try {
             obj1.GetAction("Updated");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Updated'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Updated'", e.Message);
         }
     }
 
@@ -1147,7 +1148,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     //        obj1.GetPropertyByName("Prop1").SetValue("Foo");
     //        NakedFramework.TransactionManager.EndTransaction();
 
-    //        Assert.Fail("Should not get to here");
+    //        ClassicAssert.Fail("Should not get to here");
     //    }
     //    catch (Exception) { }
     //}
@@ -1157,10 +1158,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj1 = NewTestObject<Updating1>();
         try {
             obj1.GetAction("Updating");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Updating'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Updating'", e.Message);
         }
     }
 
@@ -1193,7 +1194,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
     public virtual void ValidateActionWithMoreThanSixParams() {
         var obj = NewTestObject<Validate1>();
         var action = obj.GetAction("Do Something With Many Params");
-        Assert.AreEqual(7, action.Parameters.Length);
+        ClassicAssert.AreEqual(7, action.Parameters.Length);
 
         action.AssertIsInvalidWithParms("y", "x", "x", "x", "x", "x", "x");
         action.AssertIsValidWithParms("x", "x", "x", "x", "x", "x", "x");
@@ -1207,10 +1208,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         obj.GetPropertyByName("Prop1").SetValue("fail");
         try {
             obj.GetPropertyByName("Prop2").SetValue("fail");
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Cannot SetValue fail in the field Prop2: 199 RestfulObjects \"Expect fail\"", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. Cannot SetValue fail in the field Prop2: 199 RestfulObjects \"Expect fail\"", e.Message);
         }
     }
 
@@ -1224,10 +1225,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
             obj.GetPropertyByName("Prop2").SetValue("fail");
             obj.GetPropertyByName("Prop3").SetValue("1");
             obj.GetPropertyByName("Prop4").SetObject(obj4);
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Cannot SetValue fail in the field Prop2: 199 RestfulObjects \"Condition Fail\"", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. Cannot SetValue fail in the field Prop2: 199 RestfulObjects \"Condition Fail\"", e.Message);
         }
     }
 
@@ -1242,10 +1243,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
             obj.GetPropertyByName("Prop2").SetValue("value1");
             obj.GetPropertyByName("Prop3").SetValue("0");
             obj.GetPropertyByName("Prop4").SetObject(obj4);
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Cannot SetObject NakedFramework.RATL.Classic.NonDocumenting.TestObject in the field Prop4: 199 RestfulObjects \"Condition Fail\"", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. Cannot SetObject NakedFramework.RATL.Classic.NonDocumenting.TestObject in the field Prop4: 199 RestfulObjects \"Condition Fail\"", e.Message);
         }
     }
 
@@ -1259,10 +1260,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
             obj.GetPropertyByName("Prop3").SetValue("1");
             obj.GetPropertyByName("Prop4").ClearObject();
 
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. Cannot SetValue 1 in the field Prop3: 199 RestfulObjects \"Condition Fail\"", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. Cannot SetValue 1 in the field Prop3: 199 RestfulObjects \"Condition Fail\"", e.Message);
         }
     }
 
@@ -1291,26 +1292,26 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         var obj = NewTestObject<Validate1>();
         try {
             obj.GetAction("Validate Prop1");
-            Assert.Fail("'Validate Prop1' is showing as an action");
+            ClassicAssert.Fail("'Validate Prop1' is showing as an action");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Prop1'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Validate Prop1'", e.Message);
         }
 
         try {
             obj.GetAction("Validate0 Do Something");
-            Assert.Fail("'Validate0 Do Something' is showing as an action");
+            ClassicAssert.Fail("'Validate0 Do Something' is showing as an action");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Validate0 Do Something'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Validate0 Do Something'", e.Message);
         }
 
         try {
             obj.GetAction("Validate Do Something Else");
-            Assert.Fail("'Validate Do Something Else' is showing as an action");
+            ClassicAssert.Fail("'Validate Do Something Else' is showing as an action");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Do Something Else'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Validate Do Something Else'", e.Message);
         }
     }
 
@@ -1323,7 +1324,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         prop1.SetValue("6").AssertLastMessageIs("");
         try {
             prop1.SetValue("11");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception) {
             prop1.SetValue("7");
@@ -1340,10 +1341,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
         try {
             obj1.GetAction("Validate Do Something More");
-            Assert.Fail("'Validate Do Something More' is showing as an action");
+            ClassicAssert.Fail("'Validate Do Something More' is showing as an action");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Do Something More'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Validate Do Something More'", e.Message);
         }
     }
 
@@ -1390,10 +1391,10 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
         try {
             obj.GetAction("Validate Prop4");
-            Assert.Fail("'Validate Prop4' is showing as an action");
+            ClassicAssert.Fail("'Validate Prop4' is showing as an action");
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No Action named 'Validate Prop4'", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Validate Prop4'", e.Message);
         }
     }
 
@@ -1412,7 +1413,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
 
         try {
             obj1Prop3.SetObject(obj2b);
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception) {
             obj1Prop3.SetObject(obj2a);
@@ -1428,7 +1429,7 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         prop1.SetValue("afoo").AssertLastMessageIs("");
         try {
             prop1.SetValue("bar");
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception) {
             prop1.SetValue("abar");

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedObjects.SystemTest.Util;
 
@@ -19,7 +20,7 @@ public class ReasonBuilderTest {
     private ReasonBuilder builder;
 
     private void AssertMessageIs(string expected) {
-        Assert.AreEqual(expected, builder.Reason);
+        ClassicAssert.AreEqual(expected, builder.Reason);
     }
 
     [Test]
@@ -35,7 +36,7 @@ public class ReasonBuilderTest {
     [Test]
     public void AppendOnCondition() {
         builder.AppendOnCondition(false, "Reason 1");
-        Assert.IsNull(builder.Reason);
+        ClassicAssert.IsNull(builder.Reason);
         builder.AppendOnCondition(true, "Reason 2");
         AssertMessageIs("Reason 2");
         builder.AppendOnCondition(false, "Reason 3");
@@ -46,9 +47,9 @@ public class ReasonBuilderTest {
 
     [Test]
     public void WithNothingAppendedReasonReturnsNull() {
-        Assert.IsNull(builder.Reason);
+        ClassicAssert.IsNull(builder.Reason);
         builder.Append("Reason 1");
-        Assert.IsNotNull(builder.Reason);
+        ClassicAssert.IsNotNull(builder.Reason);
         AssertMessageIs("Reason 1");
     }
 }

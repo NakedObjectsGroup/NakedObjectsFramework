@@ -11,6 +11,7 @@ using System.Linq;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -57,7 +58,7 @@ public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<Poly
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            Assert.IsTrue(e.Message.Contains("Can't set field of persistent with a transient reference"));
+            ClassicAssert.IsTrue(e.Message.Contains("Can't set field of persistent with a transient reference"));
         }
     }
 
@@ -198,7 +199,7 @@ public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<Poly
 
         links.AssertCountIs(1);
         items.AssertCountIs(1);
-        Assert.AreEqual(inv, items.ElementAt(0));
+        ClassicAssert.AreEqual(inv, items.ElementAt(0));
 
         //Try adding same expense claim again
         payment.GetAction("Add Payable Item").InvokeReturnObject(inv);
@@ -216,7 +217,7 @@ public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<Poly
 
         links.AssertCountIs(1);
         items.AssertCountIs(1);
-        Assert.AreEqual(inv, items.ElementAt(0));
+        ClassicAssert.AreEqual(inv, items.ElementAt(0));
 
         //Now remove the invoice
         payment.GetAction("Remove Payable Item").InvokeReturnObject(inv);
@@ -250,7 +251,7 @@ public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<Poly
         links.AssertCountIs(1);
         items = payment.GetPropertyByName("Payable Items").ContentAsCollection;
         item = items.AssertCountIs(1).ElementAt(0);
-        Assert.IsNotNull(item);
+        ClassicAssert.IsNotNull(item);
     }
 
     public virtual void FindOwnersForObject() {
@@ -268,13 +269,13 @@ public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<Poly
 
         var results = cus.GetAction("Payments To This Payee").InvokeReturnCollection();
         results.AssertCountIs(2);
-        Assert.IsTrue(results.Contains(payment9));
-        Assert.IsTrue(results.Contains(payment11));
+        ClassicAssert.IsTrue(results.Contains(payment9));
+        ClassicAssert.IsTrue(results.Contains(payment11));
 
         results = inv.GetAction("Payments Containing This").InvokeReturnCollection();
         results.AssertCountIs(2);
-        Assert.IsTrue(results.Contains(payment9));
-        Assert.IsTrue(results.Contains(payment10));
+        ClassicAssert.IsTrue(results.Contains(payment9));
+        ClassicAssert.IsTrue(results.Contains(payment10));
     }
 
     #region Run configuration

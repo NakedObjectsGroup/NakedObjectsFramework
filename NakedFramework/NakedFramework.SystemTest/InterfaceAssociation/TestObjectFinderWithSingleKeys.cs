@@ -11,6 +11,7 @@ using System.Data.Entity;
 using NakedFramework.Test.Interface;
 using NakedObjects.Services;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -87,7 +88,7 @@ public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext>
         payee1.SetObject(customer1);
         payee1.ClearObject();
         payee1.SetObject(supplier1);
-        Assert.AreEqual(payee1.ContentAsObject, supplier1);
+        ClassicAssert.AreEqual(payee1.ContentAsObject, supplier1);
 
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|1");
     }
@@ -134,7 +135,7 @@ public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext>
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
 
         payee1.SetObject(customer2);
-        Assert.AreEqual(payee1.ContentAsObject, customer2);
+        ClassicAssert.AreEqual(payee1.ContentAsObject, customer2);
 
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
     }

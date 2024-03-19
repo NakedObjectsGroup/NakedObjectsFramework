@@ -14,6 +14,7 @@ open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System.Linq
 open Functions
+open NUnit.Framework.Legacy
 
 let VerifyResult result  resultValue oType oRel ooType ooRel (api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -33,7 +34,7 @@ let VerifyResult result  resultValue oType oRel ooType ooRel (api : RestfulObjec
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.TypeActionResult), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.TypeActionResult), headers.ContentType)
     //assertNonExpiringCache headers
     compareObject expected parsedResult
 
@@ -179,8 +180,8 @@ let NotFoundTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.NoSuchType"
@@ -194,8 +195,8 @@ let NotFoundTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.NoSuchType"
@@ -212,8 +213,8 @@ let NotFoundTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.NoSuchType"
@@ -230,8 +231,8 @@ let NotFoundTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundActionSimpleParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -245,8 +246,8 @@ let NotFoundActionSimpleParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundActionFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -263,8 +264,8 @@ let NotFoundActionFormalParms(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundSuperTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -278,8 +279,8 @@ let NotFoundSuperTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) 
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundSubTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -293,8 +294,8 @@ let NotFoundSubTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) 
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundSuperTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -311,8 +312,8 @@ let NotFoundSuperTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) 
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotFoundSubTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -329,8 +330,8 @@ let NotFoundSubTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) 
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // not acceptable 
 let MissingParmsIsSubTypeOf(api : RestfulObjectsControllerBase) = 
@@ -342,8 +343,8 @@ let MissingParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].First().ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].First().ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let MalformedSimpleParmsIsSubTypeOf(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -357,8 +358,8 @@ let MalformedSimpleParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].First().ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].First().ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let MalformedFormalParmsIsSubTypeOf(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -375,8 +376,8 @@ let MalformedFormalParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].First().ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].First().ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let NotAcceptableIsSubTypeOf(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"

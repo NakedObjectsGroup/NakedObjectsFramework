@@ -23,6 +23,7 @@ open NakedFramework.Persistor.EFCore.Component
 open NakedFramework.Core.Persist
 open NakedFramework.Core.Util
 open TestTypes
+open NUnit.Framework.Legacy
 
 
 let resetPersistor (p : IObjectStore) : IObjectStore =
@@ -87,32 +88,32 @@ let SaveWithNoEndTransaction (p : IObjectStore) o =
 
 let GetInstancesGenericNotEmpty<'t when 't : not struct>(p : IObjectStore) = 
     let count = p.GetInstances<'t>() |> Seq.length
-    Assert.Greater(count, 0)
+    ClassicAssert.Greater(count, 0)
 
 let GetInstancesByTypeNotEmpty<'t when 't : not struct>(p : IObjectStore) = 
     let count = Seq.cast<'t> (p.GetInstances(typeof<'t>)) |> Seq.length
-    Assert.Greater(count, 0)
+    ClassicAssert.Greater(count, 0)
 
 let GetInstancesReturnsProxies<'t when 't : not struct>(p : IObjectStore) = 
     let instances = p.GetInstances<'t>()
-    Assert.IsTrue(instances |> Seq.forall (fun i -> FasterTypeUtils.IsEF6OrCoreProxy(i.GetType())))
+    ClassicAssert.IsTrue(instances |> Seq.forall (fun i -> FasterTypeUtils.IsEF6OrCoreProxy(i.GetType())))
 
 let GetInstancesDoesntReturnProxies<'t when 't : not struct>(p : IObjectStore) = 
     let instances = p.GetInstances<'t>()
-    Assert.IsFalse(instances |> Seq.forall (fun i -> FasterTypeUtils.IsEF6OrCoreProxy(i.GetType())))
+    ClassicAssert.IsFalse(instances |> Seq.forall (fun i -> FasterTypeUtils.IsEF6OrCoreProxy(i.GetType())))
 
 let CanCreateTransientObject<'t when 't : not struct>(p : IObjectStore) = 
     let transientInstance = p.CreateInstance<'t>(null)
-    Assert.IsNotNull(transientInstance)
-    Assert.IsFalse(FasterTypeUtils.IsEF6Proxy(transientInstance.GetType()))
+    ClassicAssert.IsNotNull(transientInstance)
+    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6Proxy(transientInstance.GetType()))
 
 let CanSaveTransientObject<'t when 't : not struct> p setter = 
     let sr = CreateAndSetup<'t> p setter
     CreateAndEndTransaction p sr
 
 let checkCountAndType classes (typ : Type) = 
-    Assert.Greater(classes |> Seq.length, 0)
-    Assert.IsTrue(classes |> Seq.forall (fun i -> typ.IsAssignableFrom(i.GetType())))
+    ClassicAssert.Greater(classes |> Seq.length, 0)
+    ClassicAssert.IsTrue(classes |> Seq.forall (fun i -> typ.IsAssignableFrom(i.GetType())))
 
 let First<'t when 't : not struct>(p : IObjectStore) = p.GetInstances<'t>() |> Seq.head
 let Second<'t when 't : not struct>(p : IObjectStore) = p.GetInstances<'t>() |> Seq.item 1
@@ -136,7 +137,7 @@ let CanGetObjectByKey<'t when 't : not struct> (p : IObjectStore) keys =
     let testLogger = (new Mock<ILogger<DatabaseOid>>()).Object;
     let key = new DatabaseOid(mockMetamodelManager.Object, typeof<'t>, keys, false, testLogger)
     let obj = getObjectByKey p key typeof<'t>
-    Assert.IsNotNull(obj)
+    ClassicAssert.IsNotNull(obj)
 
 let CanGetContextForCollection<'t when 't : not struct>(persistor : IObjectStore) = 
     let testCollection = new List<'t>()

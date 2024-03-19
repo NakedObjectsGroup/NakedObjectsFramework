@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Util;
 
@@ -22,13 +23,13 @@ public class CopyUtilsTest {
         ao.CollectionOne.Add(so2);
 
         var clone = (AllObject)CopyUtils.CloneObjectTest(ao);
-        Assert.AreNotSame(ao, clone);
-        Assert.AreSame(ao.GetType(), clone.GetType());
-        Assert.AreEqual(ao.ValueOne, clone.ValueOne);
-        Assert.AreEqual(ao.ValueTwo, clone.ValueTwo);
-        Assert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
-        Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-        Assert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
+        ClassicAssert.AreNotSame(ao, clone);
+        ClassicAssert.AreSame(ao.GetType(), clone.GetType());
+        ClassicAssert.AreEqual(ao.ValueOne, clone.ValueOne);
+        ClassicAssert.AreEqual(ao.ValueTwo, clone.ValueTwo);
+        ClassicAssert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
+        ClassicAssert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
+        ClassicAssert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
     }
 
     [Test]
@@ -46,25 +47,25 @@ public class CopyUtilsTest {
         clone.ReferenceOne = so3;
         clone.CollectionOne.Add(so4);
 
-        Assert.AreNotSame(ao, clone);
-        Assert.AreSame(ao.GetType(), clone.GetType());
-        Assert.AreEqual(ao.ValueOne, clone.ValueOne);
-        Assert.AreNotEqual(ao.ValueTwo, clone.ValueTwo);
-        Assert.AreNotSame(ao.ReferenceOne, clone.ReferenceOne);
-        Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-        Assert.AreNotEqual(ao.CollectionOne.Count, clone.CollectionOne.Count);
+        ClassicAssert.AreNotSame(ao, clone);
+        ClassicAssert.AreSame(ao.GetType(), clone.GetType());
+        ClassicAssert.AreEqual(ao.ValueOne, clone.ValueOne);
+        ClassicAssert.AreNotEqual(ao.ValueTwo, clone.ValueTwo);
+        ClassicAssert.AreNotSame(ao.ReferenceOne, clone.ReferenceOne);
+        ClassicAssert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
+        ClassicAssert.AreNotEqual(ao.CollectionOne.Count, clone.CollectionOne.Count);
 
         CopyUtils.UpdateFromClone(ao, clone);
 
-        Assert.AreNotSame(ao, clone);
-        Assert.AreSame(ao.GetType(), clone.GetType());
-        Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-        Assert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
-        Assert.AreEqual(ao.ValueOne, clone.ValueOne);
-        Assert.AreEqual(ao.ValueTwo, clone.ValueTwo);
-        Assert.AreEqual(ao.CollectionOne.Count, clone.CollectionOne.Count);
-        Assert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
-        Assert.AreSame(ao.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
+        ClassicAssert.AreNotSame(ao, clone);
+        ClassicAssert.AreSame(ao.GetType(), clone.GetType());
+        ClassicAssert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
+        ClassicAssert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
+        ClassicAssert.AreEqual(ao.ValueOne, clone.ValueOne);
+        ClassicAssert.AreEqual(ao.ValueTwo, clone.ValueTwo);
+        ClassicAssert.AreEqual(ao.CollectionOne.Count, clone.CollectionOne.Count);
+        ClassicAssert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
+        ClassicAssert.AreSame(ao.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
     }
 
     [Test]
@@ -74,10 +75,10 @@ public class CopyUtilsTest {
         co.CollectionOne.Add(so);
 
         var clone = (CollectionObject)CopyUtils.CloneObjectTest(co);
-        Assert.AreNotSame(co, clone);
-        Assert.AreSame(co.GetType(), clone.GetType());
-        Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-        Assert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
+        ClassicAssert.AreNotSame(co, clone);
+        ClassicAssert.AreSame(co.GetType(), clone.GetType());
+        ClassicAssert.AreNotSame(co.CollectionOne, clone.CollectionOne);
+        ClassicAssert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
     }
 
     [Test]
@@ -91,19 +92,19 @@ public class CopyUtilsTest {
 
         clone.CollectionOne.Add(so2);
 
-        Assert.AreNotSame(co, clone);
-        Assert.AreSame(co.GetType(), clone.GetType());
-        Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-        Assert.AreNotEqual(co.CollectionOne.Count, clone.CollectionOne.Count);
+        ClassicAssert.AreNotSame(co, clone);
+        ClassicAssert.AreSame(co.GetType(), clone.GetType());
+        ClassicAssert.AreNotSame(co.CollectionOne, clone.CollectionOne);
+        ClassicAssert.AreNotEqual(co.CollectionOne.Count, clone.CollectionOne.Count);
 
         CopyUtils.UpdateFromClone(co, clone);
 
-        Assert.AreNotSame(co, clone);
-        Assert.AreSame(co.GetType(), clone.GetType());
-        Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-        Assert.AreEqual(co.CollectionOne.Count, clone.CollectionOne.Count);
-        Assert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
-        Assert.AreSame(co.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
+        ClassicAssert.AreNotSame(co, clone);
+        ClassicAssert.AreSame(co.GetType(), clone.GetType());
+        ClassicAssert.AreNotSame(co.CollectionOne, clone.CollectionOne);
+        ClassicAssert.AreEqual(co.CollectionOne.Count, clone.CollectionOne.Count);
+        ClassicAssert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
+        ClassicAssert.AreSame(co.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
     }
 
     [Test]
@@ -113,10 +114,10 @@ public class CopyUtilsTest {
 
         var clone = (ReferenceObject)CopyUtils.CloneObjectTest(ro);
 
-        Assert.AreNotSame(ro, clone);
-        Assert.AreSame(ro.GetType(), clone.GetType());
+        ClassicAssert.AreNotSame(ro, clone);
+        ClassicAssert.AreSame(ro.GetType(), clone.GetType());
 
-        Assert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
+        ClassicAssert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
     }
 
     [Test]
@@ -128,15 +129,15 @@ public class CopyUtilsTest {
         var clone = (ReferenceObject)CopyUtils.CloneObjectTest(ro);
         clone.ReferenceOne = so2;
 
-        Assert.AreNotSame(ro, clone);
-        Assert.AreSame(ro.GetType(), clone.GetType());
-        Assert.AreNotSame(ro.ReferenceOne, clone.ReferenceOne);
+        ClassicAssert.AreNotSame(ro, clone);
+        ClassicAssert.AreSame(ro.GetType(), clone.GetType());
+        ClassicAssert.AreNotSame(ro.ReferenceOne, clone.ReferenceOne);
 
         CopyUtils.UpdateFromClone(ro, clone);
 
-        Assert.AreNotSame(ro, clone);
-        Assert.AreSame(ro.GetType(), clone.GetType());
-        Assert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
+        ClassicAssert.AreNotSame(ro, clone);
+        ClassicAssert.AreSame(ro.GetType(), clone.GetType());
+        ClassicAssert.AreSame(ro.ReferenceOne, clone.ReferenceOne);
     }
 
     [Test]
@@ -144,10 +145,10 @@ public class CopyUtilsTest {
         var so = new SimpleObject { ValueOne = 1, ValueTwo = 2 };
         var clone = (SimpleObject)CopyUtils.CloneObjectTest(so);
 
-        Assert.AreNotSame(so, clone);
-        Assert.AreSame(so.GetType(), clone.GetType());
-        Assert.AreEqual(so.ValueOne, clone.ValueOne);
-        Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
+        ClassicAssert.AreNotSame(so, clone);
+        ClassicAssert.AreSame(so.GetType(), clone.GetType());
+        ClassicAssert.AreEqual(so.ValueOne, clone.ValueOne);
+        ClassicAssert.AreEqual(so.ValueTwo, clone.ValueTwo);
     }
 
     [Test]
@@ -156,17 +157,17 @@ public class CopyUtilsTest {
         var clone = (SimpleObject)CopyUtils.CloneObjectTest(so);
         clone.ValueTwo = 3;
 
-        Assert.AreNotSame(so, clone);
-        Assert.AreSame(so.GetType(), clone.GetType());
-        Assert.AreEqual(so.ValueOne, clone.ValueOne);
-        Assert.AreNotEqual(so.ValueTwo, clone.ValueTwo);
+        ClassicAssert.AreNotSame(so, clone);
+        ClassicAssert.AreSame(so.GetType(), clone.GetType());
+        ClassicAssert.AreEqual(so.ValueOne, clone.ValueOne);
+        ClassicAssert.AreNotEqual(so.ValueTwo, clone.ValueTwo);
 
         CopyUtils.UpdateFromClone(so, clone);
 
-        Assert.AreNotSame(so, clone);
-        Assert.AreSame(so.GetType(), clone.GetType());
-        Assert.AreEqual(so.ValueOne, clone.ValueOne);
-        Assert.AreEqual(so.ValueTwo, clone.ValueTwo);
+        ClassicAssert.AreNotSame(so, clone);
+        ClassicAssert.AreSame(so.GetType(), clone.GetType());
+        ClassicAssert.AreEqual(so.ValueOne, clone.ValueOne);
+        ClassicAssert.AreEqual(so.ValueTwo, clone.ValueTwo);
     }
 
     public class AllObject {

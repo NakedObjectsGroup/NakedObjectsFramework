@@ -22,6 +22,7 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Rest.Test.Data;
 
 namespace NakedFunctions.Rest.Test;
@@ -94,7 +95,7 @@ public class I18nTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -105,15 +106,15 @@ public class I18nTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<Foo>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Changed Foo Name", parsedResult["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("ChangedFooDescription", parsedResult["extensions"]["description"].ToString());
-        Assert.AreEqual("ChangedProp1Name", parsedResult["members"]["Prop1"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("ChangedProp1Description", parsedResult["members"]["Prop1"]["extensions"]["description"].ToString());
-        Assert.AreEqual("ChangedAct1Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual("Changed Foo Name", parsedResult["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("ChangedFooDescription", parsedResult["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual("ChangedProp1Name", parsedResult["members"]["Prop1"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("ChangedProp1Description", parsedResult["members"]["Prop1"]["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual("ChangedAct1Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -121,12 +122,12 @@ public class I18nTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu(nameof(FooMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        //Assert.AreEqual("Changed Foo Menu Functions Name", parsedResult["extensions"]["friendlyName"].ToString());
-        //Assert.AreEqual("ChangedFooMenuFunctionsDescription", parsedResult["extensions"]["description"].ToString());
-        Assert.AreEqual("ChangedAct1Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
+        //ClassicAssert.AreEqual("Changed Foo Menu Functions Name", parsedResult["extensions"]["friendlyName"].ToString());
+        //ClassicAssert.AreEqual("ChangedFooMenuFunctionsDescription", parsedResult["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual("ChangedAct1Name", parsedResult["members"]["Act1"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("ChangedAct1Description", parsedResult["members"]["Act1"]["extensions"]["description"].ToString());
     }
 }

@@ -21,6 +21,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -76,21 +77,21 @@ public class EnumTest : AcceptanceTestCase {
         var foo = NewTestObject<Foo>();
         var act1 = foo.GetAction("Action1");
         var values = act1.Parameters[0].GetChoices();
-        Assert.AreEqual(4, values.Length);
-        Assert.AreEqual("Female", values[0].Title);
-        Assert.AreEqual("Male", values[1].Title);
-        Assert.AreEqual("Not Specified", values[2].Title);
-        Assert.AreEqual("Unknown", values[3].Title);
+        ClassicAssert.AreEqual(4, values.Length);
+        ClassicAssert.AreEqual("Female", values[0].Title);
+        ClassicAssert.AreEqual("Male", values[1].Title);
+        ClassicAssert.AreEqual("Not Specified", values[2].Title);
+        ClassicAssert.AreEqual("Unknown", values[3].Title);
     }
 
     [Test]
     public virtual void EnumParameterWithDefault() {
         var foo = NewTestObject<Foo>();
         var act1 = foo.GetAction("Action1");
-        Assert.AreEqual(null, act1.Parameters[0].GetDefault());
+        ClassicAssert.AreEqual(null, act1.Parameters[0].GetDefault());
 
         var act2 = foo.GetAction("Action2");
-        Assert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
+        ClassicAssert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
     }
 
     [Test]
@@ -99,11 +100,11 @@ public class EnumTest : AcceptanceTestCase {
 
         var sex1 = foo.GetPropertyByName("Sex1");
         var values = sex1.GetChoices();
-        Assert.AreEqual(4, values.Length);
-        Assert.AreEqual("Female", values[0].Title);
-        Assert.AreEqual("Male", values[1].Title);
-        Assert.AreEqual("Not Specified", values[2].Title);
-        Assert.AreEqual("Unknown", values[3].Title);
+        ClassicAssert.AreEqual(4, values.Length);
+        ClassicAssert.AreEqual("Female", values[0].Title);
+        ClassicAssert.AreEqual("Male", values[1].Title);
+        ClassicAssert.AreEqual("Not Specified", values[2].Title);
+        ClassicAssert.AreEqual("Unknown", values[3].Title);
 
         sex1.AssertFieldEntryIsValid("Male");
         sex1.AssertFieldEntryInvalid("Man");
@@ -115,9 +116,9 @@ public class EnumTest : AcceptanceTestCase {
 
         var sex1 = foo.GetPropertyByName("Hair Colour1");
         var values = sex1.GetChoices();
-        Assert.AreEqual(5, values.Length);
-        Assert.AreEqual("Black", values[0].Title);
-        Assert.AreEqual("White", values[4].Title);
+        ClassicAssert.AreEqual(5, values.Length);
+        ClassicAssert.AreEqual("Black", values[0].Title);
+        ClassicAssert.AreEqual("White", values[4].Title);
 
         sex1.AssertFieldEntryIsValid("Brunette");
         sex1.AssertFieldEntryInvalid("Fair");
@@ -129,9 +130,9 @@ public class EnumTest : AcceptanceTestCase {
 
         var sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("Male");
         var values = sex1.GetChoices();
-        Assert.AreEqual(2, values.Length);
-        Assert.AreEqual("Male", values[0].Title);
-        Assert.AreEqual("Female", values[1].Title);
+        ClassicAssert.AreEqual(2, values.Length);
+        ClassicAssert.AreEqual("Male", values[0].Title);
+        ClassicAssert.AreEqual("Female", values[1].Title);
     }
 
     [Test]
@@ -140,7 +141,7 @@ public class EnumTest : AcceptanceTestCase {
 
         var sex1 = foo.GetPropertyByName("Sex4").AssertValueIsEqual("Male");
         var values = sex1.GetChoices();
-        Assert.AreEqual(2, values.Length);
+        ClassicAssert.AreEqual(2, values.Length);
     }
 
     [Test]
@@ -158,11 +159,11 @@ public class EnumTest : AcceptanceTestCase {
 
         var sex1 = foo.GetPropertyByName("Sex5");
         var values = sex1.GetChoices();
-        Assert.AreEqual(4, values.Length);
-        Assert.AreEqual("Female", values[0].Title);
-        Assert.AreEqual("Male", values[1].Title);
-        Assert.AreEqual("Not Specified", values[2].Title);
-        Assert.AreEqual("Unknown", values[3].Title);
+        ClassicAssert.AreEqual(4, values.Length);
+        ClassicAssert.AreEqual("Female", values[0].Title);
+        ClassicAssert.AreEqual("Male", values[1].Title);
+        ClassicAssert.AreEqual("Not Specified", values[2].Title);
+        ClassicAssert.AreEqual("Unknown", values[3].Title);
     }
 }
 

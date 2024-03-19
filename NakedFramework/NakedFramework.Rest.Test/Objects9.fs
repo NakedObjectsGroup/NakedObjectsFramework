@@ -14,6 +14,7 @@ open System
 open System.Linq
 open System.Net
 open Functions
+open NUnit.Framework.Legacy
 
 let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -70,7 +71,7 @@ let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
     //assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -126,7 +127,7 @@ let GetMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
     //assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -142,7 +143,7 @@ let PersistMostSimpleTransientObject(api1 : RestfulObjectsControllerBase) (api2 
     let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
@@ -178,9 +179,9 @@ let PersistMostSimpleTransientObject(api1 : RestfulObjectsControllerBase) (api2 
                                   TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     assertStatusCode HttpStatusCode.Created statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
-    Assert.AreEqual(true, headers.CacheControl.NoCache)
-    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
+    ClassicAssert.AreEqual(true, headers.CacheControl.NoCache)
+    ClassicAssert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
 let PersistMostSimpleTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -195,7 +196,7 @@ let PersistMostSimpleTransientObjectValidateOnly(api1 : RestfulObjectsController
     let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 
     let voProp = new JProperty("x-ro-validate-only", true)
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
@@ -212,10 +213,10 @@ let PersistMostSimpleTransientObjectValidateOnly(api1 : RestfulObjectsController
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
-    Assert.IsNull(headers.ContentType)
-    Assert.IsTrue(headers.CacheControl.NoCache)
-    Assert.IsNull(headers.Location)
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.IsNull(headers.ContentType)
+    ClassicAssert.IsTrue(headers.CacheControl.NoCache)
+    ClassicAssert.IsNull(headers.Location)
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistMostSimpleTransientObjectSimpleOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -231,7 +232,7 @@ let PersistMostSimpleTransientObjectSimpleOnly(api1 : RestfulObjectsControllerBa
     let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 
     let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
     let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
@@ -272,9 +273,9 @@ let PersistMostSimpleTransientObjectSimpleOnly(api1 : RestfulObjectsControllerBa
                                   TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     assertStatusCode HttpStatusCode.Created statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
-    Assert.AreEqual(true, headers.CacheControl.NoCache)
-    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
+    ClassicAssert.AreEqual(true, headers.CacheControl.NoCache)
+    ClassicAssert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
 
@@ -576,7 +577,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
     //assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -766,7 +767,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
     //assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -903,7 +904,7 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
     //assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -1006,9 +1007,9 @@ let PersistWithValueTransientObject(api1 : RestfulObjectsControllerBase) (api2 :
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.Created statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
-    Assert.AreEqual(true, headers.CacheControl.NoCache)
-    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
+    ClassicAssert.AreEqual(true, headers.CacheControl.NoCache)
+    ClassicAssert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
 
@@ -1185,9 +1186,9 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.Created statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
-    Assert.AreEqual(true, headers.CacheControl.NoCache)
-    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
+    ClassicAssert.AreEqual(true, headers.CacheControl.NoCache)
+    ClassicAssert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
 let PersistWithCollectionTransientObject(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -1314,9 +1315,9 @@ let PersistWithCollectionTransientObject(api1 : RestfulObjectsControllerBase) (a
                                   TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     assertStatusCode HttpStatusCode.Created statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
-    Assert.AreEqual(true, headers.CacheControl.NoCache)
-    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
+    ClassicAssert.AreEqual(true, headers.CacheControl.NoCache)
+    ClassicAssert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
 let PersistWithValueTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -1349,7 +1350,7 @@ let PersistWithValueTransientObjectValidateOnly(api1 : RestfulObjectsControllerB
     let (jsonPersist, statusCode, _) = readActionResult persistResult api2.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistWithReferenceTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -1381,7 +1382,7 @@ let PersistWithReferenceTransientObjectValidateOnly(api1 : RestfulObjectsControl
     let (jsonPersist, statusCode, _) = readActionResult persistResult api2.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistWithCollectionTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -1413,7 +1414,7 @@ let PersistWithCollectionTransientObjectValidateOnly(api1 : RestfulObjectsContro
     let (jsonPersist, statusCode, _) = readActionResult persistResult api2.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistWithValueTransientObjectValidateOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -1474,7 +1475,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api1 : RestfulObjectsControl
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
@@ -1538,7 +1539,7 @@ let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api1 : RestfulObje
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
@@ -1600,7 +1601,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsCon
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  =  
@@ -1651,7 +1652,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsCo
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
@@ -1710,7 +1711,7 @@ let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (ap
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithValueTransientObjectFailInvalid(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
@@ -1770,7 +1771,7 @@ let PersistWithValueTransientObjectFailInvalid(api1 : RestfulObjectsControllerBa
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithReferenceTransientObjectFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -1834,7 +1835,7 @@ let PersistWithReferenceTransientObjectFail(api1 : RestfulObjectsControllerBase)
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithReferenceTransientObjectFailInvalid(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -1895,7 +1896,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api1 : RestfulObjectsControll
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistWithCollectionTransientObjectFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -1944,7 +1945,7 @@ let PersistWithCollectionTransientObjectFail(api1 : RestfulObjectsControllerBase
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedPersist
 
 let PersistMostSimpleTransientObjectMissingArgs(api : RestfulObjectsControllerBase) = 
@@ -1959,8 +1960,8 @@ let PersistMostSimpleTransientObjectMissingArgs(api : RestfulObjectsControllerBa
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonPersist
 
-    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistMostSimpleTransientObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
     let dt = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -1977,8 +1978,8 @@ let PersistMostSimpleTransientObjectMissingArgsValidateOnly(api : RestfulObjects
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonPersist
-    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonPersist)
 
 // new
 let PersistMostSimpleTransientObjectMissingMemberArgs(api : RestfulObjectsControllerBase) = 
@@ -1996,8 +1997,8 @@ let PersistMostSimpleTransientObjectMissingMemberArgs(api : RestfulObjectsContro
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonPersist
-    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistMostSimpleTransientObjectNullDomainType(api : RestfulObjectsControllerBase) = 
     let dt = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -2015,7 +2016,7 @@ let PersistMostSimpleTransientObjectNullDomainType(api : RestfulObjectsControlle
     let (jsonPersist, statusCode, _) = readActionResult persistResult api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonPersist
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistMostSimpleTransientObjectEmptyDomainType(api : RestfulObjectsControllerBase) = 
     let dt = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -2031,7 +2032,7 @@ let PersistMostSimpleTransientObjectEmptyDomainType(api : RestfulObjectsControll
     let (jsonPersist, statusCode, _) = readActionResult persistResult api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonPersist
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistMostSimpleTransientObjectMalformedMemberArgs(api : RestfulObjectsControllerBase) = 
     let dt = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -2057,10 +2058,10 @@ let PersistMostSimpleTransientObjectMalformedMemberArgs(api : RestfulObjectsCont
         else "199 RestfulObjects \"Malformed arguments : Enable DebugWarnings to see message\""
 
     if (api.DebugWarnings) then 
-        Assert.AreEqual(msg, headers.Headers.["Warning"].ToString().Substring(0, 140))
+        ClassicAssert.AreEqual(msg, headers.Headers.["Warning"].ToString().Substring(0, 140))
     else 
-        Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonPersist)
+        ClassicAssert.AreEqual(msg, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistUnknownTypeTransientObject(api : RestfulObjectsControllerBase) = 
     let dt = ttc "RestfulObjects.Test.Data.NoSuchType"
@@ -2079,8 +2080,8 @@ let PersistUnknownTypeTransientObject(api : RestfulObjectsControllerBase) =
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
     assertStatusCode HttpStatusCode.NotFound statusCode jsonPersist
 
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" dt, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonPersist)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" dt, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonPersist)
 
 let PersistNoKeyTransientObject(api : RestfulObjectsControllerBase) = 
     let dt = ttc "RestfulObjects.Test.Data.NoKey"
@@ -2100,7 +2101,7 @@ let PersistNoKeyTransientObject(api : RestfulObjectsControllerBase) =
    
     // different stack trace on sercver - just test not empty body 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonPersist
-    Assert.AreEqual
+    ClassicAssert.AreEqual
         ("199 RestfulObjects \"No such domain type " + dt + "\"", 
          headers.Headers.["Warning"].ToString()) //
   
@@ -2159,6 +2160,6 @@ let PersistWithValueTransientObjectFailCrossValidation(api1 : RestfulObjectsCont
         TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"Arguments invalid\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Arguments invalid\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedPersist

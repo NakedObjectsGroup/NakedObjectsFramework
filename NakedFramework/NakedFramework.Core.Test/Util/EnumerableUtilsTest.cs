@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Util;
 
@@ -23,7 +24,7 @@ public class EnumerableUtilsTest {
         var list = new List<int>();
         list.AddRange(Enumerable.Range(0, 100));
 
-        Assert.AreEqual(100, ((IEnumerable)list).Count());
+        ClassicAssert.AreEqual(100, ((IEnumerable)list).Count());
     }
 
     [Test]
@@ -31,7 +32,7 @@ public class EnumerableUtilsTest {
         var list = new List<int>();
         list.AddRange(Enumerable.Range(0, 100));
 
-        Assert.AreEqual(0, ((IEnumerable)list).First());
+        ClassicAssert.AreEqual(0, ((IEnumerable)list).First());
     }
 
     [Test]
@@ -39,8 +40,8 @@ public class EnumerableUtilsTest {
         var list = new List<int>();
         list.AddRange(Enumerable.Range(0, 100));
 
-        Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable)list).Take(9).Cast<object>().ToArray()));
-        Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable)list).Take(9).Cast<object>().ToList()));
+        ClassicAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable)list).Take(9).Cast<object>().ToArray()));
+        ClassicAssert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable)list).Take(9).Cast<object>().ToList()));
     }
 
     [Test]
@@ -48,7 +49,7 @@ public class EnumerableUtilsTest {
         var list = new List<int>();
         list.AddRange(Enumerable.Range(10, 100));
 
-        Assert.AreEqual(47, ((IEnumerable)list).Skip(37).First());
+        ClassicAssert.AreEqual(47, ((IEnumerable)list).Skip(37).First());
     }
 
     [Test]
@@ -56,8 +57,8 @@ public class EnumerableUtilsTest {
         var list = new List<int>();
         list.AddRange(Enumerable.Range(10, 100));
 
-        Assert.IsTrue(((IEnumerable)list).Contains(49));
-        Assert.IsFalse(((IEnumerable)list).Contains(201));
+        ClassicAssert.IsTrue(((IEnumerable)list).Contains(49));
+        ClassicAssert.IsFalse(((IEnumerable)list).Contains(201));
     }
 }
 

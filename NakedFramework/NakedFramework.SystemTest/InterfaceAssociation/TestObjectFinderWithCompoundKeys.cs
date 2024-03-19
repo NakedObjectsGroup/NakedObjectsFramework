@@ -11,7 +11,8 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
+using NUnit.Framework.Legacy;
+
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
@@ -68,7 +69,7 @@ public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeys
         payee1.SetObject(customer2a);
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
         payee1.SetObject(supplier1);
-        Assert.AreEqual(payee1.ContentAsObject, supplier1);
+        ClassicAssert.AreEqual(payee1.ContentAsObject, supplier1);
 
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.Supplier|1|2001");
     }
@@ -88,7 +89,7 @@ public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeys
             throw new AssertFailedException("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
+            ClassicAssert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
         }
     }
 
@@ -100,7 +101,7 @@ public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeys
             throw new AssertFailedException("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
+            ClassicAssert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
         }
     }
 
@@ -112,7 +113,7 @@ public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeys
             throw new AssertFailedException("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
+            ClassicAssert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
         }
     }
 
@@ -121,10 +122,10 @@ public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeys
         key1.SetValue("CustomerThree|1|1001|2001");
         try {
             payee1.AssertIsNotEmpty();
-            Assert.Fail("Exception should have been thrown");
+            ClassicAssert.Fail("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Type: CustomerThree cannot be found", ex.Message);
+            ClassicAssert.AreEqual("Type: CustomerThree cannot be found", ex.Message);
         }
     }
 
@@ -152,7 +153,7 @@ public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeys
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
 
         payee1.SetObject(customer2b);
-        Assert.AreEqual(payee1.ContentAsObject, customer2b);
+        ClassicAssert.AreEqual(payee1.ContentAsObject, customer2b);
 
         key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|2|1002");
     }

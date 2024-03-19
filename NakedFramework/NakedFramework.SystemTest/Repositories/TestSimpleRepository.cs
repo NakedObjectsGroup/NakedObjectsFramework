@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity;
 using NakedObjects.Services;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedObjects.SystemTest.Repositories;
 
@@ -72,7 +73,7 @@ public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext
     public void KeyValueDoesNotExist() {
         var find = GetTestService("Customers").GetAction("Find By Key");
         var result = find.InvokeReturnObject(1000);
-        Assert.IsNull(result);
+        ClassicAssert.IsNull(result);
     }
 }
 

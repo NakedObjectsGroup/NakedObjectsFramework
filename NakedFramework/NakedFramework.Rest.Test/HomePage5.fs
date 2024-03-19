@@ -12,6 +12,7 @@ open NUnit.Framework
 open System.Net
 open NakedFramework.Rest.API
 open Functions
+open NUnit.Framework.Legacy
 
 let GetHomePage(api : RestfulObjectsControllerBase) = 
     let url = testRoot
@@ -20,7 +21,7 @@ let GetHomePage(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.HomePage), headers.ContentType)
     //assertNonExpiringCache headers
     compareObject expectedSimple parsedResult
 
@@ -31,7 +32,7 @@ let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.HomePage), headers.ContentType)
     //assertNonExpiringCache headers
     compareObject expectedSimple parsedResult
 
@@ -48,8 +49,8 @@ let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) =
         then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/homepage \""
         else "199 RestfulObjects \"Enable DebugWarnings to see message\""
 
-    Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(msg, headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) = 
     let argS = "x-ro-domain-model=invalid"    
@@ -59,5 +60,5 @@ let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) =
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)

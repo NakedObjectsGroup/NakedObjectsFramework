@@ -27,6 +27,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using ROSI.Exceptions;
 
 // ReSharper disable UnusedMember.Global
@@ -118,12 +119,12 @@ public class TestCustomAuthorizationManager : AcceptanceTestCase {
         
         try {
             var qux = GetTestService(typeof(SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
-            Assert.Fail("Should not get to here");
+            ClassicAssert.Fail("Should not get to here");
         }
         catch (AggregateException ae) {
-            Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+            ClassicAssert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
 
-            Assert.AreEqual(@"199 RestfulObjects ""QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Id""", ae.InnerException.Message);
+            ClassicAssert.AreEqual(@"199 RestfulObjects ""QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Id""", ae.InnerException.Message);
         }
     }
 
@@ -147,12 +148,12 @@ public class TestCustomAuthorizationManager : AcceptanceTestCase {
     public void VisibilityUsingSpecificTypeAuthorizer() {
         try {
             var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
-            Assert.Fail("Should not get to here");
+            ClassicAssert.Fail("Should not get to here");
         }
         catch (AggregateException ae) {
-            Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+            ClassicAssert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
 
-            Assert.AreEqual(@"199 RestfulObjects ""FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Id""", ae.InnerException.Message);
+            ClassicAssert.AreEqual(@"199 RestfulObjects ""FooAuthorizer#IsVisible, user: sven, target: foo1, memberName: Id""", ae.InnerException.Message);
         }
        
     }
@@ -187,14 +188,14 @@ public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
     #region ITypeAuthorizer<object> Members
 
     public bool IsEditable(IPrincipal principal, object target, string memberName) {
-        Assert.IsNotNull(Container);
-        Assert.IsNotNull(Service);
+        ClassicAssert.IsNotNull(Container);
+        ClassicAssert.IsNotNull(Service);
         return true;
     }
 
     public bool IsVisible(IPrincipal principal, object target, string memberName) {
-        Assert.IsNotNull(Container);
-        Assert.IsNotNull(Service);
+        ClassicAssert.IsNotNull(Container);
+        ClassicAssert.IsNotNull(Service);
         return true;
     }
 
@@ -216,14 +217,14 @@ public class FooAuthorizer : ITypeAuthorizer<Foo> {
     #region ITypeAuthorizer<Foo> Members
 
     public bool IsEditable(IPrincipal principal, Foo target, string memberName) {
-        Assert.IsNotNull(Container);
-        Assert.IsNotNull(Service);
+        ClassicAssert.IsNotNull(Container);
+        ClassicAssert.IsNotNull(Service);
         throw new NotImplementedException();
     }
 
     public bool IsVisible(IPrincipal principal, Foo target, string memberName) {
-        Assert.IsNotNull(Container);
-        Assert.IsNotNull(Service);
+        ClassicAssert.IsNotNull(Container);
+        ClassicAssert.IsNotNull(Service);
         throw new Exception($"FooAuthorizer#IsVisible, user: {principal.Identity?.Name}, target: {target}, memberName: {memberName}");
     }
 
@@ -246,14 +247,14 @@ public class QuxAuthorizer : ITypeAuthorizer<Qux> {
 
     //"QuxAuthorizer#IsEditable, user: sven, target: qux1, memberName: Prop1"
     public bool IsEditable(IPrincipal principal, Qux target, string memberName) {
-        Assert.IsNotNull(Container);
-        Assert.IsNotNull(Service);
+        ClassicAssert.IsNotNull(Container);
+        ClassicAssert.IsNotNull(Service);
         throw new Exception($"QuxAuthorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
     }
 
     public bool IsVisible(IPrincipal principal, Qux target, string memberName) {
-        Assert.IsNotNull(Container);
-        Assert.IsNotNull(Service);
+        ClassicAssert.IsNotNull(Container);
+        ClassicAssert.IsNotNull(Service);
         return true;
     }
 

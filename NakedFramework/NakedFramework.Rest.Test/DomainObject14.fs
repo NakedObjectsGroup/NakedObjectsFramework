@@ -15,6 +15,7 @@ open Newtonsoft.Json.Linq
 open System.Linq
 open RestfulObjects.Test.Data
 open Functions
+open NUnit.Framework.Legacy
 
 let GetMostSimpleObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -47,9 +48,9 @@ let GetMostSimpleObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleObjectWithDetailsFlag(api : RestfulObjectsControllerBase) = 
@@ -84,9 +85,9 @@ let GetMostSimpleObjectWithDetailsFlag(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 
@@ -129,9 +130,9 @@ let GetWithAttachmentsObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleObjectConfiguredSelectable(api : RestfulObjectsControllerBase) = 
@@ -165,9 +166,9 @@ let GetMostSimpleObjectConfiguredSelectable(api : RestfulObjectsControllerBase) 
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -204,9 +205,9 @@ let GetMostSimpleObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleObjectConfiguredSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -242,9 +243,9 @@ let GetMostSimpleObjectConfiguredSimpleOnly(api : RestfulObjectsControllerBase) 
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleObjectConfiguredCaching(api : RestfulObjectsControllerBase) = 
@@ -281,9 +282,9 @@ let GetMostSimpleObjectConfiguredCaching(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertConfigCache 2 headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) = 
@@ -326,9 +327,9 @@ let GetWithDateTimeKeyObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithGuidKeyObject(api : RestfulObjectsControllerBase) = 
@@ -371,9 +372,9 @@ let GetWithGuidKeyObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetVerySimpleEagerObject(api : RestfulObjectsControllerBase) = 
@@ -521,9 +522,9 @@ let GetVerySimpleEagerObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithValueObject(api : RestfulObjectsControllerBase) = 
@@ -597,9 +598,9 @@ let GetWithValueObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithScalarsObject(api : RestfulObjectsControllerBase) = 
@@ -691,9 +692,9 @@ let GetWithScalarsObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) = 
@@ -770,9 +771,9 @@ let GetWithValueObjectUserAuth(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -846,9 +847,9 @@ let GetWithValueObjectWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleObjectWithDomainTypeSimple(api : RestfulObjectsControllerBase) = 
@@ -886,9 +887,9 @@ let GetMostSimpleObjectWithDomainTypeSimple(api : RestfulObjectsControllerBase) 
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithValueObjectWithDomainTypeNoProfileSimple(api : RestfulObjectsControllerBase) = 
@@ -926,9 +927,9 @@ let GetWithValueObjectWithDomainTypeNoProfileSimple(api : RestfulObjectsControll
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
    
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetRedirectedObject(api : RestfulObjectsControllerBase) = 
@@ -942,8 +943,8 @@ let GetRedirectedObject(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    
     assertStatusCode HttpStatusCode.MovedPermanently statusCode jsonResult
-    Assert.AreEqual(new Uri("http://redirectedtoserver/objects/RedirectedToOid"), headers.Location)
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(new Uri("http://redirectedtoserver/objects/RedirectedToOid"), headers.Location)
+    ClassicAssert.AreEqual("", jsonResult)
    
 let PutWithValueObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -1023,9 +1024,9 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithValueObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1045,8 +1046,8 @@ let PutWithValueObjectValidateOnly(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
  
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
-    Assert.IsNull(headers.ContentType)
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.IsNull(headers.ContentType)
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -1130,9 +1131,9 @@ let PutWithValueObjectConcurrencySuccess(api1 : RestfulObjectsControllerBase) (a
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithScalarsObject(api : RestfulObjectsControllerBase) = 
@@ -1239,9 +1240,9 @@ let PutWithScalarsObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithReferenceObject(api : RestfulObjectsControllerBase) = 
@@ -1396,9 +1397,9 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithReferenceObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1421,8 +1422,8 @@ let PutWithReferenceObjectValidateOnly(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
-    Assert.IsNull(headers.ContentType)
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.IsNull(headers.ContentType)
+    ClassicAssert.AreEqual("", jsonResult)
 
 let GetWithActionObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -2116,9 +2117,9 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -2787,9 +2788,9 @@ let GetWithActionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithReferenceObject(api : RestfulObjectsControllerBase) = 
@@ -2935,9 +2936,9 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithCollectionObject(api : RestfulObjectsControllerBase) = 
@@ -3068,9 +3069,9 @@ let GetWithCollectionObject(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -3202,9 +3203,9 @@ let GetWithCollectionObjectSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetMostSimpleViewModel(api : RestfulObjectsControllerBase) = 
@@ -3236,9 +3237,9 @@ let GetMostSimpleViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetFormViewModel(api : RestfulObjectsControllerBase) = 
@@ -3314,9 +3315,9 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithValueViewModel(api : RestfulObjectsControllerBase) = 
@@ -3378,9 +3379,9 @@ let GetWithValueViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
@@ -3493,9 +3494,9 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetWithNestedViewModel(api : RestfulObjectsControllerBase) = 
@@ -3548,9 +3549,9 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithReferenceViewModelEdit(api : RestfulObjectsControllerBase) = 
@@ -3676,9 +3677,9 @@ let PutWithReferenceViewModelEdit(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) = 
@@ -3740,9 +3741,9 @@ let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithValueViewModelEdit(api : RestfulObjectsControllerBase) = 
@@ -3810,9 +3811,9 @@ let PutWithValueViewModelEdit(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
@@ -3835,8 +3836,8 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 
-    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
@@ -3859,8 +3860,8 @@ let PutWithNestedViewModel(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
@@ -3879,8 +3880,8 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 400    
 let InvalidGetObject(api : RestfulObjectsControllerBase) = 
@@ -3894,8 +3895,8 @@ let InvalidGetObject(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 400
 let PutWithValueObjectMissingArgs(api : RestfulObjectsControllerBase) = 
@@ -3910,8 +3911,8 @@ let PutWithValueObjectMissingArgs(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -3928,8 +3929,8 @@ let PutWithValueObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
       
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 400    
 let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) = 
@@ -3948,8 +3949,8 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) = 
     let error = "cannot format value cannot parse as date as DateTime"
@@ -3976,8 +3977,8 @@ let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) 
           TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) = 
@@ -4004,8 +4005,8 @@ let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) =
           TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 let PutWithValueObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4025,8 +4026,8 @@ let PutWithValueObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBa
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.IsNull(headers.ContentType)
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.IsNull(headers.ContentType)
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 400    
 let PutWithValueObjectInvalidArgsValue(api : RestfulObjectsControllerBase) = 
@@ -4053,7 +4054,7 @@ let PutWithValueObjectInvalidArgsValue(api : RestfulObjectsControllerBase) =
           TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
    
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
     compareObject expected parsedResult
 
 let PutWithValueObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4081,8 +4082,8 @@ let PutWithValueObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControlle
           TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 // 400    
@@ -4118,9 +4119,9 @@ let PutWithReferenceObjectInvalidArgsValue(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
     
     assertStatusCode unprocessableEntity statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].First().ToString())
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].Skip(1).First().ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].First().ToString())
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].Skip(1).First().ToString())
     compareObject expected parsedResult
 
 let PutWithReferenceObjectNotFoundArgsValue(api : RestfulObjectsControllerBase) = 
@@ -4141,8 +4142,8 @@ let PutWithReferenceObjectNotFoundArgsValue(api : RestfulObjectsControllerBase) 
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithReferenceObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let error = "Not a suitable type; must be a Most Simple"
@@ -4177,9 +4178,9 @@ let PutWithReferenceObjectInvalidArgsValueValidateOnly(api : RestfulObjectsContr
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
     
     assertStatusCode unprocessableEntity statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].First().ToString())
-    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].Skip(1).First().ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].First().ToString())
+    ClassicAssert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].Skip(1).First().ToString())
     compareObject expected parsedResult
 
 let PutWithReferenceObjectMalformedArgs(api : RestfulObjectsControllerBase) = 
@@ -4199,8 +4200,8 @@ let PutWithReferenceObjectMalformedArgs(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithReferenceObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
@@ -4220,8 +4221,8 @@ let PutWithReferenceObjectMalformedArgsValidateOnly(api : RestfulObjectsControll
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 400    
 let PutWithValueObjectFailCrossValidation(api : RestfulObjectsControllerBase) = 
@@ -4246,8 +4247,8 @@ let PutWithValueObjectFailCrossValidation(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
     
     assertStatusCode unprocessableEntity statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 let PutWithValueObjectFailCrossValidationValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4273,8 +4274,8 @@ let PutWithValueObjectFailCrossValidationValidateOnly(api : RestfulObjectsContro
           TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
     
     assertStatusCode unprocessableEntity statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 // 400    
@@ -4314,8 +4315,8 @@ let PutWithReferenceObjectFailsCrossValidation(api : RestfulObjectsControllerBas
           TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
     
     assertStatusCode unprocessableEntity statusCode jsonResult  
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 let PutWithReferenceObjectFailsCrossValidationValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4356,8 +4357,8 @@ let PutWithReferenceObjectFailsCrossValidationValidateOnly(api : RestfulObjectsC
           TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
     
     assertStatusCode unprocessableEntity statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 // 401    
@@ -4375,8 +4376,8 @@ let PutWithValueObjectDisabledValue(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectDisabledValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -4395,8 +4396,8 @@ let PutWithValueObjectDisabledValueValidateOnly(api : RestfulObjectsControllerBa
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 401     
 let PutWithReferenceObjectDisabledValue(api : RestfulObjectsControllerBase) = 
@@ -4415,8 +4416,8 @@ let PutWithReferenceObjectDisabledValue(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithReferenceObjectDisabledValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
@@ -4437,8 +4438,8 @@ let PutWithReferenceObjectDisabledValueValidateOnly(api : RestfulObjectsControll
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 404    
 let PutWithValueObjectInvisibleValue(api : RestfulObjectsControllerBase) = 
@@ -4455,8 +4456,8 @@ let PutWithValueObjectInvisibleValue(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -4472,8 +4473,8 @@ let PutWithValueObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerB
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 404     
 let PutWithReferenceObjectInvisibleValue(api : RestfulObjectsControllerBase) = 
@@ -4492,8 +4493,8 @@ let PutWithReferenceObjectInvisibleValue(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithReferenceObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
@@ -4512,8 +4513,8 @@ let PutWithReferenceObjectInvisibleValueValidateOnly(api : RestfulObjectsControl
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 404  
 let PutWithValueObjectInvalidArgsName(api : RestfulObjectsControllerBase) = 
@@ -4532,8 +4533,8 @@ let PutWithValueObjectInvalidArgsName(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectInvalidArgsNameValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -4552,8 +4553,8 @@ let PutWithValueObjectInvalidArgsNameValidateOnly(api : RestfulObjectsController
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 404
 let ObjectNotFoundWrongKey(api : RestfulObjectsControllerBase) = 
@@ -4573,7 +4574,7 @@ let ObjectNotFoundWrongKey(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 404    
 let ObjectNotFoundWrongType(api : RestfulObjectsControllerBase) = 
@@ -4587,7 +4588,7 @@ let ObjectNotFoundWrongType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
 
 let ObjectNotFoundAbstractType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAction"
@@ -4599,7 +4600,7 @@ let ObjectNotFoundAbstractType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
   
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 404     
 let NotFoundGetObject(api : RestfulObjectsControllerBase) = 
@@ -4612,8 +4613,8 @@ let NotFoundGetObject(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "44"), headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "44"), headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 405   
 let PutWithValueImmutableObject(api : RestfulObjectsControllerBase) = 
@@ -4629,9 +4630,9 @@ let PutWithValueImmutableObject(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("GET", headers.Headers.["Allow"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("GET", headers.Headers.["Allow"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 405    
 let PutWithReferenceImmutableObject(api : RestfulObjectsControllerBase) = 
@@ -4649,9 +4650,9 @@ let PutWithReferenceImmutableObject(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("GET", headers.Headers.["Allow"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("GET", headers.Headers.["Allow"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.Immutable"
@@ -4666,9 +4667,9 @@ let PutWithValueImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) 
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("GET", headers.Headers.["Allow"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("GET", headers.Headers.["Allow"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 405    
 let PutWithReferenceImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4686,9 +4687,9 @@ let PutWithReferenceImmutableObjectValidateOnly(api : RestfulObjectsControllerBa
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
     assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("GET", headers.Headers.["Allow"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("GET", headers.Headers.["Allow"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 406     
 let NotAcceptablePutObjectWrongMediaType(api : RestfulObjectsControllerBase) = 
@@ -4708,7 +4709,7 @@ let NotAcceptablePutObjectWrongMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
 
 
 let NotAcceptableGetObjectWrongMediaType(api : RestfulObjectsControllerBase) = 
@@ -4722,7 +4723,7 @@ let NotAcceptableGetObjectWrongMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
       
 // was notacceptable is now ignored v69 of spec 
 let GetObjectIgnoreWrongDomainType(api : RestfulObjectsControllerBase) = 
@@ -4771,7 +4772,7 @@ let PutWithValueInternalError(api : RestfulObjectsControllerBase) =
     
     assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
 
-    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
 // 500    
@@ -4820,7 +4821,7 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
     assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
     
     try
         compareObject expected1 parsedResult
@@ -4847,8 +4848,8 @@ let PutWithValueObjectConcurrencyFail(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.PreconditionFailed statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let PutWithValueObjectMissingIfMatch(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
@@ -4865,7 +4866,7 @@ let PutWithValueObjectMissingIfMatch(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode preconditionHeaderMissing statusCode jsonResult
-    Assert.AreEqual
+    ClassicAssert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)

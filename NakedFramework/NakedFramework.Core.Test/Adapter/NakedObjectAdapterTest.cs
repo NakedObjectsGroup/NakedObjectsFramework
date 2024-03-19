@@ -14,6 +14,7 @@ using NakedFramework.Architecture.Framework;
 using NakedFramework.Core.Adapter;
 using NakedFramework.Core.Error;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Adapter;
 
@@ -46,7 +47,7 @@ public class NakedObjectAdapterTest {
 
         try {
             testAdapter.CheckLock(testCcVersionVersion);
-            Assert.Fail("exception expected");
+            ClassicAssert.Fail("exception expected");
         }
         catch (ConcurrencyException) {
             // expected 
@@ -72,7 +73,7 @@ public class NakedObjectAdapterTest {
 
         try {
             testAdapter.CheckLock(new NullVersion(vLogger));
-            Assert.Fail("exception expected");
+            ClassicAssert.Fail("exception expected");
         }
         catch (ConcurrencyException) {
             // expected 
@@ -89,6 +90,6 @@ public class NakedObjectAdapterTest {
         var encoded = testCcVersion.ToEncodedStrings();
         var newVersion = new ConcurrencyCheckVersion(mockMetamodelManager.Object, mockLoggerFactory.Object, encoded);
 
-        Assert.AreEqual(testCcVersion, newVersion);
+        ClassicAssert.AreEqual(testCcVersion, newVersion);
     }
 }

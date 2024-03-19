@@ -12,6 +12,7 @@ open Newtonsoft.Json.Linq
 open NUnit.Framework
 open System.Net
 open Functions
+open NUnit.Framework.Legacy
 
 let Error(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithError"
@@ -37,7 +38,7 @@ let Error(api : RestfulObjectsControllerBase) =
                              ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(new typeType(RepresentationTypes.Error), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Error), headers.ContentType)
     compareObject expected parsedResult
 
 let NotAcceptableError(api : RestfulObjectsControllerBase) = 
@@ -64,5 +65,5 @@ let NotAcceptableError(api : RestfulObjectsControllerBase) =
                             ]))
           TProperty(JsonPropertyNames.Links, TArray([]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-    Assert.AreEqual(new typeType(RepresentationTypes.Error), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Error), headers.ContentType)
     compareObject expected parsedResult

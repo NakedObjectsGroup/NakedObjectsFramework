@@ -26,6 +26,7 @@ open NakedFramework.Architecture.Component
 open NakedFramework.Persistor.EFCore.Component
 open TestTypes
 open TestCode
+open NUnit.Framework.Legacy
 
 let ModelConfig = 
     let pc = new EF6ContextConfiguration()
@@ -83,7 +84,7 @@ let ModelLoadTestAssembly() =
     ()
 
 //let ModelSetup() = ModelLoadTestAssembly()
-let CanCreateEntityPersistor persistor = Assert.IsNotNull(persistor)
+let CanCreateEntityPersistor persistor = ClassicAssert.IsNotNull(persistor)
 
 let setter (persistor : IObjectStore) (person : Person) = 
     person.Id <- GetNextID<Person> persistor (fun i -> i.Id)
@@ -94,7 +95,7 @@ let setter (persistor : IObjectStore) (person : Person) =
 
 let CanGetInstanceWithComplexType(persistor : IObjectStore) = 
     let person = persistor.GetInstances<Person>() |> Seq.head
-    Assert.IsNotNull(person)
+    ClassicAssert.IsNotNull(person)
 
 let CanUpdateInstanceWithComplexType(persistor : IObjectStore) = 
     let person = persistor.GetInstances<Person>() |> Seq.head
@@ -110,8 +111,8 @@ let CanUpdateInstanceWithComplexType(persistor : IObjectStore) =
             persistor.GetInstances<Person>()
             |> Seq.filter (fun p -> p.Id = person.Id)
             |> Seq.head
-        Assert.AreEqual(n1, person1.ComplexProperty.Firstname)
-        Assert.AreEqual(n2, person1.ComplexProperty.Surname)
+        ClassicAssert.AreEqual(n1, person1.ComplexProperty.Firstname)
+        ClassicAssert.AreEqual(n2, person1.ComplexProperty.Surname)
     toggleAndCheckNames (un1, un2)
     toggleAndCheckNames (on1, on2)
 
@@ -137,13 +138,13 @@ let ModelCanGetContextForComplexType (persistor : IObjectStore)  =
 
 let CheckContainer(person : Person) = 
     let name = person.ComplexProperty
-    Assert.IsNotNull(name.ExposeContainerForTest())
-    Assert.IsInstanceOf(typeof<NakedObjects.IDomainObjectContainer>, name.ExposeContainerForTest())
+    ClassicAssert.IsNotNull(name.ExposeContainerForTest())
+    ClassicAssert.IsInstanceOf(typeof<NakedObjects.IDomainObjectContainer>, name.ExposeContainerForTest())
 
 let CheckService(person : Person) = 
     let name = person.ComplexProperty
-    Assert.IsNotNull(name.ExposeServiceForTest())
-    Assert.IsInstanceOf(typeof<NakedObjects.Services.SimpleRepository<Person>>, name.ExposeServiceForTest())
+    ClassicAssert.IsNotNull(name.ExposeServiceForTest())
+    ClassicAssert.IsInstanceOf(typeof<NakedObjects.Services.SimpleRepository<Person>>, name.ExposeServiceForTest())
 
 let CanInjectContainerOnNewInstance persistor = 
     let person = CreateAndSetup<Person> persistor (setter persistor)

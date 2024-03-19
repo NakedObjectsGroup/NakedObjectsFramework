@@ -13,6 +13,7 @@ open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System.Security.Principal
 open Functions
+open NUnit.Framework.Legacy
 
 // 18.2 get action no parms 
 let VerifyActionProperty refType oType oName f (api : RestfulObjectsControllerBase) = 
@@ -48,7 +49,7 @@ let VerifyActionProperty refType oType oName f (api : RestfulObjectsControllerBa
                               ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -118,7 +119,7 @@ let VerifyActionPropertyWithDateTime refType oType oName f (api : RestfulObjects
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -194,9 +195,9 @@ let VerifyActionPropertyWithCollection refType oType oName f (api : RestfulObjec
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionPropertyCollectionViewModel(api : RestfulObjectsControllerBase) = 
@@ -248,7 +249,7 @@ let VerifyOverloadedActionProperty refType oType oName f (api : RestfulObjectsCo
                               ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -298,9 +299,9 @@ let VerifyContributedServiceAction refType oType oName f (api : RestfulObjectsCo
                               ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionContributedService(api : RestfulObjectsControllerBase) = 
@@ -344,9 +345,9 @@ let VerifyUserDisabledActionProperty refType oType oName f (api : RestfulObjects
                               ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetUserDisabledActionPropertyObject(api : RestfulObjectsControllerBase) = 
@@ -396,9 +397,9 @@ let VerifyActionPropertyQueryOnly refType oType oName f (api : RestfulObjectsCon
                               ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionPropertyQueryOnlyObject(api : RestfulObjectsControllerBase) = 
@@ -448,9 +449,9 @@ let VerifyActionPropertyIdempotent refType oType oName f (api : RestfulObjectsCo
                                   :: makePutLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                             
                               ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionPropertyIdempotentObject(api : RestfulObjectsControllerBase) = 
@@ -516,9 +517,9 @@ let VerifyActionPropertyWithOptParm refType oType oName f (api : RestfulObjectsC
                       ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionPropertyWithOptObject(api : RestfulObjectsControllerBase) = 
@@ -582,9 +583,9 @@ let VerifyActionPropertyWithOptParmSimpleOnly refType oType oName f (api : Restf
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionPropertyWithOptObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -636,9 +637,9 @@ let VerifyActionPropertyWithMediaType refType oType oName f (api : RestfulObject
                               ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionPropertyObjectWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -690,9 +691,9 @@ let VerifyScalarAction refType oType oName f (api : RestfulObjectsControllerBase
                               ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetScalarActionObject(api : RestfulObjectsControllerBase) = 
@@ -748,9 +749,9 @@ let VerifyQueryAction refType oType oName f (api : RestfulObjectsControllerBase)
                               ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetQueryActionObject(api : RestfulObjectsControllerBase) = 
@@ -802,9 +803,9 @@ let VerifyCollectionAction refType oType oName f (api : RestfulObjectsController
                               ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionActionObject(api : RestfulObjectsControllerBase) = 
@@ -887,9 +888,9 @@ let VerifyQueryActionWithParms refType oType oName f (api : RestfulObjectsContro
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetQueryActionWithParmsObject(api : RestfulObjectsControllerBase) = 
@@ -971,9 +972,9 @@ let VerifyCollectionActionWithParms refType oType oName f (api : RestfulObjectsC
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionActionWithParmsObject(api : RestfulObjectsControllerBase) = 
@@ -1051,9 +1052,9 @@ let VerifyCollectionActionWithParmsSimpleOnly refType oType oName f (api : Restf
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionActionWithParmsObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -1123,9 +1124,9 @@ let VerifyActionWithValueParm refType oType oName f (api : RestfulObjectsControl
                       
                       ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithValueParmObject(api : RestfulObjectsControllerBase) = 
@@ -1198,9 +1199,9 @@ let VerifyActionWithValueParmWithChoices refType oType oName f (api : RestfulObj
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithValueParmWithChoicesObject(api : RestfulObjectsControllerBase) = 
@@ -1266,9 +1267,9 @@ let VerifyActionWithValueParmWithDefault refType oType oName f (api : RestfulObj
                       ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithValueParmWithDefaultObject(api : RestfulObjectsControllerBase) = 
@@ -1331,9 +1332,9 @@ let VerifyActionWithReferenceParm refType oType oName f (api : RestfulObjectsCon
                        ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithReferenceParmObject(api : RestfulObjectsControllerBase) = 
@@ -1407,9 +1408,9 @@ let VerifyActionWithReferenceParmWithChoices refType oType oName f (api : Restfu
                     ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithReferenceParmWithChoicesObject(api : RestfulObjectsControllerBase) = 
@@ -1503,9 +1504,9 @@ let VerifyActionWithReferenceParmsWithAutoComplete refType oType oName f (api : 
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithReferenceParmsWithAutoCompleteObject(api : RestfulObjectsControllerBase) = 
@@ -1558,9 +1559,9 @@ let VerifyInvokeParmWithAutoComplete refType oType oName f (api : RestfulObjects
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
     compareObject expected parsedResult
 
 let InvokeParmWithAutoCompleteObject(api : RestfulObjectsControllerBase) = 
@@ -1594,8 +1595,8 @@ let VerifyInvokeParmWithAutoCompleteErrorNoParm refType oType oName f (api : Res
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let InvokeParmWithAutoCompleteObjectErrorNoParm(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -1628,8 +1629,8 @@ let VerifyInvokeParmWithAutoCompleteErrorMalformedParm refType oType oName f (ap
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let InvokeParmWithAutoCompleteObjectErrorMalformedParm(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -1662,8 +1663,8 @@ let VerifyInvokeParmWithAutoCompleteErrorUnrecognisedParm refType oType oName f 
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -1715,9 +1716,9 @@ let VerifyInvokeParmWithConditionalChoices refType oType oName f (api : RestfulO
                              TObjectJson(obj2) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
     compareObject expected parsedResult
 
 let InvokeParmWithConditionalChoicesObject(api : RestfulObjectsControllerBase) = 
@@ -1760,8 +1761,8 @@ let VerifyInvokeParmWithConditionalChoicesErrorMalformedParm refType oType oName
                       TProperty
                           (JsonPropertyNames.InvalidReason, TObjectVal("Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple")) ])) ]
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-    Assert.AreEqual
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    ClassicAssert.AreEqual
         ("199 RestfulObjects \"Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple\"", headers.Headers.["Warning"].ToString())
     compareObject expected parsedResult
 
@@ -1808,9 +1809,9 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oName f1 f2 (api1 
                              TObjectVal(33) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
     compareObject expected parsedResult
     // repeat for second parm
     let pmid0 = "parm4"
@@ -1833,9 +1834,9 @@ let VerifyInvokeValueParmWithConditionalChoices refType oType oName f1 f2 (api1 
                              TObjectVal("33") ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
     compareObject expected parsedResult
 
 let InvokeValueParmWithConditionalChoicesObject(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
@@ -1880,9 +1881,9 @@ let VerifyInvokeValueParmWithConditionalChoicesMissingParm refType oType oName f
                              TObjectVal(0) ]))
           TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
     compareObject expected parsedResult
 
 let InvokeValueParmWithConditionalChoicesObjectErrorMissingParm(api : RestfulObjectsControllerBase) = 
@@ -1954,9 +1955,9 @@ let VerifyActionWithReferenceParmWithDefault refType oType oName f (api : Restfu
                       ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithReferenceParmWithDefaultObject(api : RestfulObjectsControllerBase) = 
@@ -2086,9 +2087,9 @@ let VerifyActionWithChoicesAndDefault refType oType oName f (api : RestfulObject
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                                             
                       ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+   // ClassicAssert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetActionWithChoicesAndDefaultObject(api : RestfulObjectsControllerBase) = 
@@ -2143,9 +2144,9 @@ let GetContributedActionOnContributee(api : RestfulObjectsControllerBase) =
                                   :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                             
                              ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetContributedActionOnContributeeBaseClass(api : RestfulObjectsControllerBase) = 
@@ -2184,9 +2185,9 @@ let GetContributedActionOnContributeeBaseClass(api : RestfulObjectsControllerBas
                              
                               ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetContributedActionOnContributeeWithRef(api : RestfulObjectsControllerBase) = 
@@ -2235,9 +2236,9 @@ let GetContributedActionOnContributeeWithRef(api : RestfulObjectsControllerBase)
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                                                 
                       ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetContributedActionOnContributeeWithValue(api : RestfulObjectsControllerBase) = 
@@ -2289,9 +2290,9 @@ let GetContributedActionOnContributeeWithValue(api : RestfulObjectsControllerBas
                           (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                                                 
                        ])) ]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 // 18.2 get contributed action on owning service 
@@ -2342,7 +2343,7 @@ let GetContributedActionOnContributer(api : RestfulObjectsControllerBase) =
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -2391,7 +2392,7 @@ let GetContributedActionOnContributerBaseClass(api : RestfulObjectsControllerBas
                       TObjectJson  (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                   
                     ]))]
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
     compareObject expected parsedResult
 
@@ -2457,9 +2458,9 @@ let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase)
                        ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    Assert.IsTrue(headers.ETag = null)
+    ClassicAssert.IsTrue(headers.ETag = null)
     compareObject expected parsedResult
 
 let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBase) = 
@@ -2528,9 +2529,9 @@ let GetContributedActionOnContributerWithValue(api : RestfulObjectsControllerBas
                        ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
     assertTransactionalCache headers
-    Assert.IsTrue(headers.ETag = null)
+    ClassicAssert.IsTrue(headers.ETag = null)
     compareObject expected parsedResult
 
 // working 
@@ -2547,8 +2548,8 @@ let VerifyInvalidAction refType oType oName f (api : RestfulObjectsControllerBas
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let GetInvalidActionPropertyObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -2578,8 +2579,8 @@ let VerifyNotFoundAction refType oType oName f (api : RestfulObjectsControllerBa
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let GetNotFoundActionPropertyObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -2608,8 +2609,8 @@ let VerifyUserDisabledAction refType oType oName f (api : RestfulObjectsControll
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let GetUserDisabledActionObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -2638,8 +2639,8 @@ let VerifyHiddenAction refType oType oName f (api : RestfulObjectsControllerBase
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", headers.Headers.["Warning"].ToString())
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", headers.Headers.["Warning"].ToString())
+    ClassicAssert.AreEqual("", jsonResult)
 
 let GetHiddenActionPropertyObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
@@ -2667,7 +2668,7 @@ let ActionNotFound(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
 
 let VerifyNotAcceptableGetActionWrongMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
     let oid = ktc "1"
@@ -2681,7 +2682,7 @@ let VerifyNotAcceptableGetActionWrongMediaType refType oType oName f (api : Rest
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
        
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-    Assert.AreEqual("", jsonResult)
+    ClassicAssert.AreEqual("", jsonResult)
 
 // 406       
 let NotAcceptableGetActionWrongMediaTypeObject(api : RestfulObjectsControllerBase) = 

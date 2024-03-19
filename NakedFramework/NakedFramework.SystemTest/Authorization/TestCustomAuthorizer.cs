@@ -25,6 +25,7 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -82,9 +83,9 @@ public class TestCustomAuthorizer1 : TestCustomAuthorizer<DefaultAuthorizer1> {
             InitializeNakedObjectsFramework(this);
         }
         catch (AggregateException ae) {
-            Assert.IsInstanceOf<InitialisationException>(ae.InnerException);
+            ClassicAssert.IsInstanceOf<InitialisationException>(ae.InnerException);
 
-            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
+            ClassicAssert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
         }
     }
 }
@@ -109,9 +110,9 @@ public class TestCustomAuthorizer2 : TestCustomAuthorizer<DefaultAuthorizer2> {
             InitializeNakedObjectsFramework(this);
         }
         catch (AggregateException ae) {
-            Assert.IsInstanceOf<InitialisationException>(ae.InnerException);
+            ClassicAssert.IsInstanceOf<InitialisationException>(ae.InnerException);
 
-            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
+            ClassicAssert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
         }
     }
 }
@@ -136,9 +137,9 @@ public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1> {
             InitializeNakedObjectsFramework(this);
         }
         catch (AggregateException ae) {
-            Assert.IsInstanceOf<InitialisationException>(ae.InnerException);
+            ClassicAssert.IsInstanceOf<InitialisationException>(ae.InnerException);
 
-            Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
+            ClassicAssert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", ae.InnerException.Message);
         }
     }
 }
@@ -199,7 +200,7 @@ public class TestCustomAuthoriser5 : TestCustomAuthorizer<DefaultAuthorizer3> {
             GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
         }
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No such service: Foos", e.Message);
         }
     }
 }

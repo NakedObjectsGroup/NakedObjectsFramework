@@ -13,6 +13,7 @@ using NakedFramework.Architecture.Resolve;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Resolve;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Resolve;
 
@@ -21,10 +22,10 @@ public class ResolveStateTest {
     private static void ExpectException(Action x) {
         try {
             x();
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (Exception) {
-            Assert.IsTrue(true);
+            ClassicAssert.IsTrue(true);
         }
     }
 
@@ -33,7 +34,7 @@ public class ResolveStateTest {
             x();
         }
         catch (Exception) {
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
     }
 

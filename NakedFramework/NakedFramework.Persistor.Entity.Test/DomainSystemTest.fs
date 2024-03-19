@@ -17,6 +17,7 @@ open NakedFramework.DependencyInjection.Extensions
 open TestTypes
 open SystemTestCode
 open TestCode
+open NUnit.Framework.Legacy
 
 [<TestFixture>]
 type DomainSystemTests() = 
@@ -134,18 +135,18 @@ type DomainSystemTests() =
     [<Test>]
     member x.GetService() = 
         let srService = x.NakedFramework.ServicesManager.GetService("SimpleRepository-ScrapReason")
-        Assert.IsNotNull(srService.Object)
+        ClassicAssert.IsNotNull(srService.Object)
     
     [<Test>]
     member x.GetCollectionDirectly() = 
         let srs = x.NakedFramework.Persistor.Instances<ScrapReason>()
-        Assert.Greater(srs |> Seq.length, 0)
+        ClassicAssert.Greater(srs |> Seq.length, 0)
     
     [<Test>]
     member x.CheckInstanceProperty() = 
         let sr = x.GetScrapReasonDomainObject()
-        Assert.IsNotNull(sr)
-        Assert.AreEqual("Color incorrect", sr.Name)
+        ClassicAssert.IsNotNull(sr)
+        ClassicAssert.AreEqual("Color incorrect", sr.Name)
     
     [<Test>]
     member x.CheckItemIdentities() = 
@@ -157,10 +158,10 @@ type DomainSystemTests() =
             |> Seq.head
         
         let (sr1, sr2, sr3, sr4) = (getSrByKey 1s, getSrByKey 2s, getSrByKey 1s, getSrByKey 2s)
-        Assert.AreSame(sr1, sr3)
-        Assert.AreSame(sr2, sr4)
-        Assert.AreNotSame(sr1, sr2)
-        Assert.AreNotSame(sr2, sr3)
+        ClassicAssert.AreSame(sr1, sr3)
+        ClassicAssert.AreSame(sr2, sr4)
+        ClassicAssert.AreNotSame(sr1, sr2)
+        ClassicAssert.AreNotSame(sr2, sr3)
     
     [<Test>]
     member x.CheckPersistentResolveState() = 
@@ -175,8 +176,8 @@ type DomainSystemTests() =
     [<Test>]
     member x.GetCollectionIndirectly() = 
         let sr = x.GetScrapReasonDomainObject()
-        Assert.IsNotNull(sr)
-        Assert.Greater(sr.WorkOrders |> Seq.length, 0)
+        ClassicAssert.IsNotNull(sr)
+        ClassicAssert.Greater(sr.WorkOrders |> Seq.length, 0)
     
     [<Test>]
     member x.GetCollectionItemIndirectly() = 
@@ -189,14 +190,14 @@ type DomainSystemTests() =
             x.NakedFramework.Persistor.Instances<WorkOrder>()
             |> Seq.filter (fun w -> w.ScrapReason <> null)
             |> Seq.head
-        Assert.IsNotNull(wo)
+        ClassicAssert.IsNotNull(wo)
         IsNotNullAndPersistent wo.ScrapReason x.NakedFramework
     
     [<Test>]
     member x.CheckCollectionIdentities() = 
         let sr = x.GetScrapReasonDomainObject()
         let wo = sr.WorkOrders |> Seq.head
-        Assert.AreSame(sr, wo.ScrapReason)
+        ClassicAssert.AreSame(sr, wo.ScrapReason)
     
     [<Test>]
     member x.CreateNewObjectWithScalars() = 
@@ -241,7 +242,7 @@ type DomainSystemTests() =
             let b = oldPc.ProductSubcategories.Remove(psc)
             newPc.ProductSubcategories.Add(psc)
             ctx.TransactionManager.EndTransaction()
-            Assert.AreEqual(newPc, psc.ProductCategory)
+            ClassicAssert.AreEqual(newPc, psc.ProductCategory)
         swapSubcatsForCollection origPc replPc
         swapSubcatsForCollection replPc origPc
     
@@ -262,6 +263,6 @@ type DomainSystemTests() =
             let b = oldPc.ProductSubcategories.Remove(psc)
             newPc.ProductSubcategories.Add(psc)
             ctx.TransactionManager.EndTransaction()
-            Assert.AreEqual(newPc, psc.ProductCategory)
+            ClassicAssert.AreEqual(newPc, psc.ProductCategory)
         swapSubcatsForCollection origPc replPc
         swapSubcatsForCollection replPc origPc

@@ -28,6 +28,7 @@ using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NotMyApp.MyCluster2;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using ROSI.Exceptions;
 
 // ReSharper disable UnusedMember.Global
@@ -111,8 +112,8 @@ namespace NakedFramework.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (AggregateException ae) {
-                Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
-                Assert.AreEqual(@"199 RestfulObjects ""MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Act1""", ae.InnerException.Message);
+                ClassicAssert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+                ClassicAssert.AreEqual(@"199 RestfulObjects ""MyBar1Authorizer#IsVisible, user: sven, target: Bar1, memberName: Act1""", ae.InnerException.Message);
             }
 
             //Foo1
@@ -123,8 +124,8 @@ namespace NakedFramework.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (AggregateException ae) {
-                Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
-                Assert.AreEqual(@"199 RestfulObjects ""MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Act1""", ae.InnerException.Message);
+                ClassicAssert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+                ClassicAssert.AreEqual(@"199 RestfulObjects ""MyCluster1Authorizer#IsVisible, user: sven, target: Foo1, memberName: Act1""", ae.InnerException.Message);
             }
 
             //Foo2
@@ -135,8 +136,8 @@ namespace NakedFramework.SystemTest.Authorization.NamespaceAuthorization {
                 Assert.Fail("Should not get to here");
             }
             catch (AggregateException ae) {
-                Assert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
-                Assert.AreEqual(@"199 RestfulObjects ""MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Act1""", ae.InnerException.Message);
+                ClassicAssert.IsInstanceOf<HttpErrorRosiException>(ae.InnerException);
+                ClassicAssert.AreEqual(@"199 RestfulObjects ""MyAppAuthorizer#IsVisible, user: sven, target: Foo2, memberName: Act1""", ae.InnerException.Message);
             }
 
             //Bar2

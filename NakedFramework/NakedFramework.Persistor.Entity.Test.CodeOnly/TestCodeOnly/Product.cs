@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using NakedObjects;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -90,7 +91,7 @@ public class Product : AbstractTestCode {
     public override void Loading() {
         base.Loading();
         // test scalar access OK 
-        Assert.IsNotNull(Name);
+        ClassicAssert.IsNotNull(Name);
     }
 
     public override void Loaded() {
@@ -101,7 +102,7 @@ public class Product : AbstractTestCode {
             forTest = Owningcategory;
         }
         catch (Exception) {
-            Assert.Fail("lazy load failed in loaded method");
+            ClassicAssert.Fail("lazy load failed in loaded method");
         }
     }
 }

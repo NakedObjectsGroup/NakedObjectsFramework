@@ -22,6 +22,7 @@ using NakedFramework.Test.TestCase;
 using NakedObjects;
 using NakedObjects.Services;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 
@@ -136,11 +137,11 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var logger = LoggerFactory.CreateLogger<CollectionMemento>();
         var newMemento = new CollectionMemento(NakedFramework, LoggerFactory, logger, strings1);
         var strings2 = newMemento.ToEncodedStrings();
-        Assert.IsTrue(strings1.SequenceEqual(strings2), "memento failed roundtrip");
+        ClassicAssert.IsTrue(strings1.SequenceEqual(strings2), "memento failed roundtrip");
 
         var copyMemento = new CollectionMemento(NakedFramework, logger, memento, Array.Empty<object>());
         var strings3 = copyMemento.ToEncodedStrings();
-        Assert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
+        ClassicAssert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
     }
 
     private static void RecoverCollection(IEnumerable<TestDomainObject> originalCollection, CollectionMemento memento, INakedObjectManager manager) {
@@ -148,7 +149,7 @@ public class CollectionMementoTest : AcceptanceTestCase {
         var oc = originalCollection.ToList();
         var rc = recoveredCollection.ToList();
 
-        Assert.IsTrue(oc.SequenceEqual(rc), "recovered collection not same as original");
+        ClassicAssert.IsTrue(oc.SequenceEqual(rc), "recovered collection not same as original");
     }
 
     [Test]
@@ -189,11 +190,11 @@ public class CollectionMementoTest : AcceptanceTestCase {
 
         RoundTrip(selectedMemento);
         var recoveredCollection = selectedMemento.RecoverCollection().GetAsEnumerable(NakedFramework.NakedObjectManager).Select(AdapterUtils.GetDomainObject<TestDomainObject>);
-        Assert.IsFalse(target.Action1().SequenceEqual(recoveredCollection), "recovered selected collection same as original");
+        ClassicAssert.IsFalse(target.Action1().SequenceEqual(recoveredCollection), "recovered selected collection same as original");
 
         var selectedCollection = target.Action1().Where(tdo => tdo.Id == target.Id);
 
-        Assert.IsTrue(selectedCollection.SequenceEqual(recoveredCollection), "recovered selected collection not same as original selected collection");
+        ClassicAssert.IsTrue(selectedCollection.SequenceEqual(recoveredCollection), "recovered selected collection not same as original selected collection");
     }
 
     // ReSharper restore PossibleMultipleEnumeration

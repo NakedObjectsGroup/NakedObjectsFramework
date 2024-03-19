@@ -22,6 +22,7 @@ using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using TestObjectMenu;
 
 // ReSharper disable UnusedMember.Global
@@ -96,7 +97,7 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     public virtual void TestAddAllActions() {
         var foo = GetMainMenu("Foo Service");
         foo.AssertItemCountIs(3);
-        Assert.AreEqual(3, foo.AllItems().Count(i => i != null));
+        ClassicAssert.AreEqual(3, foo.AllItems().Count(i => i != null));
 
         foo.AllItems()[0].AssertNameEquals("Foo Action0");
         foo.AllItems()[1].AssertNameEquals("Foo Action1");
@@ -142,7 +143,7 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     [Test]
     public virtual void TestAllMainMenus() {
         var menus = AllMainMenus();
-        Assert.AreEqual(menus.Length, menus.Count(i => i != null));
+        ClassicAssert.AreEqual(menus.Length, menus.Count(i => i != null));
     }
 
     [Test]
@@ -165,7 +166,7 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     [Test]
     public virtual void TestMainMenuCount() {
         var menus = AllMainMenus();
-        Assert.AreEqual(5, menus.Length);
+        ClassicAssert.AreEqual(5, menus.Length);
     }
 
     [Test]
@@ -181,11 +182,11 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     public virtual void TestMenuWithNoActions() {
         try {
             var e = GetMainMenu("Empty");
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
 
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No such menu: Empty", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No such menu: Empty", e.Message);
         }
     }
 
@@ -193,11 +194,11 @@ public class TestMainMenusConventional : AcceptanceTestCase {
     public virtual void TestSubMenuWithNoActions() {
         try {
             var e = GetMainMenu("Empty2");
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
 
         catch (Exception e) {
-            Assert.AreEqual("Assert.Fail failed. No such menu: Empty2", e.Message);
+            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No such menu: Empty2", e.Message);
         }
     }
 }

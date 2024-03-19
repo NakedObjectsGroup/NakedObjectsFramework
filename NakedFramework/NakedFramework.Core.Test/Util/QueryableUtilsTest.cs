@@ -8,7 +8,7 @@
 using System.Linq;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
-using NAssert = NUnit.Framework.Assert;
+using NAssert = NUnit.Framework.Legacy.ClassicAssert;
 
 namespace NakedFramework.Core.Test.Util;
 

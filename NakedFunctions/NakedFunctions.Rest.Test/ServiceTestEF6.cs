@@ -24,6 +24,7 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedFunctions.Rest.Test;
 
@@ -118,13 +119,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServices();
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var val = parsedResult.GetValue("value") as JArray;
 
-        Assert.IsNotNull(val);
-        Assert.AreEqual(13, val.Count);
+        ClassicAssert.IsNotNull(val);
+        ClassicAssert.AreEqual(13, val.Count);
 
         var firstItem = val.First;
 
@@ -136,25 +137,25 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetService(typeof(MenuTestFunctions).FullName);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(MenuTestFunctions), parsedResult["title"].ToString());
-        Assert.AreEqual(typeof(MenuTestFunctions).FullName, parsedResult["serviceId"].ToString());
+        ClassicAssert.AreEqual(nameof(MenuTestFunctions), parsedResult["title"].ToString());
+        ClassicAssert.AreEqual(typeof(MenuTestFunctions).FullName, parsedResult["serviceId"].ToString());
 
         var members = parsedResult["members"] as JObject;
-        Assert.AreEqual(typeof(MenuTestFunctions).GetMethods(BindingFlags.Static | BindingFlags.Public).Length, members?.Count);
+        ClassicAssert.AreEqual(typeof(MenuTestFunctions).GetMethods(BindingFlags.Static | BindingFlags.Public).Length, members?.Count);
 
         var function = members[nameof(MenuTestFunctions.FindByName)];
 
-        Assert.AreEqual("findbyname_group", function["extensions"]["x-ro-nof-menuPath"].ToString());
+        ClassicAssert.AreEqual("findbyname_group", function["extensions"]["x-ro-nof-menuPath"].ToString());
 
         function.AssertAction(nameof(MenuTestFunctions.FindByName));
         function["extensions"].AssertExtensions(8);
 
         var links = function["links"] as JArray;
 
-        Assert.AreEqual(2, links.Count);
+        ClassicAssert.AreEqual(2, links.Count);
 
         var invokeLink = links.Last;
 
@@ -166,18 +167,18 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.FindByName));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(MenuTestFunctions.FindByName), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(MenuTestFunctions.FindByName), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
         var parameter = parameters["searchString"];
-        Assert.AreEqual(2, parameter.Count());
+        ClassicAssert.AreEqual(2, parameter.Count());
         var links = parameter["links"];
         var extensions = parameter["extensions"];
-        Assert.AreEqual(0, links.Count());
-        Assert.AreEqual(7, extensions.Count());
+        ClassicAssert.AreEqual(0, links.Count());
+        ClassicAssert.AreEqual(7, extensions.Count());
     }
 
     [Test]
@@ -185,10 +186,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.FindByEnum));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("number", parsedResult["parameters"]["eParm"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("number", parsedResult["parameters"]["eParm"]["extensions"]["returnType"].ToString());
     }
 
     [Test]
@@ -198,15 +199,15 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var result = api.GetInvokeOnMenu(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.FindByName), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("list", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("list", parsedResult["resultType"].ToString());
 
         var resultObj = parsedResult["result"];
         var value = resultObj["value"] as JArray;
 
-        Assert.AreEqual(1, value.Count);
+        ClassicAssert.AreEqual(1, value.Count);
 
         value[0].AssertObjectElementLink("Fred", "GET", Helpers.FullName<SimpleRecord>(), "1");
     }
@@ -218,15 +219,15 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var result = api.GetInvokeOnMenu(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.FindByLength), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("list", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("list", parsedResult["resultType"].ToString());
 
         var resultObj = parsedResult["result"];
         var value = resultObj["value"] as JArray;
 
-        Assert.AreEqual(3, value.Count);
+        ClassicAssert.AreEqual(3, value.Count);
 
         value[0].AssertObjectElementLink("Bill", "GET", Helpers.FullName<SimpleRecord>(), "2");
         value[1].AssertObjectElementLink("Fred", "GET", Helpers.FullName<SimpleRecord>(), "1");
@@ -240,10 +241,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var result = api.GetInvokeOnMenu(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.Random), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("object", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("object", parsedResult["resultType"].ToString());
 
         var resultObj = parsedResult["result"];
 
@@ -261,7 +262,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
                 resultObj.AssertObject("hide it", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "4");
                 break;
             default:
-                Assert.Fail("unexpected result");
+                ClassicAssert.Fail("unexpected result");
                 break;
         }
     }
@@ -273,16 +274,16 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var result = api.PostInvokeOnMenu(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.FindByNumber), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("object", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("object", parsedResult["resultType"].ToString());
 
-        Assert.AreEqual("There is no matching object", parsedResult["extensions"]["x-ro-nof-warnings"][0].ToString());
+        ClassicAssert.AreEqual("There is no matching object", parsedResult["extensions"]["x-ro-nof-warnings"][0].ToString());
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("", resultObj.ToString());
+        ClassicAssert.AreEqual("", resultObj.ToString());
     }
 
     [Test]
@@ -292,14 +293,14 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var result = api.PostInvokeOnMenu(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.FindByNumber), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("object", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("object", parsedResult["resultType"].ToString());
 
-        Assert.AreEqual(null, parsedResult["extensions"]["x-ro-nof-warnings"]);
+        ClassicAssert.AreEqual(null, parsedResult["extensions"]["x-ro-nof-warnings"]);
 
-        Assert.AreEqual("object", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("object", parsedResult["resultType"].ToString());
 
         var resultObj = parsedResult["result"];
 
@@ -313,15 +314,15 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(DateMenuFunctions).FullName, nameof(DateMenuFunctions.DateWithDefault));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(DateRecordFunctions.DateWithDefault), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(DateRecordFunctions.DateWithDefault), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
         var psd = parameters["dt"];
 
-        Assert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
+        ClassicAssert.AreEqual(FormatForTest(DateTime.UtcNow.AddDays(22)), psd["default"].ToString());
     }
 
     [Test]
@@ -329,18 +330,18 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoices));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoices), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ChoicesMenuFunctions.WithChoices), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
         var choices = parameters["record"]["choices"];
 
-        Assert.AreEqual(4, choices.Count());
-        Assert.AreEqual("Fred", choices[0]["title"].ToString());
-        Assert.AreEqual("Bill", choices[1]["title"].ToString());
-        Assert.AreEqual("Jack", choices[2]["title"].ToString());
+        ClassicAssert.AreEqual(4, choices.Count());
+        ClassicAssert.AreEqual("Fred", choices[0]["title"].ToString());
+        ClassicAssert.AreEqual("Bill", choices[1]["title"].ToString());
+        ClassicAssert.AreEqual("Jack", choices[2]["title"].ToString());
     }
 
     [Test]
@@ -348,15 +349,15 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesNoContext), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesNoContext), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
         var choices = parameters["record"]["choices"];
 
-        Assert.AreEqual(0, choices.Count());
+        ClassicAssert.AreEqual(0, choices.Count());
     }
 
     [Test]
@@ -364,16 +365,16 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesWithParameters));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParameters), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(3, parameters.Count());
+        ClassicAssert.AreEqual(3, parameters.Count());
         var prompt = parameters["record"]["links"][0];
 
-        Assert.AreEqual(2, prompt["arguments"].Count());
-        Assert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
+        ClassicAssert.AreEqual(2, prompt["arguments"].Count());
+        ClassicAssert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithChoicesWithParameters/params/record/prompt", prompt["href"].ToString());
     }
 
     [Test]
@@ -381,16 +382,16 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ChoicesMenuFunctions.WithChoicesWithParametersNoContext), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(3, parameters.Count());
+        ClassicAssert.AreEqual(3, parameters.Count());
         var prompt = parameters["record"]["links"][0];
 
-        Assert.AreEqual(2, prompt["arguments"].Count());
-        Assert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithChoicesWithParametersNoContext/params/record/prompt", prompt["href"].ToString());
+        ClassicAssert.AreEqual(2, prompt["arguments"].Count());
+        ClassicAssert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithChoicesWithParametersNoContext/params/record/prompt", prompt["href"].ToString());
     }
 
     [Test]
@@ -398,24 +399,24 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithMultipleChoices));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoices), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoices), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(2, parameters.Count());
+        ClassicAssert.AreEqual(2, parameters.Count());
 
         var choices = parameters["simpleRecords"]["choices"];
 
-        Assert.AreEqual(4, choices.Count());
-        Assert.AreEqual("Fred", choices[0]["title"].ToString());
-        Assert.AreEqual("Bill", choices[1]["title"].ToString());
-        Assert.AreEqual("Jack", choices[2]["title"].ToString());
+        ClassicAssert.AreEqual(4, choices.Count());
+        ClassicAssert.AreEqual("Fred", choices[0]["title"].ToString());
+        ClassicAssert.AreEqual("Bill", choices[1]["title"].ToString());
+        ClassicAssert.AreEqual("Jack", choices[2]["title"].ToString());
 
         var prompt = parameters["dateRecords"]["links"][0];
 
-        Assert.AreEqual(1, prompt["arguments"].Count());
-        Assert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithMultipleChoices/params/dateRecords/prompt", prompt["href"].ToString());
+        ClassicAssert.AreEqual(1, prompt["arguments"].Count());
+        ClassicAssert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithMultipleChoices/params/dateRecords/prompt", prompt["href"].ToString());
     }
 
     [Test]
@@ -423,21 +424,21 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ChoicesMenuFunctions).FullName, nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(2, parameters.Count());
+        ClassicAssert.AreEqual(2, parameters.Count());
 
         var choices = parameters["simpleRecords"]["choices"];
 
-        Assert.AreEqual(0, choices.Count());
+        ClassicAssert.AreEqual(0, choices.Count());
 
         var prompt = parameters["dateRecords"]["links"][0];
 
-        Assert.AreEqual(1, prompt["arguments"].Count());
-        Assert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithMultipleChoicesNoContext/params/dateRecords/prompt", prompt["href"].ToString());
+        ClassicAssert.AreEqual(1, prompt["arguments"].Count());
+        ClassicAssert.AreEqual(@"http://localhost/menus/NakedFunctions.Rest.Test.Data.ChoicesMenuFunctions/actions/WithMultipleChoicesNoContext/params/dateRecords/prompt", prompt["href"].ToString());
     }
 
     [Test]
@@ -445,10 +446,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.CreateNewFunction));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Name,Name1,Id", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
+        ClassicAssert.AreEqual("Name,Name1,Id", parsedResult["extensions"]["x-ro-nof-createNew"].ToString());
     }
 
    
@@ -459,13 +460,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simplerecords", new ListValue(new IValue[] { new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") }) } } };
         var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoices), "dateRecords", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("dateRecords", parsedResult["id"].ToString());
         var choices = parsedResult["choices"];
-        Assert.AreEqual(1, choices.Count());
-        Assert.IsTrue(choices[0]["title"].ToString().StartsWith("DateRecord"));
+        ClassicAssert.AreEqual(1, choices.Count());
+        ClassicAssert.IsTrue(choices[0]["title"].ToString().StartsWith("DateRecord"));
     }
 
     [Test]
@@ -474,12 +475,12 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "simplerecords", new ListValue(new IValue[] { new ReferenceValue("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1", "simpleRecord") }) } } };
         var result = api.GetParameterPromptOnMenu(nameof(ChoicesMenuFunctions), nameof(ChoicesMenuFunctions.WithMultipleChoicesNoContext), "dateRecords", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("dateRecords", parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("dateRecords", parsedResult["id"].ToString());
         var choices = parsedResult["choices"];
-        Assert.AreEqual(0, choices.Count());
+        ClassicAssert.AreEqual(0, choices.Count());
     }
 
     [Test]
@@ -487,16 +488,16 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(DefaultedMenuFunctions).FullName, nameof(DefaultedMenuFunctions.WithDefaults));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(DefaultedMenuFunctions.WithDefaults), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(DefaultedMenuFunctions.WithDefaults), parsedResult["id"].ToString());
 
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(2, parameters.Count());
+        ClassicAssert.AreEqual(2, parameters.Count());
 
-        Assert.AreEqual("101", parameters["default1"]["default"].ToString());
-        Assert.AreEqual("Fred", parameters["default2"]["default"]["title"].ToString());
+        ClassicAssert.AreEqual("101", parameters["default1"]["default"].ToString());
+        ClassicAssert.AreEqual("Fred", parameters["default2"]["default"]["title"].ToString());
     }
 
     [Test]
@@ -505,11 +506,11 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
-        Assert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
+        ClassicAssert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
     }
 
     [Test]
@@ -518,7 +519,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -532,10 +533,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithCrossValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
     }
 
     [Test]
@@ -544,7 +545,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithCrossValidation), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -557,10 +558,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetService(typeof(DisabledMenuFunctions).FullName);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNull(parsedResult["members"]["WithDisabled1"]);
+        ClassicAssert.IsNull(parsedResult["members"]["WithDisabled1"]);
     }
 
     [Test]
@@ -568,10 +569,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetService(typeof(DisabledMenuFunctions).FullName);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["WithDisabled2"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["WithDisabled2"]);
     }
 
     [Test]
@@ -579,10 +580,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetService(typeof(HiddenMenuFunctions).FullName);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNull(parsedResult["members"]["WithHidden1"]);
+        ClassicAssert.IsNull(parsedResult["members"]["WithHidden1"]);
     }
 
     [Test]
@@ -590,10 +591,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetService(typeof(HiddenMenuFunctions).FullName);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["WithHidden2"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["WithHidden2"]);
     }
 
     [Test]
@@ -601,17 +602,17 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithAutoComplete));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(AutoCompleteMenuFunctions.WithAutoComplete), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(AutoCompleteMenuFunctions.WithAutoComplete), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
 
         var parameter = parameters["simpleRecord"];
-        Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
-        Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
-        Assert.AreEqual("http://localhost/menus/NakedFunctions.Rest.Test.Data.AutoCompleteMenuFunctions/actions/WithAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        ClassicAssert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
+        ClassicAssert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
+        ClassicAssert.AreEqual("http://localhost/menus/NakedFunctions.Rest.Test.Data.AutoCompleteMenuFunctions/actions/WithAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
     }
 
     [Test]
@@ -621,12 +622,12 @@ public class ServiceTestEF6 : AcceptanceTestCase {
 
         var result = api.GetInvokeOnMenu(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithAutoComplete), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
     }
 
     [Test]
@@ -634,17 +635,17 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenuAction(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), parsedResult["id"].ToString());
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
 
         var parameter = parameters["simpleRecord"];
-        Assert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
-        Assert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
-        Assert.AreEqual("http://localhost/menus/NakedFunctions.Rest.Test.Data.AutoCompleteMenuFunctions/actions/WithSingleAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
+        ClassicAssert.AreEqual("", parameter["links"][0]["arguments"]["x-ro-searchTerm"]["value"].ToString());
+        ClassicAssert.AreEqual("2", parameter["links"][0]["extensions"]["minLength"].ToString());
+        ClassicAssert.AreEqual("http://localhost/menus/NakedFunctions.Rest.Test.Data.AutoCompleteMenuFunctions/actions/WithSingleAutoComplete/params/simpleRecord/prompt", parameter["links"][0]["href"].ToString());
     }
 
     [Test]
@@ -654,12 +655,12 @@ public class ServiceTestEF6 : AcceptanceTestCase {
 
         var result = api.GetInvokeOnMenu(typeof(AutoCompleteMenuFunctions).FullName, nameof(AutoCompleteMenuFunctions.WithSingleAutoComplete), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
     }
 
     [Test]
@@ -667,13 +668,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetServiceAction(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithValidationNoContext));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ValidatedRecordFunctions.WithValidationNoContext), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(nameof(ValidatedRecordFunctions.WithValidationNoContext), parsedResult["id"].ToString());
 
         var parameters = parsedResult["parameters"];
-        Assert.AreEqual(1, parameters.Count());
+        ClassicAssert.AreEqual(1, parameters.Count());
     }
 
     [Test]
@@ -682,11 +683,11 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
-        Assert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("2", parsedResult["validate1"]["value"].ToString());
+        ClassicAssert.AreEqual("invalid", parsedResult["validate1"]["invalidReason"].ToString());
     }
 
     [Test]
@@ -695,7 +696,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -709,10 +710,10 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("2") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithCrossValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("invalid: 2:1", parsedResult["x-ro-invalidReason"].ToString());
     }
 
     [Test]
@@ -721,7 +722,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "validate1", new ScalarValue("1") }, { "validate2", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ValidatedMenuFunctions).FullName, nameof(ValidatedMenuFunctions.WithCrossValidationNoContext), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -735,7 +736,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("1") } } };
         var result = api.GetInvokeOnMenu(typeof(ViewModelMenuFunctions).FullName, nameof(ViewModelMenuFunctions.GetViewModel), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -749,7 +750,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.CreateNewWithExistingReferences), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -763,13 +764,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.CreateNewWithNewReferences), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
         resultObj.AssertObject("Test1-2-2-1", FullName<ReferenceRecord>(), "2");
-        Assert.AreEqual("Test2", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
+        ClassicAssert.AreEqual("Test2", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
     }
 
     [Test]
@@ -778,7 +779,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.UpdateExisting), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -792,13 +793,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.UpdateExistingAndReference), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
         resultObj.AssertObject("Test3-1-1-1", FullName<ReferenceRecord>(), "1");
-        Assert.AreEqual("Jill", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
+        ClassicAssert.AreEqual("Jill", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
     }
 
     [Test]
@@ -807,13 +808,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.CreateNewUpdateReference), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
         resultObj.AssertObject("Test4-4-1-1", FullName<ReferenceRecord>(), "4");
-        Assert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
+        ClassicAssert.AreEqual("Janet", resultObj["members"]["UpdatedRecord"]["value"]["title"].ToString());
     }
 
     [Test]
@@ -822,7 +823,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.CreateNewWithExistingCollection), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -836,7 +837,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.UpdateExistingCollectionRecord), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -850,7 +851,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.UpdateExistingAndCollection), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -864,7 +865,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.UpdateExistingAndAddToCollection), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -878,31 +879,31 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.GetInvokeOnMenu(typeof(CollectionMenuFunctions).FullName, nameof(CollectionMenuFunctions.GetQueryable), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(5, resultObj["members"].Count());
+        ClassicAssert.AreEqual(5, resultObj["members"].Count());
 
-        Assert.IsNull(resultObj["members"]["ContributedFunction1"]["extensions"]["returnType"]);
-        Assert.AreEqual("POST", resultObj["members"]["ContributedFunction1"]["links"][1]["method"].ToString());
-        Assert.AreEqual(1, resultObj["members"]["ContributedFunction1"]["parameters"].Count());
+        ClassicAssert.IsNull(resultObj["members"]["ContributedFunction1"]["extensions"]["returnType"]);
+        ClassicAssert.AreEqual("POST", resultObj["members"]["ContributedFunction1"]["links"][1]["method"].ToString());
+        ClassicAssert.AreEqual(1, resultObj["members"]["ContributedFunction1"]["parameters"].Count());
 
-        Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction2"]["extensions"]["returnType"].ToString());
-        Assert.AreEqual("POST", resultObj["members"]["ContributedFunction2"]["links"][1]["method"].ToString());
-        Assert.AreEqual(1, resultObj["members"]["ContributedFunction2"]["parameters"].Count());
+        ClassicAssert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction2"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("POST", resultObj["members"]["ContributedFunction2"]["links"][1]["method"].ToString());
+        ClassicAssert.AreEqual(1, resultObj["members"]["ContributedFunction2"]["parameters"].Count());
 
-        Assert.AreEqual("list", resultObj["members"]["ContributedFunction3"]["extensions"]["returnType"].ToString());
-        Assert.AreEqual("POST", resultObj["members"]["ContributedFunction3"]["links"][1]["method"].ToString());
-        Assert.AreEqual(2, resultObj["members"]["ContributedFunction3"]["parameters"].Count());
+        ClassicAssert.AreEqual("list", resultObj["members"]["ContributedFunction3"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("POST", resultObj["members"]["ContributedFunction3"]["links"][1]["method"].ToString());
+        ClassicAssert.AreEqual(2, resultObj["members"]["ContributedFunction3"]["parameters"].Count());
 
-        Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction4"]["extensions"]["returnType"].ToString());
-        Assert.AreEqual("GET", resultObj["members"]["ContributedFunction4"]["links"][1]["method"].ToString());
-        Assert.AreEqual(1, resultObj["members"]["ContributedFunction4"]["parameters"].Count());
+        ClassicAssert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction4"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("GET", resultObj["members"]["ContributedFunction4"]["links"][1]["method"].ToString());
+        ClassicAssert.AreEqual(1, resultObj["members"]["ContributedFunction4"]["parameters"].Count());
 
-        Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction5"]["extensions"]["returnType"].ToString());
-        Assert.AreEqual(4, resultObj["members"]["ContributedFunction5"]["parameters"]["psr"]["choices"].Count());
+        ClassicAssert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["members"]["ContributedFunction5"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual(4, resultObj["members"]["ContributedFunction5"]["parameters"]["psr"]["choices"].Count());
     }
 
     [Test]
@@ -912,13 +913,13 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var result = api.GetInvokeOnMenu(typeof(MenuTestFunctions).FullName, nameof(MenuTestFunctions.AlternateKey), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("1", resultObj["instanceId"].ToString());
-        Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.AlternateKeyRecord/1", resultObj["links"][0]["href"].ToString());
+        ClassicAssert.AreEqual("1", resultObj["instanceId"].ToString());
+        ClassicAssert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.AlternateKeyRecord/1", resultObj["links"][0]["href"].ToString());
     }
 
     [Test]
@@ -927,7 +928,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.CreateNtoN), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
@@ -941,7 +942,7 @@ public class ServiceTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.PostInvokeOnMenu(typeof(ReferenceMenuFunctions).FullName, nameof(ReferenceMenuFunctions.UpdateNtoN), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];

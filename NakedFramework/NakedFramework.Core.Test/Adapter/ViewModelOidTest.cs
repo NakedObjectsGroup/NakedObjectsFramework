@@ -11,6 +11,7 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Spec;
 using NakedFramework.Core.Adapter;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Adapter;
 
@@ -28,7 +29,7 @@ public class ViewModelOidTest {
     [Test]
     public void TestDefaultIsFinal() {
         IViewModelOid testOid = new ViewModelOid(mockMetamodel.Object, mockObjectSpec.Object);
-        Assert.IsFalse(testOid.IsFinal);
+        ClassicAssert.IsFalse(testOid.IsFinal);
     }
 
     [Test]
@@ -38,7 +39,7 @@ public class ViewModelOidTest {
 
         testOid.UpdateKeys(testkeys, true);
 
-        Assert.AreEqual(testkeys, testOid.Keys);
-        Assert.IsTrue(testOid.IsFinal);
+        ClassicAssert.AreEqual(testkeys, testOid.Keys);
+        ClassicAssert.IsTrue(testOid.IsFinal);
     }
 }

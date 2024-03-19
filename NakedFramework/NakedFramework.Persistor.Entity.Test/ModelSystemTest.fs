@@ -19,6 +19,7 @@ open NakedFramework.DependencyInjection.Extensions
 open TestTypes
 open SystemTestCode
 open TestCode
+open NUnit.Framework.Legacy
 
 [<TestFixture>]
 type ModelSystemTests() = 
@@ -78,12 +79,12 @@ type ModelSystemTests() =
     [<Test>]
     member x.GetService() = 
         let service = x.NakedFramework.ServicesManager.GetService("SimpleRepository-Person")
-        Assert.IsNotNull(service.Object)
+        ClassicAssert.IsNotNull(service.Object)
     
     [<Test>]
     member x.GetCollectionDirectly() = 
         let pp = x.NakedFramework.Persistor.Instances<Person>()
-        Assert.Greater(pp |> Seq.length, 0)
+        ClassicAssert.Greater(pp |> Seq.length, 0)
     
     [<Test>]
     member x.GetInstanceDirectly() = 
@@ -105,22 +106,22 @@ type ModelSystemTests() =
     [<Test>]
     member x.DirectlyLoadedObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
-        Assert.IsNotNull(p.ExposeContainerForTest())
-        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
+        ClassicAssert.IsNotNull(p.ExposeContainerForTest())
+        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
     
     [<Test>]
     member x.ComplexObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
         let pr = p.ComplexProperty
-        Assert.IsNotNull(pr.ExposeContainerForTest())
-        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, pr.ExposeContainerForTest())
+        ClassicAssert.IsNotNull(pr.ExposeContainerForTest())
+        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, pr.ExposeContainerForTest())
     
     [<Test>]
     member x.ComplexObjectHasParent() = 
         let p = x.GetPersonDomainObject()
         let pr = p.ComplexProperty
-        Assert.IsNotNull(pr.Parent)
-        Assert.IsInstanceOf(typeof<Person>, pr.Parent)
+        ClassicAssert.IsNotNull(pr.Parent)
+        ClassicAssert.IsInstanceOf(typeof<Person>, pr.Parent)
     
     [<Test>]
     member x.CreateNewObjectWithComplexType() = 
@@ -143,13 +144,13 @@ type ModelSystemTests() =
             entry.Value
         
         let findValue = fv m1
-        Assert.AreEqual(1, findValue "Persisting", "persisting")
-        Assert.AreEqual(0, findValue "Persisted", "persisted")
+        ClassicAssert.AreEqual(1, findValue "Persisting", "persisting")
+        ClassicAssert.AreEqual(0, findValue "Persisted", "persisted")
         let p = pNo.Object :?> Person
         let m2 = p.GetCallbackStatus()
         let findValue = fv m2
-        Assert.AreEqual(0, findValue "Persisting", "persisting")
-        Assert.AreEqual(1, findValue "Persisted", "persisted")
+        ClassicAssert.AreEqual(0, findValue "Persisting", "persisting")
+        ClassicAssert.AreEqual(1, findValue "Persisted", "persisted")
     
     [<Test>]
     member x.ComplexTypeObjectCallsCreated() = 
@@ -161,42 +162,42 @@ type ModelSystemTests() =
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        Assert.AreEqual(1, findValue "Created", "created")
+        ClassicAssert.AreEqual(1, findValue "Created", "created")
     
     [<Test>]
     member x.CreatedObjectHasContainer() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
-        Assert.IsNotNull(p.ExposeContainerForTest())
-        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
+        ClassicAssert.IsNotNull(p.ExposeContainerForTest())
+        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
         save pNo x.NakedFramework
         let p = pNo.Object :?> Person
-        Assert.IsNotNull(p.ExposeContainerForTest())
-        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
+        ClassicAssert.IsNotNull(p.ExposeContainerForTest())
+        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
     
     [<Test>]
     member x.CreatedComplexObjectHasContainer() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
         let co = p.ComplexProperty
-        Assert.IsNotNull(co.ExposeContainerForTest())
-        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
+        ClassicAssert.IsNotNull(co.ExposeContainerForTest())
+        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
         save pNo x.NakedFramework
         let co = p.ComplexProperty
-        Assert.IsNotNull(co.ExposeContainerForTest())
-        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
+        ClassicAssert.IsNotNull(co.ExposeContainerForTest())
+        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, co.ExposeContainerForTest())
     
     [<Test>]
     member x.CreatedComplexObjectHasParent() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
         let co = p.ComplexProperty
-        Assert.IsNotNull(co.Parent)
-        Assert.IsInstanceOf(typeof<Person>, co.Parent)
+        ClassicAssert.IsNotNull(co.Parent)
+        ClassicAssert.IsInstanceOf(typeof<Person>, co.Parent)
         save pNo x.NakedFramework
         let co = p.ComplexProperty
-        Assert.IsNotNull(co.Parent)
-        Assert.IsInstanceOf(typeof<Person>, co.Parent)
+        ClassicAssert.IsNotNull(co.Parent)
+        ClassicAssert.IsInstanceOf(typeof<Person>, co.Parent)
     
     [<Test>]
     member x.ComplexTypeObjectCallsPersistingPersisted() = 
@@ -208,8 +209,8 @@ type ModelSystemTests() =
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        Assert.AreEqual(1, findValue "Persisting", "persisting")
-        Assert.AreEqual(1, findValue "Persisted", "persisted")
+        ClassicAssert.AreEqual(1, findValue "Persisting", "persisting")
+        ClassicAssert.AreEqual(1, findValue "Persisted", "persisted")
     
    
     [<Test>]
@@ -223,15 +224,15 @@ type ModelSystemTests() =
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        Assert.AreEqual(1, findValue "Loading", "loading")
-        Assert.AreEqual(1, findValue "Loaded", "loaded")
+        ClassicAssert.AreEqual(1, findValue "Loading", "loading")
+        ClassicAssert.AreEqual(1, findValue "Loaded", "loaded")
     
     [<Test>]
     member x.LazyIntrospectionOfInheritedType() = 
         // this test is to cover bug #937
         let p = x.GetPersonDomainObject()
         let f = p.Food |> Seq.head
-        Assert.IsInstanceOf(typeof<Fruit>, f)
+        ClassicAssert.IsInstanceOf(typeof<Fruit>, f)
     
     [<Test>]
     member x.SavePersonWithInheritedTypeProperty() = 

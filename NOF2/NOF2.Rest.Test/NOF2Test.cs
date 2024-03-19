@@ -26,6 +26,7 @@ using NOF2.Reflector.Extensions;
 using NOF2.Rest.Test.Data;
 using NOF2.Rest.Test.Data.AppLib;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NOF2.Rest.Test;
 
@@ -153,7 +154,7 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -164,15 +165,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTextString>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
 
-        Assert.AreEqual("Fred", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("Fred", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -180,18 +181,18 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTextString>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionUpdateName"]);
 
-        Assert.AreEqual("class-value", parsedResult["extensions"]["x-ro-class-ext"].ToString());
-        Assert.AreEqual("prop-value", parsedResult["members"]["Name"]["extensions"]["x-ro-prop-ext"].ToString());
-        Assert.AreEqual("act-value", parsedResult["members"]["ActionUpdateName"]["extensions"]["x-ro-act-ext"].ToString());
-        Assert.AreEqual("parm-value", parsedResult["members"]["ActionUpdateName"]["parameters"]["newName"]["extensions"]["x-ro-parm-ext"].ToString());
+        ClassicAssert.AreEqual("class-value", parsedResult["extensions"]["x-ro-class-ext"].ToString());
+        ClassicAssert.AreEqual("prop-value", parsedResult["members"]["Name"]["extensions"]["x-ro-prop-ext"].ToString());
+        ClassicAssert.AreEqual("act-value", parsedResult["members"]["ActionUpdateName"]["extensions"]["x-ro-act-ext"].ToString());
+        ClassicAssert.AreEqual("parm-value", parsedResult["members"]["ActionUpdateName"]["parameters"]["newName"]["extensions"]["x-ro-parm-ext"].ToString());
     }
 
     [Test]
@@ -199,18 +200,18 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithBounded>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.IsNotNull(parsedResult["members"]["ChoicesProperty"]);
-        Assert.AreEqual("True", parsedResult["members"]["ChoicesProperty"]["hasChoices"].ToString());
-        Assert.AreEqual("data1", parsedResult["members"]["ChoicesProperty"]["choices"][0]["title"].ToString());
-        Assert.AreEqual("data2", parsedResult["members"]["ChoicesProperty"]["choices"][1]["title"].ToString());
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ChoicesProperty"]);
+        ClassicAssert.AreEqual("True", parsedResult["members"]["ChoicesProperty"]["hasChoices"].ToString());
+        ClassicAssert.AreEqual("data1", parsedResult["members"]["ChoicesProperty"]["choices"][0]["title"].ToString());
+        ClassicAssert.AreEqual("data2", parsedResult["members"]["ChoicesProperty"]["choices"][1]["title"].ToString());
 
-        Assert.AreEqual("data1", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("data1", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -218,15 +219,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithBounded>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Field disabled as object cannot be changed", parsedResult["members"]["Name"]["disabledReason"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["ChoicesProperty"]);
-        Assert.AreEqual("Field disabled as object cannot be changed", parsedResult["members"]["ChoicesProperty"]["disabledReason"].ToString());
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Field disabled as object cannot be changed", parsedResult["members"]["Name"]["disabledReason"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ChoicesProperty"]);
+        ClassicAssert.AreEqual("Field disabled as object cannot be changed", parsedResult["members"]["ChoicesProperty"]["disabledReason"].ToString());
     }
 
     [Test]
@@ -234,13 +235,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.Name));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithTextString.Name), parsedResult["id"].ToString());
-        Assert.AreEqual("Fred", parsedResult["value"].ToString());
-        Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
-        Assert.AreEqual("string", parsedResult["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithTextString.Name), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("Fred", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("string", parsedResult["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -250,12 +251,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithTextString>(), "1", nameof(ClassWithTextString.ActionUpdateName), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Ted", resultObj["members"]["Name"]["value"].ToString());
+        ClassicAssert.AreEqual("Ted", resultObj["members"]["Name"]["value"].ToString());
     }
 
     [Test]
@@ -263,16 +264,16 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithInternalCollection>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["TestCollection"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionUpdateTestCollection"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["TestCollection"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionUpdateTestCollection"]);
 
-        Assert.AreEqual("1", parsedResult["members"]["TestCollection"]["size"].ToString());
-        Assert.AreEqual("collection", parsedResult["members"]["TestCollection"]["memberType"].ToString());
+        ClassicAssert.AreEqual("1", parsedResult["members"]["TestCollection"]["size"].ToString());
+        ClassicAssert.AreEqual("collection", parsedResult["members"]["TestCollection"]["memberType"].ToString());
     }
 
     [Test]
@@ -283,14 +284,14 @@ public class NOF2Test : AcceptanceTestCase {
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
-        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        ClassicAssert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
     [Test]
@@ -301,11 +302,11 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        //Assert.IsNotNull(parsedResult["members"]["Id"]);
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        //ClassicAssert.IsNotNull(parsedResult["members"]["Id"]);
     }
 
     [Test]
@@ -315,12 +316,12 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
     }
 
     [Test]
@@ -331,14 +332,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
-        Assert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        ClassicAssert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
     [Test]
@@ -349,16 +350,16 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
-        Assert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.AreEqual("renamed param1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("renamed param2", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        ClassicAssert.AreEqual("Renamed Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual("renamed param1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("renamed param2", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
@@ -368,16 +369,16 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
-        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.AreEqual("Ts", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("Wn", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        ClassicAssert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual("Ts", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("Wn", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
@@ -389,12 +390,12 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.AreEqual("def", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["default"].ToString());
-        Assert.AreEqual("66", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["default"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual("def", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["default"].ToString());
+        ClassicAssert.AreEqual("66", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["default"].ToString());
     }
 
     [Test]
@@ -405,12 +406,12 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["default"]);
-        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["default"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["default"]);
+        ClassicAssert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["default"]);
     }
 
     [Test]
@@ -421,14 +422,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.AreEqual("opt1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"][0].ToString());
-        Assert.AreEqual("opt2", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"][1].ToString());
-        Assert.AreEqual("1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"][0].ToString());
-        Assert.AreEqual("5", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"][4].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual("opt1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"][0].ToString());
+        ClassicAssert.AreEqual("opt2", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"][1].ToString());
+        ClassicAssert.AreEqual("1", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"][0].ToString());
+        ClassicAssert.AreEqual("5", parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"][4].ToString());
     }
 
     [Test]
@@ -438,12 +439,12 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
-        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"]);
-        Assert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["ts"]["choices"]);
+        ClassicAssert.IsNull(parsedResult["members"]["actionTestActionWithParms"]["parameters"]["wn"]["choices"]);
     }
 
     [Test]
@@ -454,15 +455,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
-        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("Action With Description", parsedResult["members"]["actionTestAction"]["extensions"]["description"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        ClassicAssert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("Action With Description", parsedResult["members"]["actionTestAction"]["extensions"]["description"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
     [Test]
@@ -472,15 +473,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithActionAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["actionTestAction"]);
-        Assert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("Unusable by about", parsedResult["members"]["actionTestAction"]["disabledReason"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestAction"]);
+        ClassicAssert.AreEqual("Test Action", parsedResult["members"]["actionTestAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("Unusable by about", parsedResult["members"]["actionTestAction"]["disabledReason"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionTestActionWithParms"]);
     }
 
     [Test]
@@ -495,14 +496,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("invalid", parsedResult["ts"]["value"].ToString());
-        Assert.AreEqual("0", parsedResult["wn"]["value"].ToString());
-        Assert.AreEqual("ts is invalid", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("invalid", parsedResult["ts"]["value"].ToString());
+        ClassicAssert.AreEqual("0", parsedResult["wn"]["value"].ToString());
+        ClassicAssert.AreEqual("ts is invalid", parsedResult["x-ro-invalidReason"].ToString());
     }
 
     [Test]
@@ -517,14 +518,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("valid", parsedResult["ts"]["value"].ToString());
-        Assert.AreEqual("101", parsedResult["wn"]["value"].ToString());
-        Assert.AreEqual("wn is invalid", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("valid", parsedResult["ts"]["value"].ToString());
+        ClassicAssert.AreEqual("101", parsedResult["wn"]["value"].ToString());
+        ClassicAssert.AreEqual("wn is invalid", parsedResult["x-ro-invalidReason"].ToString());
     }
 
     [Test]
@@ -539,13 +540,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("void", parsedResult["resultType"].ToString());
-        Assert.IsNull(parsedResult["x-ro-invalidReason"]);
+        ClassicAssert.AreEqual("void", parsedResult["resultType"].ToString());
+        ClassicAssert.IsNull(parsedResult["x-ro-invalidReason"]);
     }
 
     [Test]
@@ -560,7 +561,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
     }
 
     [Test]
@@ -574,7 +575,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
     }
 
     [Test]
@@ -586,9 +587,9 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithActionAbout>(), "1", nameof(ClassWithActionAbout.actionTestActionWithRefParms), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
-        Assert.AreEqual("", parsedResult["result"], ToString());
+        ClassicAssert.AreEqual("", parsedResult["result"], ToString());
     }
 
     [Test]
@@ -599,11 +600,11 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
-        //Assert.IsNotNull(parsedResult["members"]["Id"]);
+        ClassicAssert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+        //ClassicAssert.IsNotNull(parsedResult["members"]["Id"]);
     }
 
     [Test]
@@ -613,13 +614,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
@@ -630,12 +631,12 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Name from About", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Name from About", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
@@ -646,14 +647,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
-        Assert.IsNull(parsedResult["members"]["Name"]["disabledReason"]);
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+        ClassicAssert.IsNull(parsedResult["members"]["Name"]["disabledReason"]);
     }
 
     [Test]
@@ -663,15 +664,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
-        Assert.AreEqual("Unusable by about", parsedResult["members"]["Name"]["disabledReason"].ToString());
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual("Unusable by about", parsedResult["members"]["Name"]["disabledReason"].ToString());
     }
 
     [Test]
@@ -682,13 +683,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("Description from About", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("Description from About", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -698,14 +699,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
+        ClassicAssert.AreEqual(1, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("Name", parsedResult["members"]["Name"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("", parsedResult["members"]["Name"]["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -716,13 +717,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("True", parsedResult["members"]["Name"]["hasChoices"].ToString());
-        Assert.AreEqual("fieldopt1", parsedResult["members"]["Name"]["choices"][0].ToString());
-        Assert.AreEqual("fieldopt2", parsedResult["members"]["Name"]["choices"][1].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("True", parsedResult["members"]["Name"]["hasChoices"].ToString());
+        ClassicAssert.AreEqual("fieldopt1", parsedResult["members"]["Name"]["choices"][0].ToString());
+        ClassicAssert.AreEqual("fieldopt2", parsedResult["members"]["Name"]["choices"][1].ToString());
     }
 
     [Test]
@@ -732,12 +733,12 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithFieldAbout>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["Name"]);
-        Assert.AreEqual("False", parsedResult["members"]["Name"]["hasChoices"].ToString());
-        Assert.IsNull(parsedResult["members"]["Name"]["choices"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Name"]);
+        ClassicAssert.AreEqual("False", parsedResult["members"]["Name"]["hasChoices"].ToString());
+        ClassicAssert.IsNull(parsedResult["members"]["Name"]["choices"]);
     }
 
     [Test]
@@ -750,11 +751,11 @@ public class NOF2Test : AcceptanceTestCase {
         var sva = new SingleValueArgument { Value = new ScalarValue("invalid") };
         var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("invalid", parsedResult["value"].ToString());
-        Assert.AreEqual("invalid by about", parsedResult["invalidReason"].ToString());
+        ClassicAssert.AreEqual("invalid", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("invalid by about", parsedResult["invalidReason"].ToString());
     }
 
     [Test]
@@ -763,11 +764,11 @@ public class NOF2Test : AcceptanceTestCase {
         var sva = new SingleValueArgument { Value = new ScalarValue("unparseable value") };
         var result = api.PutProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber), sva);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("unparseable value", parsedResult["value"].ToString());
-        Assert.AreEqual("unparseable value", parsedResult["invalidReason"].ToString());
+        ClassicAssert.AreEqual("unparseable value", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("unparseable value", parsedResult["invalidReason"].ToString());
     }
 
     [Test]
@@ -780,10 +781,10 @@ public class NOF2Test : AcceptanceTestCase {
         var sva = new SingleValueArgument { Value = new ScalarValue("valid") };
         var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("valid", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("valid", parsedResult["value"].ToString());
     }
 
     [Test]
@@ -792,10 +793,10 @@ public class NOF2Test : AcceptanceTestCase {
         var sva = new SingleValueArgument { Value = new ReferenceValue($"http://localhost/objects/{FullName<ClassWithTextString>()}/2", "referenceProperty") };
         var result = api.PutProperty(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.ReferenceProperty), sva);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Bill", parsedResult["value"]["title"].ToString());
+        ClassicAssert.AreEqual("Bill", parsedResult["value"]["title"].ToString());
     }
 
     [Test]
@@ -808,10 +809,10 @@ public class NOF2Test : AcceptanceTestCase {
         var sva = new SingleValueArgument { Value = new ScalarValue("") };
         var result = api.PutProperty(FullName<ClassWithFieldAbout>(), "1", nameof(ClassWithFieldAbout.Name), sva);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("", parsedResult["value"].ToString());
     }
 
     [Test]
@@ -819,14 +820,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
-        Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
-        Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionMethod2"]);
+        ClassicAssert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
     }
 
     [Test]
@@ -834,17 +835,17 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetMenu("ClassWithMenu");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(8, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.AreEqual(8, ((JContainer)parsedResult["members"]).Count);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionMethodInjected"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionMethodInjectedWithParm"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMethodInjected"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMethodInjectedWithParm"]);
     }
 
     [Test]
@@ -852,16 +853,16 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithDate>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Date"]);
-        Assert.AreEqual("2021-11-01", parsedResult["members"]["Date"]["value"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Date"]);
+        ClassicAssert.AreEqual("2021-11-01", parsedResult["members"]["Date"]["value"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionUpdateDate"]);
 
-        Assert.AreEqual("01/11/2021", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("01/11/2021", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -869,13 +870,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.Date));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
-        Assert.AreEqual("2021-11-01", parsedResult["value"].ToString());
-        Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
-        Assert.AreEqual("date", parsedResult["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithDate.Date), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("2021-11-01", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("date", parsedResult["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -883,13 +884,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.DateNullable));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithDate.DateNullable), parsedResult["id"].ToString());
-        Assert.AreEqual("2021-11-01", parsedResult["value"].ToString());
-        Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
-        Assert.AreEqual("date", parsedResult["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithDate.DateNullable), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("2021-11-01", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("date", parsedResult["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -899,14 +900,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithDate>(), "1", nameof(ClassWithDate.ActionUpdateDate), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("1998-07-06", resultObj["members"]["Date"]["value"].ToString());
-        Assert.AreEqual("string", resultObj["members"]["Date"]["extensions"]["returnType"].ToString());
-        Assert.AreEqual("date", resultObj["members"]["Date"]["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual("1998-07-06", resultObj["members"]["Date"]["value"].ToString());
+        ClassicAssert.AreEqual("string", resultObj["members"]["Date"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("date", resultObj["members"]["Date"]["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -916,17 +917,17 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.actionGetObject), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(2, ((JContainer)resultObj["members"]).Count);
-        Assert.IsNull(resultObj["members"]["Id"]);
-        Assert.IsNotNull(resultObj["members"]["Name"]);
-        Assert.IsNotNull(resultObj["members"]["ActionUpdateName"]);
+        ClassicAssert.AreEqual(2, ((JContainer)resultObj["members"]).Count);
+        ClassicAssert.IsNull(resultObj["members"]["Id"]);
+        ClassicAssert.IsNotNull(resultObj["members"]["Name"]);
+        ClassicAssert.IsNotNull(resultObj["members"]["ActionUpdateName"]);
 
-        Assert.AreEqual("Bill", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("Bill", resultObj["title"].ToString());
     }
 
     [Test]
@@ -936,17 +937,17 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.actionGetObject1), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(2, ((JContainer)resultObj["members"]).Count);
-        Assert.IsNull(resultObj["members"]["Id"]);
-        Assert.IsNotNull(resultObj["members"]["Name"]);
-        Assert.IsNotNull(resultObj["members"]["ActionUpdateName"]);
+        ClassicAssert.AreEqual(2, ((JContainer)resultObj["members"]).Count);
+        ClassicAssert.IsNull(resultObj["members"]["Id"]);
+        ClassicAssert.IsNotNull(resultObj["members"]["Name"]);
+        ClassicAssert.IsNotNull(resultObj["members"]["ActionUpdateName"]);
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
     }
 
     [Test]
@@ -954,15 +955,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithTimeStamp>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["TimeStamp"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionUpdateTimeStamp"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["TimeStamp"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionUpdateTimeStamp"]);
 
-        Assert.AreEqual("01/11/2021 12:00:00", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("01/11/2021 12:00:00", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -970,13 +971,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithTimeStamp>(), "1", nameof(ClassWithTimeStamp.TimeStamp));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithTimeStamp.TimeStamp), parsedResult["id"].ToString());
-        Assert.AreEqual(DateTime.Parse("11/01/2021 00:00:00", CultureInfo.InvariantCulture), parsedResult["value"].Value<DateTime>());
-        Assert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
-        Assert.AreEqual("date-time", parsedResult["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithTimeStamp.TimeStamp), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual(DateTime.Parse("11/01/2021 00:00:00", CultureInfo.InvariantCulture), parsedResult["value"].Value<DateTime>());
+        ClassicAssert.AreEqual("string", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("date-time", parsedResult["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -986,15 +987,15 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithTimeStamp>(), "1", nameof(ClassWithTimeStamp.ActionUpdateTimeStamp), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(DateTime.Parse("1998-07-06 00:00:00", CultureInfo.InvariantCulture), resultObj["members"]["TimeStamp"]["value"].Value<DateTime>());
+        ClassicAssert.AreEqual(DateTime.Parse("1998-07-06 00:00:00", CultureInfo.InvariantCulture), resultObj["members"]["TimeStamp"]["value"].Value<DateTime>());
 
-        Assert.AreEqual("string", resultObj["members"]["TimeStamp"]["extensions"]["returnType"].ToString());
-        Assert.AreEqual("date-time", resultObj["members"]["TimeStamp"]["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual("string", resultObj["members"]["TimeStamp"]["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("date-time", resultObj["members"]["TimeStamp"]["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -1002,15 +1003,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithWholeNumber>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["WholeNumber"]);
-        Assert.IsNotNull(parsedResult["members"]["actionUpdateWholeNumber"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["WholeNumber"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionUpdateWholeNumber"]);
 
-        Assert.AreEqual("10", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("10", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -1018,13 +1019,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.WholeNumber));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithWholeNumber.WholeNumber), parsedResult["id"].ToString());
-        Assert.AreEqual("10", parsedResult["value"].ToString());
-        Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
-        Assert.AreEqual("int", parsedResult["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithWholeNumber.WholeNumber), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("10", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("int", parsedResult["extensions"]["format"].ToString());
     }
 
     [Test]
@@ -1034,12 +1035,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithWholeNumber>(), "1", nameof(ClassWithWholeNumber.actionUpdateWholeNumber), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("66", resultObj["members"]["WholeNumber"]["value"].ToString());
+        ClassicAssert.AreEqual("66", resultObj["members"]["WholeNumber"]["value"].ToString());
     }
 
     [Test]
@@ -1047,15 +1048,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithLogical>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Logical"]);
-        Assert.IsNotNull(parsedResult["members"]["actionUpdateLogical"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Logical"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionUpdateLogical"]);
 
-        Assert.AreEqual("True", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("True", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -1063,13 +1064,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithLogical>(), "1", nameof(ClassWithLogical.Logical));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithLogical.Logical), parsedResult["id"].ToString());
-        Assert.AreEqual("True", parsedResult["value"].ToString());
-        Assert.AreEqual("boolean", parsedResult["extensions"]["returnType"].ToString());
-        Assert.IsNull(parsedResult["extensions"]["format"]);
+        ClassicAssert.AreEqual(nameof(ClassWithLogical.Logical), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("True", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("boolean", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.IsNull(parsedResult["extensions"]["format"]);
     }
 
     [Test]
@@ -1079,12 +1080,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithLogical>(), "1", nameof(ClassWithLogical.actionUpdateLogical), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("False", resultObj["members"]["Logical"]["value"].ToString());
+        ClassicAssert.AreEqual("False", resultObj["members"]["Logical"]["value"].ToString());
     }
 
     [Test]
@@ -1092,15 +1093,15 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMoney>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["Money"]);
-        Assert.IsNotNull(parsedResult["members"]["actionUpdateMoney"]);
+        ClassicAssert.AreEqual(2, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["Money"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionUpdateMoney"]);
 
-        Assert.AreEqual("€ 10.00", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("€ 10.00", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -1108,14 +1109,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithMoney>(), "1", nameof(ClassWithMoney.Money));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithMoney.Money), parsedResult["id"].ToString());
-        Assert.AreEqual("10", parsedResult["value"].ToString());
-        Assert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
-        Assert.AreEqual("decimal", parsedResult["extensions"]["format"].ToString());
-        Assert.AreEqual("C", parsedResult["extensions"]["x-ro-nof-mask"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithMoney.Money), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("10", parsedResult["value"].ToString());
+        ClassicAssert.AreEqual("number", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual("decimal", parsedResult["extensions"]["format"].ToString());
+        ClassicAssert.AreEqual("C", parsedResult["extensions"]["x-ro-nof-mask"].ToString());
     }
 
     [Test]
@@ -1125,12 +1126,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvoke(FullName<ClassWithMoney>(), "1", nameof(ClassWithMoney.actionUpdateMoney), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("66", resultObj["members"]["Money"]["value"].ToString());
+        ClassicAssert.AreEqual("66", resultObj["members"]["Money"]["value"].ToString());
     }
 
     [Test]
@@ -1138,17 +1139,17 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithReferenceProperty>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.IsNotNull(parsedResult["members"]["ReferenceProperty"]);
-        Assert.IsNotNull(parsedResult["members"]["actionUpdateReferenceProperty"]);
-        Assert.IsNotNull(parsedResult["members"]["actionGetObject"]);
-        Assert.IsNotNull(parsedResult["members"]["actionGetObject1"]);
+        ClassicAssert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ReferenceProperty"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionUpdateReferenceProperty"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionGetObject"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionGetObject1"]);
 
-        Assert.AreEqual("Untitled Class With Reference Property", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("Untitled Class With Reference Property", parsedResult["title"].ToString());
     }
 
     [Test]
@@ -1156,13 +1157,13 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetProperty(FullName<ClassWithReferenceProperty>(), "1", nameof(ClassWithReferenceProperty.ReferenceProperty));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(nameof(ClassWithReferenceProperty.ReferenceProperty), parsedResult["id"].ToString());
-        Assert.AreEqual("Fred", parsedResult["value"]["title"].ToString());
-        Assert.AreEqual(@"http://localhost/objects/NOF2.Rest.Test.Data.ClassWithTextString/1", parsedResult["value"]["href"].ToString());
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", parsedResult["extensions"]["returnType"].ToString());
+        ClassicAssert.AreEqual(nameof(ClassWithReferenceProperty.ReferenceProperty), parsedResult["id"].ToString());
+        ClassicAssert.AreEqual("Fred", parsedResult["value"]["title"].ToString());
+        ClassicAssert.AreEqual(@"http://localhost/objects/NOF2.Rest.Test.Data.ClassWithTextString/1", parsedResult["value"]["href"].ToString());
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", parsedResult["extensions"]["returnType"].ToString());
     }
 
     [Test]
@@ -1171,10 +1172,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenus();
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("ClassWithMenu Main Menu", parsedResult["value"][0]["title"].ToString());
+        ClassicAssert.AreEqual("ClassWithMenu Main Menu", parsedResult["value"][0]["title"].ToString());
     }
 
     [Test]
@@ -1184,15 +1185,15 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenu("ClassWithMenu");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
-        Assert.AreEqual("Renamed menu Action", parsedResult["members"]["ActionMenuAction"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
-        Assert.AreEqual("Menu Action1", parsedResult["members"]["ActionMenuAction1"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuAction"]);
+        ClassicAssert.AreEqual("Renamed menu Action", parsedResult["members"]["ActionMenuAction"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuAction1"]);
+        ClassicAssert.AreEqual("Menu Action1", parsedResult["members"]["ActionMenuAction1"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuAction2"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
 
     [Test]
@@ -1204,12 +1205,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenu(nameof(ClassWithMenu));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
-        Assert.AreEqual("Renamed Name", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("A Description", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["description"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.AreEqual("Renamed Name", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("A Description", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -1220,10 +1221,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenu(nameof(ClassWithMenu));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
 
     [Test]
@@ -1234,10 +1235,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenu(nameof(ClassWithMenu));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]);
     }
 
     [Test]
@@ -1248,14 +1249,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenu(nameof(ClassWithMenu));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
-        Assert.AreEqual("def", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["default"].ToString());
-        Assert.AreEqual("opt1", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"][0].ToString());
-        Assert.AreEqual("opt2", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"][1].ToString());
-        Assert.AreEqual("renamed ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.AreEqual("def", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["default"].ToString());
+        ClassicAssert.AreEqual("opt1", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"][0].ToString());
+        ClassicAssert.AreEqual("opt2", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"][1].ToString());
+        ClassicAssert.AreEqual("renamed ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
@@ -1265,15 +1266,15 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.GetMenu(nameof(ClassWithMenu));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
-        Assert.AreEqual("Menu Action With Parm", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["friendlyName"].ToString());
-        Assert.AreEqual("", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["description"].ToString());
-        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["default"]);
-        Assert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"]);
-        Assert.AreEqual("Ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMenuActionWithParm"]);
+        ClassicAssert.AreEqual("Menu Action With Parm", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.AreEqual("", parsedResult["members"]["ActionMenuActionWithParm"]["extensions"]["description"].ToString());
+        ClassicAssert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["default"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["choices"]);
+        ClassicAssert.AreEqual("Ts", parsedResult["members"]["ActionMenuActionWithParm"]["parameters"]["ts"]["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
@@ -1283,14 +1284,14 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithMenu>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.AreEqual(3, ((JContainer)parsedResult["members"]).Count);
 
-        Assert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
-        Assert.IsNotNull(parsedResult["members"]["actionMethod2"]);
-        Assert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
+        ClassicAssert.IsNotNull(parsedResult["members"]["ActionMethod1"]);
+        ClassicAssert.IsNotNull(parsedResult["members"]["actionMethod2"]);
+        ClassicAssert.AreEqual("Submenu1", parsedResult["members"]["actionMethod2"]["extensions"]["x-ro-nof-menuPath"].ToString());
     }
 
     [Test]
@@ -1302,13 +1303,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1320,13 +1321,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMethodInjected), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1338,13 +1339,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMethodInjectedWithParm), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1356,13 +1357,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionCreateTransient), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Untitled Class With Text String", resultObj["title"].ToString());
-        Assert.AreEqual("transient", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual("Untitled Class With Text String", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("transient", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
     }
 
     [Test]
@@ -1374,13 +1375,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionPersistTransient), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Jenny", resultObj["title"].ToString());
-        Assert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual("Jenny", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("persistent", resultObj["extensions"]["x-ro-nof-interactionMode"].ToString());
     }
 
     [Test]
@@ -1392,13 +1393,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1411,13 +1412,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("Fred", resultObj["title"].ToString());
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["title"].ToString());
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["domainType"].ToString());
     }
 
     [Test]
@@ -1430,13 +1431,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual("invalid", parsedResult["ts"]["value"].ToString());
-        Assert.AreEqual("ts invalid", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("invalid", parsedResult["ts"]["value"].ToString());
+        ClassicAssert.AreEqual("ts invalid", parsedResult["x-ro-invalidReason"].ToString());
     }
 
     [Test]
@@ -1449,10 +1450,10 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuActionWithParm), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("", parsedResult["result"].ToString());
+        ClassicAssert.AreEqual("", parsedResult["result"].ToString());
     }
 
     [Test]
@@ -1462,17 +1463,17 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction1), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("list", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("list", parsedResult["resultType"].ToString());
 
         var resultObj = parsedResult["result"];
 
-        Assert.AreEqual(3, ((JContainer)resultObj["value"]).Count);
-        Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
-        Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
-        Assert.AreEqual("Tom", resultObj["value"][2]["title"].ToString());
+        ClassicAssert.AreEqual(3, ((JContainer)resultObj["value"]).Count);
+        ClassicAssert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
+        ClassicAssert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
+        ClassicAssert.AreEqual("Tom", resultObj["value"][2]["title"].ToString());
     }
 
     [Test]
@@ -1482,17 +1483,17 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostInvokeOnMenu(nameof(ClassWithMenu), nameof(ClassWithMenu.ActionMenuAction2), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("list", parsedResult["resultType"].ToString());
+        ClassicAssert.AreEqual("list", parsedResult["resultType"].ToString());
 
         var resultObj = parsedResult["result"];
 
-        //Assert.AreEqual(2, ((JContainer)resultObj["value"]).Count);
-        Assert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["elementType"].ToString());
-        Assert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
-        Assert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
+        //ClassicAssert.AreEqual(2, ((JContainer)resultObj["value"]).Count);
+        ClassicAssert.AreEqual("NOF2.Rest.Test.Data.ClassWithTextString", resultObj["extensions"]["elementType"].ToString());
+        ClassicAssert.AreEqual("Fred", resultObj["value"][0]["title"].ToString());
+        ClassicAssert.AreEqual("Bill", resultObj["value"][1]["title"].ToString());
     }
 
     [Test]
@@ -1500,23 +1501,23 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithOrderedProperties>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.AreEqual("Name2", ((JProperty)parsedResult["members"].First).Name);
-        Assert.AreEqual("0", parsedResult["members"]["Name2"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.AreEqual("Name2", ((JProperty)parsedResult["members"].First).Name);
+        ClassicAssert.AreEqual("0", parsedResult["members"]["Name2"]["extensions"]["memberOrder"].ToString());
 
-        Assert.AreEqual("Name3", ((JProperty)parsedResult["members"].First.Next).Name);
-        Assert.AreEqual("1", parsedResult["members"]["Name3"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual("Name3", ((JProperty)parsedResult["members"].First.Next).Name);
+        ClassicAssert.AreEqual("1", parsedResult["members"]["Name3"]["extensions"]["memberOrder"].ToString());
 
-        Assert.AreEqual("Name1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
-        Assert.AreEqual("2", parsedResult["members"]["Name1"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual("Name1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
+        ClassicAssert.AreEqual("2", parsedResult["members"]["Name1"]["extensions"]["memberOrder"].ToString());
 
-        Assert.AreEqual("Name4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
-        Assert.AreEqual("4", parsedResult["members"]["Name4"]["extensions"]["memberOrder"].ToString());
-        Assert.AreEqual("10", parsedResult["members"]["Name4"]["extensions"]["maxLength"].ToString());
+        ClassicAssert.AreEqual("Name4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
+        ClassicAssert.AreEqual("4", parsedResult["members"]["Name4"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual("10", parsedResult["members"]["Name4"]["extensions"]["maxLength"].ToString());
     }
 
     [Test]
@@ -1524,22 +1525,22 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithOrderedActions>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
-        Assert.IsNull(parsedResult["members"]["Id"]);
-        Assert.AreEqual("actionAction2", ((JProperty)parsedResult["members"].First).Name);
-        //Assert.AreEqual("0", parsedResult["members"]["actionAction2"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual(4, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.IsNull(parsedResult["members"]["Id"]);
+        ClassicAssert.AreEqual("actionAction2", ((JProperty)parsedResult["members"].First).Name);
+        //ClassicAssert.AreEqual("0", parsedResult["members"]["actionAction2"]["extensions"]["memberOrder"].ToString());
 
-        Assert.AreEqual("actionAction3", ((JProperty)parsedResult["members"].First.Next).Name);
-        //Assert.AreEqual("1", parsedResult["members"]["actionAction3"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual("actionAction3", ((JProperty)parsedResult["members"].First.Next).Name);
+        //ClassicAssert.AreEqual("1", parsedResult["members"]["actionAction3"]["extensions"]["memberOrder"].ToString());
 
-        Assert.AreEqual("actionAction1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
-        //Assert.AreEqual("2", parsedResult["members"]["actionAction1"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual("actionAction1", ((JProperty)parsedResult["members"].First.Next.Next).Name);
+        //ClassicAssert.AreEqual("2", parsedResult["members"]["actionAction1"]["extensions"]["memberOrder"].ToString());
 
-        Assert.AreEqual("actionAction4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
-        //Assert.AreEqual("4", parsedResult["members"]["actionAction4"]["extensions"]["memberOrder"].ToString());
+        ClassicAssert.AreEqual("actionAction4", ((JProperty)parsedResult["members"].First.Next.Next.Next).Name);
+        //ClassicAssert.AreEqual("4", parsedResult["members"]["actionAction4"]["extensions"]["memberOrder"].ToString());
     }
 
     [Test]
@@ -1557,14 +1558,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
-        Assert.AreEqual("Jean", parsedResult["title"].ToString());
-        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
+        ClassicAssert.AreEqual("Jean", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1583,14 +1584,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
-        Assert.AreEqual("Jean", parsedResult["title"].ToString());
-        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
+        ClassicAssert.AreEqual("Jean", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1603,14 +1604,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersist>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
-        Assert.AreEqual("Jan", parsedResult["title"].ToString());
-        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual(FullName<ClassToPersist>(), parsedResult["domainType"].ToString());
+        ClassicAssert.AreEqual("Jan", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1623,13 +1624,13 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassWithTextString>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassWithTextString>(), parsedResult["domainType"].ToString());
-        Assert.AreEqual($"Attempt to save an object without an ActionSave: {FullName<ClassWithTextString>()}", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual(FullName<ClassWithTextString>(), parsedResult["domainType"].ToString());
+        ClassicAssert.AreEqual($"Attempt to save an object without an ActionSave: {FullName<ClassWithTextString>()}", parsedResult["x-ro-invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1649,14 +1650,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
-        Assert.AreEqual("Jean", parsedResult["title"].ToString());
-        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
+        ClassicAssert.AreEqual("Jean", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1677,14 +1678,14 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.Created, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
-        Assert.AreEqual("Jean", parsedResult["title"].ToString());
-        Assert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
+        ClassicAssert.AreEqual(FullName<ClassToPersistWithAbout>(), parsedResult["domainType"].ToString());
+        ClassicAssert.AreEqual("Jean", parsedResult["title"].ToString());
+        ClassicAssert.AreEqual("persistent", parsedResult["extensions"]["x-ro-nof-interactionMode"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1703,12 +1704,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Object Name is invalid", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("Object Name is invalid", parsedResult["x-ro-invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1727,12 +1728,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Ref Object Name is invalid", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("Ref Object Name is invalid", parsedResult["x-ro-invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1751,12 +1752,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Object Name is null", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("Object Name is null", parsedResult["x-ro-invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1775,12 +1776,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Ref Object is null", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("Ref Object is null", parsedResult["x-ro-invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1799,12 +1800,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Property Name is invalid", parsedResult["members"]["Name"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("Property Name is invalid", parsedResult["members"]["Name"]["invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1823,12 +1824,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Ref Property Name is invalid", parsedResult["members"]["ReferenceProperty"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("Ref Property Name is invalid", parsedResult["members"]["ReferenceProperty"]["invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1847,12 +1848,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1871,7 +1872,7 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.Created, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.Created, sc);
     }
 
     [Test]
@@ -1891,12 +1892,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Property Name is invalid", parsedResult["members"]["Name"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("Property Name is invalid", parsedResult["members"]["Name"]["invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1916,12 +1917,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Ref Property Name is invalid", parsedResult["members"]["ReferenceProperty"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("Ref Property Name is invalid", parsedResult["members"]["ReferenceProperty"]["invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1941,12 +1942,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
+        ClassicAssert.AreEqual("Property Name is null", parsedResult["members"]["Name"]["invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1966,12 +1967,12 @@ public class NOF2Test : AcceptanceTestCase {
 
         var result = api.PostPersist(FullName<ClassToPersistWithAbout>(), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.UnprocessableEntity, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("Ref Object is null", parsedResult["x-ro-invalidReason"].ToString());
+        ClassicAssert.AreEqual("Ref Object is null", parsedResult["x-ro-invalidReason"].ToString());
 
-        Assert.IsNull(parsedResult["members"]["ActionSave"]);
+        ClassicAssert.IsNull(parsedResult["members"]["ActionSave"]);
     }
 
     [Test]
@@ -1979,21 +1980,21 @@ public class NOF2Test : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<ClassWithAnnotations>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual("True", parsedResult["members"]["Name"]["extensions"]["optional"].ToString());
-        Assert.AreEqual("False", parsedResult["members"]["RequiredName"]["extensions"]["optional"].ToString());
-        Assert.AreEqual("renamed", parsedResult["members"]["NamedName"]["extensions"]["friendlyName"].ToString());
-        Assert.IsNull(parsedResult["members"]["HiddenName"]);
+        ClassicAssert.AreEqual("True", parsedResult["members"]["Name"]["extensions"]["optional"].ToString());
+        ClassicAssert.AreEqual("False", parsedResult["members"]["RequiredName"]["extensions"]["optional"].ToString());
+        ClassicAssert.AreEqual("renamed", parsedResult["members"]["NamedName"]["extensions"]["friendlyName"].ToString());
+        ClassicAssert.IsNull(parsedResult["members"]["HiddenName"]);
 
-        Assert.AreEqual("True", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
-        Assert.AreEqual("one", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
-        Assert.AreEqual("two", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
+        ClassicAssert.AreEqual("True", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
+        ClassicAssert.AreEqual("one", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
+        ClassicAssert.AreEqual("two", parsedResult["members"]["TestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
 
-        Assert.AreEqual("False", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
-        Assert.AreEqual("three", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
-        Assert.AreEqual("four", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
+        ClassicAssert.AreEqual("False", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewTitle"].ToString());
+        ClassicAssert.AreEqual("three", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][0].ToString());
+        ClassicAssert.AreEqual("four", parsedResult["members"]["ActionTestTableView"]["extensions"]["x-ro-nof-tableViewColumns"][1].ToString());
     }
 
     [Test]
@@ -2004,10 +2005,10 @@ public class NOF2Test : AcceptanceTestCase {
         var result = api.GetObject(FullName<ClassWithInvalidNames>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
+        ClassicAssert.AreEqual(0, ((JContainer)parsedResult["members"]).Count);
     }
 
     [Test]
@@ -2016,9 +2017,9 @@ public class NOF2Test : AcceptanceTestCase {
         var result = api.GetVersion();
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        Assert.IsTrue(parsedResult["implVersion"].ToString().StartsWith("NOF2 "));
+        ClassicAssert.IsTrue(parsedResult["implVersion"].ToString().StartsWith("NOF2 "));
     }
 }

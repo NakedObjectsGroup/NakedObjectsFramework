@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedObjects.SystemTest.Util;
 
@@ -20,10 +21,10 @@ public class DateTimeExtensionsTest {
         var wellKnownMonth2 = new DateTime(2007, 10, 20);
         var endOfWellKnownMonth2 = new DateTime(2007, 10, 31);
 
-        Assert.IsTrue(wellKnownMonth1.EndOfMonth().Equals(endOfWellKnownMonth1));
-        Assert.IsTrue(wellKnownMonth2.EndOfMonth().Equals(endOfWellKnownMonth2));
-        Assert.IsFalse(wellKnownMonth1.EndOfMonth().Equals(endOfWellKnownMonth2));
-        Assert.IsFalse(wellKnownMonth2.EndOfMonth().Equals(endOfWellKnownMonth1));
+        ClassicAssert.IsTrue(wellKnownMonth1.EndOfMonth().Equals(endOfWellKnownMonth1));
+        ClassicAssert.IsTrue(wellKnownMonth2.EndOfMonth().Equals(endOfWellKnownMonth2));
+        ClassicAssert.IsFalse(wellKnownMonth1.EndOfMonth().Equals(endOfWellKnownMonth2));
+        ClassicAssert.IsFalse(wellKnownMonth2.EndOfMonth().Equals(endOfWellKnownMonth1));
     }
 
     [Test]
@@ -33,10 +34,10 @@ public class DateTimeExtensionsTest {
         var wellKnownWeek2 = new DateTime(2007, 10, 20);
         var endOfWellKnownWeek2 = new DateTime(2007, 10, 20);
 
-        Assert.IsTrue(wellKnownWeek1.EndOfWeek().Equals(endOfWellKnownWeek1));
-        Assert.IsTrue(wellKnownWeek2.EndOfWeek().Equals(endOfWellKnownWeek2));
-        Assert.IsFalse(wellKnownWeek1.EndOfWeek().Equals(endOfWellKnownWeek2));
-        Assert.IsFalse(wellKnownWeek2.EndOfWeek().Equals(endOfWellKnownWeek1));
+        ClassicAssert.IsTrue(wellKnownWeek1.EndOfWeek().Equals(endOfWellKnownWeek1));
+        ClassicAssert.IsTrue(wellKnownWeek2.EndOfWeek().Equals(endOfWellKnownWeek2));
+        ClassicAssert.IsFalse(wellKnownWeek1.EndOfWeek().Equals(endOfWellKnownWeek2));
+        ClassicAssert.IsFalse(wellKnownWeek2.EndOfWeek().Equals(endOfWellKnownWeek1));
     }
 
     [Test]
@@ -46,42 +47,42 @@ public class DateTimeExtensionsTest {
         var wellKnownYear2 = new DateTime(2007, 12, 31);
         var endOfWellKnownYear2 = new DateTime(2007, 12, 31);
 
-        Assert.IsTrue(wellKnownYear1.EndOfYear().Equals(endOfWellKnownYear1));
-        Assert.IsTrue(wellKnownYear2.EndOfYear().Equals(endOfWellKnownYear2));
-        Assert.IsFalse(wellKnownYear1.EndOfYear().Equals(endOfWellKnownYear2));
-        Assert.IsFalse(wellKnownYear2.EndOfYear().Equals(endOfWellKnownYear1));
+        ClassicAssert.IsTrue(wellKnownYear1.EndOfYear().Equals(endOfWellKnownYear1));
+        ClassicAssert.IsTrue(wellKnownYear2.EndOfYear().Equals(endOfWellKnownYear2));
+        ClassicAssert.IsFalse(wellKnownYear1.EndOfYear().Equals(endOfWellKnownYear2));
+        ClassicAssert.IsFalse(wellKnownYear2.EndOfYear().Equals(endOfWellKnownYear1));
     }
 
     [Test]
     public void TestIsAfterNullableToday() {
-        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsTrue(x.IsAfterToday()));
+        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => ClassicAssert.IsTrue(x.IsAfterToday()));
 
-        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsFalse(x.IsAfterToday()));
+        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => ClassicAssert.IsFalse(x.IsAfterToday()));
 
-        Assert.IsFalse(((DateTime?)null).IsAfterToday());
+        ClassicAssert.IsFalse(((DateTime?)null).IsAfterToday());
     }
 
     [Test]
     public void TestIsAfterToday() {
-        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsTrue(x.IsAfterToday()));
+        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => ClassicAssert.IsTrue(x.IsAfterToday()));
 
-        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsFalse(x.IsAfterToday()));
+        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => ClassicAssert.IsFalse(x.IsAfterToday()));
     }
 
     [Test]
     public void TestIsBeforeNullableToday() {
-        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
+        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => ClassicAssert.IsTrue(x.IsBeforeToday()));
 
-        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
+        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => ClassicAssert.IsFalse(x.IsBeforeToday()));
 
-        Assert.IsFalse(((DateTime?)null).IsBeforeToday());
+        ClassicAssert.IsFalse(((DateTime?)null).IsBeforeToday());
     }
 
     [Test]
     public void TestIsBeforeToday() {
-        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
+        Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => ClassicAssert.IsTrue(x.IsBeforeToday()));
 
-        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
+        Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => ClassicAssert.IsFalse(x.IsBeforeToday()));
     }
 
     [Test]
@@ -90,11 +91,11 @@ public class DateTimeExtensionsTest {
         DateTime? tomorrow = today.Value.AddDays(1);
         DateTime? yesterday = today.Value.AddDays(-1);
 
-        Assert.IsTrue(today.IsToday());
-        Assert.IsFalse(tomorrow.IsToday());
-        Assert.IsFalse(yesterday.IsToday());
+        ClassicAssert.IsTrue(today.IsToday());
+        ClassicAssert.IsFalse(tomorrow.IsToday());
+        ClassicAssert.IsFalse(yesterday.IsToday());
 
-        Assert.IsFalse(((DateTime?)null).IsToday());
+        ClassicAssert.IsFalse(((DateTime?)null).IsToday());
     }
 
     [Test]
@@ -103,10 +104,10 @@ public class DateTimeExtensionsTest {
         var afterWellKnownDay = wellKnownDay.AddDays(1);
         var beforeWellKnownDay = wellKnownDay.AddDays(-1);
 
-        Assert.IsTrue(wellKnownDay.IsSameDayAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameDayAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameDayAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameDayAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameDayAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameDayAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameDayAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameDayAs(null));
     }
 
     [Test]
@@ -115,10 +116,10 @@ public class DateTimeExtensionsTest {
         var afterWellKnownDay = wellKnownDay.AddMonths(1);
         var beforeWellKnownDay = wellKnownDay.AddMonths(-1);
 
-        Assert.IsTrue(wellKnownDay.IsSameMonthAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameMonthAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameMonthAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameMonthAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameMonthAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameMonthAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameMonthAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameMonthAs(null));
     }
 
     [Test]
@@ -127,12 +128,12 @@ public class DateTimeExtensionsTest {
         DateTime? afterWellKnownDay = wellKnownDay.Value.AddDays(1);
         DateTime? beforeWellKnownDay = wellKnownDay.Value.AddDays(-1);
 
-        Assert.IsTrue(wellKnownDay.IsSameDayAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameDayAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameDayAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameDayAs(null));
-        Assert.IsFalse(((DateTime?)null).IsSameDayAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?)null).IsSameDayAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameDayAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameDayAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameDayAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameDayAs(null));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameDayAs(wellKnownDay));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameDayAs(null));
     }
 
     [Test]
@@ -141,12 +142,12 @@ public class DateTimeExtensionsTest {
         DateTime? afterWellKnownDay = wellKnownDay.Value.AddMonths(1);
         DateTime? beforeWellKnownDay = wellKnownDay.Value.AddMonths(-1);
 
-        Assert.IsTrue(wellKnownDay.IsSameMonthAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameMonthAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameMonthAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameMonthAs(null));
-        Assert.IsFalse(((DateTime?)null).IsSameMonthAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?)null).IsSameMonthAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameMonthAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameMonthAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameMonthAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameMonthAs(null));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameMonthAs(wellKnownDay));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameMonthAs(null));
     }
 
     [Test]
@@ -155,12 +156,12 @@ public class DateTimeExtensionsTest {
         DateTime? afterWellKnownDay = wellKnownDay.Value.AddDays(7);
         DateTime? beforeWellKnownDay = wellKnownDay.Value.AddDays(-7);
 
-        Assert.IsTrue(wellKnownDay.IsSameWeekAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameWeekAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameWeekAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameWeekAs(null));
-        Assert.IsFalse(((DateTime?)null).IsSameWeekAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?)null).IsSameWeekAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameWeekAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameWeekAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameWeekAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameWeekAs(null));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameWeekAs(wellKnownDay));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameWeekAs(null));
     }
 
     [Test]
@@ -169,12 +170,12 @@ public class DateTimeExtensionsTest {
         DateTime? afterWellKnownDay = wellKnownDay.Value.AddYears(1);
         DateTime? beforeWellKnownDay = wellKnownDay.Value.AddYears(-1);
 
-        Assert.IsTrue(wellKnownDay.IsSameYearAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameYearAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameYearAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameYearAs(null));
-        Assert.IsFalse(((DateTime?)null).IsSameYearAs(wellKnownDay));
-        Assert.IsFalse(((DateTime?)null).IsSameYearAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameYearAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameYearAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameYearAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameYearAs(null));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameYearAs(wellKnownDay));
+        ClassicAssert.IsFalse(((DateTime?)null).IsSameYearAs(null));
     }
 
     [Test]
@@ -183,10 +184,10 @@ public class DateTimeExtensionsTest {
         var afterWellKnownDay = wellKnownDay.AddDays(7);
         var beforeWellKnownDay = wellKnownDay.AddDays(-7);
 
-        Assert.IsTrue(wellKnownDay.IsSameWeekAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameWeekAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameWeekAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameWeekAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameWeekAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameWeekAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameWeekAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameWeekAs(null));
     }
 
     [Test]
@@ -195,10 +196,10 @@ public class DateTimeExtensionsTest {
         var afterWellKnownDay = wellKnownDay.AddYears(1);
         var beforeWellKnownDay = wellKnownDay.AddYears(-1);
 
-        Assert.IsTrue(wellKnownDay.IsSameYearAs(wellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameYearAs(afterWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameYearAs(beforeWellKnownDay));
-        Assert.IsFalse(wellKnownDay.IsSameYearAs(null));
+        ClassicAssert.IsTrue(wellKnownDay.IsSameYearAs(wellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameYearAs(afterWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameYearAs(beforeWellKnownDay));
+        ClassicAssert.IsFalse(wellKnownDay.IsSameYearAs(null));
     }
 
     [Test]
@@ -207,9 +208,9 @@ public class DateTimeExtensionsTest {
         var tomorrow = today.AddDays(1);
         var yesterday = today.AddDays(-1);
 
-        Assert.IsTrue(today.IsToday());
-        Assert.IsFalse(tomorrow.IsToday());
-        Assert.IsFalse(yesterday.IsToday());
+        ClassicAssert.IsTrue(today.IsToday());
+        ClassicAssert.IsFalse(tomorrow.IsToday());
+        ClassicAssert.IsFalse(yesterday.IsToday());
     }
 
     [Test]
@@ -219,10 +220,10 @@ public class DateTimeExtensionsTest {
         var wellKnownMonth2 = new DateTime(2007, 10, 20);
         var startOfWellKnownMonth2 = new DateTime(2007, 10, 1);
 
-        Assert.IsTrue(wellKnownMonth1.StartOfMonth().Equals(startOfWellKnownMonth1));
-        Assert.IsTrue(wellKnownMonth2.StartOfMonth().Equals(startOfWellKnownMonth2));
-        Assert.IsFalse(wellKnownMonth1.StartOfMonth().Equals(startOfWellKnownMonth2));
-        Assert.IsFalse(wellKnownMonth2.StartOfMonth().Equals(startOfWellKnownMonth1));
+        ClassicAssert.IsTrue(wellKnownMonth1.StartOfMonth().Equals(startOfWellKnownMonth1));
+        ClassicAssert.IsTrue(wellKnownMonth2.StartOfMonth().Equals(startOfWellKnownMonth2));
+        ClassicAssert.IsFalse(wellKnownMonth1.StartOfMonth().Equals(startOfWellKnownMonth2));
+        ClassicAssert.IsFalse(wellKnownMonth2.StartOfMonth().Equals(startOfWellKnownMonth1));
     }
 
     [Test]
@@ -232,10 +233,10 @@ public class DateTimeExtensionsTest {
         var wellKnownWeek2 = new DateTime(2007, 10, 20);
         var startOfWellKnownWeek2 = new DateTime(2007, 10, 14);
 
-        Assert.IsTrue(wellKnownWeek1.StartOfWeek().Equals(startOfWellKnownWeek1));
-        Assert.IsTrue(wellKnownWeek2.StartOfWeek().Equals(startOfWellKnownWeek2));
-        Assert.IsFalse(wellKnownWeek1.StartOfWeek().Equals(startOfWellKnownWeek2));
-        Assert.IsFalse(wellKnownWeek2.StartOfWeek().Equals(startOfWellKnownWeek1));
+        ClassicAssert.IsTrue(wellKnownWeek1.StartOfWeek().Equals(startOfWellKnownWeek1));
+        ClassicAssert.IsTrue(wellKnownWeek2.StartOfWeek().Equals(startOfWellKnownWeek2));
+        ClassicAssert.IsFalse(wellKnownWeek1.StartOfWeek().Equals(startOfWellKnownWeek2));
+        ClassicAssert.IsFalse(wellKnownWeek2.StartOfWeek().Equals(startOfWellKnownWeek1));
     }
 
     [Test]
@@ -245,9 +246,9 @@ public class DateTimeExtensionsTest {
         var wellKnownYear2 = new DateTime(2007, 1, 1);
         var startOfWellKnownYear2 = new DateTime(2007, 1, 1);
 
-        Assert.IsTrue(wellKnownYear1.StartOfYear().Equals(startOfWellKnownYear1));
-        Assert.IsTrue(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear2));
-        Assert.IsFalse(wellKnownYear1.StartOfYear().Equals(startOfWellKnownYear2));
-        Assert.IsFalse(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear1));
+        ClassicAssert.IsTrue(wellKnownYear1.StartOfYear().Equals(startOfWellKnownYear1));
+        ClassicAssert.IsTrue(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear2));
+        ClassicAssert.IsFalse(wellKnownYear1.StartOfYear().Equals(startOfWellKnownYear2));
+        ClassicAssert.IsFalse(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear1));
     }
 }

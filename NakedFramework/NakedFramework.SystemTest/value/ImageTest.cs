@@ -8,6 +8,7 @@
 using System;
 using NakedFramework.Value;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedObjects.SystemTest.Value;
 
@@ -19,17 +20,17 @@ public class ImageTest {
 
         var fa = new Image(resource);
 
-        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        ClassicAssert.AreEqual(resource, fa.GetResourceAsByteArray());
 
         fa = new Image(resource, "MyName");
 
-        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
-        Assert.AreEqual("MyName", fa.Name);
+        ClassicAssert.AreEqual(resource, fa.GetResourceAsByteArray());
+        ClassicAssert.AreEqual("MyName", fa.Name);
 
         fa = new Image(resource, "MyName2", @"Image/gif");
 
-        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
-        Assert.AreEqual("MyName2", fa.Name);
-        Assert.AreEqual(@"Image/gif", fa.MimeType);
+        ClassicAssert.AreEqual(resource, fa.GetResourceAsByteArray());
+        ClassicAssert.AreEqual("MyName2", fa.Name);
+        ClassicAssert.AreEqual(@"Image/gif", fa.MimeType);
     }
 }

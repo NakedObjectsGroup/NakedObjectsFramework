@@ -12,6 +12,7 @@ open NUnit.Framework
 open System.Net
 open NakedFramework.Rest.API
 open Functions
+open NUnit.Framework.Legacy
 
 let internal getExpected() = 
     let sName1 = "RestDataRepository"
@@ -75,7 +76,7 @@ let GetMenus(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected = fst (getExpected())
     compareObject expected parsedResult
@@ -87,7 +88,7 @@ let GetMenusWithTTC(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected =  snd (getExpected())
     compareObject expected parsedResult
@@ -99,7 +100,7 @@ let GetMenusWithMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected =  fst (getExpected())
     compareObject expected parsedResult
@@ -111,7 +112,7 @@ let GetMenusWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected =  snd (getExpected())
     compareObject expected parsedResult
@@ -129,5 +130,5 @@ let NotAcceptableGetMenus(api : RestfulObjectsControllerBase) =
        then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/list \""
        else "199 RestfulObjects \"Enable DebugWarnings to see message\""
 
-   Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
-   Assert.AreEqual("", jsonResult)
+   ClassicAssert.AreEqual(msg, headers.Headers.["Warning"].ToString())
+   ClassicAssert.AreEqual("", jsonResult)

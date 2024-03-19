@@ -13,6 +13,7 @@ using System.Security.Principal;
 using NakedFramework;
 using NakedFramework.Error;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -26,31 +27,31 @@ public class KeyUtilsTest {
     public void TestGetKeys() {
         var container = new TestContainer();
         var keys = container.GetKeys(typeof(TestKey));
-        Assert.AreEqual(1, keys.Length);
-        Assert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
+        ClassicAssert.AreEqual(1, keys.Length);
+        ClassicAssert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
     }
 
     [Test]
     public void TestGetMultiKeys() {
         var container = new TestContainer();
         var keys = container.GetKeys(typeof(TestMultiKey));
-        Assert.AreEqual(2, keys.Length);
-        Assert.AreSame(typeof(TestMultiKey).GetProperty("AName"), keys.First());
-        Assert.AreSame(typeof(TestMultiKey).GetProperty("AName1"), keys.Last());
+        ClassicAssert.AreEqual(2, keys.Length);
+        ClassicAssert.AreSame(typeof(TestMultiKey).GetProperty("AName"), keys.First());
+        ClassicAssert.AreSame(typeof(TestMultiKey).GetProperty("AName1"), keys.Last());
     }
 
     [Test]
     public void TestGetNoKeys() {
         var container = new TestContainer();
         var keys = container.GetKeys(typeof(TestNoKey));
-        Assert.AreEqual(0, keys.Length);
+        ClassicAssert.AreEqual(0, keys.Length);
     }
 
     [Test]
     public void TestGetSingleKey() {
         var container = new TestContainer();
         var key = container.GetSingleKey(typeof(TestKey));
-        Assert.AreSame(typeof(TestKey).GetProperty("AName"), key);
+        ClassicAssert.AreSame(typeof(TestKey).GetProperty("AName"), key);
     }
 
     [Test]
@@ -58,7 +59,7 @@ public class KeyUtilsTest {
         var container = new TestContainer();
         try {
             var key = container.GetSingleKey(typeof(TestMultiKey));
-            Assert.Fail("Exception expected");
+            ClassicAssert.Fail("Exception expected");
         }
         catch (DomainException) {
             // expected
@@ -71,7 +72,7 @@ public class KeyUtilsTest {
 
         try {
             var key = container.GetSingleKey(typeof(TestNoKey));
-            Assert.Fail("Exception expected");
+            ClassicAssert.Fail("Exception expected");
         }
         catch (DomainException) {
             // expected

@@ -15,6 +15,7 @@ using NakedFramework.Core.Error;
 using NakedFramework.Core.Resolve;
 using NakedFramework.Core.Util;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using TestData;
 
 // ReSharper disable UnusedMember.Global
@@ -47,8 +48,8 @@ public class PersistorTestSuite {
     }
 
     private static void AssertIsPerson(Person person, int id) {
-        Assert.IsNotNull(person, "Failed to get instance");
-        Assert.AreEqual(id, person.PersonId);
+        ClassicAssert.IsNotNull(person, "Failed to get instance");
+        ClassicAssert.AreEqual(id, person.PersonId);
     }
 
     private Person ChangeScalarOnPerson(int id) {
@@ -230,39 +231,39 @@ public class PersistorTestSuite {
         var person1 = GetPerson(1);
         var person2 = Persistor.Instances(typeof(Person)).Cast<Person>().Single(p => p.PersonId == 1);
         var person3 = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
-        Assert.AreSame(person1, person2);
-        Assert.AreSame(person2, person3);
+        ClassicAssert.AreSame(person1, person2);
+        ClassicAssert.AreSame(person2, person3);
     }
 
     public void GetInstanceResolveStateIsPersistent() {
         var adapter = AdapterFor(GetPerson(1));
-        Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(adapter.Oid.IsTransient, "is transient");
     }
 
     public void GetInstanceHasVersion() {
         var adapter = AdapterFor(GetPerson(1));
-        Assert.IsNotNull(adapter.Version, "should have version");
+        ClassicAssert.IsNotNull(adapter.Version, "should have version");
     }
 
     public void ChangeScalarOnPersistentCallsUpdatingUpdated() {
         var person = ChangeScalarOnPerson(1);
-        Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updated"], "updated");
     }
 
     public void ChangeReferenceOnPersistentCallsUpdatingUpdated() {
         var person = ChangeReferenceOnPerson(7);
-        Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updated"], "updated");
     }
 
     public void UpdatedDoesntCallPersistedAtOnce() {
         var person = GetPerson(1);
         person.PersistInUpdated();
         ChangeScalarOnPerson(1);
-        Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updated"], "updated");
     }
 
     public void AddToCollectionOnPersistent() {
@@ -270,14 +271,14 @@ public class PersistorTestSuite {
         var person4 = GetPerson(4);
         var countbefore = person1.Relatives.Count;
         AddToCollectionOnPersonOne(person4);
-        Assert.AreEqual(countbefore + 1, person1.Relatives.Count);
+        ClassicAssert.AreEqual(countbefore + 1, person1.Relatives.Count);
     }
 
     public void AddToCollectionOnPersistentCallsUpdatingUpdated() {
         var person6 = GetPerson(6);
         var person1 = AddToCollectionOnPersonOne(person6);
-        Assert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
     }
 
     public void RemoveFromCollectionOnPersistent() {
@@ -285,181 +286,181 @@ public class PersistorTestSuite {
         var person2 = GetPerson(2);
         var countbefore = person1.Relatives.Count;
         RemoveFromCollectionOnPersonOne(person2);
-        Assert.AreEqual(countbefore - 1, person1.Relatives.Count);
+        ClassicAssert.AreEqual(countbefore - 1, person1.Relatives.Count);
     }
 
     public void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
         var person8 = GetPerson(8);
         var person1 = RemoveFromCollectionOnPersonOne(person8);
-        Assert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
     }
 
     public void ClearCollectionOnPersistent() {
         var person = ClearCollectionOnPerson(6);
-        Assert.AreEqual(0, person.Relatives.Count);
+        ClassicAssert.AreEqual(0, person.Relatives.Count);
     }
 
     public void ClearCollectionOnPersistentCallsUpdatingUpdated() {
         var person = ClearCollectionOnPerson(8);
-        Assert.AreEqual(1, person.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Updated"], "updated");
     }
 
     public void LoadObjectReturnSameObject() {
         var person1 = GetPerson(1);
         var adapter1 = AdapterFor(person1);
         var adapter2 = Persistor.LoadObject(adapter1.Oid, (IObjectSpec)adapter1.Spec);
-        Assert.AreSame(person1, adapter2.Object);
+        ClassicAssert.AreSame(person1, adapter2.Object);
     }
 
     public void PersistentObjectHasContainerInjected() {
         var person1 = GetPerson(1);
-        Assert.IsTrue(person1.HasContainer, "no container injected");
+        ClassicAssert.IsTrue(person1.HasContainer, "no container injected");
     }
 
     public void PersistentObjectHasServiceInjected() {
         var person1 = GetPerson(1);
-        Assert.IsTrue(person1.HasMenuService, "no service injected");
+        ClassicAssert.IsTrue(person1.HasMenuService, "no service injected");
     }
 
     public void PersistentObjectHasLoadingLoadedCalled() {
         TransactionManager.StartTransaction();
         var person1 = GetPerson(1);
         TransactionManager.EndTransaction();
-        Assert.AreEqual(1, person1.GetEvents()["Loading"], "loading");
-        Assert.AreEqual(1, person1.GetEvents()["Loaded"], "loaded");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Loading"], "loading");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Loaded"], "loaded");
     }
 
     public void CanAccessReferenceProperty() {
         var person1 = GetPerson(1);
         var product = person1.FavouriteProduct;
-        Assert.IsNotNull(product, "Failed to access instance");
-        Assert.AreEqual("ProductOne", product.Name);
+        ClassicAssert.IsNotNull(product, "Failed to access instance");
+        ClassicAssert.AreEqual("ProductOne", product.Name);
     }
 
     public void CanAccessCollectionProperty() {
         var relatives = GetPerson(1).Relatives;
-        Assert.IsNotNull(relatives, "Failed to access collection");
-        Assert.Greater(relatives.Count, 0, "no items in collection");
+        ClassicAssert.IsNotNull(relatives, "Failed to access collection");
+        ClassicAssert.Greater(relatives.Count, 0, "no items in collection");
     }
 
     public void CollectionPropertyCollectionResolveStateIsPersistent() {
         var relativesAdapter = GetAdaptedRelatives(GetPerson(1));
-        Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsNotNull(relativesAdapter.Oid, "is  null");
-        Assert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
+        ClassicAssert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsNotNull(relativesAdapter.Oid, "is  null");
+        ClassicAssert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
     }
 
     public void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
         var relativesAdapter = GetAdaptedRelatives(GetPerson(2));
-        Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsNotNull(relativesAdapter.Oid, "is  null");
-        Assert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
+        ClassicAssert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsNotNull(relativesAdapter.Oid, "is  null");
+        ClassicAssert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
     }
 
     public void ReferencePropertyHasLoadingLoadedCalled() {
         var product = GetProductFromPersonOne();
-        Assert.AreEqual(1, product.GetEvents()["Loading"], "loading");
-        Assert.AreEqual(1, product.GetEvents()["Loaded"], "loaded");
+        ClassicAssert.AreEqual(1, product.GetEvents()["Loading"], "loading");
+        ClassicAssert.AreEqual(1, product.GetEvents()["Loaded"], "loaded");
     }
 
     public void ReferencePropertyObjectHasContainerInjected() {
         var product = GetProductFromPersonOne();
-        Assert.IsTrue(product.HasContainer, "no container injected");
+        ClassicAssert.IsTrue(product.HasContainer, "no container injected");
     }
 
     public void ReferencePropertyObjectHasServiceInjected() {
         var product = GetProductFromPersonOne();
-        Assert.IsTrue(product.HasMenuService, "no service injected");
+        ClassicAssert.IsTrue(product.HasMenuService, "no service injected");
     }
 
     public void ReferencePropertyObjectResolveStateIsPersistent() {
         var adapter = AdapterFor(GetProductFromPersonOne());
-        Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(adapter.Oid.IsTransient, "is transient");
     }
 
     public void ReferencePropertyObjectHasVersion() {
         var adapter = AdapterFor(GetProductFromPersonOne());
-        Assert.IsNotNull(adapter.Version, "should have version");
+        ClassicAssert.IsNotNull(adapter.Version, "should have version");
     }
 
     public void CollectionPropertyHasLoadingLoadedCalled() {
         var person = GetPersonFromPersonOneCollection();
-        Assert.AreEqual(1, person.GetEvents()["Loading"], "loading");
-        Assert.AreEqual(1, person.GetEvents()["Loaded"], "loaded");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Loading"], "loading");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Loaded"], "loaded");
     }
 
     public void CollectionPropertyObjectHasContainerInjected() {
         var person = GetPersonFromPersonOneCollection();
-        Assert.IsTrue(person.HasContainer, "no container injected");
+        ClassicAssert.IsTrue(person.HasContainer, "no container injected");
     }
 
     public void CollectionPropertyObjectHasMenuServiceInjected() {
         var person = GetPersonFromPersonOneCollection();
-        Assert.IsTrue(person.HasMenuService, "no menu service injected");
+        ClassicAssert.IsTrue(person.HasMenuService, "no menu service injected");
     }
 
     public void CollectionPropertyObjectHasSystemServiceInjected() {
         var person = GetPersonFromPersonOneCollection();
-        Assert.IsTrue(person.HasSystemService, "no system service injected");
+        ClassicAssert.IsTrue(person.HasSystemService, "no system service injected");
     }
 
     public void CollectionPropertyObjectHasContributedServiceInjected() {
         var person = GetPersonFromPersonOneCollection();
 
-        Assert.IsTrue(person.HasContributedActions, "no contributed service injected");
+        ClassicAssert.IsTrue(person.HasContributedActions, "no contributed service injected");
     }
 
     public void CollectionPropertyObjectResolveStateIsPersistent() {
         var adapter = AdapterFor(GetPersonFromPersonOneCollection());
-        Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(adapter.Oid.IsTransient, "is transient");
     }
 
     public void CollectionPropertyObjectHasVersion() {
         var adapter = AdapterFor(GetPersonFromPersonOneCollection());
-        Assert.IsNotNull(adapter.Version, "should have version");
+        ClassicAssert.IsNotNull(adapter.Version, "should have version");
     }
 
     public void NewObjectIsCreated() {
         var person = CreateNewTransientPerson();
-        Assert.IsNotNull(person);
+        ClassicAssert.IsNotNull(person);
     }
 
     public void NewObjectHasCreatedCalled() {
         var person = CreateNewTransientPerson();
-        Assert.AreEqual(1, person.GetEvents()["Created"], "created");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Created"], "created");
     }
 
     public void NewObjectIsTransient() {
         var adapter = AdapterFor(CreateNewTransientPerson());
-        Assert.IsTrue(adapter.ResolveState.IsTransient(), "should be transient");
-        Assert.IsTrue(adapter.Oid.IsTransient, "is persistent");
+        ClassicAssert.IsTrue(adapter.ResolveState.IsTransient(), "should be transient");
+        ClassicAssert.IsTrue(adapter.Oid.IsTransient, "is persistent");
     }
 
     public void NewObjectHasVersion() {
         var adapter = AdapterFor(CreateNewTransientPerson());
-        Assert.IsNotNull(adapter.Version, "should have version");
+        ClassicAssert.IsNotNull(adapter.Version, "should have version");
     }
 
     public void NewObjectHasContainerInjected() {
         var person = CreateNewTransientPerson();
-        Assert.IsTrue(person.HasContainer, "no container injected");
+        ClassicAssert.IsTrue(person.HasContainer, "no container injected");
     }
 
     public void NewObjectHasServiceInjected() {
         var person = CreateNewTransientPerson();
-        Assert.IsTrue(person.HasMenuService, "no service injected");
+        ClassicAssert.IsTrue(person.HasMenuService, "no service injected");
     }
 
     public void SaveNewObjectWithScalars() {
         var person = CreateNewTransientPerson();
         person.Name = Guid.NewGuid().ToString();
         var adapter = Save(person);
-        Assert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(adapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(adapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(adapter.Oid.IsTransient, "is transient");
     }
 
     public void SaveNewObjectWithValidate() {
@@ -468,7 +469,7 @@ public class PersistorTestSuite {
 
         try {
             Save(person);
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
 // ReSharper disable once EmptyGeneralCatchClause
         catch (Exception /*expected*/) { }
@@ -483,7 +484,7 @@ public class PersistorTestSuite {
             TransactionManager.StartTransaction();
             person.Name = "fail";
             TransactionManager.EndTransaction();
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (PersistFailedException /*expected*/) { }
     }
@@ -498,11 +499,11 @@ public class PersistorTestSuite {
         // use new person to avoid EF quirk 
         person = personAdapter.GetDomainObject<Person>();
 
-        Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
         var productAdapter = AdapterFor(person.FavouriteProduct);
-        Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
     }
 
     public void SaveNewObjectWithTransientReferenceInvalid() {
@@ -521,7 +522,7 @@ public class PersistorTestSuite {
                 throw new PersistFailedException("");
             }
 
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (PersistFailedException /*expected*/) { }
     }
@@ -544,7 +545,7 @@ public class PersistorTestSuite {
                 throw new PersistFailedException("");
             }
 
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (PersistFailedException /*expected*/) { }
     }
@@ -567,7 +568,7 @@ public class PersistorTestSuite {
                 throw new PersistFailedException("");
             }
 
-            Assert.Fail();
+            ClassicAssert.Fail();
         }
         catch (PersistFailedException /*expected*/) { }
     }
@@ -578,11 +579,11 @@ public class PersistorTestSuite {
         person.Name = Guid.NewGuid().ToString();
         person.FavouriteProduct = product;
         var personAdapter = Save(person);
-        Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
         var productAdapter = AdapterFor(product);
-        Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
     }
 
     public void SaveNewObjectWithPersistentReferenceInSeperateTransaction() {
@@ -593,11 +594,11 @@ public class PersistorTestSuite {
         person.FavouriteProduct = product;
         TransactionManager.EndTransaction();
         var personAdapter = Save(person);
-        Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
         var productAdapter = AdapterFor(product);
-        Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
     }
 
     public void SaveNewObjectWithTransientCollectionItem() {
@@ -610,15 +611,15 @@ public class PersistorTestSuite {
         // use new person to avoid EF quirk 
         person1 = person1Adapter.GetDomainObject<Person>();
         person2 = person1.Relatives.Single();
-        Assert.IsTrue(person1Adapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(person1Adapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(person1Adapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(person1Adapter.Oid.IsTransient, "is transient");
         var person2Adapter = AdapterFor(person2);
-        Assert.IsTrue(person2Adapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(person2Adapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(person2Adapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(person2Adapter.Oid.IsTransient, "is transient");
 
         var collectionAdapter = ((IObjectSpec)person1Adapter.Spec).GetProperty("Relatives").GetNakedObject(person1Adapter);
-        Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
+        ClassicAssert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
     }
 
     public void SaveNewObjectWithPersistentItemCollectionItem() {
@@ -627,15 +628,15 @@ public class PersistorTestSuite {
         person1.Name = Guid.NewGuid().ToString();
         person1.Relatives.Add(person2);
         var personAdapter = Save(person1);
-        Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
         var productAdapter = AdapterFor(person2);
-        Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
         var collectionAdapter = ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
-        Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
+        ClassicAssert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
     }
 
     public void SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() {
@@ -646,15 +647,15 @@ public class PersistorTestSuite {
         person1.Relatives.Add(person2);
         TransactionManager.EndTransaction();
         var personAdapter = Save(person1);
-        Assert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(personAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(personAdapter.Oid.IsTransient, "is transient");
         var productAdapter = AdapterFor(person2);
-        Assert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(productAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(productAdapter.Oid.IsTransient, "is transient");
 
         var collectionAdapter = ((IObjectSpec)personAdapter.Spec).GetProperty("Relatives").GetNakedObject(personAdapter);
-        Assert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
+        ClassicAssert.IsTrue(collectionAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(collectionAdapter.ResolveState.IsGhost(), "should not be ghost");
     }
 
     public void SaveNewObjectCallsPersistingPersisted() {
@@ -662,33 +663,33 @@ public class PersistorTestSuite {
         person.Name = Guid.NewGuid().ToString();
         person.UpdateInPersisting();
         var adapter = Save(person);
-        Assert.AreEqual(1, person.GetEvents()["Persisting"], "persisting");
-        Assert.AreEqual(0, person.GetEvents()["Updating"], "persisting");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Persisting"], "persisting");
+        ClassicAssert.AreEqual(0, person.GetEvents()["Updating"], "persisting");
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
         var personAfter = (Person)adapter.Object;
-        Assert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
-        Assert.AreEqual(0, personAfter.GetEvents()["Updated"], "persisted");
+        ClassicAssert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
+        ClassicAssert.AreEqual(0, personAfter.GetEvents()["Updated"], "persisted");
     }
 
     public void SaveNewObjectCallsPersistingPersistedRecursively() {
-        Assert.AreEqual(0, Persistor.Instances<Order>().Count());
+        ClassicAssert.AreEqual(0, Persistor.Instances<Order>().Count());
 
         var order = CreateNewTransientOrder();
         order.Name = Guid.NewGuid().ToString();
         var adapter = Save(order);
-        Assert.AreEqual(1, order.GetEvents()["Persisting"], "persisting");
-        Assert.AreEqual(5, Persistor.Instances<Order>().Count());
+        ClassicAssert.AreEqual(1, order.GetEvents()["Persisting"], "persisting");
+        ClassicAssert.AreEqual(5, Persistor.Instances<Order>().Count());
 
-        Assert.IsTrue(Persistor.Instances<Order>().All(i => i.PersistingCalled));
+        ClassicAssert.IsTrue(Persistor.Instances<Order>().All(i => i.PersistingCalled));
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
         var orderAfter = (Order)adapter.Object;
-        Assert.AreEqual(1, orderAfter.GetEvents()["Persisted"], "persisted");
-        Assert.AreEqual(1, orderAfter.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, orderAfter.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, orderAfter.GetEvents()["Persisted"], "persisted");
+        ClassicAssert.AreEqual(1, orderAfter.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, orderAfter.GetEvents()["Updated"], "updated");
     }
 
     public void SaveNewObjectCallsPersistingPersistedRecursivelyExceedsMax() {
@@ -697,30 +698,30 @@ public class PersistorTestSuite {
 
         try {
             Save(order);
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
         catch (NakedObjectDomainException e) {
             // expected
-            Assert.AreEqual("Max number of commit cycles exceeded. Either increase MaxCommitCycles on installer or identify Updated/Persisted loop. Possible types : TestData.OrderFail", e.Message);
+            ClassicAssert.AreEqual("Max number of commit cycles exceeded. Either increase MaxCommitCycles on installer or identify Updated/Persisted loop. Possible types : TestData.OrderFail", e.Message);
         }
     }
 
     public void SaveNewObjectCallsPersistingPersistedRecursivelyFails() {
-        Assert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
+        ClassicAssert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
 
         var order = CreateNewTransientOrderFail();
         order.Name = Guid.NewGuid().ToString();
 
         try {
             Save(order);
-            Assert.Fail("Expect exception");
+            ClassicAssert.Fail("Expect exception");
         }
 // ReSharper disable once EmptyGeneralCatchClause
         catch (Exception) {
             // expected
         }
 
-        Assert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
+        ClassicAssert.AreEqual(0, Persistor.Instances<OrderFail>().Count());
     }
 
     public void SaveNewObjectTransientReferenceCallsPersistingPersisted() {
@@ -730,13 +731,13 @@ public class PersistorTestSuite {
         product.Name = Guid.NewGuid().ToString();
         person.FavouriteProduct = product;
         var adapter = Save(person);
-        Assert.AreEqual(1, product.GetEvents()["Persisting"], "persisting");
+        ClassicAssert.AreEqual(1, product.GetEvents()["Persisting"], "persisting");
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
         var personAfter = (Person)adapter.Object;
         var productAfter = personAfter.FavouriteProduct;
-        Assert.AreEqual(1, productAfter.GetEvents()["Persisted"], "persisted");
+        ClassicAssert.AreEqual(1, productAfter.GetEvents()["Persisted"], "persisted");
     }
 
     public void SaveNewObjectTransientCollectionItemCallsPersistingPersisted() {
@@ -746,40 +747,40 @@ public class PersistorTestSuite {
         person2.Name = Guid.NewGuid().ToString();
         person1.Relatives.Add(person2);
         var adapter = Save(person1);
-        Assert.AreEqual(1, person2.GetEvents()["Persisting"], "persisting");
+        ClassicAssert.AreEqual(1, person2.GetEvents()["Persisting"], "persisting");
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
         var personAfter = (Person)adapter.Object;
         var personAfter1 = personAfter.Relatives.Single();
-        Assert.AreEqual(1, personAfter1.GetEvents()["Persisted"], "persisted");
+        ClassicAssert.AreEqual(1, personAfter1.GetEvents()["Persisted"], "persisted");
     }
 
     public void GetInlineInstance() {
         var addressAdapter = GetAdaptedAddress(GetPerson(1));
-        Assert.IsTrue(addressAdapter.ResolveState.IsPersistent(), "should be persistent");
-        Assert.IsFalse(addressAdapter.Oid.IsTransient, "is transient");
+        ClassicAssert.IsTrue(addressAdapter.ResolveState.IsPersistent(), "should be persistent");
+        ClassicAssert.IsFalse(addressAdapter.Oid.IsTransient, "is transient");
     }
 
     public void InlineObjectHasContainerInjected() {
         var address = GetPerson(1).Address;
-        Assert.IsTrue(address.HasContainer, "no container injected");
+        ClassicAssert.IsTrue(address.HasContainer, "no container injected");
     }
 
     public void InlineObjectHasServiceInjected() {
         var address = GetPerson(1).Address;
-        Assert.IsTrue(address.HasMenuService, "no service injected");
+        ClassicAssert.IsTrue(address.HasMenuService, "no service injected");
     }
 
     public void InlineObjectHasParentInjected() {
         var address = GetPerson(1).Address;
-        Assert.IsTrue(address.HasParent, "no parent injected");
-        Assert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
+        ClassicAssert.IsTrue(address.HasParent, "no parent injected");
+        ClassicAssert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
     }
 
     public void InlineObjectHasVersion() {
         var addressAdapter = GetAdaptedAddress(GetPerson(1));
-        Assert.IsNotNull(addressAdapter.Version, "should have version");
+        ClassicAssert.IsNotNull(addressAdapter.Version, "should have version");
     }
 
     public void InlineObjectHasLoadingLoadedCalled() {
@@ -787,40 +788,40 @@ public class PersistorTestSuite {
         var addressAdapter = GetAdaptedAddress(GetPerson(1));
         var address = addressAdapter.GetDomainObject<Address>();
         TransactionManager.EndTransaction();
-        Assert.AreEqual(1, address.GetEvents()["Loading"], "loading");
-        Assert.AreEqual(1, address.GetEvents()["Loaded"], "loaded");
+        ClassicAssert.AreEqual(1, address.GetEvents()["Loading"], "loading");
+        ClassicAssert.AreEqual(1, address.GetEvents()["Loaded"], "loaded");
     }
 
     public void CreateTransientInlineInstance() {
         var addressAdapter = GetAdaptedAddress(CreateNewTransientPerson());
-        Assert.IsTrue(addressAdapter.ResolveState.IsResolved(), "should be resolved");
-        Assert.IsTrue(addressAdapter.Oid.IsTransient, "is persistent");
+        ClassicAssert.IsTrue(addressAdapter.ResolveState.IsResolved(), "should be resolved");
+        ClassicAssert.IsTrue(addressAdapter.Oid.IsTransient, "is persistent");
     }
 
     public void TransientInlineObjectHasContainerInjected() {
         var address = CreateNewTransientPerson().Address;
-        Assert.IsTrue(address.HasContainer, "no container injected");
+        ClassicAssert.IsTrue(address.HasContainer, "no container injected");
     }
 
     public void TransientInlineObjectHasServiceInjected() {
         var address = CreateNewTransientPerson().Address;
-        Assert.IsTrue(address.HasMenuService, "no service injected");
+        ClassicAssert.IsTrue(address.HasMenuService, "no service injected");
     }
 
     public void TransientInlineObjectHasParentInjected() {
         var address = CreateNewTransientPerson().Address;
-        Assert.IsTrue(address.HasParent, "no parent injected");
-        Assert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
+        ClassicAssert.IsTrue(address.HasParent, "no parent injected");
+        ClassicAssert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
     }
 
     public void TrainsientInlineObjectHasVersion() {
         var addressAdapter = GetAdaptedAddress(CreateNewTransientPerson());
-        Assert.IsNotNull(addressAdapter.Version, "should have version");
+        ClassicAssert.IsNotNull(addressAdapter.Version, "should have version");
     }
 
     public void InlineObjectCallsCreated() {
         var person = CreateNewTransientPerson();
-        Assert.AreEqual(1, person.Address.GetEvents()["Created"], "created");
+        ClassicAssert.AreEqual(1, person.Address.GetEvents()["Created"], "created");
     }
 
     public void SaveInlineObjectCallsPersistingPersisted() {
@@ -828,18 +829,18 @@ public class PersistorTestSuite {
         person.Address.Line1 = Guid.NewGuid().ToString();
         person.Address.Line2 = Guid.NewGuid().ToString();
         var adapter = Save(person);
-        Assert.AreEqual(1, person.GetEvents()["Persisting"], "persisting");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Persisting"], "persisting");
 
         // handle quirk in EF which swaps out object on save 
         // fix this when EF updated
         var personAfter = (Person)adapter.Object;
-        Assert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
+        ClassicAssert.AreEqual(1, personAfter.GetEvents()["Persisted"], "persisted");
     }
 
     public void ChangeScalarOnInlineObjectCallsUpdatingUpdated() {
         var address = ChangeScalarOnAddress();
-        Assert.AreEqual(1, address.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, address.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(1, address.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, address.GetEvents()["Updated"], "updated");
     }
 
     public void RefreshResetsObject() {
@@ -847,24 +848,24 @@ public class PersistorTestSuite {
         var name = person1.Name;
         person1.Name = Guid.NewGuid().ToString();
         Persistor.Refresh(AdapterFor(person1));
-        Assert.AreEqual(name, person1.Name);
-        Assert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
-        Assert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
+        ClassicAssert.AreEqual(name, person1.Name);
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Updating"], "updating");
+        ClassicAssert.AreEqual(1, person1.GetEvents()["Updated"], "updated");
     }
 
     public void GetKeysReturnsKeys() {
         var person1 = GetPerson(1);
         var key = Persistor.GetKeys(person1.GetType());
 
-        Assert.AreEqual(1, key.Length);
-        Assert.AreEqual(person1.GetType().GetProperty("PersonId").Name, key[0].Name);
+        ClassicAssert.AreEqual(1, key.Length);
+        ClassicAssert.AreEqual(person1.GetType().GetProperty("PersonId").Name, key[0].Name);
     }
 
     public void FindByKey() {
         var person1 = GetPerson(1);
         var person = Persistor.FindByKeys(typeof(Person), new object[] { 1 }).Object;
 
-        Assert.AreEqual(person1, person);
+        ClassicAssert.AreEqual(person1, person);
     }
 
     public void CreateAndDeleteNewObjectWithScalars() {
@@ -875,13 +876,13 @@ public class PersistorTestSuite {
         var adapter = Save(person);
 
         var person1 = Persistor.Instances<Person>().SingleOrDefault(p => p.Name == name);
-        Assert.IsNotNull(person1);
+        ClassicAssert.IsNotNull(person1);
 
         Delete(adapter.Object);
 
         var person2 = Persistor.Instances<Person>().SingleOrDefault(p => p.Name == name);
 
-        Assert.IsNull(person2);
+        ClassicAssert.IsNull(person2);
     }
 
     public void DeleteObjectCallsDeletingDeleted() {
@@ -894,8 +895,8 @@ public class PersistorTestSuite {
 
         Delete(person);
 
-        Assert.AreEqual(1, person.GetEvents()["Deleting"], "deleting");
-        Assert.AreEqual(1, person.GetEvents()["Deleted"], "deleted");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Deleting"], "deleting");
+        ClassicAssert.AreEqual(1, person.GetEvents()["Deleted"], "deleted");
     }
 
     public void CountCollectionOnPersistent() {
@@ -903,7 +904,7 @@ public class PersistorTestSuite {
         var count1 = person1.Relatives.Count;
         var adapter = AdapterFor(person1);
         var count2 = Persistor.CountField(adapter, "Relatives");
-        Assert.AreEqual(count1, count2);
+        ClassicAssert.AreEqual(count1, count2);
     }
 
     public void CountUnResolvedCollectionOnPersistent() {
@@ -911,7 +912,7 @@ public class PersistorTestSuite {
         var adapter = AdapterFor(person1);
         var count1 = Persistor.CountField(adapter, "Relatives");
         var count2 = person1.Relatives.Count;
-        Assert.AreEqual(count1, count2);
+        ClassicAssert.AreEqual(count1, count2);
     }
 
     public void CountEmptyCollectionOnTransient() {
@@ -919,7 +920,7 @@ public class PersistorTestSuite {
         var count1 = person1.Relatives.Count;
         var adapter = AdapterFor(person1);
         var count2 = Persistor.CountField(adapter, "Relatives");
-        Assert.AreEqual(count1, count2);
+        ClassicAssert.AreEqual(count1, count2);
     }
 
     public void CountCollectionOnTransient() {
@@ -929,7 +930,7 @@ public class PersistorTestSuite {
         var count1 = person1.Relatives.Count;
         var adapter = AdapterFor(person1);
         var count2 = Persistor.CountField(adapter, "Relatives");
-        Assert.AreEqual(count1, count2);
+        ClassicAssert.AreEqual(count1, count2);
     }
 
     #endregion

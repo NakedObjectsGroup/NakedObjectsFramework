@@ -10,6 +10,7 @@ using NakedFramework.Error;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper;
 
@@ -66,7 +67,7 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
         payee1.SetObject(customer2a);
         key1.AssertValueIsEqual("CU2|1|1001");
         payee1.SetObject(supplier1);
-        Assert.AreEqual(payee1.ContentAsObject, supplier1);
+        ClassicAssert.AreEqual(payee1.ContentAsObject, supplier1);
 
         key1.AssertValueIsEqual("SUP|1|2001");
     }
@@ -83,10 +84,10 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
         key1.SetValue("EMP|1");
         try {
             payee1.AssertIsNotEmpty();
-            Assert.Fail("Exception should have been thrown");
+            ClassicAssert.Fail("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Code not recognised: EMP", ex.Message);
+            ClassicAssert.AreEqual("Code not recognised: EMP", ex.Message);
         }
     }
 
@@ -95,10 +96,10 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
         key1.SetValue("CU3|1|1001");
         try {
             payee1.AssertIsNotEmpty();
-            Assert.Fail("Exception should have been thrown");
+            ClassicAssert.Fail("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
+            ClassicAssert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
         }
     }
 
@@ -107,10 +108,10 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
         key1.SetValue("CU2|1|1001|2001");
         try {
             payee1.AssertIsNotEmpty();
-            Assert.Fail("Exception should have been thrown");
+            ClassicAssert.Fail("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
+            ClassicAssert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
         }
     }
 
@@ -119,10 +120,10 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
         key1.SetValue("|1|1001|2001");
         try {
             payee1.AssertIsNotEmpty();
-            Assert.Fail("Exception should have been thrown");
+            ClassicAssert.Fail("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
+            ClassicAssert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
         }
     }
 
@@ -130,10 +131,10 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
     public void FailsIfTypeNotRecognisedByEncodingService() {
         try {
             payee1.SetObject(emp1);
-            Assert.Fail("Exception should have been thrown");
+            ClassicAssert.Fail("Exception should have been thrown");
         }
         catch (Exception ex) {
-            Assert.AreEqual("Type not recognised: NakedObjects.SystemTest.ObjectFinderCompoundKeys.Employee", ex.Message);
+            ClassicAssert.AreEqual("Type not recognised: NakedObjects.SystemTest.ObjectFinderCompoundKeys.Employee", ex.Message);
         }
     }
 
@@ -161,7 +162,7 @@ public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinde
         key1.AssertValueIsEqual("CU2|1|1001");
 
         payee1.SetObject(customer2b);
-        Assert.AreEqual(payee1.ContentAsObject, customer2b);
+        ClassicAssert.AreEqual(payee1.ContentAsObject, customer2b);
 
         key1.AssertValueIsEqual("CU2|2|1002");
     }

@@ -12,6 +12,7 @@ open NUnit.Framework
 open System.Net
 open NakedFramework.Rest.API
 open Functions
+open NUnit.Framework.Legacy
 
 let internal capabilities = 
     TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("yes"))
@@ -41,7 +42,7 @@ let GetVersion(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Version), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Version), headers.ContentType)
     assertNonExpiringCache headers
     compareObject expected parsedResult
 
@@ -53,7 +54,7 @@ let GetVersionWithMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    Assert.AreEqual(new typeType(RepresentationTypes.Version), headers.ContentType)
+    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Version), headers.ContentType)
     assertNonExpiringCache headers
     compareObject expected parsedResult
 
@@ -70,5 +71,5 @@ let NotAcceptableGetVersion(api : RestfulObjectsControllerBase) =
        then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/version \""
        else "199 RestfulObjects \"Enable DebugWarnings to see message\""
 
-   Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
-   Assert.AreEqual("", jsonResult)
+   ClassicAssert.AreEqual(msg, headers.Headers.["Warning"].ToString())
+   ClassicAssert.AreEqual("", jsonResult)
