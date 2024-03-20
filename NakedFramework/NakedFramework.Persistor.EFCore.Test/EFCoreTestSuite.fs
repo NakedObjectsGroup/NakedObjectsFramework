@@ -332,5 +332,3 @@ type EFCoreTestSuite() =
     [<Test>]
     member x.SaveNewObjectWithTransientReferenceValidateAssocInvalid() = x.Tests.SaveNewObjectWithTransientReferenceValidateAssocInvalid()
 
-[<EntryPoint>]
-let main argv = 0
