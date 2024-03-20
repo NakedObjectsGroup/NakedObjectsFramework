@@ -38,7 +38,8 @@ using NakedObjects.Reflector.Extensions;
 
 namespace NakedFramework.Test.TestCase;
 
-[Obsolete("#498")]
+// only obsolete when it's less used!
+//[Obsolete("#498")]
 public abstract class AcceptanceTestCase {
     private static IHost host;
 
