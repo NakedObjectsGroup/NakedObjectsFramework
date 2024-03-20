@@ -17,7 +17,6 @@ open NakedFramework.Architecture.Component
 open NakedFramework.Core.Util
 open TestTypes
 open TestCode
-open NUnit.Framework.Legacy
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)
@@ -99,7 +98,7 @@ let seedCodeFirstDatabase (context : CodeFirstContext) =
     let jane = context.People.Add(jane)
 
     let count = context.SaveChanges()
-    ClassicAssert.AreEqual(21, count)
+    Assert.AreEqual(21, count)
     ()
 
 type CodeFirstInitializer() = 
@@ -124,7 +123,7 @@ let CodeFirstCeSetup() =
     System.Data.Entity.Database.SetInitializer(new CodeFirstInitializer())
     ()
 
-let CanCreateEntityPersistor codeOnlyPersistor = ClassicAssert.IsNotNull(codeOnlyPersistor)
+let CanCreateEntityPersistor codeOnlyPersistor = Assert.IsNotNull(codeOnlyPersistor)
 let CanGetInstancesGeneric codeOnlyPersistor = GetInstancesGenericNotEmpty<Product> codeOnlyPersistor
 let CanGetInstancesByType codeOnlyPersistor = GetInstancesByTypeNotEmpty<Product> codeOnlyPersistor
 let CanGetInstancesIsProxy codeOnlyPersistor = GetInstancesReturnsProxies<Product> codeOnlyPersistor
@@ -147,8 +146,8 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(codeOnlyPersisto
     CreateCountryCode "keyCode1" 100 "countryName1" codeOnlyPersistor
     try 
         CreateCountryCode "keyCode1" 100 "countryName1" codeOnlyPersistor
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     CreateCountryCode "keyCode2" 101 "countryName2" codeOnlyPersistor
     ()
 
@@ -156,15 +155,15 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(codeOnlyPersistor :
     CreateCountryCode "keyCode3" 100 "countryName1" codeOnlyPersistor
     try 
         CreateCountryCode "keyCode3" 100 "countryName1" codeOnlyPersistor
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     let p2 = codeOnlyPersistor.CreateInstance<Product>(null)
     createProductWithID p2 (GetNextID<Product> codeOnlyPersistor (fun i -> i.ID)) codeOnlyPersistor
 
 let CanNavigateReferences codeOnlyPersistor = 
     let c = First<Category> codeOnlyPersistor
     let pr = c.Products |> Seq.head
-    ClassicAssert.IsNotNull(pr)
+    Assert.IsNotNull(pr)
 
 let CanSaveTransientObjectWithPersistentReferenceProperty codeOnlyPersistor = 
     let c = CreateAndSetup<Category> codeOnlyPersistor (categorySetter codeOnlyPersistor)
@@ -195,7 +194,7 @@ let CanUpdatePersistentObjectWithScalarProperties codeOnlyPersistor =
     let setNameAndSave name = 
         pr.Name <- name
         SaveAndEndTransaction codeOnlyPersistor pr
-        ClassicAssert.AreEqual(name, pr.Name)
+        Assert.AreEqual(name, pr.Name)
     setNameAndSave replName
     setNameAndSave origName
 
@@ -208,7 +207,7 @@ let CanUpdatePersistentObjectWithScalarPropertiesAbort codeOnlyPersistor =
     codeOnlyPersistor.AbortTransaction()
     codeOnlyPersistor.EndTransaction()
     let pr1 = First<Product> codeOnlyPersistor
-    ClassicAssert.AreEqual(origName, pr1.Name)
+    Assert.AreEqual(origName, pr1.Name)
 
 let CanUpdatePersistentObjectWithReferenceProperties(codeOnlyPersistor : IObjectStore) = 
     let person = First<Person> codeOnlyPersistor
@@ -222,7 +221,7 @@ let CanUpdatePersistentObjectWithReferenceProperties(codeOnlyPersistor : IObject
     let setFavouriteAndSave f = 
         person.Favourite <- f
         SaveAndEndTransaction codeOnlyPersistor person
-        ClassicAssert.AreEqual(f, person.Favourite)
+        Assert.AreEqual(f, person.Favourite)
     
     setFavouriteAndSave replFav
     setFavouriteAndSave origFav
@@ -243,7 +242,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbort(codeOnlyPersistor : IO
     codeOnlyPersistor.AbortTransaction()
     codeOnlyPersistor.EndTransaction()
     let person1 = First<Person> codeOnlyPersistor
-    ClassicAssert.AreEqual(origFav.Name, person1.Favourite.Name)
+    Assert.AreEqual(origFav.Name, person1.Favourite.Name)
 
 let CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor = 
     let c = First<Category> codeOnlyPersistor
@@ -254,7 +253,7 @@ let CanUpdatePersistentObjectWithCollectionProperties codeOnlyPersistor =
         let b = c.Products.Remove(oldPr)
         c.Products.Add(newPr)
         SaveAndEndTransaction codeOnlyPersistor c
-        ClassicAssert.IsTrue(c.Products |> Seq.exists (fun i -> i = newPr))
+        Assert.IsTrue(c.Products |> Seq.exists (fun i -> i = newPr))
     swapProducts origPr replPr
     swapProducts replPr origPr
 
@@ -271,8 +270,8 @@ let CanPersistingPersistedCalledForCreateInstance(codeOnlyPersistor : IObjectSto
     persistedCount <- 0
     let pr = codeOnlyPersistor.CreateInstance<Product>(null)
     createProductWithID pr nextId codeOnlyPersistor
-    ClassicAssert.AreEqual(1, persistingCount, "persisting")
-    ClassicAssert.AreEqual(1, persistedCount, "persisted")
+    Assert.AreEqual(1, persistingCount, "persisting")
+    Assert.AreEqual(1, persistedCount, "persisted")
 
 let CanPersistingPersistedCalledForCreateInstanceWithCollection codeOnlyPersistor = 
     persistingCount <- 0
@@ -281,8 +280,8 @@ let CanPersistingPersistedCalledForCreateInstanceWithCollection codeOnlyPersisto
     let pr = CreateAndSetup codeOnlyPersistor (productSetter codeOnlyPersistor)
     c.Products.Add(pr)
     CreateAndEndTransaction codeOnlyPersistor c
-    ClassicAssert.AreEqual(2, persistingCount, "persisting")
-    ClassicAssert.AreEqual(2, persistedCount, "persisted")
+    Assert.AreEqual(2, persistingCount, "persisting")
+    Assert.AreEqual(2, persistedCount, "persisted")
 
 let CanUpdatingUpdatedCalledForChange codeOnlyPersistor = 
     updatingCount <- 0
@@ -290,13 +289,13 @@ let CanUpdatingUpdatedCalledForChange codeOnlyPersistor =
     let pr = First<Product> codeOnlyPersistor
     pr.Name <- uniqueName()
     SaveAndEndTransaction codeOnlyPersistor pr
-    ClassicAssert.AreEqual(1, updatingCount, "updating")
-    ClassicAssert.AreEqual(1, updatedCount, "updated")
+    Assert.AreEqual(1, updatingCount, "updating")
+    Assert.AreEqual(1, updatedCount, "updated")
 
 let CanGetKeyForType(codeOnlyPersistor : IObjectStore) = 
     let keys = codeOnlyPersistor.GetKeys(typeof<Product>)
-    ClassicAssert.AreEqual(1, keys.Length)
-    ClassicAssert.AreEqual("ID", keys.[0].Name)
+    Assert.AreEqual(1, keys.Length)
+    Assert.AreEqual("ID", keys.[0].Name)
 
 let GetNextAddressID codeOnlyPersistor = GetNextID<Address> codeOnlyPersistor (fun i -> i.ID)
 
@@ -363,28 +362,28 @@ let CanNavigateToSubclass(codeOnlyPersistor : IObjectStore) =
 
 let CanGetClassWithNonPersistedBase codeOnlyPersistor = 
     let person = First<Person> codeOnlyPersistor
-    ClassicAssert.IsNotNull(person)
+    Assert.IsNotNull(person)
 
 let CanGetNonPersistedClass codeOnlyPersistor = 
     try 
         let abstractPerson = First<AbstractPerson> codeOnlyPersistor
-        ClassicAssert.Fail()
+        Assert.Fail()
     with expected -> 
         match expected with 
         | :? NakedObjectApplicationException -> ()
         | :? InvalidOperationException -> ()
-        | _ -> ClassicAssert.Fail("Wrong exception type")
+        | _ -> Assert.Fail("Wrong exception type")
 
 let CanContainerInjectionCalledForNewInstance codeOnlyPersistor = 
     injectedObjects.Clear()
     let c = CreateAndSetup codeOnlyPersistor (categorySetter codeOnlyPersistor)
-    ClassicAssert.IsTrue(injectedObjects.Contains(c))
+    Assert.IsTrue(injectedObjects.Contains(c))
 
 let CanContainerInjectionCalledForGetInstance codeOnlyPersistor = 
     let p = resetPersistor codeOnlyPersistor
     injectedObjects.Clear()
     let c = First<Category> codeOnlyPersistor
-    ClassicAssert.IsTrue(injectedObjects.Contains(c))
+    Assert.IsTrue(injectedObjects.Contains(c))
 
 let CanSaveTransientDomesticSubclasstWithScalarProperties codeOnlyPersistor = 
     let setter (a : DomesticAddress) = 
@@ -408,15 +407,15 @@ let CanUpdatePersistentSubclassWithScalarProperties codeOnlyPersistor =
     let setNameAndSave lines = 
         a.Lines <- lines
         SaveAndEndTransaction codeOnlyPersistor a
-        ClassicAssert.AreEqual(lines, a.Lines)
+        Assert.AreEqual(lines, a.Lines)
     setNameAndSave replLines
     setNameAndSave origLines
 
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies (codeOnlyPersistor : IObjectStore) = 
     let c = CreateAndSetup<Category> codeOnlyPersistor (categorySetter codeOnlyPersistor)
     let pr = CreateAndSetup codeOnlyPersistor (productSetter codeOnlyPersistor)
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6Proxy(c.GetType()))
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6Proxy(pr.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6Proxy(c.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6Proxy(pr.GetType()))
     c.Products.Add(pr)
     pr.Owningcategory <- c
     CreateAndEndTransaction codeOnlyPersistor c
@@ -424,9 +423,9 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies (codeO
         codeOnlyPersistor.GetInstances<Category>()
         |> Seq.filter (fun i -> i.Name = c.Name)
         |> Seq.head
-    ClassicAssert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedc.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedc.GetType()))
     let proxiedpr = proxiedc.Products |> Seq.head
-    ClassicAssert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpr.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpr.GetType()))
 
 let CanGetObjectBySingleKey codeOnlyPersistor = 
     let key = GetMaxID<Product> codeOnlyPersistor (fun k -> k.ID)
@@ -440,8 +439,8 @@ let CodeOnlyCanGetContextForType persistor = CanGetContextForType<Product> persi
 let GetKeysReturnsKey(persistor : IObjectStore) = 
     let l = First<Person> persistor
     let keys = persistor.GetKeys(l.GetType())
-    ClassicAssert.AreEqual(1, keys |> Seq.length)
-    ClassicAssert.AreSame(typeof<Person>.GetProperty("ID"), keys |> Seq.head)
+    Assert.AreEqual(1, keys |> Seq.length)
+    Assert.AreSame(typeof<Person>.GetProperty("ID"), keys |> Seq.head)
 
 let CanUpdateManyToManyWithUsingEntityMapping codeOnlyPersistor =
     updatingCount <- 0
@@ -452,5 +451,5 @@ let CanUpdateManyToManyWithUsingEntityMapping codeOnlyPersistor =
     system.Squads.Add(squad)
 
     SaveAndEndTransaction codeOnlyPersistor system
-    ClassicAssert.AreEqual(2, updatingCount, "updating")
-    ClassicAssert.AreEqual(2, updatedCount, "updated")
+    Assert.AreEqual(2, updatingCount, "updating")
+    Assert.AreEqual(2, updatedCount, "updated")

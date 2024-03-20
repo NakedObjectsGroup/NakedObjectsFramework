@@ -29,7 +29,6 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -106,7 +105,7 @@ public class TestAuditManager : AcceptanceTestCase {
     }
 
     private static void UnexpectedCall(string auditor) {
-        Assert.Fail($"Unexpected call to {auditor} auditor");
+        Assert.Fail("Unexpected call to {0} auditor", auditor);
     }
 
     public static Action<IPrincipal, object> UnexpectedCallback(string auditor) {
@@ -132,17 +131,17 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnAction", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnAction", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.IsFalse(b);
+            Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
         };
 
         foo.GetAction("An Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -154,17 +153,17 @@ public class TestAuditManager : AcceptanceTestCase {
         var quxCalledCound = 0;
 
         QuxAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnAction", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetEF6ProxiedType().FullName);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnAction", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetEF6ProxiedType().FullName);
+            Assert.IsFalse(b);
+            Assert.AreEqual(0, pp.Length);
             quxCalledCound++;
         };
 
         qux.GetAction("An Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
+        Assert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
     }
 
     [Test]
@@ -176,18 +175,18 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnActionWithParm", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(1, pp.Length);
-            ClassicAssert.AreEqual(1, pp[0]);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnActionWithParm", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.IsFalse(b);
+            Assert.AreEqual(1, pp.Length);
+            Assert.AreEqual(1, pp[0]);
             fooCalledCount++;
         };
 
         foo.GetAction("An Action With Parm").InvokeReturnObject(1);
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -199,19 +198,19 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnActionWithParms", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(2, pp.Length);
-            ClassicAssert.AreEqual(1, pp[0]);
-            //ClassicAssert.AreSame(foo.NakedObject.Object, pp[1]);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnActionWithParms", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.IsFalse(b);
+            Assert.AreEqual(2, pp.Length);
+            Assert.AreEqual(1, pp[0]);
+            //Assert.AreSame(foo.NakedObject.Object, pp[1]);
             fooCalledCount++;
         };
 
         foo.GetAction("An Action With Parms").InvokeReturnObject(1, foo);
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -224,17 +223,17 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnotherQueryOnlyAction", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
-            ClassicAssert.IsTrue(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnotherQueryOnlyAction", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.IsTrue(b);
+            Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
         };
 
         foo.GetAction("Another Query Only Action").InvokeReturnCollection();
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -246,16 +245,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooPersistedCount = 0;
 
         FooAuditor.Auditor.objectPersistedCallback = (p, o) => {
-            ClassicAssert.AreEqual("Test", p.Identity?.Name);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.IsNull(((Foo)o).Prop1);
+            Assert.AreEqual("Test", p.Identity?.Name);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
+            Assert.IsNull(((Foo)o).Prop1);
             fooPersistedCount++;
         };
 
         foo.Save();
 
-        ClassicAssert.AreEqual(1, fooPersistedCount, "expect foo auditor to be called for persists");
+        Assert.AreEqual(1, fooPersistedCount, "expect foo auditor to be called for persists");
     }
 
     [Test]
@@ -267,16 +266,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var quxPersistedCount = 0;
 
         QuxAuditor.Auditor.objectPersistedCallback = (p, o) => {
-            ClassicAssert.AreEqual("Test", p.Identity?.Name);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.IsNull(((Qux)o).Prop1);
+            Assert.AreEqual("Test", p.Identity?.Name);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
+            Assert.IsNull(((Qux)o).Prop1);
             quxPersistedCount++;
         };
 
         qux.Save();
 
-        ClassicAssert.AreEqual(1, quxPersistedCount, "expect qux auditor to be called for persists");
+        Assert.AreEqual(1, quxPersistedCount, "expect qux auditor to be called for persists");
     }
 
     [Test]
@@ -289,17 +288,17 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AQueryOnlyAction", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
-            ClassicAssert.IsTrue(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AQueryOnlyAction", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetEF6ProxiedType().FullName);
+            Assert.IsTrue(b);
+            Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
         };
 
         foo.GetAction("A Query Only Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -312,16 +311,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AQueryOnlyAction", a);
-            ClassicAssert.AreEqual("Foo Service", s);
-            ClassicAssert.IsTrue(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AQueryOnlyAction", a);
+            Assert.AreEqual("Foo Service", s);
+            Assert.IsTrue(b);
+            Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
         };
 
         foo.GetAction("A Query Only Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -333,16 +332,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnAction", a);
-            ClassicAssert.AreEqual("Foo Service", s);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnAction", a);
+            Assert.AreEqual("Foo Service", s);
+            Assert.IsFalse(b);
+            Assert.AreEqual(0, pp.Length);
             fooCalledCount++;
         };
 
         foo.GetAction("An Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -353,16 +352,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var quxCalledCound = 0;
 
         QuxAuditor.Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnAction", a);
-            ClassicAssert.AreEqual("Qux Service", s);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnAction", a);
+            Assert.AreEqual("Qux Service", s);
+            Assert.IsFalse(b);
+            Assert.AreEqual(0, pp.Length);
             quxCalledCound++;
         };
 
         qux.GetAction("An Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
+        Assert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
     }
 
     [Test]
@@ -373,17 +372,17 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnActionWithParm", a);
-            ClassicAssert.AreEqual("Foo Service", s);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(1, pp.Length);
-            ClassicAssert.AreEqual(1, pp[0]);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnActionWithParm", a);
+            Assert.AreEqual("Foo Service", s);
+            Assert.IsFalse(b);
+            Assert.AreEqual(1, pp.Length);
+            Assert.AreEqual(1, pp[0]);
             fooCalledCount++;
         };
 
         foo.GetAction("An Action With Parm").InvokeReturnObject(1);
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -396,18 +395,18 @@ public class TestAuditManager : AcceptanceTestCase {
         var fooCalledCount = 0;
 
         FooAuditor.Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnActionWithParms", a);
-            ClassicAssert.AreEqual("Foo Service", s);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(2, pp.Length);
-            ClassicAssert.AreEqual(1, pp[0]);
-            //ClassicAssert.AreSame(fooObj.NakedObject.Object, pp[1]);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnActionWithParms", a);
+            Assert.AreEqual("Foo Service", s);
+            Assert.IsFalse(b);
+            Assert.AreEqual(2, pp.Length);
+            Assert.AreEqual(1, pp[0]);
+            //Assert.AreSame(fooObj.NakedObject.Object, pp[1]);
             fooCalledCount++;
         };
 
         foo.GetAction("An Action With Parms").InvokeReturnObject(1, fooObj);
-        ClassicAssert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
+        Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
     }
 
     [Test]
@@ -424,10 +423,10 @@ public class TestAuditManager : AcceptanceTestCase {
         var newValue = Guid.NewGuid().ToString();
 
         FooAuditor.Auditor.objectUpdatedCallback = (p, o) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.AreEqual(newValue, ((Foo)o).Prop1);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual(newValue, ((Foo)o).Prop1);
             fooUpdatedCount++;
         };
 
@@ -437,7 +436,7 @@ public class TestAuditManager : AcceptanceTestCase {
 
         //NakedFramework.TransactionManager.EndTransaction();
 
-        ClassicAssert.AreEqual(1, fooUpdatedCount, "expect foo auditor to be called for updates");
+        Assert.AreEqual(1, fooUpdatedCount, "expect foo auditor to be called for updates");
     }
 
     [Test]
@@ -454,10 +453,10 @@ public class TestAuditManager : AcceptanceTestCase {
         var newValue = Guid.NewGuid().ToString();
 
         QuxAuditor.Auditor.objectUpdatedCallback = (p, o) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.AreEqual(newValue, ((Qux)o).Prop1);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual(newValue, ((Qux)o).Prop1);
             quxUpdatedCount++;
         };
 
@@ -466,7 +465,7 @@ public class TestAuditManager : AcceptanceTestCase {
         qux.GetPropertyByName("Prop1").SetValue(newValue);
 
         //NakedFramework.TransactionManager.EndTransaction();
-        ClassicAssert.AreEqual(1, quxUpdatedCount, "expect qux auditor to be called for updates");
+        Assert.AreEqual(1, quxUpdatedCount, "expect qux auditor to be called for updates");
     }
 
     [Test]
@@ -479,17 +478,17 @@ public class TestAuditManager : AcceptanceTestCase {
         var defaultCalledCount = 0;
 
         MyDefaultAuditor.Auditor.actionInvokedCallback = (p, a, o, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("AnAction", a);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("AnAction", a);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
+            Assert.IsFalse(b);
+            Assert.AreEqual(0, pp.Length);
             defaultCalledCount++;
         };
 
         bar.GetAction("An Action").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
+        Assert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
     }
 
     [Test]
@@ -501,16 +500,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var defaultPersistedCount = 0;
 
         MyDefaultAuditor.Auditor.objectPersistedCallback = (p, o) => {
-            ClassicAssert.AreEqual("Test", p.Identity?.Name);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.IsNull(((Bar)o).Prop1);
+            Assert.AreEqual("Test", p.Identity?.Name);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
+            Assert.IsNull(((Bar)o).Prop1);
             defaultPersistedCount++;
         };
 
         bar.Save();
 
-        ClassicAssert.AreEqual(1, defaultPersistedCount, "expect default auditor to be called for persists");
+        Assert.AreEqual(1, defaultPersistedCount, "expect default auditor to be called for persists");
     }
 
     [Test]
@@ -521,16 +520,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var defaultCalledCount = 0;
 
         MyDefaultAuditor.Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.AreEqual("NewInstance", a);
-            ClassicAssert.AreEqual("Bars", s);
-            ClassicAssert.IsFalse(b);
-            ClassicAssert.AreEqual(0, pp.Length);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.AreEqual("NewInstance", a);
+            Assert.AreEqual("Bars", s);
+            Assert.IsFalse(b);
+            Assert.AreEqual(0, pp.Length);
             defaultCalledCount++;
         };
 
         bar.GetAction("New Instance").InvokeReturnObject();
-        ClassicAssert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
+        Assert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
     }
 
     [Test]
@@ -545,16 +544,16 @@ public class TestAuditManager : AcceptanceTestCase {
         var newValue = Guid.NewGuid().ToString();
 
         MyDefaultAuditor.Auditor.objectUpdatedCallback = (p, o) => {
-            ClassicAssert.AreEqual("Test", p.Identity.Name);
-            ClassicAssert.IsNotNull(o);
-            ClassicAssert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
-            ClassicAssert.AreEqual(newValue, ((Bar)o).Prop1);
+            Assert.AreEqual("Test", p.Identity.Name);
+            Assert.IsNotNull(o);
+            Assert.AreEqual("NakedFramework.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
+            Assert.AreEqual(newValue, ((Bar)o).Prop1);
             defaultUpdatedCount++;
         };
         //NakedFramework.TransactionManager.StartTransaction();
         bar.GetPropertyByName("Prop1").SetValue(newValue);
         //NakedFramework.TransactionManager.EndTransaction();
-        ClassicAssert.AreEqual(1, defaultUpdatedCount, "expect default auditor to be called for updates");
+        Assert.AreEqual(1, defaultUpdatedCount, "expect default auditor to be called for updates");
     }
 }
 

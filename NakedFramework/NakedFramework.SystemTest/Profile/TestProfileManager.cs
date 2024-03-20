@@ -15,7 +15,6 @@ using NakedFramework.Profile;
 using NakedObjects.Core.Util;
 using NakedObjects.Services;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -84,10 +83,10 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
         var endCalled = false;
 
         void TestCallback(IPrincipal p, ProfileEvent e, Type t, string s) {
-            ClassicAssert.AreEqual("sven", p.Identity.Name);
-            ClassicAssert.AreEqual(ProfileEvent.ActionInvocation, e);
-            ClassicAssert.AreEqual(typeof(Foo), t);
-            ClassicAssert.AreEqual("TestAction", s);
+            Assert.AreEqual("sven", p.Identity.Name);
+            Assert.AreEqual(ProfileEvent.ActionInvocation, e);
+            Assert.AreEqual(typeof(Foo), t);
+            Assert.AreEqual("TestAction", s);
         }
 
         MyProfiler.BeginCallback = (p, e, t, s) => {
@@ -102,8 +101,8 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         foo.Actions.First().Invoke();
 
-        ClassicAssert.IsTrue(beginCalled);
-        ClassicAssert.IsTrue(endCalled);
+        Assert.IsTrue(beginCalled);
+        Assert.IsTrue(endCalled);
     }
 
     [Test]
@@ -196,10 +195,10 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         Action<CallbackData> CreateTestFunc(int i) {
             return cbd => {
-                ClassicAssert.AreEqual("sven", cbd.Principal.Identity.Name, i.ToString());
-                ClassicAssert.AreEqual(events[i], cbd.ProfileEvent, i.ToString());
-                ClassicAssert.AreEqual(types[i], cbd.Type, i.ToString());
-                ClassicAssert.AreEqual(members[i], cbd.Member, i.ToString());
+                Assert.AreEqual("sven", cbd.Principal.Identity.Name, i.ToString());
+                Assert.AreEqual(events[i], cbd.ProfileEvent, i.ToString());
+                Assert.AreEqual(types[i], cbd.Type, i.ToString());
+                Assert.AreEqual(members[i], cbd.Member, i.ToString());
             };
         }
 
@@ -228,8 +227,8 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         NakedFramework.TransactionManager.EndTransaction();
 
-        ClassicAssert.AreEqual(12, beginCalledCount);
-        ClassicAssert.AreEqual(12, endCalledCount);
+        Assert.AreEqual(12, beginCalledCount);
+        Assert.AreEqual(12, endCalledCount);
 
         for (var i = 0; i < 24; i++) {
             CreateTestFunc(i)(callbackData[i]);
@@ -246,10 +245,10 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
         var callbackData = new List<CallbackData>();
 
         void TestCallback(CallbackData cbd) {
-            ClassicAssert.AreEqual("sven", cbd.Principal.Identity.Name);
-            ClassicAssert.AreEqual(ProfileEvent.PropertySet, cbd.ProfileEvent);
-            ClassicAssert.AreEqual(typeof(Foo), cbd.Type);
-            ClassicAssert.AreEqual("TestProperty", cbd.Member);
+            Assert.AreEqual("sven", cbd.Principal.Identity.Name);
+            Assert.AreEqual(ProfileEvent.PropertySet, cbd.ProfileEvent);
+            Assert.AreEqual(typeof(Foo), cbd.Type);
+            Assert.AreEqual("TestProperty", cbd.Member);
         }
 
         MyProfiler.BeginCallback = (p, e, t, s) => {
@@ -264,8 +263,8 @@ public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
 
         foo.Properties.Last().SetValue("avalue");
 
-        ClassicAssert.AreEqual(1, beginCalledCount);
-        ClassicAssert.AreEqual(1, endCalledCount);
+        Assert.AreEqual(1, beginCalledCount);
+        Assert.AreEqual(1, endCalledCount);
 
         TestCallback(callbackData[0]);
         TestCallback(callbackData[1]);

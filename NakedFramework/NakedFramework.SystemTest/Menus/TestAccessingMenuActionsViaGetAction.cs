@@ -23,7 +23,6 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -93,29 +92,29 @@ public class TestAccessingMenuActionsViaGetAction : AcceptanceTestCase {
     [Test]
     public void ContributedActionToObjectWithDefaultMenu() {
         var foo = NewTestObject<Foo>();
-        ClassicAssert.IsNotNull(foo.GetAction("Action1"));
+        Assert.IsNotNull(foo.GetAction("Action1"));
     }
 
     [Test]
     public void ContributedActionToObjectWithExplicitMenu() {
         var bar = NewTestObject<Bar>();
-        ClassicAssert.IsNotNull(bar.GetAction("Action3"));
-        ClassicAssert.IsNotNull(bar.GetAction("Action4"));
-        ClassicAssert.IsNotNull(bar.GetAction("Action5"));
-        ClassicAssert.IsNotNull(bar.GetAction("Action4", "Sub1"));
-        ClassicAssert.IsNotNull(bar.GetAction("Action5", "Sub2"));
+        Assert.IsNotNull(bar.GetAction("Action3"));
+        Assert.IsNotNull(bar.GetAction("Action4"));
+        Assert.IsNotNull(bar.GetAction("Action5"));
+        Assert.IsNotNull(bar.GetAction("Action4", "Sub1"));
+        Assert.IsNotNull(bar.GetAction("Action5", "Sub2"));
     }
 
     [Test]
     public void ContributedActionToSubMenuObjectWithDefaultMenu() {
         var foo = NewTestObject<Foo>();
-        ClassicAssert.IsNotNull(foo.GetAction("Action2", "Sub"));
-        ClassicAssert.IsNotNull(foo.GetAction("Action2")); //Note that you can also access the action directly
+        Assert.IsNotNull(foo.GetAction("Action2", "Sub"));
+        Assert.IsNotNull(foo.GetAction("Action2")); //Note that you can also access the action directly
         try {
             foo.GetAction("Action1", "Sub");
         }
         catch (Exception e) {
-            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Action named 'Action1' within sub-menu 'Sub'", e.Message);
+            Assert.AreEqual("Assert.Fail failed. No Action named 'Action1' within sub-menu 'Sub'", e.Message);
         }
     }
 }

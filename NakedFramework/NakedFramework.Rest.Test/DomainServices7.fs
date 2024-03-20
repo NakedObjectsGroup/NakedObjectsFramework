@@ -12,7 +12,6 @@ open NUnit.Framework
 open System.Net
 open NakedFramework.Rest.API
 open Functions
-open NUnit.Framework.Legacy
 
 let internal getExpected() = 
     let sName1 = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -77,7 +76,7 @@ let GetDomainServices(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected = fst (getExpected())
     compareObject expected parsedResult
@@ -89,7 +88,7 @@ let GetDomainServicesWithTTC(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected = snd (getExpected())
     compareObject expected parsedResult
@@ -101,7 +100,7 @@ let GetDomainServicesWithMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected = fst (getExpected())
     compareObject expected parsedResult
@@ -113,7 +112,7 @@ let GetDomainServicesWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.List, "", ttc "System.Object", true), headers.ContentType)
     //assertNonExpiringCache headers
     let expected = snd (getExpected())
     compareObject expected parsedResult
@@ -131,5 +130,5 @@ let NotAcceptableGetDomainServices(api : RestfulObjectsControllerBase) =
        then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/list \""
        else "199 RestfulObjects \"Enable DebugWarnings to see message\""
    
-   ClassicAssert.AreEqual(msg, headers.Headers.["Warning"].ToString())
-   ClassicAssert.AreEqual("", jsonResult)
+   Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
+   Assert.AreEqual("", jsonResult)

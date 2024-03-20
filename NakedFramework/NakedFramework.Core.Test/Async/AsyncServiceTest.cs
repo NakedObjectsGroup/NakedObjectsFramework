@@ -12,7 +12,6 @@ using NakedFramework.Architecture.Component;
 using NakedFramework.Architecture.Framework;
 using NakedObjects.Core.Async;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Async;
 
@@ -44,8 +43,8 @@ public class AsyncServiceTest {
 
         await task;
 
-        ClassicAssert.IsNull(task.Exception);
+        Assert.IsNull(task.Exception);
 
-        ClassicAssert.AreEqual(1, run);
+        Assert.AreEqual(1, run);
     }
 }

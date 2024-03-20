@@ -8,19 +8,18 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace NakedFunctions.Rest.Test;
 
 public static class CustomAsserts {
     public static void AssertMember(this JToken member, string memberType, string id) {
-        ClassicAssert.AreEqual(memberType, member["memberType"].ToString());
-        ClassicAssert.AreEqual(id, member["id"].ToString());
+        Assert.AreEqual(memberType, member["memberType"].ToString());
+        Assert.AreEqual(id, member["id"].ToString());
     }
 
     public static void AssertAction(this JToken action, string id, string parameters) {
         action.AssertMember("action", id);
-        ClassicAssert.AreEqual(parameters, action["parameters"].ToString());
+        Assert.AreEqual(parameters, action["parameters"].ToString());
     }
 
     public static void AssertAction(this JToken action, string id) {
@@ -29,20 +28,20 @@ public static class CustomAsserts {
 
     public static void AssertProperty(this JToken property, string id, string value, bool hasChoices) {
         property.AssertMember("property", id);
-        ClassicAssert.AreEqual(value, property["value"].ToString());
-        ClassicAssert.AreEqual(hasChoices, property["hasChoices"].Value<bool>());
+        Assert.AreEqual(value, property["value"].ToString());
+        Assert.AreEqual(hasChoices, property["hasChoices"].Value<bool>());
     }
 
     public static void AssertLink(this JToken link, string method, string rel, string type, string href) {
-        ClassicAssert.AreEqual(method, link["method"].ToString());
-        ClassicAssert.AreEqual(rel, link["rel"].ToString());
-        ClassicAssert.AreEqual(type, link["type"].ToString());
-        ClassicAssert.AreEqual(href, link["href"].ToString());
+        Assert.AreEqual(method, link["method"].ToString());
+        Assert.AreEqual(rel, link["rel"].ToString());
+        Assert.AreEqual(type, link["type"].ToString());
+        Assert.AreEqual(href, link["href"].ToString());
     }
 
     public static void AssertMenuLink(this JToken link, string title, string method, string id) {
-        ClassicAssert.AreEqual(5, link.Count());
-        ClassicAssert.AreEqual(title, link["title"].ToString());
+        Assert.AreEqual(5, link.Count());
+        Assert.AreEqual(title, link["title"].ToString());
         link.AssertLink(method,
                         $"urn:org.restfulobjects:rels/menu;menuId=\"{id}\"",
                         "application/json; profile=\"urn:org.restfulobjects:repr-types/menu\"; charset=utf-8",
@@ -50,8 +49,8 @@ public static class CustomAsserts {
     }
 
     public static void AssertInvokeLink(this JToken link, string arguments, string method, string id, string href) {
-        ClassicAssert.AreEqual(5, link.Count());
-        ClassicAssert.AreEqual(arguments, link["arguments"].ToString());
+        Assert.AreEqual(5, link.Count());
+        Assert.AreEqual(arguments, link["arguments"].ToString());
         link.AssertLink(method,
                         $"urn:org.restfulobjects:rels/invoke;action=\"{id}\"",
                         "application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8",
@@ -59,7 +58,7 @@ public static class CustomAsserts {
     }
 
     public static void AssertServiceInvokeLink(this JToken link, string arguments, string method, string service, string id) {
-        ClassicAssert.AreEqual(5, link.Count());
+        Assert.AreEqual(5, link.Count());
         link.AssertInvokeLink(arguments,
                               method,
                               id,
@@ -67,7 +66,7 @@ public static class CustomAsserts {
     }
 
     public static void AssertMenuInvokeLink(this JToken link, string arguments, string method, string menu, string id) {
-        ClassicAssert.AreEqual(5, link.Count());
+        Assert.AreEqual(5, link.Count());
         link.AssertInvokeLink(arguments,
                               method,
                               id,
@@ -75,7 +74,7 @@ public static class CustomAsserts {
     }
 
     public static void AssertObjectInvokeLink(this JToken link, string arguments, string method, string type, string instance, string id) {
-        ClassicAssert.AreEqual(5, link.Count());
+        Assert.AreEqual(5, link.Count());
         link.AssertInvokeLink(arguments,
                               method,
                               id,
@@ -83,8 +82,8 @@ public static class CustomAsserts {
     }
 
     public static void AssertObjectElementLink(this JToken link, string title, string method, string type, string instance) {
-        ClassicAssert.AreEqual(5, link.Count());
-        ClassicAssert.AreEqual(title, link["title"].ToString());
+        Assert.AreEqual(5, link.Count());
+        Assert.AreEqual(title, link["title"].ToString());
         link.AssertLink(method,
                         "urn:org.restfulobjects:rels/element",
                         $"application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"{type}\"",
@@ -92,12 +91,12 @@ public static class CustomAsserts {
     }
 
     public static void AssertExtensions(this JToken extensions, int count) {
-        ClassicAssert.AreEqual(count, extensions.Count());
+        Assert.AreEqual(count, extensions.Count());
     }
 
     public static void AssertObject(this JToken obj, string title, string type, string instance) {
-        ClassicAssert.AreEqual(instance, obj["instanceId"].ToString());
-        ClassicAssert.AreEqual(type, obj["domainType"].ToString());
-        ClassicAssert.AreEqual(title, obj["title"].ToString());
+        Assert.AreEqual(instance, obj["instanceId"].ToString());
+        Assert.AreEqual(type, obj["domainType"].ToString());
+        Assert.AreEqual(title, obj["title"].ToString());
     }
 }

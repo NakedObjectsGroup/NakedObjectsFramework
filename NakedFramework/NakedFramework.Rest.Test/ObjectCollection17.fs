@@ -15,7 +15,6 @@ open NakedFramework.Rest.Snapshot.Constants
 open NakedFramework.Rest.API
 open System
 open Functions
-open NUnit.Framework.Legacy
 
 let GetCollectionProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -61,9 +60,9 @@ let GetCollectionProperty(api : RestfulObjectsControllerBase) =
                       ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionPropertyWithInlineFlag(api : RestfulObjectsControllerBase) = 
@@ -120,9 +119,9 @@ let GetCollectionPropertyWithInlineFlag(api : RestfulObjectsControllerBase) =
                       ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
@@ -168,9 +167,9 @@ let GetCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
                        ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -216,9 +215,9 @@ let GetCollectionPropertySimpleOnly(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionSetProperty(api : RestfulObjectsControllerBase) = 
@@ -263,9 +262,9 @@ let GetCollectionSetProperty(api : RestfulObjectsControllerBase) =
                       ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -309,9 +308,9 @@ let GetCollectionSetPropertySimpleOnly(api : RestfulObjectsControllerBase) =
                              TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -358,9 +357,9 @@ let GetCollectionPropertyWithMediaType(api : RestfulObjectsControllerBase) =
                       ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) = 
@@ -406,9 +405,9 @@ let GetDisabledCollectionProperty(api : RestfulObjectsControllerBase) =
                        ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let GetCollectionValue(api : RestfulObjectsControllerBase) = 
@@ -446,9 +445,9 @@ let GetCollectionValue(api : RestfulObjectsControllerBase) =
                              ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), headers.ContentType)
     assertTransactionalCache headers
-    //ClassicAssert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
 let AddToCollectionProperty(api : RestfulObjectsControllerBase) = 
@@ -468,7 +467,7 @@ let AddToCollectionProperty(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("", jsonResult)
 
 let DeleteFromCollectionProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -488,7 +487,7 @@ let DeleteFromCollectionProperty(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("", jsonResult)
 
 let AddToCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
@@ -508,7 +507,7 @@ let AddToCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("", jsonResult)
 
 let DeleteFromCollectionPropertyViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollectionViewModel"
@@ -529,7 +528,7 @@ let DeleteFromCollectionPropertyViewModel(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("", jsonResult)
 
 let GetInvalidCollection(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -544,8 +543,8 @@ let GetInvalidCollection(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let GetNotFoundCollection(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -560,8 +559,8 @@ let GetNotFoundCollection(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"No such collection ANonExistentCollection\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"No such collection ANonExistentCollection\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let GetHiddenValueCollection(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -576,8 +575,8 @@ let GetHiddenValueCollection(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"No such collection AHiddenCollection\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"No such collection AHiddenCollection\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let GetNakedObjectsIgnoredCollection(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -592,8 +591,8 @@ let GetNakedObjectsIgnoredCollection(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"No such collection ANakedObjectsIgnoredCollection\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"No such collection ANakedObjectsIgnoredCollection\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let NotAcceptableGetCollectionWrongMediaType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -608,7 +607,7 @@ let NotAcceptableGetCollectionWrongMediaType(api : RestfulObjectsControllerBase)
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("", jsonResult)
 
 let GetErrorValueCollection(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithGetError"
@@ -626,7 +625,7 @@ let GetErrorValueCollection(api : RestfulObjectsControllerBase) =
 
     assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
     // for some resaon stack trace has different depth on my machine when not debugging (only) ! 
-    ClassicAssert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
 
 let GetCollectionAsProperty(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithCollection"
@@ -640,5 +639,5 @@ let GetCollectionAsProperty(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"No such property ACollection\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"No such property ACollection\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)

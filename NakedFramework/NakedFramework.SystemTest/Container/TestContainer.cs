@@ -24,7 +24,6 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -85,39 +84,39 @@ public class TestContainer : AcceptanceTestCase {
     [Test]
     public void DefaultsTransient() {
         var testObject = TestObject;
-        ClassicAssert.IsNotNull(testObject?.Container);
+        Assert.IsNotNull(testObject?.Container);
 
         var o2 = testObject.Container.NewTransientInstance<Object2>();
 
-        ClassicAssert.AreEqual(new DateTime(), o2.TestDateTime);
-        ClassicAssert.IsNull(o2.TestNullableDateTime);
-        ClassicAssert.AreEqual(0, o2.TestInt);
-        ClassicAssert.IsNull(o2.TestNullableInt);
+        Assert.AreEqual(new DateTime(), o2.TestDateTime);
+        Assert.IsNull(o2.TestNullableDateTime);
+        Assert.AreEqual(0, o2.TestInt);
+        Assert.IsNull(o2.TestNullableInt);
 
-        ClassicAssert.AreEqual(TestEnum.Value1, o2.TestEnum);
-        ClassicAssert.IsNull(o2.TestNullableEnum);
+        Assert.AreEqual(TestEnum.Value1, o2.TestEnum);
+        Assert.IsNull(o2.TestNullableEnum);
 
-        ClassicAssert.AreEqual(0, o2.TestEnumDt);
-        ClassicAssert.IsNull(o2.TestNullableEnumDt);
+        Assert.AreEqual(0, o2.TestEnumDt);
+        Assert.IsNull(o2.TestNullableEnumDt);
     }
 
     [Test]
     public void DefaultsViewModel() {
         var testObject = TestObject;
-        ClassicAssert.IsNotNull(testObject.Container);
+        Assert.IsNotNull(testObject.Container);
 
         var vm = testObject.NewViewModel();
 
-        ClassicAssert.AreEqual(new DateTime(), vm.TestDateTime);
-        ClassicAssert.IsNull(vm.TestNullableDateTime);
-        ClassicAssert.AreEqual(0, vm.TestInt);
-        ClassicAssert.IsNull(vm.TestNullableInt);
+        Assert.AreEqual(new DateTime(), vm.TestDateTime);
+        Assert.IsNull(vm.TestNullableDateTime);
+        Assert.AreEqual(0, vm.TestInt);
+        Assert.IsNull(vm.TestNullableInt);
 
-        ClassicAssert.AreEqual(TestEnum.Value1, vm.TestEnum);
-        ClassicAssert.IsNull(vm.TestNullableEnum);
+        Assert.AreEqual(TestEnum.Value1, vm.TestEnum);
+        Assert.IsNull(vm.TestNullableEnum);
 
-        ClassicAssert.AreEqual(0, vm.TestEnumDt);
-        ClassicAssert.IsNull(vm.TestNullableEnumDt);
+        Assert.AreEqual(0, vm.TestEnumDt);
+        Assert.IsNull(vm.TestNullableEnumDt);
     }
 }
 

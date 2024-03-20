@@ -15,9 +15,8 @@ open NakedFramework.Core.Error
 open NakedFramework.Architecture.Component
 open TestTypes
 open TestCode
-open NUnit.Framework.Legacy
 
-let CanCreateEntityPersistor multiDatabasePersistor = ClassicAssert.IsNotNull(multiDatabasePersistor)
+let CanCreateEntityPersistor multiDatabasePersistor = Assert.IsNotNull(multiDatabasePersistor)
 
 let CodeFirstLoadTestAssembly() = 
     let obj = new Category()
@@ -34,9 +33,9 @@ let CanQueryEachConnection<'t, 'u when 't : not struct and 'u : not struct>(mult
     let p1 = multiDatabasePersistor.GetInstances<'t>() |> Seq.head
     let p2 = multiDatabasePersistor.GetInstances<'u>() |> Seq.head
     let p2 = multiDatabasePersistor.GetInstances<'u>() |> Seq.head
-    ClassicAssert.IsNotNull(p1)
-    ClassicAssert.IsNotNull(p2)
-    ClassicAssert.AreNotEqual(p1, p2)
+    Assert.IsNotNull(p1)
+    Assert.IsNotNull(p2)
+    Assert.AreNotEqual(p1, p2)
 
 let CanQueryEachConnectionMulti multiDatabasePersistor = CanQueryEachConnection<TestCodeOnly.Product,  NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
 let CanQueryEachDomainConnection multiDatabasePersistor = CanQueryEachConnection<SimpleDatabase.Person, NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.Product> multiDatabasePersistor
@@ -75,13 +74,13 @@ let CrossContextTransactionOK(multiDatabasePersistor : IObjectStore) =
         multiDatabasePersistor.ExecuteSaveObjectCommand(GetOrAddAdapterForTest o2 null)
         multiDatabasePersistor.EndTransaction()
     SaveAndEnd pr sr
-    ClassicAssert.AreNotEqual(origPrName, pr.Name)
-    ClassicAssert.AreNotEqual(origSrName, sr.Name)
+    Assert.AreNotEqual(origPrName, pr.Name)
+    Assert.AreNotEqual(origSrName, sr.Name)
     pr.Name <- origPrName
     sr.Name <- origSrName
     SaveAndEnd pr sr
-    ClassicAssert.AreEqual(origPrName, pr.Name)
-    ClassicAssert.AreEqual(origSrName, sr.Name)
+    Assert.AreEqual(origPrName, pr.Name)
+    Assert.AreEqual(origSrName, sr.Name)
 
 let CrossContextTransactionRollback(multiDatabasePersistor : IObjectStore) = 
     let pr = multiDatabasePersistor.GetInstances<TestCodeOnly.Product>() |> Seq.head
@@ -97,16 +96,16 @@ let CrossContextTransactionRollback(multiDatabasePersistor : IObjectStore) =
         multiDatabasePersistor.EndTransaction()
     try 
         SaveAndEnd pr sr
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
-    ClassicAssert.AreEqual(origPrName, pr.Name)
-    ClassicAssert.AreEqual(origSrName, sr.Name)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
+    Assert.AreEqual(origPrName, pr.Name)
+    Assert.AreEqual(origSrName, sr.Name)
     let prs = multiDatabasePersistor.GetInstances<TestCodeOnly.Product>()
     let srs = multiDatabasePersistor.GetInstances<ScrapReason>()
     (prs :?> ObjectQuery).MergeOption <- MergeOption.OverwriteChanges
     (srs :?> ObjectQuery).MergeOption <- MergeOption.OverwriteChanges
     let pr = prs |> Seq.head
     let sr = srs |> Seq.head
-    ClassicAssert.AreEqual(origPrName, pr.Name)
-    ClassicAssert.AreEqual(origSrName, sr.Name)
+    Assert.AreEqual(origPrName, pr.Name)
+    Assert.AreEqual(origSrName, sr.Name)
     ()

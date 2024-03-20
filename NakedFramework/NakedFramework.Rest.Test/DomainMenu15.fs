@@ -12,7 +12,6 @@ open Newtonsoft.Json.Linq
 open NUnit.Framework
 open System.Net
 open Functions
-open NUnit.Framework.Legacy
 
 let GetMenu(api : RestfulObjectsControllerBase) =
     let sName =  ttc "RestfulObjects.Test.Data.RestDataRepository" 
@@ -107,9 +106,9 @@ let GetMenu(api : RestfulObjectsControllerBase) =
                     TObjectJson([  ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetContributorMenu(api : RestfulObjectsControllerBase) = 
@@ -174,9 +173,9 @@ let GetContributorMenu(api : RestfulObjectsControllerBase) =
                     TObjectJson([  ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -274,9 +273,9 @@ let GetMenuSimpleOnly(api : RestfulObjectsControllerBase) =
                     TObjectJson([  ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetMenuWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -372,9 +371,9 @@ let GetMenuWithMediaType(api : RestfulObjectsControllerBase) =
                     TObjectJson([  ])) ]
    
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetWithActionMenu(api : RestfulObjectsControllerBase) = 
@@ -1009,9 +1008,9 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                     TObjectJson([  ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Menu, ""), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let InvalidGetMenu(api : RestfulObjectsControllerBase) = 
@@ -1023,8 +1022,8 @@ let InvalidGetMenu(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let NotFoundGetMenu(api : RestfulObjectsControllerBase) = 
     let mName =  "NoSuchMenu"
@@ -1034,8 +1033,8 @@ let NotFoundGetMenu(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such menu %s\"" mName, headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such menu %s\"" mName, headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let NotAcceptableGetMenuWrongMediaType(api : RestfulObjectsControllerBase) = 
     let mName =  "RestDataRepository"

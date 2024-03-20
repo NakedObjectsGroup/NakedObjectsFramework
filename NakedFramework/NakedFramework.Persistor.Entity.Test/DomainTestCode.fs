@@ -24,7 +24,6 @@ open NakedFramework.Core.Util
 open TestTypes
 open TestCode
 open NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NUnit.Framework.Legacy
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
@@ -38,7 +37,7 @@ let DomainSetup() =
     DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
     DomainLoadTestAssembly()
 
-let CanCreateEntityPersistor persistor = ClassicAssert.IsNotNull(persistor)
+let CanCreateEntityPersistor persistor = Assert.IsNotNull(persistor)
 let CanGetInstancesGeneric persistor = GetInstancesGenericNotEmpty<ScrapReason> persistor
 let CanGetInstancesByType persistor = GetInstancesByTypeNotEmpty<ScrapReason> persistor
 let CanGetInstancesIsProxy persistor = GetInstancesReturnsProxies<ScrapReason> persistor
@@ -99,15 +98,15 @@ let PersistingPersistedCalledForCreateInstance persistor sto =
     persistingCount <- 0
     persistedCount <- 0
     sto persistor
-    ClassicAssert.AreEqual(1, persistingCount, "persisting")
-    ClassicAssert.AreEqual(1, persistedCount, "persisted")
+    Assert.AreEqual(1, persistingCount, "persisting")
+    Assert.AreEqual(1, persistedCount, "persisted")
 
 let PersistingPersistedCalledForCreateInstanceWithReference persistor sto = 
     persistingCount <- 0
     persistedCount <- 0
     sto persistor
-    ClassicAssert.AreEqual(2, persistingCount, "persisting")
-    ClassicAssert.AreEqual(2, persistedCount, "persisted")
+    Assert.AreEqual(2, persistingCount, "persisting")
+    Assert.AreEqual(2, persistedCount, "persisted")
 
 let CanSaveTransientObjectWithPersistentReferencePropertyWithFixup persistor = 
     let psc = CreateProductSubcategory persistor
@@ -125,7 +124,7 @@ let CanSaveTransientObjectWithPersistentReferenceProperty persistor =
     let newobj = persistor.GetInstances<ProductSubcategory>()
                  |> Seq.filter (fun i -> i.rowguid = psc.rowguid)
                  |> Seq.head
-    ClassicAssert.NotZero(newobj.ProductCategoryID)
+    Assert.NotZero(newobj.ProductCategoryID)
 
 let CanSaveTransientObjectWithPersistentReferencePropertyViaID (persistor : IObjectStore) = 
     let sop = CreateSpecialOfferProduct persistor
@@ -144,8 +143,8 @@ let CanSaveTransientObjectWithPersistentReferencePropertyViaID (persistor : IObj
     
     DestroyAndEndTransaction persistor newobj
     
-    ClassicAssert.IsFalse(pIsNull)
-    ClassicAssert.IsFalse(sIsNull)
+    Assert.IsFalse(pIsNull)
+    Assert.IsFalse(sIsNull)
 
 
 let CanSaveTransientObjectWithPersistentReferencePropertyInSeperateTransaction(persistor : IObjectStore) = 
@@ -172,23 +171,23 @@ let CanSaveTransientObjectWithTransientReferencePropertyWithFixup persistor =
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies persistor = 
     let psc = CreateProductSubcategory persistor
     let pc = CreateProductCategory persistor
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(psc.GetType()))
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(pc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(psc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(pc.GetType()))
     psc.ProductCategory <- pc
     CreateAndEndTransaction persistor psc
     let proxiedpsc = 
         persistor.GetInstances<ProductSubcategory>()
         |> Seq.filter (fun i -> i.Name = psc.Name)
         |> Seq.head
-    ClassicAssert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpsc.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory
-    ClassicAssert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpc.GetType()))
+    Assert.IsTrue(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpc.GetType()))
 
 let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies persistor = 
     let psc = CreateProductSubcategory persistor
     let pc = CreateProductCategory persistor
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(psc.GetType()))
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(pc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(psc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(pc.GetType()))
     psc.ProductCategory <- pc
     pc.ProductSubcategories.Add psc
     CreateAndEndTransaction persistor psc
@@ -196,9 +195,9 @@ let CanSaveTransientObjectWithTransientReferencePropertyAndConfirmNoProxies pers
         persistor.GetInstances<ProductSubcategory>()
         |> Seq.filter (fun i -> i.Name = psc.Name)
         |> Seq.head
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpsc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpsc.GetType()))
     let proxiedpc = proxiedpsc.ProductCategory
-    ClassicAssert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpc.GetType()))
+    Assert.IsFalse(FasterTypeUtils.IsEF6OrCoreProxy(proxiedpc.GetType()))
 
 let CanUpdatePersistentObjectWithScalarProperties persistor = 
     let sr = First<ScrapReason> persistor
@@ -208,7 +207,7 @@ let CanUpdatePersistentObjectWithScalarProperties persistor =
     let setNameAndSave name = 
         sr.Name <- name
         SaveAndEndTransaction persistor sr
-        ClassicAssert.AreEqual(name, sr.Name)
+        Assert.AreEqual(name, sr.Name)
     setNameAndSave replName
     setNameAndSave origName
 
@@ -218,7 +217,7 @@ let CanUpdatePersistentObjectWithReferenceProperties persistor =
     let setCategoryAndSave pc = 
         psc.ProductCategory <- pc
         SaveAndEndTransaction persistor psc
-        ClassicAssert.AreEqual(pc, psc.ProductCategory)
+        Assert.AreEqual(pc, psc.ProductCategory)
     setCategoryAndSave replPc
     setCategoryAndSave origPc
 
@@ -230,7 +229,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesWithResolve persistor =
         persistor.ResolveImmediately(GetOrAddAdapterForTest pc null)
         pc.ProductSubcategories.Add psc
         SaveAndEndTransaction persistor psc
-        ClassicAssert.AreEqual(pc, psc.ProductCategory)
+        Assert.AreEqual(pc, psc.ProductCategory)
     setCategoryAndSave replPc
     setCategoryAndSave origPc
 
@@ -241,7 +240,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbort persistor =
     persistor.AbortTransaction()
     persistor.EndTransaction()
     let psc1 = First<ProductSubcategory> persistor
-    ClassicAssert.AreEqual(origPc.Name, psc1.ProductCategory.Name)
+    Assert.AreEqual(origPc.Name, psc1.ProductCategory.Name)
 
 let CanUpdatePersistentObjectWithReferencePropertiesAbortWithResolve persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
@@ -250,7 +249,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbortWithResolve persistor =
     persistor.AbortTransaction()
     persistor.EndTransaction()
     let psc1 = First<ProductSubcategory> persistor
-    ClassicAssert.AreEqual(origPc, psc1.ProductCategory)
+    Assert.AreEqual(origPc, psc1.ProductCategory)
 
 let CanUpdatePersistentObjectWithReferencePropertiesAbortWithFixup persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
@@ -262,7 +261,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesAbortWithFixup persistor =
     persistor.EndTransaction()
     let psc1 = First<ProductSubcategory> persistor
     persistor.ResolveImmediately(GetOrAddAdapterForTest psc1 null)
-    ClassicAssert.AreEqual(origPc, psc1.ProductCategory)
+    Assert.AreEqual(origPc, psc1.ProductCategory)
 
 let CanUpdatePersistentObjectWithReferencePropertiesDoFixup persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategories persistor
@@ -272,7 +271,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesDoFixup persistor =
         psc.ProductCategory <- newPc
         newPc.ProductSubcategories.Add(psc)
         SaveAndEndTransaction persistor psc
-        ClassicAssert.AreEqual(newPc, psc.ProductCategory)
+        Assert.AreEqual(newPc, psc.ProductCategory)
     swapSubcatsWithFixup origPc replPc
     swapSubcatsWithFixup replPc origPc
 
@@ -284,7 +283,7 @@ let CanUpdatePersistentObjectWithReferencePropertiesDoFixupWithResolve persistor
         psc.ProductCategory <- newPc
         newPc.ProductSubcategories.Add(psc)
         SaveAndEndTransaction persistor psc
-        ClassicAssert.AreEqual(newPc, psc.ProductCategory)
+        Assert.AreEqual(newPc, psc.ProductCategory)
     swapSubcatsWithFixup origPc replPc
     swapSubcatsWithFixup replPc origPc
 
@@ -296,7 +295,7 @@ let CanUpdatePersistentObjectWithCollectionProperties persistor =
         //oldPc.ProductSubcategories.Remove(psc)  |> ignore
         SaveAndEndTransaction persistor origPc
         SaveAndEndTransaction persistor newPc
-        ClassicAssert.AreEqual(newPc, psc.ProductCategory)
+        Assert.AreEqual(newPc, psc.ProductCategory)
     swapSubcatsForCollection origPc replPc
     swapSubcatsForCollection replPc origPc
 
@@ -309,8 +308,8 @@ let CanUpdatePersistentObjectWithCollectionPropertiesAbort persistor =
     persistor.AbortTransaction()
     persistor.EndTransaction()
     let (psc1, origPc1, replPc1) = GetOrigAndReplProductCategories persistor
-    ClassicAssert.IsTrue(origPc1.ProductSubcategories.Contains(psc1))
-    ClassicAssert.IsFalse(replPc1.ProductSubcategories.Contains(psc1))
+    Assert.IsTrue(origPc1.ProductSubcategories.Contains(psc1))
+    Assert.IsFalse(replPc1.ProductSubcategories.Contains(psc1))
 
 let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithResolve persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
@@ -321,8 +320,8 @@ let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithResolve persistor 
     persistor.AbortTransaction()
     persistor.EndTransaction()
     let (psc1, origPc1, replPc1) = GetOrigAndReplProductCategories persistor
-    ClassicAssert.IsTrue(origPc1.ProductSubcategories.Contains(psc1))
-    ClassicAssert.IsFalse(replPc1.ProductSubcategories.Contains(psc1))
+    Assert.IsTrue(origPc1.ProductSubcategories.Contains(psc1))
+    Assert.IsFalse(replPc1.ProductSubcategories.Contains(psc1))
 
 let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithFixup persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategoriesWithResolve persistor
@@ -334,8 +333,8 @@ let CanUpdatePersistentObjectWithCollectionPropertiesAbortWithFixup persistor =
     persistor.AbortTransaction()
     persistor.EndTransaction()
     let (psc1, origPc1, replPc1) = GetOrigAndReplProductCategoriesWithResolve persistor
-    ClassicAssert.IsTrue(origPc1.ProductSubcategories.Contains(psc1))
-    ClassicAssert.IsFalse(replPc1.ProductSubcategories.Contains(psc1))
+    Assert.IsTrue(origPc1.ProductSubcategories.Contains(psc1))
+    Assert.IsFalse(replPc1.ProductSubcategories.Contains(psc1))
 
 let CanUpdatePersistentObjectWithCollectionPropertiesDoFixup persistor = 
     let (psc, origPc, replPc) = GetOrigAndReplProductCategories persistor
@@ -346,7 +345,7 @@ let CanUpdatePersistentObjectWithCollectionPropertiesDoFixup persistor =
         psc.ProductCategory <- newPc
         SaveAndEndTransaction persistor origPc
         SaveAndEndTransaction persistor newPc
-        ClassicAssert.AreEqual(newPc, psc.ProductCategory)
+        Assert.AreEqual(newPc, psc.ProductCategory)
     swapSubcatsForCollectionFixup origPc replPc
     swapSubcatsForCollectionFixup replPc origPc
 
@@ -358,7 +357,7 @@ let CanUpdatePersistentObjectWithCollectionPropertiesWithResolve persistor =
         newPc.ProductSubcategories.Add(psc)
         SaveAndEndTransaction persistor origPc
         SaveAndEndTransaction persistor newPc
-        ClassicAssert.AreEqual(newPc, psc.ProductCategory)
+        Assert.AreEqual(newPc, psc.ProductCategory)
     swapSubcatsForCollection origPc replPc
     swapSubcatsForCollection replPc origPc
 
@@ -366,22 +365,22 @@ let CanNavigateReferences persistor =
     let sr = First<ScrapReason> persistor
     let wo = sr.WorkOrders |> Seq.head
     let sr1 = wo.ScrapReason
-    ClassicAssert.AreEqual(sr, sr1)
+    Assert.AreEqual(sr, sr1)
 
 let CanNavigateReferencesNoProxies(persistor : IObjectStore) = 
     persistor.StartTransaction()
     let sr = First<ScrapReason> persistor
-    ClassicAssert.AreEqual(0, sr.WorkOrders.Count)
+    Assert.AreEqual(0, sr.WorkOrders.Count)
     persistor.EndTransaction()
     persistor.ResolveImmediately(GetOrAddAdapterForTest sr null)
     let wo = sr.WorkOrders |> Seq.head
     let sr1 = wo.ScrapReason
-    ClassicAssert.AreEqual(sr, sr1)
+    Assert.AreEqual(sr, sr1)
 
 let setNameAndSave persistor (sr : ScrapReason) name = 
     sr.Name <- name
     SaveAndEndTransaction persistor sr
-    ClassicAssert.AreEqual(name, sr.Name)
+    Assert.AreEqual(name, sr.Name)
 
 let CanUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt persistor = 
     let sr0 = First<ScrapReason> persistor
@@ -389,8 +388,8 @@ let CanUpdatePersistentObjectWithScalarPropertiesErrorAndReattempt persistor =
     let origName = sr0.Name
     try 
         setNameAndSave persistor sr0 sr1.Name
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     let replName = uniqueName()
     setNameAndSave persistor sr0 replName
     setNameAndSave persistor sr0 origName
@@ -407,15 +406,15 @@ let CanUpdatePersistentObjectWithScalarPropertiesAbort persistor =
         persistor.GetInstances<ScrapReason>()
         |> Seq.filter (fun i -> i.ScrapReasonID = sr0.ScrapReasonID)
         |> Seq.head
-    ClassicAssert.AreEqual(origName, sr1.Name)
+    Assert.AreEqual(origName, sr1.Name)
 
 let CanUpdatePersistentObjectWithScalarPropertiesIgnore persistor = 
     let sr0 = First<ScrapReason> persistor
     let sr1 = Second<ScrapReason> persistor
     try 
         setNameAndSave persistor sr0 sr1.Name
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     let origName = sr1.Name
     let replName = uniqueName()
     setNameAndSave persistor sr1 replName
@@ -431,8 +430,8 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt(persistor : IObj
     let sr1 = Second<ScrapReason> persistor
     try 
         createWithName persistor sr0 sr1.Name
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     createWithName persistor sr0 (uniqueName())
 
 let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(persistor : IObjectStore) = 
@@ -440,8 +439,8 @@ let CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore(persistor : IObject
     let sr1 = Second<ScrapReason> persistor
     try 
         createWithName persistor sr0 sr1.Name
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
     let sr2 = persistor.CreateInstance<ScrapReason>(null)
     createWithName persistor sr2 (uniqueName())
 
@@ -455,29 +454,29 @@ let CanUpdatingUpdatedCalledForChange persistor =
     let sr = First<ScrapReason> persistor
     sr.Name <- uniqueName()
     SaveAndEndTransaction persistor sr
-    ClassicAssert.AreEqual(1, updatingCount, "updating")
-    ClassicAssert.AreEqual(1, updatedCount, "updated")
+    Assert.AreEqual(1, updatingCount, "updating")
+    Assert.AreEqual(1, updatedCount, "updated")
 
 let CanGetKeyForType(persistor : IObjectStore) = 
     let keys = persistor.GetKeys(typeof<ScrapReason>)
-    ClassicAssert.AreEqual(1, keys.Length)
-    ClassicAssert.AreEqual("ScrapReasonID", keys.[0].Name)
+    Assert.AreEqual(1, keys.Length)
+    Assert.AreEqual("ScrapReasonID", keys.[0].Name)
 
 let CanGetKeysForType(persistor : IObjectStore) = 
     let keys = persistor.GetKeys(typeof<SalesOrderHeaderSalesReason>)
-    ClassicAssert.AreEqual(2, keys.Length)
-    ClassicAssert.AreEqual("SalesOrderID", keys.[0].Name)
-    ClassicAssert.AreEqual("SalesReasonID", keys.[1].Name)
+    Assert.AreEqual(2, keys.Length)
+    Assert.AreEqual("SalesOrderID", keys.[0].Name)
+    Assert.AreEqual("SalesReasonID", keys.[1].Name)
 
 let CanContainerInjectionCalledForNewInstance persistor = 
     injectedObjects.Clear()
     let pc = CreateProductCategory persistor
-    ClassicAssert.IsTrue(injectedObjects.Contains(pc))
+    Assert.IsTrue(injectedObjects.Contains(pc))
 
 let CanContainerInjectionCalledForGetInstance persistor = 
     injectedObjects.Clear()
     let sr = First<ScrapReason> persistor
-    ClassicAssert.IsTrue(injectedObjects.Contains(sr))
+    Assert.IsTrue(injectedObjects.Contains(sr))
 
 let noEntryFor (persistor : IObjectStore) (p : Product) (so : SpecialOffer) = 
     let hasEntry = 
@@ -507,7 +506,7 @@ let CanCreateManyToMany(persistor : IObjectStore) =
     sop.Product <- pr
     sop.SpecialOffer <- so
     CreateAndEndTransaction persistor sop
-    ClassicAssert.IsFalse(noEntryFor pr so)
+    Assert.IsFalse(noEntryFor pr so)
 
 let CanCreateManyToManyWithFixup(persistor : IObjectStore) = 
     let prs = persistor.GetInstances<Product>()
@@ -538,7 +537,7 @@ let CanCreateManyToManyWithFixup(persistor : IObjectStore) =
     pr.SpecialOfferProducts.Add sop
     so.SpecialOfferProducts.Add sop
     CreateAndEndTransaction persistor sop
-    ClassicAssert.IsFalse(noEntryFor pr so)
+    Assert.IsFalse(noEntryFor pr so)
 
 let CanGetObjectBySingleKey persistor = CanGetObjectByKey<ScrapReason> persistor [| box 16s |]
 
@@ -560,8 +559,8 @@ let CanGetManyToOneReference(persistor : IObjectStore) =
     let detail2 = details |> Seq.item 1
     let header1 = detail1.SalesOrderHeader
     let header2 = detail2.SalesOrderHeader
-    ClassicAssert.AreSame(header, header1)
-    ClassicAssert.AreSame(header1, header2)
+    Assert.AreSame(header, header1)
+    Assert.AreSame(header1, header2)
 
 let getObjectByKey(persistor :IObjectStore) key (typ : Type) = 
     match persistor with 
@@ -600,16 +599,16 @@ let CanDetectConcurrency(persistor : IObjectStore) =
         setupPersistorForTesting p
     
     let sr2 = otherPersistor.GetInstances<ScrapReason>() |> Seq.head
-    ClassicAssert.AreEqual(sr1.Name, sr2.Name)
+    Assert.AreEqual(sr1.Name, sr2.Name)
     let origName = sr1.Name
     sr1.Name <- uniqueName()
     SaveAndEndTransaction persistor sr1
     try 
         sr2.Name <- uniqueName()
         SaveAndEndTransaction otherPersistor sr2
-        ClassicAssert.Fail()
-    with expected -> ClassicAssert.IsInstanceOf(typeof<ConcurrencyException>, expected)
-    ClassicAssert.AreEqual(sr1.Name, sr2.Name)
+        Assert.Fail()
+    with expected -> Assert.IsInstanceOf(typeof<ConcurrencyException>, expected)
+    Assert.AreEqual(sr1.Name, sr2.Name)
     sr1.Name <- origName
     SaveAndEndTransaction persistor sr1
 
@@ -622,10 +621,10 @@ let DataUpdateNoCustomOnPersistingError(persistor : IObjectStore) =
     try 
         let l = CreateAndSetup persistor (setter -1m)
         CreateAndEndTransaction persistor l
-        ClassicAssert.Fail()
+        Assert.Fail()
     with expected -> 
-        ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
-        ClassicAssert.True(expected.Message.StartsWith("Data update problem"), "unexpected error message")
+        Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.True(expected.Message.StartsWith("Data update problem"), "unexpected error message")
     // ok set set new value after error 
     let l = CreateAndSetup persistor (setter 1m)
     CreateAndEndTransaction persistor l
@@ -639,10 +638,10 @@ let DataUpdateNoCustomOnUpdatingError(persistor : IObjectStore) =
         SaveAndEndTransaction persistor l
     try 
         setCostRateAndSave -1m
-        ClassicAssert.Fail()
+        Assert.Fail()
     with expected -> 
-        ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
-        ClassicAssert.True(expected.Message.StartsWith("Data update problem"), "unexpected error message")
+        Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
+        Assert.True(expected.Message.StartsWith("Data update problem"), "unexpected error message")
     // ok set set new value after error 
     setCostRateAndSave 1m
     // put original back 
@@ -661,18 +660,18 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : IObjectStore) =
         setupPersistorForTesting p
     
     let l2 = otherPersistor.GetInstances<Location>() |> Seq.head
-    ClassicAssert.AreEqual(l1.Name, l2.Name)
+    Assert.AreEqual(l1.Name, l2.Name)
     let origname = l1.Name
     l1.Name <- uniqueName()
     SaveAndEndTransaction persistor l1
     try 
         l2.Name <- uniqueName()
         SaveAndEndTransaction otherPersistor l2
-        ClassicAssert.Fail()
+        Assert.Fail()
     with expected -> 
-        ClassicAssert.IsInstanceOf(typeof<ConcurrencyException>, expected)
-        ClassicAssert.True(expected.Message.StartsWith("The object you were viewing"), "unexpected error message")
-    ClassicAssert.AreEqual(l1.Name, l2.Name)
+        Assert.IsInstanceOf(typeof<ConcurrencyException>, expected)
+        Assert.True(expected.Message.StartsWith("The object you were viewing"), "unexpected error message")
+    Assert.AreEqual(l1.Name, l2.Name)
     l1.Name <- origname
     SaveAndEndTransaction persistor l1
 
@@ -681,7 +680,7 @@ let OverWriteChangesOptionRefreshesObject(persistor : IObjectStore) =
     let origName = l1.Name
     l1.Name <- uniqueName()
     let l2 = First<Location> persistor
-    ClassicAssert.AreEqual(origName, l1.Name)
+    Assert.AreEqual(origName, l1.Name)
 
 let AppendOnlyOptionDoesNotRefreshObject(persistor : IObjectStore) = 
     let l1 = First<Location> persistor
@@ -689,7 +688,7 @@ let AppendOnlyOptionDoesNotRefreshObject(persistor : IObjectStore) =
     let newName = uniqueName()
     l1.Name <- newName
     let l2 = First<Location> persistor
-    ClassicAssert.AreEqual(newName, l1.Name)
+    Assert.AreEqual(newName, l1.Name)
     ignore (resetPersistor persistor)
 
 let FirstLocationNonGeneric(persistor : IObjectStore) = 
@@ -701,7 +700,7 @@ let OverWriteChangesOptionRefreshesObjectNonGenericGet(persistor : IObjectStore)
     let origName = l1.Name
     l1.Name <- uniqueName()
     let l2 = FirstLocationNonGeneric persistor
-    ClassicAssert.AreEqual(origName, l1.Name)
+    Assert.AreEqual(origName, l1.Name)
 
 let AppendOnlyOptionDoesNotRefreshObjectNonGenericGet(persistor : IObjectStore) = 
     let l1 = FirstLocationNonGeneric persistor
@@ -709,7 +708,7 @@ let AppendOnlyOptionDoesNotRefreshObjectNonGenericGet(persistor : IObjectStore) 
     let newName = uniqueName()
     l1.Name <- newName
     let l2 = FirstLocationNonGeneric persistor
-    ClassicAssert.AreEqual(newName, l1.Name)
+    Assert.AreEqual(newName, l1.Name)
     ignore (resetPersistor persistor)
 
 let ExplicitOverwriteChangesRefreshesObject(persistor : IObjectStore) = 
@@ -720,10 +719,10 @@ let ExplicitOverwriteChangesRefreshesObject(persistor : IObjectStore) =
     let oq = q :?> ObjectQuery
     oq.MergeOption <- MergeOption.OverwriteChanges
     let l2 = q |> Seq.head
-    ClassicAssert.AreEqual(origName, l1.Name)
+    Assert.AreEqual(origName, l1.Name)
 
 let GetKeysReturnsKey(persistor : IObjectStore) = 
     let l = First<Location> persistor
     let keys = persistor.GetKeys(l.GetType())
-    ClassicAssert.AreEqual(1, keys |> Seq.length)
-    ClassicAssert.AreSame(typeof<Location>.GetProperty("LocationID"), keys |> Seq.head)
+    Assert.AreEqual(1, keys |> Seq.length)
+    Assert.AreSame(typeof<Location>.GetProperty("LocationID"), keys |> Seq.head)

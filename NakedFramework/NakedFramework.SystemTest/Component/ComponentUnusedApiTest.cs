@@ -25,7 +25,6 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 
@@ -81,14 +80,14 @@ public class ComponentUnusedApiTest : AcceptanceTestCase {
     [Test]
     public virtual void MetamodelManagerAllSpecs() {
         var allSpecs = NakedFramework.MetamodelManager.AllSpecs;
-        ClassicAssert.AreEqual(60, allSpecs.Length);
+        Assert.AreEqual(60, allSpecs.Length);
     }
 
     [Test]
     public virtual void NakedObjectManagerNewAdapterForKnownObjectTest() {
         var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.NewAdapterForKnownObject(poco, null);
-        ClassicAssert.AreEqual(poco, adapter.Object);
+        Assert.AreEqual(poco, adapter.Object);
     }
 
     [Test]
@@ -96,7 +95,7 @@ public class ComponentUnusedApiTest : AcceptanceTestCase {
         var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
         NakedFramework.Persistor.Reload(adapter);
-        ClassicAssert.AreEqual(poco, adapter.Object);
+        Assert.AreEqual(poco, adapter.Object);
     }
 
     [Test]
@@ -105,7 +104,7 @@ public class ComponentUnusedApiTest : AcceptanceTestCase {
         var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
         var field = (adapter.Spec as IObjectSpec)?.Properties.First();
         NakedFramework.Persistor.ResolveField(adapter, field);
-        ClassicAssert.AreEqual(poco, adapter.Object);
+        Assert.AreEqual(poco, adapter.Object);
     }
 
     [Test]
@@ -113,34 +112,34 @@ public class ComponentUnusedApiTest : AcceptanceTestCase {
         var poco = NakedFramework.Persistor.Instances<Foo>().Single();
         var adapter = NakedFramework.NakedObjectManager.GetAdapterFor(poco);
         NakedFramework.Persistor.LoadField(adapter, nameof(Foo.Name));
-        ClassicAssert.AreEqual(poco, adapter.Object);
+        Assert.AreEqual(poco, adapter.Object);
     }
 
     [Test]
     public virtual void ObjectStoreIsInitialisedTest() {
         var objectStore = ServiceScope.ServiceProvider.GetService<IObjectStore>();
-        ClassicAssert.IsTrue(objectStore.IsInitialized);
+        Assert.IsTrue(objectStore.IsInitialized);
     }
 
     [Test]
     public virtual void ServicesManagerGetServiceTest() {
         var service = NakedFramework.ServicesManager.GetService("SimpleRepository-Foo");
-        ClassicAssert.AreEqual(typeof(SimpleRepository<Foo>), service.Object.GetType());
+        Assert.AreEqual(typeof(SimpleRepository<Foo>), service.Object.GetType());
     }
 
     [Test]
     public virtual void SessionIsAuthenticatedTest() {
         var session = NakedFramework.Session;
-        ClassicAssert.IsTrue(session.IsAuthenticated);
+        Assert.IsTrue(session.IsAuthenticated);
     }
 
     [Test]
     public virtual void TransactionManagerTransactionLevelTest() {
         var transactionManager = NakedFramework.TransactionManager;
         transactionManager.StartTransaction();
-        ClassicAssert.AreEqual(1, transactionManager.TransactionLevel);
+        Assert.AreEqual(1, transactionManager.TransactionLevel);
         transactionManager.EndTransaction();
-        ClassicAssert.AreEqual(0, transactionManager.TransactionLevel);
+        Assert.AreEqual(0, transactionManager.TransactionLevel);
     }
 }
 

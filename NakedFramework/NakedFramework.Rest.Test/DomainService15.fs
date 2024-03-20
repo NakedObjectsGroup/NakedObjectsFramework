@@ -12,7 +12,6 @@ open Newtonsoft.Json.Linq
 open NUnit.Framework
 open System.Net
 open Functions
-open NUnit.Framework.Legacy
 
 let GetService(api : RestfulObjectsControllerBase) = 
     let sName = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -110,9 +109,9 @@ let GetService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetContributorService(api : RestfulObjectsControllerBase) = 
@@ -182,9 +181,9 @@ let GetContributorService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
 
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) = 
@@ -285,9 +284,9 @@ let GetServiceSimpleOnly(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetServiceWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -387,9 +386,9 @@ let GetServiceWithMediaType(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let GetWithActionService(api : RestfulObjectsControllerBase) = 
@@ -1051,9 +1050,9 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                   TProperty(JsonPropertyNames.IsService, TObjectVal(true)) ])) ]
     
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
-    ClassicAssert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, sName), headers.ContentType)
     assertNonExpiringCache headers
-    ClassicAssert.IsNull(headers.ETag)
+    Assert.IsNull(headers.ETag)
     compareObject expected parsedResult
 
 let InvalidGetService(api : RestfulObjectsControllerBase) = 
@@ -1065,8 +1064,8 @@ let InvalidGetService(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    ClassicAssert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedFramework.Facade.Error.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let NotFoundGetService(api : RestfulObjectsControllerBase) = 
     let sName = ttc "RestfulObjects.Test.Data.NoSuchService"
@@ -1077,8 +1076,8 @@ let NotFoundGetService(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-    ClassicAssert.AreEqual(sprintf "199 RestfulObjects \"No such service %s: Type not found\"" sName, headers.Headers.["Warning"].ToString())
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such service %s: Type not found\"" sName, headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 let NotAcceptableGetServiceWrongMediaType(api : RestfulObjectsControllerBase) = 
     let sName = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -1089,4 +1088,4 @@ let NotAcceptableGetServiceWrongMediaType(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-    ClassicAssert.AreEqual("", jsonResult)
+    Assert.AreEqual("", jsonResult)

@@ -17,7 +17,6 @@ using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -145,8 +144,8 @@ public class GetTypeFromLoadedAssembliesTestAbstract {
             sw.Start();
             var t = funcUnderTest(s);
             sw.Stop();
-            ClassicAssert.IsNotNull(t);
-            ClassicAssert.AreEqual(s, t.FullName);
+            Assert.IsNotNull(t);
+            Assert.AreEqual(s, t.FullName);
         }
 
         return sw.ElapsedMilliseconds;

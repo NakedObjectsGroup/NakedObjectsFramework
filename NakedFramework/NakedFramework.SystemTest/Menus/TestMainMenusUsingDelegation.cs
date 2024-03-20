@@ -25,7 +25,6 @@ using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using TestObjectMenu;
 
 // ReSharper disable UnusedMember.Global
@@ -96,7 +95,7 @@ public class TestMainMenusUsingDelegation : AcceptanceTestCase {
 
         var foo = menus[0];
         foo.AssertItemCountIs(3);
-        ClassicAssert.AreEqual(3, foo.AllItems().Count(i => i != null));
+        Assert.AreEqual(3, foo.AllItems().Count(i => i != null));
 
         foo.AllItems()[0].AssertNameEquals("Foo Action0");
         foo.AllItems()[1].AssertNameEquals("Foo Action1");

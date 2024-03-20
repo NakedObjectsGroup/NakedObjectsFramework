@@ -26,7 +26,6 @@ using NakedObjects.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using ROSI.Apis;
 using ROSI.Exceptions;
 using SystemTest.Attributes;
@@ -202,7 +201,7 @@ public class TestAttributes : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<T>(), id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -210,7 +209,7 @@ public class TestAttributes : AcceptanceTestCase {
         var api = Api();
         var result = api.GetService(FullName<T>());
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -219,7 +218,7 @@ public class TestAttributes : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.GetInvokeOnService(FullName<SimpleRepository<T>>(), nameof(SimpleRepository<T>.AllInstances), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -228,23 +227,23 @@ public class TestAttributes : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
         var result = api.GetInvokeOnService(FullName<SimpleRepository<T>>(), nameof(SimpleRepository<T>.NewInstance), map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
     private static void AssertOrderIs(JProperty[] properties, params string[] names) {
-        ClassicAssert.AreEqual(names.Length, properties.Length);
+        Assert.AreEqual(names.Length, properties.Length);
 
         for (var i = 0; i < names.Length; i++) {
-            ClassicAssert.AreEqual(names[i], properties[i].Name);
+            Assert.AreEqual(names[i], properties[i].Name);
         }
     }
 
     private static void AssertMemberOrderExtensionIs(JProperty[] properties, params int[] order) {
-        ClassicAssert.AreEqual(order.Length, properties.Length);
+        Assert.AreEqual(order.Length, properties.Length);
 
         for (var i = 0; i < order.Length; i++) {
-            ClassicAssert.AreEqual(order[i], properties[i].Value["extensions"]["memberOrder"].Value<int>());
+            Assert.AreEqual(order[i], properties[i].Value["extensions"]["memberOrder"].Value<int>());
         }
     }
 
@@ -261,8 +260,8 @@ public class TestAttributes : AcceptanceTestCase {
         var range = prop["extensions"]["x-ro-nof-range"];
         var min = range["min"];
         var max = range["max"];
-        ClassicAssert.AreEqual("-1", min.ToString());
-        ClassicAssert.AreEqual("10", max.ToString());
+        Assert.AreEqual("-1", min.ToString());
+        Assert.AreEqual("10", max.ToString());
     }
 
     private void NumericParmRangeTest(JObject obj, string name) {
@@ -270,8 +269,8 @@ public class TestAttributes : AcceptanceTestCase {
         var range = act["parameters"]["parm"]["extensions"]["x-ro-nof-range"];
         var min = range["min"];
         var max = range["max"];
-        ClassicAssert.AreEqual("5", min.ToString());
-        ClassicAssert.AreEqual("6", max.ToString());
+        Assert.AreEqual("5", min.ToString());
+        Assert.AreEqual("6", max.ToString());
     }
 
     //[Test]
@@ -281,10 +280,10 @@ public class TestAttributes : AcceptanceTestCase {
     //    var adapter = NakedFramework.NakedObjectManager.CreateAdapter(obj, null, null);
     //    var finderActions = ((IObjectSpec)adapter.Spec).GetFinderActions();
 
-    //    ClassicAssert.AreEqual(3, finderActions.Length);
-    //    ClassicAssert.AreEqual("Finder Action1", finderActions[0].Name(null));
-    //    ClassicAssert.AreEqual("Finder Action2", finderActions[1].Name(null));
-    //    ClassicAssert.AreEqual("Finder Action3", finderActions[2].Name(null));
+    //    Assert.AreEqual(3, finderActions.Length);
+    //    Assert.AreEqual("Finder Action1", finderActions[0].Name(null));
+    //    Assert.AreEqual("Finder Action2", finderActions[1].Name(null));
+    //    Assert.AreEqual("Finder Action3", finderActions[2].Name(null));
     //}
 
     [Test]
@@ -308,9 +307,9 @@ public class TestAttributes : AcceptanceTestCase {
         var mask1 = GetObject(FullName<Mask2>(), "1");
         var prop1 = mask1.GetProperty(nameof(Mask2.Prop1));
 
-        ClassicAssert.AreEqual(32.7, prop1.GetValue<decimal>());
-        ClassicAssert.AreEqual("decimal", prop1.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format));
-        ClassicAssert.AreEqual("c", prop1.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.x_ro_nof_mask));
+        Assert.AreEqual(32.7, prop1.GetValue<decimal>());
+        Assert.AreEqual("decimal", prop1.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.format));
+        Assert.AreEqual("c", prop1.GetExtensions().GetExtension<string>(ExtensionsApi.ExtensionKeys.x_ro_nof_mask));
     }
 
     [Test]
@@ -339,14 +338,14 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Maxlength2>();
         var act = GetMember(obj, nameof(Maxlength2.Action));
 
-        ClassicAssert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
+        Assert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
     }
 
     [Test]
     public virtual void ComponentModelMaxLengthOnProperty() {
         var obj = GetObject<Maxlength2>();
         var prop2 = GetMember(obj, nameof(Maxlength2.Prop2));
-        ClassicAssert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
+        Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
     }
 
     [Test]
@@ -361,7 +360,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetTransientObject<Default1>();
         var prop = GetMember((JObject)obj["result"], nameof(Default1.Prop1));
         var def = prop["value"];
-        ClassicAssert.AreEqual(8, def.Value<int>());
+        Assert.AreEqual(8, def.Value<int>());
     }
 
     [Test]
@@ -369,7 +368,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetTransientObject<Default1>();
         var prop = GetMember((JObject)obj["result"], nameof(Default1.Prop2));
         var def = prop["value"];
-        ClassicAssert.AreEqual("Foo", def.Value<string>());
+        Assert.AreEqual("Foo", def.Value<string>());
     }
 
     [Test]
@@ -378,24 +377,24 @@ public class TestAttributes : AcceptanceTestCase {
         var action = GetMember(obj, nameof(Default1.DoSomething));
         var def0 = action["parameters"]["param0"]["default"];
 
-        ClassicAssert.AreEqual(8, def0.Value<int>());
+        Assert.AreEqual(8, def0.Value<int>());
 
         var def1 = action["parameters"]["param1"]["default"];
 
-        ClassicAssert.AreEqual("Foo", def1.Value<string>());
+        Assert.AreEqual("Foo", def1.Value<string>());
     }
 
     [Test]
     public virtual void DescribedAsAppliedToAction() {
         var obj = GetObject<Describedas1>();
         var action = GetMember(obj, nameof(Describedas1.DoSomething));
-        ClassicAssert.AreEqual("Hex", action["extensions"]["description"].ToString());
+        Assert.AreEqual("Hex", action["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DescribedAsAppliedToObject() {
         var obj = GetObject<Describedas1>();
-        ClassicAssert.AreEqual("Foo", obj["extensions"]["description"].ToString());
+        Assert.AreEqual("Foo", obj["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -403,27 +402,27 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Describedas1>();
         var action = GetMember(obj, nameof(Describedas1.DoSomething));
         var param = action["parameters"]["param1"];
-        ClassicAssert.AreEqual("Yop", param["extensions"]["description"].ToString());
+        Assert.AreEqual("Yop", param["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DescribedAsAppliedToProperty() {
         var obj = GetObject<Describedas1>();
         var prop = GetMember(obj, nameof(Describedas1.Prop1));
-        ClassicAssert.AreEqual("Bar", prop["extensions"]["description"].ToString());
+        Assert.AreEqual("Bar", prop["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DescriptionAppliedToAction() {
         var obj = GetObject<Description1>();
         var action = GetMember(obj, nameof(Description1.DoSomething));
-        ClassicAssert.AreEqual("Hex", action["extensions"]["description"].ToString());
+        Assert.AreEqual("Hex", action["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DescriptionAppliedToObject() {
         var obj = GetObject<Description1>();
-        ClassicAssert.AreEqual("Foo", obj["extensions"]["description"].ToString());
+        Assert.AreEqual("Foo", obj["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -432,14 +431,14 @@ public class TestAttributes : AcceptanceTestCase {
 
         var action = GetMember(obj, nameof(Description1.DoSomething));
         var param = action["parameters"]["param1"];
-        ClassicAssert.AreEqual("Yop", param["extensions"]["description"].ToString());
+        Assert.AreEqual("Yop", param["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void DescriptionAppliedToProperty() {
         var obj = GetObject<Description1>();
         var prop = GetMember(obj, nameof(Description1.Prop1));
-        ClassicAssert.AreEqual("Bar", prop["extensions"]["description"].ToString());
+        Assert.AreEqual("Bar", prop["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -447,7 +446,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetTransientObject<Disabled1>();
         var prop1 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop1));
 
-        ClassicAssert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
     }
 
     [Test]
@@ -455,76 +454,76 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Disabled1>();
         var prop1 = GetMember(obj, nameof(Disabled1.Prop1));
 
-        ClassicAssert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledAlwaysTransient() {
         var obj = GetTransientObject<Disabled1>();
         var prop5 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop5));
-        ClassicAssert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledAlways() {
         var obj = GetObject<Disabled1>();
         var prop5 = GetMember(obj, nameof(Disabled1.Prop5));
-        ClassicAssert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledNeverTransient() {
         var obj = GetTransientObject<Disabled1>();
         var prop4 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop4));
-        ClassicAssert.AreEqual(null, prop4["disabledReason"]);
+        Assert.AreEqual(null, prop4["disabledReason"]);
     }
 
     [Test]
     public virtual void DisabledNever() {
         var obj = GetObject<Disabled1>();
         var prop4 = GetMember(obj, nameof(Disabled1.Prop4));
-        ClassicAssert.AreEqual(null, prop4["disabledReason"]);
+        Assert.AreEqual(null, prop4["disabledReason"]);
     }
 
     [Test]
     public virtual void DisabledOncePersistedTransient() {
         var obj = GetTransientObject<Disabled1>();
         var prop2 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop2));
-        ClassicAssert.AreEqual(null, prop2["disabledReason"]);
+        Assert.AreEqual(null, prop2["disabledReason"]);
     }
 
     [Test]
     public virtual void DisabledOncePersisted() {
         var obj = GetObject<Disabled1>();
         var prop2 = GetMember(obj, nameof(Disabled1.Prop2));
-        ClassicAssert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledUntilPersistedTransient() {
         var obj = GetTransientObject<Disabled1>();
         var prop3 = GetMember((JObject)obj["result"], nameof(Disabled1.Prop3));
-        ClassicAssert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void DisabledUntilPersisted() {
         var obj = GetObject<Disabled1>();
         var prop3 = GetMember(obj, nameof(Disabled1.Prop3));
-        ClassicAssert.AreEqual(null, prop3["disabledReason"]);
+        Assert.AreEqual(null, prop3["disabledReason"]);
     }
 
     [Test]
     public virtual void DisplayNameAppliedToAction() {
         var obj = GetObject<Displayname1>();
         var action = GetMember(obj, nameof(Displayname1.DoSomething));
-        ClassicAssert.AreEqual("Hex", action["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Hex", action["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
     public virtual void DisplayNameAppliedToObject() {
         var obj = GetObject<Displayname1>();
-        ClassicAssert.AreEqual("Untitled Foo", obj["title"].ToString());
+        Assert.AreEqual("Untitled Foo", obj["title"].ToString());
     }
 
     [Test]
@@ -533,82 +532,82 @@ public class TestAttributes : AcceptanceTestCase {
         var prop1 = GetMember(obj, nameof(Mask1.Prop1));
         var prop2 = GetMember(obj, nameof(Mask1.Prop2));
 
-        ClassicAssert.AreEqual("2009-09-23", prop1["value"].ToString());
-        ClassicAssert.AreEqual("date", prop1["extensions"]["format"].ToString());
+        Assert.AreEqual("2009-09-23", prop1["value"].ToString());
+        Assert.AreEqual("date", prop1["extensions"]["format"].ToString());
 
-        ClassicAssert.AreEqual("2009-09-24", prop2["value"].ToString());
-        ClassicAssert.AreEqual("date", prop2["extensions"]["format"].ToString());
-        ClassicAssert.AreEqual("d", prop2["extensions"]["x-ro-nof-mask"].ToString());
+        Assert.AreEqual("2009-09-24", prop2["value"].ToString());
+        Assert.AreEqual("date", prop2["extensions"]["format"].ToString());
+        Assert.AreEqual("d", prop2["extensions"]["x-ro-nof-mask"].ToString());
     }
 
     [Test]
     public virtual void HiddenTransient() {
         var obj = GetTransientObject<Hidden1>();
         var prop1 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop1));
-        ClassicAssert.IsNull(prop1);
+        Assert.IsNull(prop1);
     }
 
     [Test]
     public virtual void Hidden() {
         var obj = GetObject<Hidden1>();
         var prop1 = GetMember(obj, nameof(Hidden1.Prop1));
-        ClassicAssert.IsNull(prop1);
+        Assert.IsNull(prop1);
     }
 
     [Test]
     public virtual void HiddenAlwaysTransient() {
         var obj = GetTransientObject<Hidden1>();
         var prop5 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop5));
-        ClassicAssert.IsNull(prop5);
+        Assert.IsNull(prop5);
     }
 
     [Test]
     public virtual void HiddenAlways() {
         var obj = GetObject<Hidden1>();
         var prop5 = GetMember(obj, nameof(Hidden1.Prop5));
-        ClassicAssert.IsNull(prop5);
+        Assert.IsNull(prop5);
     }
 
     [Test]
     public virtual void HiddenNeverTransient() {
         var obj = GetTransientObject<Hidden1>();
         var prop4 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop4));
-        ClassicAssert.IsNotNull(prop4);
+        Assert.IsNotNull(prop4);
     }
 
     [Test]
     public virtual void HiddenNever() {
         var obj = GetObject<Hidden1>();
         var prop4 = GetMember(obj, nameof(Hidden1.Prop4));
-        ClassicAssert.IsNotNull(prop4);
+        Assert.IsNotNull(prop4);
     }
 
     [Test]
     public virtual void HiddenOncePersistedTransient() {
         var obj = GetTransientObject<Hidden1>();
         var prop2 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop2));
-        ClassicAssert.IsNotNull(prop2);
+        Assert.IsNotNull(prop2);
     }
 
     [Test]
     public virtual void HiddenOncePersisted() {
         var obj = GetObject<Hidden1>();
         var prop2 = GetMember(obj, nameof(Hidden1.Prop2));
-        ClassicAssert.IsNull(prop2);
+        Assert.IsNull(prop2);
     }
 
     [Test]
     public virtual void HiddenUntilPersistedTransient() {
         var obj = GetTransientObject<Hidden1>();
         var prop3 = GetMember((JObject)obj["result"], nameof(Hidden1.Prop3));
-        ClassicAssert.IsNull(prop3);
+        Assert.IsNull(prop3);
     }
 
     [Test]
     public virtual void HiddenUntilPersisted() {
         var obj = GetObject<Hidden1>();
         var prop3 = GetMember(obj, nameof(Hidden1.Prop3));
-        ClassicAssert.IsNotNull(prop3);
+        Assert.IsNotNull(prop3);
     }
 
     //[Test]
@@ -616,9 +615,9 @@ public class TestAttributes : AcceptanceTestCase {
     //    var obj = GetObject<NakedObjectsIgnore1>();
     //    //Note: numbers will change to 3 & 1 when NakedObjectsType
     //    //is re-introduced and commented back in
-    //    ClassicAssert.AreEqual(3, GetProperties(obj).Length);
-    //    ClassicAssert.AreEqual(2, GetCollections(obj).Length);
-    //    ClassicAssert.AreEqual(3, GetActions(obj).Length);
+    //    Assert.AreEqual(3, GetProperties(obj).Length);
+    //    Assert.AreEqual(2, GetCollections(obj).Length);
+    //    Assert.AreEqual(3, GetActions(obj).Length);
     //}
 
     [Test]
@@ -626,27 +625,27 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Maxlength1>();
         var act = GetMember(obj, nameof(Maxlength1.Action));
 
-        ClassicAssert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
+        Assert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
     }
 
     [Test]
     public virtual void NakedObjectsMaxLengthOnProperty() {
         var obj = GetObject<Maxlength1>();
         var prop2 = GetMember(obj, nameof(Maxlength1.Prop2));
-        ClassicAssert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
+        Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
     }
 
     [Test]
     public virtual void NamedAppliedToAction() {
         var obj = GetObject<Named1>();
         var action = GetMember(obj, nameof(Named1.DoSomething));
-        ClassicAssert.AreEqual("Hex", action["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Hex", action["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
     public virtual void NamedAppliedToObject() {
         var obj = GetObject<Named1>();
-        ClassicAssert.AreEqual("Untitled Foo", obj["title"].ToString());
+        Assert.AreEqual("Untitled Foo", obj["title"].ToString());
     }
 
     [Test]
@@ -654,27 +653,27 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Named1>();
         var action = GetMember(obj, nameof(Named1.DoSomething));
         var param = action["parameters"]["param1"];
-        ClassicAssert.AreEqual("Yop", param["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Yop", param["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
     public virtual void NamedAppliedToProperty() {
         var obj = GetObject<Named1>();
         var prop = GetMember(obj, nameof(Named1.Prop1));
-        ClassicAssert.AreEqual("Bar", prop["extensions"]["friendlyName"].ToString());
+        Assert.AreEqual("Bar", prop["extensions"]["friendlyName"].ToString());
     }
 
     [Test]
     public virtual void NullDescribedAsAppliedToAction() {
         var obj = GetObject<Describedas2>();
         var action = GetMember(obj, nameof(Describedas2.DoSomething));
-        ClassicAssert.AreEqual("", action["extensions"]["description"].ToString());
+        Assert.AreEqual("", action["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void NullDescribedAsAppliedToObject() {
         var obj = GetObject<Describedas2>();
-        ClassicAssert.AreEqual("", obj["extensions"]["description"].ToString());
+        Assert.AreEqual("", obj["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -682,27 +681,27 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Describedas2>();
         var action = GetMember(obj, nameof(Describedas2.DoSomething));
         var param = action["parameters"]["param1"];
-        ClassicAssert.AreEqual("", param["extensions"]["description"].ToString());
+        Assert.AreEqual("", param["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void NullDescribedAsAppliedToProperty() {
         var obj = GetObject<Describedas2>();
         var prop = GetMember(obj, nameof(Describedas2.Prop1));
-        ClassicAssert.AreEqual("", obj["extensions"]["description"].ToString());
+        Assert.AreEqual("", obj["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void NullDescriptionAppliedToAction() {
         var obj = GetObject<Description2>();
         var action = GetMember(obj, nameof(Description2.DoSomething));
-        ClassicAssert.AreEqual("", action["extensions"]["description"].ToString());
+        Assert.AreEqual("", action["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void NullDescriptionAppliedToObject() {
         var obj = GetObject<Description2>();
-        ClassicAssert.AreEqual("", obj["extensions"]["description"].ToString());
+        Assert.AreEqual("", obj["extensions"]["description"].ToString());
     }
 
     [Test]
@@ -710,58 +709,58 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Description2>();
         var action = GetMember(obj, nameof(Description2.DoSomething));
         var param = action["parameters"]["param1"];
-        ClassicAssert.AreEqual("", param["extensions"]["description"].ToString());
+        Assert.AreEqual("", param["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void NullDescriptionAppliedToProperty() {
         var obj = GetObject<Description2>();
         var prop = GetMember(obj, nameof(Description2.Prop1));
-        ClassicAssert.AreEqual("", prop["extensions"]["description"].ToString());
+        Assert.AreEqual("", prop["extensions"]["description"].ToString());
     }
 
     [Test]
     public virtual void ObjectImmutableTransient() {
         var obj = GetTransientObject<Immutable2>();
         var prop0 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop0));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].ToString());
         var prop1 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop1));
-        ClassicAssert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
         var prop2 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop2));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop2["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop2["disabledReason"].ToString());
         var prop3 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop3));
-        ClassicAssert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable until the object is persistent", prop3["disabledReason"].ToString());
         var prop4 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop4));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].ToString());
         var prop5 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop5));
-        ClassicAssert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
         var prop6 = GetMember((JObject)obj["result"], nameof(Immutable2.Prop6));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void ObjectImmutable() {
         var obj = GetObject<Immutable2>("2");
         var prop0 = GetMember(obj, nameof(Immutable2.Prop0));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].ToString());
         var prop1 = GetMember(obj, nameof(Immutable2.Prop1));
-        ClassicAssert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].ToString());
         var prop2 = GetMember(obj, nameof(Immutable2.Prop2));
-        ClassicAssert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].ToString());
         var prop3 = GetMember(obj, nameof(Immutable2.Prop3));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop3["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop3["disabledReason"].ToString());
         var prop4 = GetMember(obj, nameof(Immutable2.Prop4));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].ToString());
         var prop5 = GetMember(obj, nameof(Immutable2.Prop5));
-        ClassicAssert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].ToString());
         var prop6 = GetMember(obj, nameof(Immutable2.Prop6));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].ToString());
     }
 
     [Test]
     public virtual void ObjectWithTitleAttributeOnString() {
         var obj = GetObject<Title1>();
-        ClassicAssert.AreEqual("Foo", obj["title"].ToString());
+        Assert.AreEqual("Foo", obj["title"].ToString());
     }
 
     [Test]
@@ -788,8 +787,8 @@ public class TestAttributes : AcceptanceTestCase {
         var min = range["min"];
         var max = range["max"];
 
-        ClassicAssert.AreEqual(todayMinus30, min.ToString());
-        ClassicAssert.AreEqual(today, max.ToString());
+        Assert.AreEqual(todayMinus30, min.ToString());
+        Assert.AreEqual(today, max.ToString());
     }
 
     [Test]
@@ -800,8 +799,8 @@ public class TestAttributes : AcceptanceTestCase {
         var min = range["min"];
         var max = range["max"];
 
-        ClassicAssert.AreEqual(todayPlus1, min.ToString());
-        ClassicAssert.AreEqual(todayPlus30, max.ToString());
+        Assert.AreEqual(todayPlus1, min.ToString());
+        Assert.AreEqual(todayPlus30, max.ToString());
     }
 
     //[Test]
@@ -812,8 +811,8 @@ public class TestAttributes : AcceptanceTestCase {
     //    var min = range["min"];
     //    var max = range["max"];
 
-    //    ClassicAssert.AreEqual(todayMinus30, min.ToString());
-    //    ClassicAssert.AreEqual(today, max.ToString());
+    //    Assert.AreEqual(todayMinus30, min.ToString());
+    //    Assert.AreEqual(today, max.ToString());
     //}
 
     //[Test]
@@ -824,8 +823,8 @@ public class TestAttributes : AcceptanceTestCase {
     //    var range = prop["extensions"]["x-ro-nof-range"];
     //    var min = range["min"];
     //    var max = range["max"];
-    //    ClassicAssert.AreEqual(todayPlus1, min.ToString());
-    //    ClassicAssert.AreEqual(todayPlus30, max.ToString());
+    //    Assert.AreEqual(todayPlus1, min.ToString());
+    //    Assert.AreEqual(todayPlus30, max.ToString());
     //}
 
     [Test]
@@ -885,7 +884,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Regex1>();
         var email = GetMember(obj, nameof(Regex1.Email));
 
-        ClassicAssert.AreEqual(@"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$", email["extensions"]["pattern"].Value<string>());
+        Assert.AreEqual(@"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$", email["extensions"]["pattern"].Value<string>());
     }
 
     [Test]
@@ -893,7 +892,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Stringlength1>();
         var act = GetMember(obj, nameof(Stringlength1.Action));
 
-        ClassicAssert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
+        Assert.AreEqual(8, act["parameters"]["parm"]["extensions"]["maxLength"].Value<int>());
     }
 
     [Test]
@@ -901,93 +900,93 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject<Stringlength1>();
         var prop2 = GetMember(obj, nameof(Stringlength1.Prop2));
 
-        ClassicAssert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
+        Assert.AreEqual(7, prop2["extensions"]["maxLength"].Value<int>());
     }
 
     [Test]
     public virtual void TestObjectImmutableOncePersistedBefore() {
         var obj = GetTransientObject<Immutable3>();
         var prop0 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop0));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
         var prop1 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop1));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
         var prop2 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop2));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
         var prop3 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop3));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
         var prop4 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop4));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
         var prop5 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop5));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
         var prop6 = GetMember((JObject)obj["result"], nameof(Immutable3.Prop6));
-        ClassicAssert.AreEqual(null, prop0["disabledReason"]);
+        Assert.AreEqual(null, prop0["disabledReason"]);
     }
 
     [Test]
     public virtual void TestObjectImmutableOncePersistedAfter() {
         var obj = GetObject<Immutable3>("3");
         var prop0 = GetMember(obj, nameof(Immutable3.Prop0));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].Value<string>());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop0["disabledReason"].Value<string>());
         var prop1 = GetMember(obj, nameof(Immutable3.Prop1));
-        ClassicAssert.AreEqual("Field not editable", prop1["disabledReason"].Value<string>());
+        Assert.AreEqual("Field not editable", prop1["disabledReason"].Value<string>());
         var prop2 = GetMember(obj, nameof(Immutable3.Prop2));
-        ClassicAssert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].Value<string>());
+        Assert.AreEqual("Field not editable now that object is persistent", prop2["disabledReason"].Value<string>());
         var prop3 = GetMember(obj, nameof(Immutable3.Prop3));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop3["disabledReason"].Value<string>());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop3["disabledReason"].Value<string>());
         var prop4 = GetMember(obj, nameof(Immutable3.Prop4));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].Value<string>());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop4["disabledReason"].Value<string>());
         var prop5 = GetMember(obj, nameof(Immutable3.Prop5));
-        ClassicAssert.AreEqual("Field not editable", prop5["disabledReason"].Value<string>());
+        Assert.AreEqual("Field not editable", prop5["disabledReason"].Value<string>());
         var prop6 = GetMember(obj, nameof(Immutable3.Prop6));
-        ClassicAssert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].Value<string>());
+        Assert.AreEqual("Field disabled as object cannot be changed", prop6["disabledReason"].Value<string>());
     }
 
     [Test] //Error caused by change to TitleFacetViaProperty in f86f40ac on 08/10/2014
     public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute1() {
         var obj1 = GetObject<Title1>();
-        ClassicAssert.AreEqual("Foo", obj1["title"].Value<string>());
+        Assert.AreEqual("Foo", obj1["title"].Value<string>());
     }
 
     [Test] //Error caused by change to TitleFacetViaProperty in f86f40ac on 08/10/2014
     public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute2() {
         var obj8 = GetObject<Title8>();
-        ClassicAssert.AreEqual("Foo", obj8["title"].Value<string>());
+        Assert.AreEqual("Foo", obj8["title"].Value<string>());
     }
 
     [Test] //Error caused by change to TitleFacetViaProperty in f86f40ac on 08/10/2014
     public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod1() {
         var obj4 = GetObject<Title4>();
-        ClassicAssert.AreEqual("Bar", obj4["title"].Value<string>());
+        Assert.AreEqual("Bar", obj4["title"].Value<string>());
     }
 
     [Test] //Error caused by change to TitleFacetViaProperty in f86f40ac on 08/10/2014
     public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod2() {
         var obj7 = GetObject<Title7>();
-        ClassicAssert.AreEqual("Bar", obj7["title"].Value<string>());
+        Assert.AreEqual("Bar", obj7["title"].Value<string>());
     }
 
     [Test]
     public virtual void TitleAttributeOnReferencePropertyThatHasAToString1() {
         var obj2 = GetObject<Title2>();
-        ClassicAssert.AreEqual("Baz", obj2["title"].Value<string>());
+        Assert.AreEqual("Baz", obj2["title"].Value<string>());
     }
 
     [Test]
     public virtual void TitleAttributeOnReferencePropertyThatHasAToString2() {
         var obj9 = GetObject<Title9>();
-        ClassicAssert.AreEqual("Baz", obj9["title"].Value<string>());
+        Assert.AreEqual("Baz", obj9["title"].Value<string>());
     }
 
     [Test]
     public virtual void TitleAttributeTakesPrecedenceOverTitleMethod() {
         var obj = GetObject<Title6>();
-        ClassicAssert.AreEqual("Foo", obj["title"].Value<string>());
+        Assert.AreEqual("Foo", obj["title"].Value<string>());
     }
 
     [Test]
     public virtual void TitleAttributeTakesPrecedenceOverToString() {
         var obj = GetObject<Title3>();
-        ClassicAssert.AreEqual("Qux", obj["title"].Value<string>());
+        Assert.AreEqual("Qux", obj["title"].Value<string>());
     }
 
     [Test]
@@ -997,14 +996,14 @@ public class TestAttributes : AcceptanceTestCase {
         try {
             var prop = await vpu1.GetProperty(nameof(Validateprogrammaticupdates1.Prop1)).GetDetails();
             var val = await prop.SetValue("fail");
-            ClassicAssert.Fail();
+            Assert.Fail();
         }
         catch (HttpInvalidArgumentsRosiException e) {
-            ClassicAssert.AreEqual(HttpStatusCode.UnprocessableEntity, e.StatusCode);
-            ClassicAssert.AreEqual("fail", e.Content.GetArgument().GetInvalidReason());
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, e.StatusCode);
+            Assert.AreEqual("fail", e.Content.GetArgument().GetInvalidReason());
         }
         catch (Exception e) {
-            ClassicAssert.Fail(e.Message);
+            Assert.Fail(e.Message);
         }
     }
 
@@ -1015,14 +1014,14 @@ public class TestAttributes : AcceptanceTestCase {
 
         try {
             var result = await service.GetAction(nameof(TestServiceValidateProgrammaticUpdates.SaveObject1)).Invoke(vpu1, "fail");
-            ClassicAssert.Fail();
+            Assert.Fail();
         }
         catch (HttpErrorRosiException e) {
-            ClassicAssert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
-            ClassicAssert.AreEqual(@"199 RestfulObjects ""Validateprogrammaticupdates1/Untitled Validateprogrammaticupdates1 not in a valid state to be persisted - Validateprogrammaticupdates1.Prop1 is invalid: fail""", e.Message);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
+            Assert.AreEqual(@"199 RestfulObjects ""Validateprogrammaticupdates1/Untitled Validateprogrammaticupdates1 not in a valid state to be persisted - Validateprogrammaticupdates1.Prop1 is invalid: fail""", e.Message);
         }
         catch (Exception e) {
-            ClassicAssert.Fail(e.Message);
+            Assert.Fail(e.Message);
         }
     }
 
@@ -1035,14 +1034,14 @@ public class TestAttributes : AcceptanceTestCase {
         try {
             await vpu2.PersistWithNamedParams(new Dictionary<string, object> { { "Id", 0 }, { "Prop1", "fail" }, { "Prop2", "" } });
 
-            ClassicAssert.Fail();
+            Assert.Fail();
         }
         catch (HttpInvalidArgumentsRosiException e) {
-            ClassicAssert.AreEqual(HttpStatusCode.UnprocessableEntity, e.StatusCode);
-            ClassicAssert.AreEqual("fail", e.Content.GetInvalidReason());
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, e.StatusCode);
+            Assert.AreEqual("fail", e.Content.GetInvalidReason());
         }
         catch (Exception e) {
-            ClassicAssert.Fail(e.Message);
+            Assert.Fail(e.Message);
         }
     }
 
@@ -1054,14 +1053,14 @@ public class TestAttributes : AcceptanceTestCase {
         try {
             var result = await service.GetAction(nameof(TestServiceValidateProgrammaticUpdates.SaveObject2)).Invoke(vpu2, "fail");
 
-            ClassicAssert.Fail();
+            Assert.Fail();
         }
         catch (HttpErrorRosiException e) {
-            ClassicAssert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
-            ClassicAssert.AreEqual(@"199 RestfulObjects ""Validateprogrammaticupdates2/Untitled Validateprogrammaticupdates2 not in a valid state to be persisted - fail""", e.Message);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
+            Assert.AreEqual(@"199 RestfulObjects ""Validateprogrammaticupdates2/Untitled Validateprogrammaticupdates2 not in a valid state to be persisted - fail""", e.Message);
         }
         catch (Exception e) {
-            ClassicAssert.Fail(e.Message);
+            Assert.Fail(e.Message);
         }
     }
 
@@ -1070,7 +1069,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject(FullName<Multiline1>(), "1");
         var result = await obj.GetAction(nameof(Multiline1.Action)).Invoke("fred");
 
-        ClassicAssert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
     }
 
     [Test]
@@ -1078,10 +1077,10 @@ public class TestAttributes : AcceptanceTestCase {
         try {
             var obj = GetObject(FullName<Multiline1>(), "1");
             var result = await obj.GetAction(nameof(Multiline1.Action)).Invoke("");
-            ClassicAssert.Fail("expect exception");
+            Assert.Fail("expect exception");
         }
         catch (HttpInvalidArgumentsRosiException e) {
-            ClassicAssert.AreEqual("Mandatory", e.Content.GetArguments()["parm"].GetInvalidReason());
+            Assert.AreEqual("Mandatory", e.Content.GetArguments()["parm"].GetInvalidReason());
         }
     }
 
@@ -1090,7 +1089,7 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject(FullName<Multiline1>(), "1");
         var result = await obj.GetAction(nameof(Multiline1.Action1)).Invoke("fred");
 
-        ClassicAssert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
     }
 
     [Test]
@@ -1098,6 +1097,6 @@ public class TestAttributes : AcceptanceTestCase {
         var obj = GetObject(FullName<Multiline1>(), "1");
         var result = await obj.GetAction(nameof(Multiline1.Action1)).Invoke("");
 
-        ClassicAssert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
+        Assert.AreEqual(ActionResultApi.ResultType.Void, result.GetResultType());
     }
 }

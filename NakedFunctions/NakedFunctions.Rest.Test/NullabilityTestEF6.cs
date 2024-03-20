@@ -20,7 +20,6 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace NakedFunctions.Rest.Test;
 
@@ -99,10 +98,10 @@ public class NullabilityTestEF6 : AcceptanceTestCase {
         var api = Api();
         var result = api.GetObject(FullName<UrlLinkRecord>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.AreEqual("True", parsedResult["members"]["NullableFunction"]["parameters"]["p1"]["extensions"]["optional"].ToString());
-        ClassicAssert.AreEqual("False", parsedResult["members"]["NullableFunction"]["parameters"]["p2"]["extensions"]["optional"].ToString());
+        Assert.AreEqual("True", parsedResult["members"]["NullableFunction"]["parameters"]["p1"]["extensions"]["optional"].ToString());
+        Assert.AreEqual("False", parsedResult["members"]["NullableFunction"]["parameters"]["p2"]["extensions"]["optional"].ToString());
     }
 }

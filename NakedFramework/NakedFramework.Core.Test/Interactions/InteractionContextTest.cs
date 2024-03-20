@@ -8,7 +8,6 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Interactions;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Interactions;
 
@@ -17,12 +16,12 @@ public class InteractionContextTest {
     [Test]
     public void IsProgramaticTest() {
         IInteractionContext context = InteractionContext.InvokingAction(null, true, null, null, null);
-        ClassicAssert.IsTrue(context.IsProgrammatic);
+        Assert.IsTrue(context.IsProgrammatic);
     }
 
     [Test]
     public void IsNotProgramaticTest() {
         IInteractionContext context = InteractionContext.InvokingAction(null, false, null, null, null);
-        ClassicAssert.IsFalse(context.IsProgrammatic);
+        Assert.IsFalse(context.IsProgrammatic);
     }
 }

@@ -6,8 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.Rest.Test.Functions
 
-open NUnit.Framework.Legacy
-
 #nowarn "44" // temp suppress crypto warning
 
 open System
@@ -234,7 +232,7 @@ let internal readActionResult (ar : ActionResult) (hc : HttpContext) =
      
 
 let internal comp (a : obj) (b : obj) e = 
-    ClassicAssert.AreEqual(a, b, e)   
+    Assert.AreEqual(a, b, e)   
 
 let internal listProperties (result : JObject) = 
     (result |> Seq.map (fun i -> (i :?> JProperty).Name) |> Seq.fold (fun a s ->  a + " " + s) "Properties: " )
@@ -246,13 +244,13 @@ let rec internal compareArray (expected : seq<TObject>) (result : JArray) =
      
     let ps = if expected |> Seq.length <> result.Count then result.ToString() else ""
         
-    ClassicAssert.AreEqual (expected |> Seq.length, result.Count, "Array - actual " + ps)
+    Assert.AreEqual (expected |> Seq.length, result.Count, "Array - actual " + ps)
     result |> Seq.zip expected 
            |> Seq.iter (fun i ->  compare (fst(i)) (snd(i)) )     
 
 and internal compareObject (expected : seq<TProp>) (result : JObject) = 
     
-    ClassicAssert.AreEqual (expected |> Seq.length, result.Count, ((listProperties result) + " " + (listExpected expected)) )
+    Assert.AreEqual (expected |> Seq.length, result.Count, ((listProperties result) + " " + (listExpected expected)) )
 
     let orderedResult = result |> Seq.sortBy (fun i -> (i :?> JProperty).Name)
     
@@ -267,7 +265,7 @@ and internal compareObject (expected : seq<TProp>) (result : JObject) =
 and internal compare expected (result : JToken) = 
     match expected  with 
     | TObjectJson(sq) -> compareObject sq (result :?> JObject )
-    | TObjectVal(o) ->  ClassicAssert.AreEqual(o, (result :?> JValue).Value) 
+    | TObjectVal(o) ->  Assert.AreEqual(o, (result :?> JValue).Value) 
     | TArray(sq)  -> compareArray sq  (result :?> JArray )    
 
 
@@ -1506,31 +1504,31 @@ let internal makeServiceActionCollectionMemberNoParms mName oName eType  = makeA
 let internal makeServiceActionVoidMember mName oName  = makeVoidActionMember "services" mName oName (makeFriendly(mName)) ""  []
 
 let internal assertTransactionalCache  (headers : Headers.ResponseHeaders) = 
-    ClassicAssert.AreEqual(true, headers.CacheControl.NoCache)
-    ClassicAssert.AreEqual("no-cache", headers.Headers.["Pragma"].ToString())
-    ClassicAssert.AreEqual(headers.Date, headers.Expires)
+    Assert.AreEqual(true, headers.CacheControl.NoCache)
+    Assert.AreEqual("no-cache", headers.Headers.["Pragma"].ToString())
+    Assert.AreEqual(headers.Date, headers.Expires)
 
 let internal assertConfigCache secs  (headers : Headers.ResponseHeaders) = 
     let ts = new TimeSpan(0, 0, secs)
-    ClassicAssert.AreEqual(ts, headers.CacheControl.MaxAge)
-    ClassicAssert.IsTrue(headers.Date.HasValue)
+    Assert.AreEqual(ts, headers.CacheControl.MaxAge)
+    Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + ts
-    ClassicAssert.AreEqual(expire, headers.Expires)
+    Assert.AreEqual(expire, headers.Expires)
 
 let internal assertUserInfoCache (headers : Headers.ResponseHeaders) = 
-    ClassicAssert.AreEqual(oneHour, headers.CacheControl.MaxAge)
-    ClassicAssert.IsTrue(headers.Date.HasValue)
+    Assert.AreEqual(oneHour, headers.CacheControl.MaxAge)
+    Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + oneHour
-    ClassicAssert.AreEqual(expire, headers.Expires)
+    Assert.AreEqual(expire, headers.Expires)
 
 let internal assertNonExpiringCache (headers : Headers.ResponseHeaders) = 
-    ClassicAssert.AreEqual(oneDay, headers.CacheControl.MaxAge)
-    ClassicAssert.IsTrue(headers.Date.HasValue)
+    Assert.AreEqual(oneDay, headers.CacheControl.MaxAge)
+    Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + oneDay
-    ClassicAssert.AreEqual(expire, headers.Expires)
+    Assert.AreEqual(expire, headers.Expires)
 
 let internal assertStatusCode (sc : HttpStatusCode) iSc msg= 
-    ClassicAssert.AreEqual((int)sc, iSc, msg)
+    Assert.AreEqual((int)sc, iSc, msg)
 
 let internal CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, true)
      

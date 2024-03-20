@@ -8,7 +8,6 @@
 using NakedFramework.Architecture.Interactions;
 using NakedFramework.Core.Interactions;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace NakedFramework.Core.Test.Interactions;
 
@@ -17,8 +16,8 @@ public class InteractionBufferTest {
     [Test]
     public void IsNotEmptyTest() {
         IInteractionBuffer buffer = new InteractionBuffer();
-        ClassicAssert.IsFalse(buffer.IsNotEmpty);
+        Assert.IsFalse(buffer.IsNotEmpty);
         buffer.Append("a reason");
-        ClassicAssert.IsTrue(buffer.IsNotEmpty);
+        Assert.IsTrue(buffer.IsNotEmpty);
     }
 }

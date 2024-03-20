@@ -26,7 +26,6 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -105,7 +104,7 @@ public class TestUsersAndRoles1 : TestUsersAndRoles {
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            ClassicAssert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
+            Assert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
         }
     }
 }
@@ -122,7 +121,7 @@ public class TestUsersAndRoles2 : TestUsersAndRoles {
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            ClassicAssert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
+            Assert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
         }
     }
 }
@@ -139,7 +138,7 @@ public class TestUsersAndRoles3 : TestUsersAndRoles {
             Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            ClassicAssert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
+            Assert.AreEqual("Assert.Fail failed. No such service: Foos", e.Message);
         }
     }
 }

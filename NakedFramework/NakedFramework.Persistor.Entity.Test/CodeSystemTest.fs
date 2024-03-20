@@ -21,7 +21,6 @@ open TestTypes
 open SystemTestCode
 open TestCode
 open CodeOnlyTestCode
-open NUnit.Framework.Legacy
 
 [<TestFixture>]
 type CodeSystemTests() = 
@@ -75,28 +74,28 @@ type CodeSystemTests() =
     [<Test>]
     member x.GetService() = 
         let service = x.NakedFramework.ServicesManager.GetService("SimpleRepository-Person")
-        ClassicAssert.IsNotNull(service.Object)
+        Assert.IsNotNull(service.Object)
     
     [<Test>]
     member x.GetCollectionDirectly() = 
         let pp = x.NakedFramework.Persistor.Instances<Person>()
-        ClassicAssert.Greater(pp |> Seq.length, 0)
+        Assert.Greater(pp |> Seq.length, 0)
     
     [<Test>]
     member x.GetInstanceDirectly() = 
         let p = x.GetPersonDomainObject()
-        ClassicAssert.IsNotNull(p)
-        ClassicAssert.AreEqual("Ted", p.Name)
+        Assert.IsNotNull(p)
+        Assert.AreEqual("Ted", p.Name)
     
     [<Test>]
     member x.CheckIdentitiesAreConsistent() = 
         let ctx = x.NakedFramework
         let getp sel = ctx.Persistor.Instances<Person>() |> sel
         let (p1, p2, p3, p4) = (getp Seq.head, getp (Seq.skip 1 >> Seq.head), getp Seq.head, getp (Seq.skip 1 >> Seq.head))
-        ClassicAssert.AreSame(p1, p3)
-        ClassicAssert.AreSame(p2, p4)
-        ClassicAssert.AreNotSame(p1, p2)
-        ClassicAssert.AreNotSame(p2, p3)
+        Assert.AreSame(p1, p3)
+        Assert.AreSame(p2, p4)
+        Assert.AreNotSame(p1, p2)
+        Assert.AreNotSame(p2, p3)
     
     [<Test>]
     member x.CheckResolveStateOfPersistentObject() = 
@@ -117,14 +116,14 @@ type CodeSystemTests() =
     [<Test>]
     member x.GetCollectionIndirectly() = 
         let c = x.GetCategoryDomainObject()
-        ClassicAssert.IsNotNull(c)
-        ClassicAssert.Greater(c.Products |> Seq.length, 0)
+        Assert.IsNotNull(c)
+        Assert.Greater(c.Products |> Seq.length, 0)
     
     [<Test>]
     member x.GetInstanceIndirectly() = 
         let pp = x.NakedFramework.Persistor.Instances<Person>() |> System.Linq.Enumerable.ToArray
         let p = System.Linq.Enumerable.Where(pp, (fun (p : Person) -> p.Favourite <> null)) |> Seq.head
-        ClassicAssert.IsNotNull(p)
+        Assert.IsNotNull(p)
         IsNotNullAndPersistent p.Favourite x.NakedFramework
     
     [<Test>]
@@ -136,20 +135,20 @@ type CodeSystemTests() =
             x.NakedFramework.Persistor.Instances<Person>()
             |> Seq.filter (fun i -> i.Favourite = pr)
             |> Seq.head
-        ClassicAssert.AreSame(p, pp)
+        Assert.AreSame(p, pp)
     
     [<Test>]
     member x.DirectlyLoadedObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
-        ClassicAssert.IsNotNull(p.ExposeContainerForTest())
-        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
+        Assert.IsNotNull(p.ExposeContainerForTest())
+        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
     
     [<Test>]
     member x.LazyLoadedObjectHasContainer() = 
         let p = x.GetPersonDomainObject()
         let pr = p.Favourite
-        ClassicAssert.IsNotNull(pr.ExposeContainerForTest())
-        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, pr.ExposeContainerForTest())
+        Assert.IsNotNull(pr.ExposeContainerForTest())
+        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, pr.ExposeContainerForTest())
     
     [<Test>]
     member x.CreateNewObjectWithScalars() = 
@@ -186,18 +185,18 @@ type CodeSystemTests() =
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        ClassicAssert.AreEqual(1, findValue "Created", "created")
+        Assert.AreEqual(1, findValue "Created", "created")
     
     [<Test>]
     member x.CreatedObjectHasContainer() = 
         let pNo = x.CreatePerson()
         let p = pNo.Object :?> Person
-        ClassicAssert.IsNotNull(p.ExposeContainerForTest())
-        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
+        Assert.IsNotNull(p.ExposeContainerForTest())
+        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
         save pNo x.NakedFramework
         let p = pNo.Object :?> Person
-        ClassicAssert.IsNotNull(p.ExposeContainerForTest())
-        ClassicAssert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
+        Assert.IsNotNull(p.ExposeContainerForTest())
+        Assert.IsInstanceOf(typeof<IDomainObjectContainer>, p.ExposeContainerForTest())
     
     [<Test>]
     member x.UpdateScalarOnPersistentObject() = 
@@ -208,7 +207,7 @@ type CodeSystemTests() =
             p1.Name <- newName
         makeAndSaveChanges changeName x.NakedFramework
         let p2 = x.GetPersonDomainObject()
-        ClassicAssert.AreEqual(p1.Name, p2.Name)
+        Assert.AreEqual(p1.Name, p2.Name)
     
     [<Test>]
     member x.UpdateScalarOnPersistentObjectCallsUpdatingUpdated() = 
@@ -220,8 +219,8 @@ type CodeSystemTests() =
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        ClassicAssert.AreEqual(1, findValue "Updating", "updating")
-        ClassicAssert.AreEqual(1, findValue "Updated", "updated")
+        Assert.AreEqual(1, findValue "Updating", "updating")
+        Assert.AreEqual(1, findValue "Updated", "updated")
     
     [<Test>]
     member x.UpdateReferenceOnPersistentObject() = 
@@ -236,7 +235,7 @@ type CodeSystemTests() =
         let changeFav() = p1.Favourite <- pr
         makeAndSaveChanges changeFav x.NakedFramework
         let p2 = x.GetPersonDomainObject()
-        ClassicAssert.AreEqual(p1.Favourite, p2.Favourite)
+        Assert.AreEqual(p1.Favourite, p2.Favourite)
   
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectCallsUpdatingUpdated() = 
@@ -255,8 +254,8 @@ type CodeSystemTests() =
         let findValue key = 
             let entry = m |> Seq.find (fun kvp -> kvp.Key = key)
             entry.Value
-        ClassicAssert.AreEqual(1, findValue "Updating", "updating")
-        ClassicAssert.AreEqual(1, findValue "Updated", "updated")
+        Assert.AreEqual(1, findValue "Updating", "updating")
+        Assert.AreEqual(1, findValue "Updated", "updated")
     
     [<Test>]
     member x.SavingNewObjectCallsPersistingPersisted() = 
@@ -270,13 +269,13 @@ type CodeSystemTests() =
             entry.Value
         
         let findValue = fv m1
-        ClassicAssert.AreEqual(1, findValue "Persisting", "persisting")
-        ClassicAssert.AreEqual(0, findValue "Persisted", "persisted")
+        Assert.AreEqual(1, findValue "Persisting", "persisting")
+        Assert.AreEqual(0, findValue "Persisted", "persisted")
         let p = pNo.Object :?> Person
         let m2 = p.GetCallbackStatus()
         let findValue = fv m2
-        ClassicAssert.AreEqual(0, findValue "Persisting", "persisting")
-        ClassicAssert.AreEqual(1, findValue "Persisted", "persisted")
+        Assert.AreEqual(0, findValue "Persisting", "persisting")
+        Assert.AreEqual(1, findValue "Persisted", "persisted")
     
     [<Test>]
     member x.CreateAndRetrieveCountryCode() = 
@@ -292,8 +291,8 @@ type CodeSystemTests() =
         let cc = nocc.GetDomainObject<CountryCode>()
         save nocc x.NakedFramework
         let cc1 = x.NakedFramework.Persistor.Instances<CountryCode>() |> Seq.head
-        ClassicAssert.AreEqual(cc.Code, cc1.Code)
-        ClassicAssert.AreEqual(cc.Name, cc1.Name)
+        Assert.AreEqual(cc.Code, cc1.Code)
+        Assert.AreEqual(cc.Name, cc1.Name)
         ()
     
     [<Test>]
@@ -307,6 +306,6 @@ type CodeSystemTests() =
         let nocc = createCC()
         try 
             save nocc x.NakedFramework
-            ClassicAssert.Fail()
-        with expected -> ClassicAssert.IsInstanceOf(typeof<DataUpdateException>, expected)
+            Assert.Fail()
+        with expected -> Assert.IsInstanceOf(typeof<DataUpdateException>, expected)
         () 

@@ -8,7 +8,6 @@
 using System;
 using NakedFramework.Value;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace NakedObjects.SystemTest.Value;
 
@@ -20,17 +19,17 @@ public class FileAttachmentTest {
 
         var fa = new FileAttachment(resource);
 
-        ClassicAssert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
 
         fa = new FileAttachment(resource, "MyName");
 
-        ClassicAssert.AreEqual(resource, fa.GetResourceAsByteArray());
-        ClassicAssert.AreEqual("MyName", fa.Name);
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual("MyName", fa.Name);
 
         fa = new FileAttachment(resource, "MyName2", "Word Doc");
 
-        ClassicAssert.AreEqual(resource, fa.GetResourceAsByteArray());
-        ClassicAssert.AreEqual("MyName2", fa.Name);
-        ClassicAssert.AreEqual("Word Doc", fa.MimeType);
+        Assert.AreEqual(resource, fa.GetResourceAsByteArray());
+        Assert.AreEqual("MyName2", fa.Name);
+        Assert.AreEqual("Word Doc", fa.MimeType);
     }
 }

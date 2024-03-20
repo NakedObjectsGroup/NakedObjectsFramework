@@ -24,7 +24,6 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -106,36 +105,36 @@ public class TestInjection : AcceptanceTestCase {
     public void InjectArrayOfServicesDefinedByInterface() {
         var testObject = NakedFramework.Persistor.Instances<Object4>().Single();
         var arr = testObject.GetService4s();
-        ClassicAssert.IsNotNull(arr);
-        ClassicAssert.AreEqual(3, arr.Length);
-        ClassicAssert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
-        ClassicAssert.IsTrue(arr[1].GetType() == typeof(Service4ImplB));
-        ClassicAssert.IsTrue(arr[2].GetType() == typeof(Service4ImplC));
+        Assert.IsNotNull(arr);
+        Assert.AreEqual(3, arr.Length);
+        Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
+        Assert.IsTrue(arr[1].GetType() == typeof(Service4ImplB));
+        Assert.IsTrue(arr[2].GetType() == typeof(Service4ImplC));
 
         arr = testObject.GetService4ImplBs();
-        ClassicAssert.IsNotNull(arr);
-        ClassicAssert.AreEqual(2, arr.Length);
-        ClassicAssert.IsTrue(arr[0].GetType() == typeof(Service4ImplB));
-        ClassicAssert.IsTrue(arr[1].GetType() == typeof(Service4ImplC));
+        Assert.IsNotNull(arr);
+        Assert.AreEqual(2, arr.Length);
+        Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplB));
+        Assert.IsTrue(arr[1].GetType() == typeof(Service4ImplC));
 
         arr = testObject.GetService4ImplAs();
-        ClassicAssert.IsNotNull(arr);
-        ClassicAssert.AreEqual(1, arr.Length);
-        ClassicAssert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
+        Assert.IsNotNull(arr);
+        Assert.AreEqual(1, arr.Length);
+        Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
 
         var value = testObject.GetService4ImplC();
-        ClassicAssert.IsNotNull(value);
-        ClassicAssert.IsTrue(value.GetType() == typeof(Service4ImplC));
+        Assert.IsNotNull(value);
+        Assert.IsTrue(value.GetType() == typeof(Service4ImplC));
 
         var emptyArr = testObject.GetObjects();
-        ClassicAssert.IsNull(emptyArr);
+        Assert.IsNull(emptyArr);
     }
 
     [Test]
     public void InjectContainer() {
         var testObject = NakedFramework.Persistor.Instances<Object1>().Single();
-        ClassicAssert.IsNotNull(testObject.Container);
-        ClassicAssert.IsInstanceOf<IDomainObjectContainer>(testObject.Container);
+        Assert.IsNotNull(testObject.Container);
+        Assert.IsInstanceOf<IDomainObjectContainer>(testObject.Container);
     }
 
     [Test]
@@ -143,10 +142,10 @@ public class TestInjection : AcceptanceTestCase {
         var obj = NewTestObject<Object2>();
         try {
             obj.GetPropertyByName("My Service1");
-            ClassicAssert.Fail();
+            Assert.Fail();
         }
         catch (Exception e) {
-            ClassicAssert.AreEqual("ClassicAssert.Fail failed. No Property named 'My Service1'", e.Message);
+            Assert.AreEqual("Assert.Fail failed. No Property named 'My Service1'", e.Message);
         }
 
         var prop = obj.GetPropertyByName("Id");
@@ -156,38 +155,38 @@ public class TestInjection : AcceptanceTestCase {
     [Test]
     public void InjectService() {
         var testObject = NakedFramework.Persistor.Instances<Object2>().Single();
-        ClassicAssert.IsNotNull(testObject.GetService1());
-        ClassicAssert.IsInstanceOf<Service1>(testObject.GetService1());
+        Assert.IsNotNull(testObject.GetService1());
+        Assert.IsInstanceOf<Service1>(testObject.GetService1());
     }
 
     [Test]
     public void InjectServiceDefinedByInterface() {
         var testObject = NakedFramework.Persistor.Instances<Object2>().Single();
-        ClassicAssert.IsNotNull(testObject.GetService2());
-        ClassicAssert.IsInstanceOf<ServiceImplementation>(testObject.GetService2());
-        ClassicAssert.IsNotNull(testObject.GetService3());
-        ClassicAssert.IsInstanceOf<ServiceImplementation>(testObject.GetService3());
-        ClassicAssert.IsNull(testObject.GetObject());
+        Assert.IsNotNull(testObject.GetService2());
+        Assert.IsInstanceOf<ServiceImplementation>(testObject.GetService2());
+        Assert.IsNotNull(testObject.GetService3());
+        Assert.IsInstanceOf<ServiceImplementation>(testObject.GetService3());
+        Assert.IsNull(testObject.GetObject());
     }
 
     [Test]
     public void RuntimeExceptionForAmbigiousInjecton() {
         try {
             var testObject = NakedFramework.Persistor.Instances<Object5>().Single();
-            ClassicAssert.Fail("Should not get to here");
+            Assert.Fail("Should not get to here");
         }
         catch (Exception e) {
-            ClassicAssert.AreEqual("Cannot inject service into property Service4 on target NakedFramework.SystemTest.Injection.Object5 because multiple services implement type NakedFramework.SystemTest.Injection.IService4: NakedFramework.SystemTest.Injection.Service4ImplA; NakedFramework.SystemTest.Injection.Service4ImplB; NakedFramework.SystemTest.Injection.Service4ImplC; ", e.Message);
+            Assert.AreEqual("Cannot inject service into property Service4 on target NakedFramework.SystemTest.Injection.Object5 because multiple services implement type NakedFramework.SystemTest.Injection.IService4: NakedFramework.SystemTest.Injection.Service4ImplA; NakedFramework.SystemTest.Injection.Service4ImplB; NakedFramework.SystemTest.Injection.Service4ImplC; ", e.Message);
         }
     }
 
     [Test]
     public void InjectLogger() {
         var testObject = NakedFramework.Persistor.Instances<Object6>().Single();
-        ClassicAssert.IsNotNull(testObject.LoggerFactory);
-        ClassicAssert.IsNotNull(testObject.Logger);
-        ClassicAssert.IsInstanceOf<ILoggerFactory>(testObject.LoggerFactory);
-        ClassicAssert.IsInstanceOf<ILogger<Object6>>(testObject.Logger);
+        Assert.IsNotNull(testObject.LoggerFactory);
+        Assert.IsNotNull(testObject.Logger);
+        Assert.IsInstanceOf<ILoggerFactory>(testObject.LoggerFactory);
+        Assert.IsInstanceOf<ILogger<Object6>>(testObject.Logger);
     }
 }
 

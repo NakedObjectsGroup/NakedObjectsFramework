@@ -23,7 +23,6 @@ open NakedFramework.DependencyInjection.Extensions
 open NakedObjects.Snapshot.Xml.utility
 open NakedObjects
 open NakedObjects.Snapshot.Xml.service
-open NUnit.Framework.Legacy
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"
@@ -56,7 +55,7 @@ let checkResults resultsFile s =
     else 
         let actionView = getTestData resultsFile
         let nd = normalizeData actionView s
-        ClassicAssert.AreEqual(fst(nd), snd(nd))
+        Assert.AreEqual(fst(nd), snd(nd))
    
 
 [<TestFixture>]
@@ -228,14 +227,14 @@ type DomainTests() =
             if (doc1.DescendantNodes() |> Seq.length) = (doc2.DescendantNodes() |> Seq.length) then 
                 for node in doc1.Descendants() do
                     let matchingNode = doc2.Descendants() |> Seq.find (fun n -> n.Name = node.Name)
-                    ClassicAssert.IsNotNull matchingNode
-                    ClassicAssert.IsTrue(x.CompareElementValues node matchingNode)
-                    ClassicAssert.AreEqual(node.Attributes() |> Seq.length, matchingNode.Attributes() |> Seq.length)
+                    Assert.IsNotNull matchingNode
+                    Assert.IsTrue(x.CompareElementValues node matchingNode)
+                    Assert.AreEqual(node.Attributes() |> Seq.length, matchingNode.Attributes() |> Seq.length)
                     for attr in node.Attributes() do
                         let matchingAttr = matchingNode.Attributes() |> Seq.find (fun a -> a.Name = attr.Name)
-                        ClassicAssert.IsNotNull matchingAttr
+                        Assert.IsNotNull matchingAttr
                         let nd = normalizeData attr.Value matchingAttr.Value
-                        ClassicAssert.AreEqual(fst(nd), snd(nd))
+                        Assert.AreEqual(fst(nd), snd(nd))
             else
                 raise (Exception())
         
@@ -253,7 +252,7 @@ type DomainTests() =
             let nestedTransformedXml = nestedTransformedXml.Replace("TEOID#3", "TEOID#1")
             try 
                 x.CompareXml fullXml nestedXml
-                ClassicAssert.Fail("expected not equal")
+                Assert.Fail("expected not equal")
             with expected -> ()
             x.CompareXml fullXml nestedTransformedXml
         

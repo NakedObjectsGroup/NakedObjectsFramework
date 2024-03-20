@@ -14,7 +14,6 @@ using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Test.Interface;
 using NakedFramework.Test.TestCase;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -57,6 +56,6 @@ public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
     protected ITestObject FindById<T>(int id) => GetSimpleRepositoryTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
 
     protected static void IsInstanceOfType(object obj, Type typ) {
-        ClassicAssert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");
+        Assert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");
     }
 }

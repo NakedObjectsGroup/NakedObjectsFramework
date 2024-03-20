@@ -12,7 +12,6 @@ using System.IO;
 using System.Reflection;
 using NakedObjects.Services;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -55,7 +54,7 @@ public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
 
     private void GetSingleRandomQux() {
         var q = GetTestService("Quxes").GetAction("Get Random").InvokeReturnObject();
-        ClassicAssert.IsNotNull(q);
+        Assert.IsNotNull(q);
     }
 
     [Test]
@@ -76,7 +75,7 @@ public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
 
         File.AppendAllText(@"..\..\..\..\..\benchmarks.txt", t);
 
-        ClassicAssert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
+        Assert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
     }
 }
 

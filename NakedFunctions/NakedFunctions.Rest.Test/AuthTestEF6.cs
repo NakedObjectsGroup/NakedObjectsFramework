@@ -27,7 +27,6 @@ using NakedObjects.Reflector.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using Rest.Test.Data;
 using Rest.Test.Data.Sub;
 using static NakedFunctions.Rest.Test.AuthHelpers;
@@ -72,27 +71,27 @@ public static class AuthHelpers {
     }
 
     public static void AssertDefaultAuth(int expectedVisible) {
-        ClassicAssert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
+        Assert.AreEqual(expectedVisible, TestDefaultAuthorizer.VisibleCount);
     }
 
     public static void AssertNamespaceAuth(int expectedVisible) {
-        ClassicAssert.AreEqual(expectedVisible, TestNamespaceAuthorizer.VisibleCount);
+        Assert.AreEqual(expectedVisible, TestNamespaceAuthorizer.VisibleCount);
     }
 
     public static void AssertTypeFooAuth(int expectedVisible) {
-        ClassicAssert.AreEqual(expectedVisible, TestTypeAuthorizerFoo.VisibleCount);
+        Assert.AreEqual(expectedVisible, TestTypeAuthorizerFoo.VisibleCount);
     }
 
     public static void AssertTypeFooSubAuth(int expectedVisible) {
-        ClassicAssert.AreEqual(expectedVisible, TestTypeAuthorizerFooSub.VisibleCount);
+        Assert.AreEqual(expectedVisible, TestTypeAuthorizerFooSub.VisibleCount);
     }
 
     public static void AssertMenuAuth(int expectedVisible) {
-        ClassicAssert.AreEqual(expectedVisible, TestMenuAuthorizer.VisibleCount);
+        Assert.AreEqual(expectedVisible, TestMenuAuthorizer.VisibleCount);
     }
 
     public static void AssertQueryableActionFooAuth(int expectedVisible) {
-        ClassicAssert.AreEqual(expectedVisible, TestQueryableActionAuthorizerFoo.VisibleCount);
+        Assert.AreEqual(expectedVisible, TestQueryableActionAuthorizerFoo.VisibleCount);
     }
 }
 
@@ -101,9 +100,9 @@ public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
     public static int VisibleCount;
 
     public bool IsVisible(object target, string memberName, IContext context) {
-        ClassicAssert.IsNotNull(target);
-        ClassicAssert.IsNotNull(memberName);
-        ClassicAssert.IsNotNull(context);
+        Assert.IsNotNull(target);
+        Assert.IsNotNull(memberName);
+        Assert.IsNotNull(context);
         VisibleCount++;
         return memberName is "Act1" or "Prop1" ? Allow : true;
     }
@@ -114,9 +113,9 @@ public class TestNamespaceAuthorizer : INamespaceAuthorizer {
     public static int VisibleCount;
 
     public bool IsVisible(object target, string memberName, IContext context) {
-        ClassicAssert.IsNotNull(target);
-        ClassicAssert.IsNotNull(memberName);
-        ClassicAssert.IsNotNull(context);
+        Assert.IsNotNull(target);
+        Assert.IsNotNull(memberName);
+        Assert.IsNotNull(context);
         VisibleCount++;
         return Allow;
     }
@@ -127,9 +126,9 @@ public class TestTypeAuthorizerFoo : ITypeAuthorizer<Foo> {
     public static int VisibleCount;
 
     public bool IsVisible(Foo target, string memberName, IContext context) {
-        ClassicAssert.IsNotNull(target);
-        ClassicAssert.IsNotNull(memberName);
-        ClassicAssert.IsNotNull(context);
+        Assert.IsNotNull(target);
+        Assert.IsNotNull(memberName);
+        Assert.IsNotNull(context);
         VisibleCount++;
         return Allow;
     }
@@ -140,8 +139,8 @@ public class TestQueryableActionAuthorizerFoo : IQueryableActionAuthorizer<Foo> 
     public static int VisibleCount;
 
     public bool IsVisible(string memberName, IContext context) {
-        ClassicAssert.IsNotNull(memberName);
-        ClassicAssert.IsNotNull(context);
+        Assert.IsNotNull(memberName);
+        Assert.IsNotNull(context);
         VisibleCount++;
         return Allow;
     }
@@ -153,9 +152,9 @@ public class TestTypeAuthorizerFooSub : ITypeAuthorizer<FooSub> {
     public static int VisibleCount;
 
     public bool IsVisible(FooSub target, string memberName, IContext context) {
-        ClassicAssert.IsNotNull(target);
-        ClassicAssert.IsNotNull(memberName);
-        ClassicAssert.IsNotNull(context);
+        Assert.IsNotNull(target);
+        Assert.IsNotNull(memberName);
+        Assert.IsNotNull(context);
         VisibleCount++;
         return Allow;
     }
@@ -166,9 +165,9 @@ public class TestMenuAuthorizer : IMainMenuAuthorizer {
     public static int VisibleCount;
 
     public bool IsVisible(string target, string memberName, IContext context) {
-        ClassicAssert.IsTrue(target is "Rest.Test.Data.Sub.QuxMenuFunctions" or "Rest.Test.Data.FooMenuFunctions");
-        ClassicAssert.IsTrue(memberName is "Act1" or "Act2" or "Act3");
-        ClassicAssert.IsNotNull(context);
+        Assert.IsTrue(target is "Rest.Test.Data.Sub.QuxMenuFunctions" or "Rest.Test.Data.FooMenuFunctions");
+        Assert.IsTrue(memberName is "Act1" or "Act2" or "Act3");
+        Assert.IsNotNull(context);
         VisibleCount++;
         return memberName is "Act1" ? Allow : true;
     }
@@ -255,7 +254,7 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -271,11 +270,11 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]);
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
         AssertDefaultAuth(3);
         AssertNamespaceAuth(0);
@@ -297,10 +296,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNull(parsedResult["members"]["Prop1"]);
 
         AssertDefaultAuth(3);
         AssertNamespaceAuth(0);
@@ -322,10 +321,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act1"]);
+        Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(3);
         AssertNamespaceAuth(0);
@@ -347,10 +346,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Bar>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Act1"]);
+        Assert.IsNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(3);
         AssertNamespaceAuth(0);
@@ -372,11 +371,11 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]);
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(3);
@@ -398,10 +397,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNull(parsedResult["members"]["Prop1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(3);
@@ -423,10 +422,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act1"]);
+        Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(3);
@@ -448,10 +447,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Qux>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Act1"]);
+        Assert.IsNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(3);
@@ -473,11 +472,11 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]);
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -499,10 +498,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNull(parsedResult["members"]["Prop1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -524,10 +523,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act1"]);
+        Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -549,10 +548,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<Foo>(), "1");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Act1"]);
+        Assert.IsNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -574,13 +573,13 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]);
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop2"]);
-        ClassicAssert.IsNotNull(parsedResult["members"]["Prop2"]["disabledReason"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop1"]["disabledReason"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop2"]);
+        Assert.IsNotNull(parsedResult["members"]["Prop2"]["disabledReason"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -602,11 +601,11 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Prop1"]);
-        ClassicAssert.IsNull(parsedResult["members"]["Prop2"]);
+        Assert.IsNull(parsedResult["members"]["Prop1"]);
+        Assert.IsNull(parsedResult["members"]["Prop2"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -628,10 +627,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act2"]);
+        Assert.IsNotNull(parsedResult["members"]["Act2"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -653,10 +652,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(FullName<FooSub>(), "2");
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Act2"]);
+        Assert.IsNull(parsedResult["members"]["Act2"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -680,10 +679,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(FooMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act1"]);
+        Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -705,10 +704,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(QuxMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act1"]);
+        Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -731,10 +730,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>()};
         var result = api.GetInvokeOnMenu(nameof(QuxMenuFunctions), "Act3", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["result"]["members"]["QueryableAct"]);
+        Assert.IsNotNull(parsedResult["result"]["members"]["QueryableAct"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -757,10 +756,10 @@ public class AuthTestEF6 : AcceptanceTestCase {
         var map = new ArgumentMap { Map = new Dictionary<string, IValue>()};
         var result = api.GetInvokeOnMenu(nameof(QuxMenuFunctions), "Act3", map);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["result"]["members"]["QueryableAct"]);
+        Assert.IsNull(parsedResult["result"]["members"]["QueryableAct"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -851,7 +850,7 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetObject(type, id);
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         return JObject.Parse(json);
     }
 
@@ -869,10 +868,10 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(FooMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNotNull(parsedResult["members"]["Act1"]);
+        Assert.IsNotNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);
@@ -894,10 +893,10 @@ public class MenuAuthTestEF6 : AcceptanceTestCase {
         var api = Api().AsGet();
         var result = api.GetMenu(nameof(FooMenuFunctions));
         var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        ClassicAssert.AreEqual((int)HttpStatusCode.OK, sc);
+        Assert.AreEqual((int)HttpStatusCode.OK, sc);
         var parsedResult = JObject.Parse(json);
 
-        ClassicAssert.IsNull(parsedResult["members"]["Act1"]);
+        Assert.IsNull(parsedResult["members"]["Act1"]);
 
         AssertDefaultAuth(0);
         AssertNamespaceAuth(0);

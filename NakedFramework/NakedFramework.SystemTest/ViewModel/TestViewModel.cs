@@ -13,7 +13,6 @@ using NakedFramework.Test.Interface;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -69,7 +68,7 @@ public class TestViewModel : AbstractSystemTest<FooContext> {
         }
         catch (Exception e) {
             IsInstanceOfType(e.InnerException, typeof(DomainException));
-            ClassicAssert.AreEqual("No instance with Id: 54321", e.Message);
+            Assert.AreEqual("No instance with Id: 54321", e.Message);
         }
     }
 
@@ -80,7 +79,7 @@ public class TestViewModel : AbstractSystemTest<FooContext> {
         vm.AssertIsType(typeof(ViewFoo));
         vm.AssertCannotBeSaved();
         var vmkey = vm.GetPropertyByName("Key").Title;
-        ClassicAssert.AreEqual(foo1key, vmkey);
+        Assert.AreEqual(foo1key, vmkey);
     }
 
     [Test]

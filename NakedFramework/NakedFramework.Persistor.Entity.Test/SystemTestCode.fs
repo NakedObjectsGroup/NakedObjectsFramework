@@ -12,7 +12,6 @@ open NUnit.Framework
 open NakedFramework.Architecture.Framework
 open NakedFramework.Architecture.Spec
 open NakedFramework.Core.Persist
-open NUnit.Framework.Legacy
 
 let getNo (obj : obj) (ctx : INakedFramework) = 
     match obj with
@@ -21,55 +20,55 @@ let getNo (obj : obj) (ctx : INakedFramework) =
 
 let IsPersistentObject obj ctx = 
     let no = getNo obj ctx
-    ClassicAssert.IsNotNull(no)
-    ClassicAssert.IsTrue(no.ResolveState |> StateHelperUtils.IsPersistent)
+    Assert.IsNotNull(no)
+    Assert.IsTrue(no.ResolveState |> StateHelperUtils.IsPersistent)
 
 let IsPersistentOid obj ctx = 
     let oid = (getNo obj ctx).Oid
-    ClassicAssert.IsNotNull(oid)
-    ClassicAssert.IsInstanceOf(typeof<DatabaseOid>, oid)
-    ClassicAssert.IsFalse(oid.IsTransient)
+    Assert.IsNotNull(oid)
+    Assert.IsInstanceOf(typeof<DatabaseOid>, oid)
+    Assert.IsFalse(oid.IsTransient)
 
 let IsTransientObject obj ctx = 
     let no = getNo obj ctx
-    ClassicAssert.IsNotNull(no)
-    ClassicAssert.IsTrue(no.ResolveState |> StateHelperUtils.IsTransient)
+    Assert.IsNotNull(no)
+    Assert.IsTrue(no.ResolveState |> StateHelperUtils.IsTransient)
 
 let IsTransientOid obj ctx = 
     let oid = (getNo obj ctx).Oid
-    ClassicAssert.IsNotNull(oid)
-    ClassicAssert.IsInstanceOf(typeof<DatabaseOid>, oid)
-    ClassicAssert.IsTrue(oid.IsTransient)
+    Assert.IsNotNull(oid)
+    Assert.IsInstanceOf(typeof<DatabaseOid>, oid)
+    Assert.IsTrue(oid.IsTransient)
 
 let IsPersistentAggregateOid obj ctx = 
     let oid = (getNo obj ctx).Oid
-    ClassicAssert.IsNotNull(oid)
-    ClassicAssert.IsInstanceOf(typeof<IAggregateOid>, oid)
-    ClassicAssert.IsFalse(oid.IsTransient)
+    Assert.IsNotNull(oid)
+    Assert.IsInstanceOf(typeof<IAggregateOid>, oid)
+    Assert.IsFalse(oid.IsTransient)
 
 let IsTransientAggregateOid obj ctx = 
     let oid = (getNo obj ctx).Oid
-    ClassicAssert.IsNotNull(oid)
-    ClassicAssert.IsInstanceOf(typeof<IAggregateOid>, oid)
-    ClassicAssert.IsTrue(oid.IsTransient)
+    Assert.IsNotNull(oid)
+    Assert.IsInstanceOf(typeof<IAggregateOid>, oid)
+    Assert.IsTrue(oid.IsTransient)
 
 let IsNotNullAndPersistent obj ctx = 
-    ClassicAssert.IsNotNull(obj)
+    Assert.IsNotNull(obj)
     IsPersistentObject obj ctx
     IsPersistentOid obj ctx
 
 let IsNotNullAndTransient obj ctx = 
-    ClassicAssert.IsNotNull(obj)
+    Assert.IsNotNull(obj)
     IsTransientObject obj ctx
     IsTransientOid obj ctx
 
 let IsNotNullAndPersistentAggregate obj ctx = 
-    ClassicAssert.IsNotNull(obj)
+    Assert.IsNotNull(obj)
     IsPersistentObject obj ctx
     IsPersistentAggregateOid obj ctx
 
 let IsNotNullAndTransientAggregate obj ctx = 
-    ClassicAssert.IsNotNull(obj)
+    Assert.IsNotNull(obj)
     IsPersistentObject obj ctx
     IsTransientAggregateOid obj ctx
 
