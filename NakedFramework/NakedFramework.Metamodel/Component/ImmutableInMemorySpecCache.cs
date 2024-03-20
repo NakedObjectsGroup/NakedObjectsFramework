@@ -88,7 +88,9 @@ public sealed class ImmutableInMemorySpecCache : ISpecificationCache {
 
     private Type[] KnownTypes() {
         var a = Assembly.GetAssembly(typeof(IdentifierImpl));
+#pragma warning disable SYSLIB0050
         var tt = a.GetTypes().Where(t => t is { IsSerializable: true, IsPublic: true }).ToArray();
+#pragma warning restore SYSLIB0050
 
         var createdTypes = CreateTypes();
 

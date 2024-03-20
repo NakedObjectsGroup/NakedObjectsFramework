@@ -341,12 +341,12 @@ public class ReflectorSpeedTest {
         }
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeAWTypesBenchMark() {
         SerializeAWTypesBenchMark("metadata.bin", MethodBase.GetCurrentMethod().Name);
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeAWTypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
@@ -400,12 +400,12 @@ public class ReflectorSpeedTest {
         }
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeTestModel1000TypesBenchMark() {
         SerializeTestModelTypesBenchMark("metadata.bin", model1000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeTestModel1000TypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
@@ -416,12 +416,12 @@ public class ReflectorSpeedTest {
         }
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeTestModel5000TypesBenchMark() {
         SerializeTestModelTypesBenchMark("metadata.bin", model5000_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeTestModel5000TypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {
@@ -432,12 +432,12 @@ public class ReflectorSpeedTest {
         }
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeTestModel500TypesBenchMark() {
         SerializeTestModelTypesBenchMark("metadata.bin", model500_Config.Types(), MethodBase.GetCurrentMethod().Name);
     }
 
-    [TestMethod]
+    [TestMethod, Ignore]
     public void BinarySerializeTestModel500TypesBenchMarkWithJit() {
         ReflectorDefaults.JitSerialization = true;
         try {

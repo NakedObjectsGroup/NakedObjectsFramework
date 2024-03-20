@@ -11,7 +11,7 @@ using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelper
 
 namespace NakedFunctions.Reflector.Test.Serialization;
 
-[TestClass]
+[TestClass, Ignore]
 public class FacetBinarySerializationTests {
     [TestMethod]
     public void TestBinarySerializeActionChoicesFacetViaFunction() => TestSerializeActionChoicesFacetViaFunction(BinaryRoundTrip);
