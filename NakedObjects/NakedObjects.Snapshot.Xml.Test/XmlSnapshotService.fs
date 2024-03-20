@@ -258,3 +258,7 @@ type DomainTests() =
             x.CompareXml fullXml nestedTransformedXml
         
     end
+
+[<EntryPoint>]
+let main _ =
+    0
