@@ -1849,48 +1849,6 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
-"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v15.0.0.tgz#4ce5e2baf545e85ecdbcf6792c43f42c35b9e466"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
-"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v15.0.0.tgz#fbcb19842b7f0c7e80a6a6c14ebed646665b377e"
-  dependencies:
-    auth0-js "^9.23.0"
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
-"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v15.0.0.tgz#42c0136705197d84a3698553347ac46682f1807d"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "^2.3.0"
-
-"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v15.0.0.tgz#69238504a205945b80418d68c72985e91f29b7d4"
-  dependencies:
-    auth0-js "^9.23.0"
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
-"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v15.0.0.tgz":
-  version "15.0.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v15.0.0.tgz#066274aee95df489d5679a890b2e174172bf76f9"
-  dependencies:
-    lodash "~4.17.21"
-    lodash-es "~4.17.21"
-    tslib "~2.6.0"
-
 "@ngtools/webpack@16.2.14":
   version "16.2.14"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-16.2.14.tgz#7af4a1afa7c5b8e6ec8bca9491b91cfade694ff7"
@@ -2944,20 +2902,6 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-auth0-js@^9.23.0:
-  version "9.26.1"
-  resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-9.26.1.tgz#71af2813c4c67e9f185145afc421c58c40594584"
-  integrity sha512-88KtFHeCbApIF/4VTFT1Dgq4dKAMlZBjNWhOw0GTdMW3419TqQwuEgVXzObJKue/l5g+drYtHqw6VBOPMGmRwQ==
-  dependencies:
-    base64-js "^1.5.1"
-    idtoken-verifier "^2.2.4"
-    js-cookie "^2.2.0"
-    minimist "^1.2.5"
-    qs "^6.10.1"
-    superagent "^7.1.5"
-    url-join "^4.0.1"
-    winchan "^0.2.2"
-
 auth0-js@~9.23.0:
   version "9.23.3"
   resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-9.23.3.tgz#ec3c1e04eeb409fac780c84d32388dd80d3a52d7"
@@ -3285,18 +3229,13 @@ chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.0.2, chalk@^4.1.0, chalk@^4.1.1:
+chalk@^4.0.0, chalk@^4.0.2, chalk@^4.1.0, chalk@^4.1.1, chalk@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
-
-chalk@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.3.0.tgz#67c20a7ebef70e7f3970a01f90fa210cb6860385"
-  integrity sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==
 
 chardet@^0.7.0:
   version "0.7.0"
@@ -4770,7 +4709,7 @@ glob@7.1.4:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^10.2.2, glob@^10.3.7, glob@^10.4.2:
+glob@^10.2.2, glob@^10.3.7:
   version "10.4.2"
   resolved "https://registry.yarnpkg.com/glob/-/glob-10.4.2.tgz#bed6b95dade5c1f80b4434daced233aee76160e5"
   integrity sha512-GwMlUF6PkPo3Gk21UxkCohOv0PLcIXVtKyLlpEI28R/cO/4eNOdmLk3CMW1wROV/WR/EsZOWAfBbBOqYvs88/w==
@@ -4794,7 +4733,7 @@ glob@^7.1.3, glob@^7.1.4, glob@^7.1.7:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^8.0.1:
+glob@^8.0.1, glob@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-8.1.0.tgz#d388f656593ef708ee3e34640fdfb99a9fd1c33e"
   integrity sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==
@@ -7095,13 +7034,13 @@ regjsparser@^0.9.1:
   dependencies:
     jsesc "~0.5.0"
 
-replace-in-file@~8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/replace-in-file/-/replace-in-file-8.0.1.tgz#2448f43b84c863e16a76dc294766ee08fbe1ee7c"
-  integrity sha512-aZb9IOwq6dXhqLmPXZVQrvGIZ9vTdJ5ZtkaMwUM94CsUHDe58Rin7OVmvS2SVxzqXBmvVowr5uoTzX6oRT31wA==
+replace-in-file@~7.0.0:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/replace-in-file/-/replace-in-file-7.0.2.tgz#c38e2143134836586f902319e72f47b55e7c5fae"
+  integrity sha512-tPG+Qmqf+x2Rf1WVdb/9B5tFIf6KJ5hs3fgxh1OTzPRUugPPvyAva7NvCJtnSpmyq6r+ABYcuUOqZkm6yzGSUw==
   dependencies:
-    chalk "^5.3.0"
-    glob "^10.4.2"
+    chalk "^4.1.2"
+    glob "^8.1.0"
     yargs "^17.7.2"
 
 require-directory@^2.1.1:
