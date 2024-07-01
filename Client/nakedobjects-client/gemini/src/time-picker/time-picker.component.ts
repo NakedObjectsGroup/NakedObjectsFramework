@@ -79,7 +79,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     private validInputFormats = [defaultTimeFormat, defaultShortTimeFormat, shortTimeFormat];
 
     private validateTime(newValue: string) {
-        let dt = DateTime.now();
+        let dt : DateTime<true> | DateTime<false> = DateTime.now();
 
         for (const f of this.validInputFormats) {
             dt = DateTime.fromFormat(newValue, f);
