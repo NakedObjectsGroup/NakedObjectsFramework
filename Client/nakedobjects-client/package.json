@@ -66,8 +66,6 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
-    "@nakedobjects/restful-objects": "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v15.0.0.tgz",
-    "@nakedobjects/services": "file:./dist/nakedobjects-services/nakedobjects-services-v15.0.0.tgz",
     "auth0-js": "~9.23.0",
     "lodash": "~4.17.21",
     "lodash-es": "~4.17.21",
