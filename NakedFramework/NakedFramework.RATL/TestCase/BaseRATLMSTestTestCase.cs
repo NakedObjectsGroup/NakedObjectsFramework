@@ -22,6 +22,7 @@ public abstract class BaseRATLMSTestTestCase {
 
     private static IHostBuilder CreateHostBuilder(string[] args, Action<IServiceCollection> configureServices, Func<IDictionary<string, string>> configuration) =>
         Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults((a) => { })
             .ConfigureAppConfiguration((hostContext, configBuilder) => {
                 var config = new MemoryConfigurationSource {
                     InitialData = configuration()

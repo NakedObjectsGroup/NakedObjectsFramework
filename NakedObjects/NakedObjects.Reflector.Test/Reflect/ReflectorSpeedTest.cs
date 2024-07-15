@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Principal;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,23 +20,31 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using model1000;
 using model500;
 using model5000;
+using NakedFramework.Architecture.Adapter;
 using NakedFramework.Architecture.Component;
+using NakedFramework.Architecture.Persist;
+using NakedFramework.Architecture.Spec;
 using NakedFramework.Architecture.SpecImmutable;
+using NakedFramework.Core.Component;
 using NakedFramework.Core.Configuration;
 using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
+using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SemanticsProvider;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.Facet;
+using NakedObjects.Reflector.Test.FacetFactory;
 using static NakedFramework.Metamodel.Test.Serialization.SerializationTestHelpers;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflector.Test.Reflect;
+
 
 public static class NakedObjectsRunSettings {
     // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
@@ -94,6 +103,8 @@ public class ReflectorSpeedTest {
     private static readonly Dictionary<string, long> Stats = new();
     private Action<IServiceCollection> TestHook { get; } = services => { };
 
+    protected static IPrincipal CreatePrincipal(string name, string[] roles) => new GenericPrincipal(new GenericIdentity(name), roles);
+    protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());
     private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
         Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
@@ -133,6 +144,13 @@ public class ReflectorSpeedTest {
 
     protected virtual void RegisterTypes(IServiceCollection services, Action<NakedFrameworkOptions> setup) {
         services.AddNakedFramework(setup);
+
+        services.AddScoped(p => TestPrincipal);
+        //services.AddScoped<ISession, TestSession>();
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<DiagnosticListener>(diagnosticSource);
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
+
         TestHook(services);
     }
 
@@ -201,6 +219,8 @@ public class ReflectorSpeedTest {
     [TestMethod]
     public void ReflectAWTypesBenchMark() {
         static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddEF6Persistor(options => {  });
+
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -224,12 +244,13 @@ public class ReflectorSpeedTest {
 
             //Assert.IsTrue(time < 500, $"Elapsed time was {time} milliseconds");
 
-            Assert.AreEqual(163, AllObjectSpecImmutables(container).Length);
+            Assert.AreEqual(165, AllObjectSpecImmutables(container).Length);
         }
     }
 
     public void ReflectTestModelTypesBenchMark(Type[] testModelTypes, string test) {
         void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddEF6Persistor(options => {  });
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = testModelTypes;
                 //options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -299,6 +320,7 @@ public class ReflectorSpeedTest {
 
     public void SerializeAWTypesBenchMark(string fileName, string test) {
         static void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddEF6Persistor(options => {  });
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = NakedObjectsRunSettings.Types;
                 options.DomainModelServices = NakedObjectsRunSettings.Services;
@@ -333,7 +355,7 @@ public class ReflectorSpeedTest {
             Console.WriteLine($"Elapsed time was {time} milliseconds");
             Record(test, time);
 
-            Assert.AreEqual(163, AllObjectSpecImmutables(container).Length);
+            Assert.AreEqual(165, AllObjectSpecImmutables(container).Length);
             Assert.IsNotNull(cache1);
             Assert.IsNotNull(cache2);
             Assert.AreNotEqual(cache1, cache2);
@@ -359,6 +381,7 @@ public class ReflectorSpeedTest {
 
     public void SerializeTestModelTypesBenchMark(string fileName, Type[] testModelTypes, string test) {
         void Setup(NakedFrameworkOptions coreOptions) {
+            coreOptions.AddEF6Persistor(options => {  });
             coreOptions.AddNakedObjects(options => {
                 options.DomainModelTypes = testModelTypes;
                 //options.DomainModelServices = NakedObjectsRunSettings.Services;

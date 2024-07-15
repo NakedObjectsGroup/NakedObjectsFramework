@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,6 +31,11 @@ namespace NakedFunctions.Reflector.Test.Component;
 public class ReflectorTest {
     private Action<IServiceCollection> TestHook { get; } = services => { };
 
+    protected static IPrincipal CreatePrincipal(string name, string[] roles) => new GenericPrincipal(new GenericIdentity(name), roles);
+
+    protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());
+
+
     private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
@@ -41,7 +47,11 @@ public class ReflectorTest {
     }
 
     protected virtual void RegisterTypes(IServiceCollection services, Action<NakedFrameworkOptions> setup) {
-        services.AddNakedFramework(setup);
+        //services.AddNakedFramework(setup);
+
+        services.AddScoped(p => TestPrincipal);
+       
+
         TestHook(services);
     }
 

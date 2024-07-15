@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -72,6 +73,9 @@ public class TestRecognisedMethods : AcceptanceTestCase {
         });
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
         services.AddScoped(p => TestPrincipal);
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<DiagnosticListener>(diagnosticSource);
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
     }
 
     protected INakedFramework NakedFramework { get; set; }

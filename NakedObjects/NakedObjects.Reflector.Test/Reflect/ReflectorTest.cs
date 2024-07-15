@@ -11,7 +11,9 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -28,6 +30,7 @@ using NakedFramework.DependencyInjection.Utils;
 using NakedFramework.Menu;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedObjects;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
@@ -91,6 +94,9 @@ namespace NakedObjects.Reflector.Test.Reflect {
         #endregion
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
+        protected static IPrincipal TestPrincipal => CreatePrincipal("Test", Array.Empty<string>());
+
+        protected static IPrincipal CreatePrincipal(string name, string[] roles) => new GenericPrincipal(new GenericIdentity(name), roles);
 
         private IHostBuilder CreateHostBuilder(string[] args, Action<NakedFrameworkOptions> setup) {
             return Host.CreateDefaultBuilder(args)
@@ -105,6 +111,13 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
         protected virtual void RegisterTypes(IServiceCollection services, Action<NakedFrameworkOptions> setup) {
             services.AddNakedFramework(setup);
+
+            services.AddScoped(p => TestPrincipal);
+            //services.AddScoped<ISession, TestSession>();
+            var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+            services.AddSingleton(diagnosticSource);
+            services.AddSingleton<DiagnosticSource>(diagnosticSource);
+
             TestHook(services);
         }
 
@@ -117,70 +130,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectNoTypes() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
-                coreOptions.AddNakedObjects(options => {
-                    options.DomainModelTypes = Array.Empty<Type>();
-                    options.DomainModelServices = Array.Empty<Type>();
-                    options.NoValidate = true;
-                });
-            }
-
-            var (container, host) = GetContainer(Setup);
-
-            using (host) {
-                container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                Assert.IsFalse(specs.Any());
-            }
-        }
-
-        [TestMethod]
-        public void ReflectObjectType() {
-            static void Setup(NakedFrameworkOptions coreOptions) {
-                coreOptions.SupportedSystemTypes = t => new[] { typeof(object) };
-                coreOptions.AddNakedObjects(options => {
-                    options.DomainModelTypes = Array.Empty<Type>();
-                    options.DomainModelServices = Array.Empty<Type>();
-                    options.NoValidate = true;
-                });
-            }
-
-            var (container, host) = GetContainer(Setup);
-
-            using (host) {
-                container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(1, specs.Length);
-                AbstractReflectorTest.AssertSpec(typeof(object), specs.First());
-            }
-        }
-
-        [TestMethod]
-        public void ReflectListTypes() {
-            static void Setup(NakedFrameworkOptions coreOptions) {
-                coreOptions.SupportedSystemTypes = t => new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) };
-                coreOptions.AddNakedObjects(options => {
-                    options.DomainModelTypes = Array.Empty<Type>();
-                    options.DomainModelServices = Array.Empty<Type>();
-                    options.NoValidate = true;
-                });
-            }
-
-            var (container, host) = GetContainer(Setup);
-
-            using (host) {
-                container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(3, specs.Length);
-                AbstractReflectorTest.AssertSpec(typeof(int), specs);
-                AbstractReflectorTest.AssertSpec(typeof(object), specs);
-                AbstractReflectorTest.AssertSpec(typeof(List<>), specs);
-            }
-        }
-
-        [TestMethod]
-        public void ReflectSetTypes() {
-            static void Setup(NakedFrameworkOptions coreOptions) {
-                coreOptions.SupportedSystemTypes = t => new[] { typeof(object), typeof(SetWrapper<>) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -194,6 +144,73 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
                 Assert.AreEqual(2, specs.Length);
+            }
+        }
+
+        [TestMethod]
+        public void ReflectObjectType() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(object) };
+                coreOptions.AddEF6Persistor(options => { });
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = Array.Empty<Type>();
+                    options.DomainModelServices = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(3, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs.Skip(1).First());
+            }
+        }
+
+        [TestMethod]
+        public void ReflectListTypes() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) };
+                coreOptions.AddEF6Persistor(options => { });
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = Array.Empty<Type>();
+                    options.DomainModelServices = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(5, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(int), specs);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs);
+                AbstractReflectorTest.AssertSpec(typeof(List<>), specs);
+            }
+        }
+
+        [TestMethod]
+        public void ReflectSetTypes() {
+            static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => new[] { typeof(object), typeof(SetWrapper<>) };
+                coreOptions.AddEF6Persistor(options => { });
+                coreOptions.AddNakedObjects(options => {
+                    options.DomainModelTypes = Array.Empty<Type>();
+                    options.DomainModelServices = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
+
+            var (container, host) = GetContainer(Setup);
+
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(4, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(object), specs);
                 AbstractReflectorTest.AssertSpec(typeof(SetWrapper<>), specs);
             }
@@ -206,6 +223,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { qo.GetType(), qi.GetType(), typeof(int), typeof(object) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -218,7 +236,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(3, specs.Length);
+                Assert.AreEqual(5, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(int), specs);
                 AbstractReflectorTest.AssertSpec(typeof(object), specs);
                 AbstractReflectorTest.AssertSpec(typeof(EnumerableQuery<>), specs);
@@ -231,6 +249,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -243,7 +262,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(2, specs.Length);
+                Assert.AreEqual(4, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(object), specs);
                 AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
             }
@@ -255,6 +274,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -267,7 +287,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(2, specs.Length);
+                Assert.AreEqual(4, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(object), specs);
                 AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
             }
@@ -281,6 +301,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectInt() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { typeof(int) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -293,7 +314,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(1, specs.Length);
+                Assert.AreEqual(3, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(int), specs);
             }
         }
@@ -302,6 +323,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectByteArray() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { typeof(byte), typeof(byte[]) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(TestObjectWithByteArray) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -314,7 +336,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(3, specs.Length);
+                Assert.AreEqual(5, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(byte[]), specs);
                 AbstractReflectorTest.AssertSpec(typeof(byte), specs);
                 AbstractReflectorTest.AssertSpec(typeof(TestObjectWithByteArray), specs);
@@ -325,6 +347,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectStringArray() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { typeof(string) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(TestObjectWithStringArray) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -337,7 +360,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(2, specs.Length);
+                Assert.AreEqual(4, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs);
                 AbstractReflectorTest.AssertSpec(typeof(string), specs);
             }
@@ -347,6 +370,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectWithScalars() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { typeof(ICollection<>), typeof(object) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(WithScalars) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -359,7 +383,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(3, specs.Length);
+                Assert.AreEqual(5, specs.Length);
                 AbstractReflectorTest.AssertSpecsContain(typeof(WithScalars), specs);
             }
         }
@@ -368,6 +392,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectSimpleDomainObject() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { typeof(void) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(SimpleDomainObject) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -380,7 +405,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(2, specs.Length);
+                Assert.AreEqual(4, specs.Length);
                 AbstractReflectorTest.AssertSpec(typeof(SimpleDomainObject), specs);
             }
         }
@@ -389,6 +414,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         [ExpectedException(typeof(ReflectionException), "string")]
         public void ReflectDuplicateMethods() {
             static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(WithDuplicates) };
                     options.DomainModelServices = new[] { typeof(WithDuplicatesService) };
@@ -412,6 +438,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         //[ExpectedException(typeof(ReflectionException), "string")]
         public void ReflectIgnoredMethods() {
             static void Setup(NakedFrameworkOptions coreOptions) {
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(WithIgnored) };
                     options.DomainModelServices = new[] { typeof(WithDuplicatesService) };
@@ -434,6 +461,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(SimpleBoundedObject) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -446,7 +474,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(1, specs.Length);
+                Assert.AreEqual(3, specs.Length);
                 var spec = specs.First();
                 Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
             }
@@ -458,6 +486,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(SimpleBoundedObject) };
                     options.DomainModelServices = Array.Empty<Type>();
@@ -470,7 +499,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
                 var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(1, specs.Length);
+                Assert.AreEqual(3, specs.Length);
                 var spec = specs.First();
                 Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
             }
@@ -480,6 +509,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void ReflectDisplayAsProperty() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.SupportedSystemTypes = t => new[] { typeof(void) };
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = new[] { typeof(DisplayAsPropertyObject) };
                     options.DomainModelServices = new[] { typeof(DisplayAsPropertyService) };
@@ -530,6 +560,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void UnreflectedTypeTest() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.UsePlaceholderForUnreflectedType = false;
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();
@@ -551,6 +582,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         public void UnreflectedTypeTestWithPlaceHolder() {
             static void Setup(NakedFrameworkOptions coreOptions) {
                 coreOptions.UsePlaceholderForUnreflectedType = true;
+                coreOptions.AddEF6Persistor(options => { });
                 coreOptions.AddNakedObjects(options => {
                     options.DomainModelTypes = Array.Empty<Type>();
                     options.DomainModelServices = Array.Empty<Type>();

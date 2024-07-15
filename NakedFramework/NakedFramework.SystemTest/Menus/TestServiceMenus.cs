@@ -7,6 +7,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -64,6 +65,9 @@ public class TestServiceMenus : AcceptanceTestCase {
         });
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
         services.AddScoped(p => TestPrincipal);
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<DiagnosticListener>(diagnosticSource);
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
     }
 
     protected INakedFramework NakedFramework { get; set; }

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -68,6 +69,9 @@ public class TestAttributes : AcceptanceTestCase {
         });
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
         services.AddScoped(p => TestPrincipal);
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<DiagnosticListener>(diagnosticSource);
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
     }
 
     protected Type[] ObjectTypes {

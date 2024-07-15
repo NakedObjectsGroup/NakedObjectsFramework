@@ -7,6 +7,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +73,9 @@ public class TestAuditManager : AcceptanceTestCase {
         });
         services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
         services.AddScoped(p => TestPrincipal);
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<DiagnosticListener>(diagnosticSource);
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
     }
 
     protected Func<IConfiguration, DbContext>[] ContextCreators =>

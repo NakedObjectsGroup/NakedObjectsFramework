@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
@@ -146,6 +147,7 @@ public abstract class AcceptanceTestCase {
 
     private IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults((a) => { })
             .ConfigureAppConfiguration((hostContext, configBuilder) => {
                 var config = new MemoryConfigurationSource {
                     InitialData = Configuration()
@@ -344,10 +346,12 @@ public abstract class AcceptanceTestCase {
 
     protected virtual void RegisterTypes(IServiceCollection services) {
         services.AddNakedFramework(NakedFrameworkOptions);
-
         //Externals
         services.AddScoped(p => TestPrincipal);
         services.AddScoped<ISession, TestSession>();
+        var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
+        services.AddSingleton<DiagnosticListener>(diagnosticSource);
+        services.AddSingleton<DiagnosticSource>(diagnosticSource);
     }
 
     protected virtual IDictionary<string, string> Configuration() =>

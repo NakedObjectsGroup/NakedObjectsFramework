@@ -28,6 +28,7 @@ public abstract class BaseRATLNUnitTestCase {
 
     private IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults((a) => { })
             .ConfigureAppConfiguration((hostContext, configBuilder) => {
                 var config = new MemoryConfigurationSource {
                     InitialData = Configuration()
