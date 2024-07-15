@@ -47,10 +47,8 @@ public class ReflectorTest {
     }
 
     protected virtual void RegisterTypes(IServiceCollection services, Action<NakedFrameworkOptions> setup) {
-        //services.AddNakedFramework(setup);
-
+        services.AddNakedFramework(setup);
         services.AddScoped(p => TestPrincipal);
-       
 
         TestHook(services);
     }
