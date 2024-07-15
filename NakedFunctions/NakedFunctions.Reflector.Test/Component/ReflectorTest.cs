@@ -21,6 +21,7 @@ using NakedFramework.Core.Util;
 using NakedFramework.DependencyInjection.Extensions;
 using NakedFramework.Metamodel.Facet;
 using NakedFramework.Metamodel.SpecImmutable;
+using NakedFramework.Persistor.EF6.Extensions;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.Test.Reflect;
@@ -71,7 +72,8 @@ public class ReflectorTest {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
 
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = Array.Empty<Type>();
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -83,7 +85,7 @@ public class ReflectorTest {
         using (host) {
             container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
-            Assert.IsFalse(specs.Any());
+            Assert.AreEqual(2, specs.Length);
         }
     }
 
@@ -91,7 +93,8 @@ public class ReflectorTest {
     public void ReflectSimpleType() {
         static void Setup(NakedFrameworkOptions coreOptions) {
             //
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -116,7 +119,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectSimpleFunction() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(SimpleFunctions) };
                 }
@@ -138,7 +142,8 @@ public class ReflectorTest {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => new[] { typeof(IQueryable<>), typeof(IList<>) };
 
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(TupleFunctions) };
                 }
@@ -160,7 +165,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectUnsupportedTuple() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(UnsupportedTupleFunctions), typeof(SimpleClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -187,7 +193,8 @@ public class ReflectorTest {
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.SupportedSystemTypes = t => new[] { typeof(IQueryable<>) };
 
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(SimpleInjectedFunctions) };
                 }
@@ -208,7 +215,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectNavigableType() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(NavigableClass), typeof(SimpleClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -227,7 +235,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectBoundedType() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(BoundedClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -247,7 +256,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectCreateNewAction() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(CreateNewFunctions) };
                 }
@@ -270,7 +280,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectDisplayAsPropertyAction() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(DisplayAsPropertyFunctions) };
                 }
@@ -301,7 +312,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectPluralClass() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(PluralClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -324,7 +336,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectIgnoredProperty() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(IgnoredClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -360,7 +373,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectDefaultValueParameter() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(ParameterDefaultClass) };
                 }
@@ -390,7 +404,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectRangeParameter() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(RangeClass) };
                 }
@@ -416,7 +431,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectDescribedAs() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(DescribedAsClass) };
                     options.DomainFunctions = new[] { typeof(DescribedAsFunctions) };
                 }
@@ -451,7 +467,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectRenderEagerly() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(RenderEagerlyClass) };
                     options.DomainFunctions = new[] { typeof(RenderEagerlyFunctions) };
                 }
@@ -486,7 +503,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectTableView() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(TableViewClass) };
                     options.DomainFunctions = new[] { typeof(TableViewFunctions) };
                 }
@@ -522,7 +540,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectMask() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(MaskClass) };
                     options.DomainFunctions = new[] { typeof(MaskFunctions) };
                 }
@@ -546,7 +565,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectOptionally() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(OptionallyClass) };
                     options.DomainFunctions = new[] { typeof(OptionallyFunctions) };
                 }
@@ -588,7 +608,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectNamed() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(NamedClass) };
                     options.DomainFunctions = new[] { typeof(NamedFunctions) };
                 }
@@ -631,7 +652,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectRegex() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(RegexClass) };
                     options.DomainFunctions = new[] { typeof(RegexFunctions) };
                 }
@@ -669,7 +691,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectPresentationHint() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(HintClass) };
                     options.DomainFunctions = new[] { typeof(HintFunctions) };
                 }
@@ -710,7 +733,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectPageSize() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(PageSizeFunctions) };
                 }
@@ -735,7 +759,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectPassword() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(PasswordFunctions) };
                 }
@@ -761,7 +786,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectMultiline() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(MultilineClass) };
                     options.DomainFunctions = new[] { typeof(MultiLineFunctions) };
                 }
@@ -801,7 +827,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectOrder() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(OrderClass) };
                     options.DomainFunctions = new[] { typeof(OrderFunctions) };
                 }
@@ -843,7 +870,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectHidden() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(HiddenClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -866,7 +894,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectHiddenViaFunction() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(HiddenClass) };
                     options.DomainFunctions = new[] { typeof(HideFunctions) };
                 }
@@ -887,7 +916,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectVersioned() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(VersionedClass) };
                     options.DomainFunctions = Array.Empty<Type>();
                 }
@@ -909,7 +939,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectViewModelFunctions() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass), typeof(ViewModel) };
                     options.DomainFunctions = new[] { typeof(ViewModelFunctions) };
                 }
@@ -931,7 +962,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectPotentFunctions() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(PotentFunctions) };
                 }
@@ -959,7 +991,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectContributedCollections() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(ContributedCollectionFunctions) };
                 }
@@ -984,7 +1017,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectEditAnnotation() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(EditClass), typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(EditClassFunctions) };
                 }
@@ -1034,7 +1068,8 @@ public class ReflectorTest {
     [ExpectedException(typeof(ReflectionException), "string")]
     public void ReflectDuplicateFunctionsSameType() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(DuplicateFunctions) };
                 }
@@ -1058,7 +1093,8 @@ public class ReflectorTest {
     [ExpectedException(typeof(ReflectionException), "string")]
     public void ReflectDuplicateFunctionsDifferentType() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(DuplicateFunctions1), typeof(DuplicateFunctions2) };
                 }
@@ -1081,7 +1117,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectParameterChoices() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(ChoicesClass) };
                 }
@@ -1114,7 +1151,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectParameterMismatchedChoices() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(ChoicesClass) };
                 }
@@ -1147,7 +1185,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectTargetMismatchedChoices() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(SimpleClass) };
                     options.DomainFunctions = new[] { typeof(MismatchedTargetClass) };
                 }
@@ -1180,7 +1219,8 @@ public class ReflectorTest {
     [TestMethod]
     public void ReflectIntegrationFacetInteractions() {
         static void Setup(NakedFrameworkOptions coreOptions) {
-            coreOptions.AddNakedFunctions(options => {
+            coreOptions.AddEF6Persistor(options => {  });
+coreOptions.AddNakedFunctions(options => {
                     options.DomainTypes = new[] { typeof(IntegrationFacetClass) };
                     options.DomainFunctions = new[] { typeof(IntegrationFacetFunctions) };
                 }

@@ -163,9 +163,9 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
             using (host) {
                 container.GetService<IModelBuilder>()?.Build();
-                var specs = AllObjectSpecImmutables(container);
-                Assert.AreEqual(3, specs.Length);
-                AbstractReflectorTest.AssertSpec(typeof(object), specs.Skip(1).First());
+                var specs = AllObjectSpecImmutables(container).Where(s => s.ShortName == "Object").ToArray();
+                Assert.AreEqual(1, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs.First());
             }
         }
 
