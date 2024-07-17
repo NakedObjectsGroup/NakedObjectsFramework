@@ -26,21 +26,16 @@ Both frameworks therefore offer the following advantages:
 
 Naked Objects
 =============
-Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 12 (with work on v13 started).
+Naked Objects is a mature framework, under continuous development for 20 years (last 7 on GitHub) and now at version 16.
 
 Full documentation of how use the framework (typically starting from the Template projects) is contained in the [Naked Objects - Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Objects%20-%20Developer%20Manual.docx).
 There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages. (However there are details in the manual on how to build the source for those that really want to.)
 
-Differences between v12 and v11:
-
-* Now works with either Entity Framework Core or Entity Framework 6
-* Permits Properties (incl. Collection properties) to be 'contrributed' to an object (using the new **DisplayAsProperty** attribute) in a manner similar to the existing concept of 'contributed actions'.
-* Permits actions whose purpose is to edit one or more properties on a persisent objects to be annoted with the new **Edit** attribute, and hence allow the action to be invoked using the new 'edit' icon next to any of those fields, and to edit the propert values _in situ_ rather than via a separate dialog.
 
 Naked Functions
 ===============
 
-Naked Functions is a brand new framework, currently at release 1.0. It depends upon .NET 6 and Entity Framework Core.
+Naked Functions is a brand new framework, currently at release 4.0. It depends upon .NET 8 and Entity Framework Core.
 
 Full documentation of how use the framework (typically starting from the Template projects) is contained in the  [Naked Functions - Developer Manual](https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/Naked%20Functions%20-%20Developer%20Manual.docx). There is no need to download and build the source, as the recommended way to use the framework is via the published NuGet and NPM packages.
 
