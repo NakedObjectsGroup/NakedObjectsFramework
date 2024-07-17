@@ -14,7 +14,7 @@
 		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
-			<group targetFramework="net6.0">
+			<group targetFramework="net8.0">
 				<dependency id="Microsoft.AspNetCore.Mvc.NewtonsoftJson" version="7.0.20" />
 			</group>
 		</dependencies>

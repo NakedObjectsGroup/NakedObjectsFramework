@@ -14,17 +14,17 @@
 		<description>See documentation: https://github.com/NakedObjectsGroup/NakedObjectsFramework/tree/master/Documentation</description>
 		<tags>naked objects nakedobjects ddd domain driven design</tags>
 		<dependencies>
-			<group targetFramework="net6.0">
-				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="8.0.0" />
+			<group targetFramework="net8.0">
+				<dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="8.0.1" />
 				<dependency id="Microsoft.Extensions.Hosting" version="8.0.0" />
 				<dependency id="Microsoft.Extensions.Hosting.Abstractions" version="8.0.0" />
-				<dependency id="Microsoft.NET.Test.Sdk" version="17.5.0" />
-				<dependency id="MSTest.TestAdapter" version="3.0.2" />
-				<dependency id="MSTest.TestFramework" version="3.0.2" />
-				<dependency id="coverlet.collector" version="3.2.0" />
+				<dependency id="Microsoft.NET.Test.Sdk" version="17.10.0" />
+				<dependency id="MSTest.TestAdapter" version="3.5.0" />
+				<dependency id="MSTest.TestFramework" version="3.5.0" />
+				<dependency id="coverlet.collector" version="6.0.2" />
 				<dependency id="NakedFramework" version="16.0.0" />
 				<dependency id="RestfulObjects.ROSI" version="1.0.0-beta18" />
-				<dependency id="System.Data.SqlClient" version="4.8.5" />
+				<dependency id="System.Data.SqlClient" version="4.8.6" />
 			</group>
 		</dependencies>
 	</metadata>
