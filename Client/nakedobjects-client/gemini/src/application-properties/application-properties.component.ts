@@ -36,7 +36,7 @@ export class ApplicationPropertiesComponent implements OnInit {
     }
 
     get clientVersion() {
-        return clientVersion;
+        return '16.0.0';
     }
 
     private applicationProperties?: ApplicationPropertiesViewModel;
