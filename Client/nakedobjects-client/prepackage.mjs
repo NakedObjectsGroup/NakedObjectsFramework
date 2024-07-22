@@ -23,23 +23,3 @@ try {
 } catch (e) {
     console.error('Error occurred updating version:', e);
 }
-
-// var version = findSync("version", ".", "package.json").then(s => {
-
-//     try {
-//         var versionLine = s["package.json"].line[0];
-//         var versionSplit = versionLine.split('"');
-//         var version = versionSplit[3];
-
-//         // to update client version in code
-//         var options2 = {
-//             files: ["./gemini/src/version.ts"],
-//             from: [/clientVersion.*/g],
-//             to: "clientVersion = '" + version + "';"
-//         };
-
-//         await replaceInFile(options2);
-//     } catch (e) {
-//         console.error('Error occurred updating version:', e);
-//     }
-// });
