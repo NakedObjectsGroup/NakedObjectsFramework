@@ -78,7 +78,7 @@ export class Extensions {
     pattern = () => this.wrapped?.pattern;
 
     // Nof custom:
-    choices = () => this.wrapped[roNofChoices] as { [index: string]: Ro.ValueType[]; };
+    choices = () => this.wrapped[roNofChoices] as Record<string, Ro.ValueType[]>;
     menuPath = () => this.wrapped[roNofMenuPath] as string;
     mask = () => this.wrapped[roNofMask] as string;
     tableViewTitle = () => this.wrapped[roNofTableViewTitle] as boolean;
@@ -714,11 +714,11 @@ export class Value {
     }
 
     blob(): Blob | null {
-        return this.isBlob() ? <Blob>this.wrapped : null;
+        return this.isBlob() ? this.wrapped as Blob : null;
     }
 
     link(): Link | null {
-        return this.isReference() ? <Link>this.wrapped : null;
+        return this.isReference() ? this.wrapped as Link : null;
     }
 
     getHref(): string | null {
@@ -740,7 +740,7 @@ export class Value {
         }
 
         if (this.isList()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             const list = this.list()!; // know true
             const ss = map(list, v => v.toString());
             return ss.length === 0 ? '' : reduce(ss, (m, s) => m + '-' + s, '');
@@ -751,12 +751,12 @@ export class Value {
 
     private compress(shortCutMarker: string, urlShortCuts: string[]): Value {
         if (this.isReference()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             const link = this.link()!.compress(shortCutMarker, urlShortCuts); // know true
             return new Value(link);
         }
         if (this.isList()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             const list = map(this.list()!, i => i.compress(shortCutMarker, urlShortCuts));
             return new Value(list);
         }
@@ -771,12 +771,12 @@ export class Value {
 
     private decompress(shortCutMarker: string, urlShortCuts: string[]): Value {
         if (this.isReference()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             const link = this.link()!.decompress(shortCutMarker, urlShortCuts); // know true
             return new Value(link);
         }
         if (this.isList()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             const list = map(this.list()!, i => i.decompress(shortCutMarker, urlShortCuts));
             return new Value(list);
         }
@@ -791,7 +791,7 @@ export class Value {
 
     toValueString(): string {
         if (this.isReference()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             return this.link()!.href(); // know true
         }
         return (this.wrapped == null) ? '' : this.wrapped.toString();
@@ -807,15 +807,15 @@ export class Value {
 
     setValue(target: Ro.IValue) {
         if (this.isFileReference()) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             target.value = this.link()!.wrapped; // know true
         } else if (this.isReference()) {
 
             target.value = { 'href': (this.link() as Link).href() }; // know true
         } else if (this.isList()) {
             const list = this.list() as Value[]; // know true
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            target.value = map(list, v => v.isReference() ? <Ro.ILink>{ 'href': v.link()!.href() } : v.scalar()) as Ro.ValueType[];
+             
+            target.value = map(list, v => v.isReference() ? { 'href': v.link()!.href() } as Ro.ILink : v.scalar()) as Ro.ValueType[];
         } else if (this.isBlob()) {
             target.value = this.blob();
         } else {
@@ -824,7 +824,7 @@ export class Value {
     }
 
     set(target: Dictionary<Ro.IValue | string | boolean>, name: string) {
-        const t = target[name] = <Ro.IValue>{ value: null };
+        const t = target[name] = { value: null } as Ro.IValue;
         this.setValue(t);
     }
 }
@@ -1644,7 +1644,7 @@ export class PropertyMember extends Member<Ro.IPropertyMember> implements IField
     setFromModifyMap(modifyMap: ModifyMap) {
         forOwn(modifyMap.valueMap, (v, k) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (<any>this.wrapped)[k] = v;
+            (this.wrapped as any)[k] = v;
         });
     }
 
@@ -2528,7 +2528,7 @@ export class Link {
 
     private getHateoasTarget(targetType: string): IHateoasModel {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const MatchingType = (<any>this.repTypeToModel)[targetType];
+        const MatchingType = (this.repTypeToModel as any)[targetType];
         const target: IHateoasModel = new MatchingType();
         return target;
     }

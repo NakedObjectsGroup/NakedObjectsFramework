@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService, ConfigService, UrlManagerService } from '@nakedobjects/services';
 
 @Component({
-    // tslint:disable-next-line:component-selector
+   
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'app-root',
     templateUrl: 'app.component.html',

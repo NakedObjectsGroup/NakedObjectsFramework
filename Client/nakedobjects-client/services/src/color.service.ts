@@ -64,7 +64,7 @@ export class ColorService extends TypeResultCache<number> implements IColorServi
     }
 
     simpleHash(str: string) {
-        // tslint:disable-next-line:no-bitwise
+       
         return Math.abs(Array.from(str).reduce((hash, char) => 0 | (31 * hash + char.charCodeAt(0)), 0));
     }
 

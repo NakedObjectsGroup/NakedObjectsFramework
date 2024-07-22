@@ -49,12 +49,12 @@ export class ListViewModel extends ContributedActionParentViewModel implements I
 
     private readonly laterDisabled = () => this.page === this.numPages || this.numPages === 1;
 
-    // tslint:disable:member-ordering
+   
     readonly pageFirstDisabled = this.earlierDisabled;
     readonly pageLastDisabled = this.laterDisabled;
     readonly pageNextDisabled = this.laterDisabled;
     readonly pagePreviousDisabled = this.earlierDisabled;
-    // tslint:enable:member-ordering
+   
 
     private readonly recreate = (page: number, pageSize: number) => {
         return this.routeData.objectId

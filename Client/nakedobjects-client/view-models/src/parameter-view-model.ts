@@ -80,7 +80,7 @@ export class ParameterViewModel extends FieldViewModel {
 
     private setupParameterAutocomplete() {
         const parmRep = this.parameterRep;
-        this.setupAutocomplete(parmRep, () => <Dictionary<Ro.Value>>{});
+        this.setupAutocomplete(parmRep, () => ({} as Dictionary<Ro.Value>));
     }
 
     private setupParameterFreeformReference() {

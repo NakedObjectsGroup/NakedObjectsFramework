@@ -174,7 +174,7 @@ export abstract class FieldViewModel extends MessageViewModel {
         return this.validate(viewValue, val, !fullValidate);
     }
 
-    readonly validator = (c: AbstractControl): { [index: string]: string; } | null => {
+    readonly validator = (c: AbstractControl): Record<string, string> | null => {
         const viewValue = c.value as string | ChoiceViewModel | string[] | ChoiceViewModel[];
         const isvalid = this.isValid(viewValue);
         return isvalid ? null : { invalid: 'invalid entry' };
@@ -215,7 +215,7 @@ export abstract class FieldViewModel extends MessageViewModel {
 
         this.conditionalChoices = (args: Dictionary<Ro.Value>) => {
             const createcvm = (choices : Dictionary<Ro.Value>) => Helpers.createChoiceViewModels(this.id, choices, undefined);
-            return this.context.conditionalChoices(rep, this.id, () => <Dictionary<Ro.Value>>{}, args, digest).then(createcvm);
+            return this.context.conditionalChoices(rep, this.id, () => ({} as Dictionary<Ro.Value>), args, digest).then(createcvm);
         };
         const promptLink = rep.promptLink() as Ro.Link;
         this.promptArguments = fromPairs(map(promptLink!.arguments()!, (v : Ro.IValue, key) => [key, new Ro.Value(v.value)]));

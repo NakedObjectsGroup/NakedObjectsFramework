@@ -68,7 +68,7 @@ describe('MaskService', () => {
         it('masks 10003', inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, 10003, 'int', '10,003')));
         // TODO fix
         // it("masks max int", inject([MaskService], (maskService: MaskService) => testDefaultMask(maskService, Number.MAX_VALUE, "int",
-        // tslint:disable-next-line:max-line-length
+       
         //    "179,769,313,486,232,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000")));
     });
 

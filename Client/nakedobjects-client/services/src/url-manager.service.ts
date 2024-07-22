@@ -139,7 +139,7 @@ export class UrlManagerService {
 
         const nLen = arr.length;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        for (nFlag; nFlag < nLen; nMask |= (<any>arr)[nFlag] << nFlag++);
+        for (nFlag; nFlag < nLen; nMask |= (arr as any)[nFlag] << nFlag++);
         return nMask;
     }
 
@@ -177,7 +177,7 @@ export class UrlManagerService {
         }
         const aFromMask = [] as boolean[];
         let len = 31; // make array always 31 bit long as we may concat another on end
-        // tslint:disable-next-line
+       
         for (let nShifted = nMask; len > 0; aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1, --len);
         return aFromMask;
     }
@@ -216,7 +216,7 @@ export class UrlManagerService {
     }
 
     private getIds(typeOfId: string, paneId: Pane) {
-        return <Dictionary<string>>pickBy(this.getSearch(), (v, k) => !!k && k.indexOf(typeOfId + paneId) === 0);
+        return pickBy(this.getSearch(), (v, k) => !!k && k.indexOf(typeOfId + paneId) === 0) as Dictionary<string>;
     }
 
     private mapIds(ids: Dictionary<string>): Dictionary<string> {
@@ -234,7 +234,7 @@ export class UrlManagerService {
 
     private getInteractionMode(rawInteractionMode: string): InteractionMode {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return rawInteractionMode ? (<any>InteractionMode)[rawInteractionMode] : InteractionMode.View;
+        return rawInteractionMode ? (InteractionMode as any)[rawInteractionMode] : InteractionMode.View;
     }
 
     private getPaneParams(params: Dictionary<string>, paneId: number): { rp: Dictionary<string>, rpwr: Dictionary<string> } {
@@ -252,7 +252,7 @@ export class UrlManagerService {
         return this.obfuscateService.deobfuscate(s);
     }
 
-    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: Pane, routeParams: { [key: string]: string }) {
+    private setPaneRouteDataFromParms(paneRouteData: PaneRouteData, paneId: Pane, routeParams: Record<string, string>) {
         ({ rp: paneRouteData.rawParms, rpwr: paneRouteData.rawParmsWithoutReload } = this.getPaneParams(routeParams, paneId));
         paneRouteData.menuId = this.getId(akm.menu + paneId, routeParams);
         paneRouteData.actionId = this.getId(akm.action + paneId, routeParams);
@@ -325,7 +325,7 @@ export class UrlManagerService {
 
         const path = this.getPath();
         const segments = path.split('/');
-        // tslint:disable-next-line:prefer-const
+       
         const [, mode, pane1Type, pane2Type] = segments;
         let changeMode = false;
         let mayReplace = true;
@@ -814,7 +814,7 @@ export class UrlManagerService {
 
     getPaneRouteDataObservable = (paneId: Pane) => {
 
-        return this.router.routerState.root.queryParams.pipe(rxjsmap((ps: { [key: string]: string }) => {
+        return this.router.routerState.root.queryParams.pipe(rxjsmap((ps: Record<string, string>) => {
             const routeData = new RouteData(this.configService, this.loggerService);
             const paneRouteData = routeData.pane(paneId)!;
             this.setPaneRouteDataFromParms(paneRouteData, paneId, ps);
@@ -833,7 +833,7 @@ export class UrlManagerService {
         const path = this.getPath();
         const segments = path.split('/');
 
-        const paneType = <PathSegment>segments[paneId + 1] || homePath;
+        const paneType = segments[paneId + 1] as PathSegment || homePath;
         let paneSearch = this.capturePane(paneId);
 
         // clear any dialogs so we don't return  to a dialog
@@ -849,7 +849,7 @@ export class UrlManagerService {
         const s2 = this.deobfuscate(this.getId(`${akm.object}${paneId}`, search) || '');
         const s3 = this.getId(`${akm.action}${paneId}`, search) || '';
 
-        const parms = <Dictionary<string>>pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0);
+        const parms = pickBy(search, (v, k) => !!k && k.indexOf(akm.parm + paneId) === 0) as Dictionary<string>;
         const mappedParms = mapValues(parms, v => decodeURIComponent(Ro.decompress(this.deobfuscate(v), this.shortCutMarker, this.urlShortCuts)));
 
         const s4 = reduce(mappedParms, (r, n, k) => r + (k + '=' + n + this.keySeparator), '');

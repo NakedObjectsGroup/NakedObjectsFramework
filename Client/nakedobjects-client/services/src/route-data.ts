@@ -143,9 +143,9 @@ export class PaneRouteData {
         this.isValid(name);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if (contextCondition.condition((<any>this)[context])) {
+        if (contextCondition.condition((this as any)[context])) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            if (!valueCondition.condition((<any>this)[name])) {
+            if (!valueCondition.condition((this as any)[name])) {
                 this.loggerService.throw(`PaneRouteData:assertMustBe Expect that ${name} ${valueCondition.name} when ${context} ${contextCondition.name} within url "${this.validatingUrl}"`);
             }
         }

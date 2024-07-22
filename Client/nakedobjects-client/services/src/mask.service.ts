@@ -19,9 +19,7 @@ export interface ILocalFilter {
     filter(val: unknown): string;
 }
 
-export interface IMaskMap {
-    [index: string]: { [index: string]: ILocalFilter };
-}
+export type IMaskMap = Record<string, Record<string, ILocalFilter>>;
 
 class LocalStringFilter implements ILocalFilter {
 
@@ -33,7 +31,7 @@ class LocalStringFilter implements ILocalFilter {
 function transform(tfm: () => string | null) {
     try {
         return tfm();
-    } catch (e) {
+    } catch (_) {
         return '';
     }
 }

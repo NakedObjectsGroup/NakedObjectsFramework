@@ -1,6 +1,6 @@
 <ng-container *ngFor="let menu of items; let i = index">
 
-    <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)"  class="submenu" [ngSwitch]="navCollapsed(menu)">
+    <div *ngIf="menuName(menu)" (click)="toggleCollapsed(menu)" (keydown.enter)="toggleCollapsed(menu)" class="submenu" [ngSwitch]="navCollapsed(menu)" tabindex="0">
         {{menuName(menu)}}
         <div *ngSwitchCase="true" (keydown.enter)="toggleCollapsed(menu)" class="icon-expand" tabindex="0"></div>
         <div *ngSwitchCase="false" (keydown.enter)="toggleCollapsed(menu)" class="icon-collapse" tabindex="0"></div>

@@ -73,7 +73,7 @@ export interface IParameterExtensions extends IExtensions {
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+ 
 export interface IRepresentation {
 }
 
@@ -82,7 +82,7 @@ export interface IResourceRepresentation extends IRepresentation {
     extensions: IExtensions;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+ 
 export interface IHomePageRepresentation extends IResourceRepresentation {
 }
 
@@ -120,9 +120,7 @@ export interface IValue {
     invalidReason?: string;
 }
 
-export interface IValueMap {
-    [index: string]: IValue | string | boolean;
-}
+export type IValueMap = Record<string, IValue | string | boolean>;
 
 export interface IObjectOfType {
     members: IValueMap;
@@ -130,9 +128,7 @@ export interface IObjectOfType {
     'x-ro-validate-only'?: boolean;
 }
 
-export interface IPromptMap {
-    [index: string]: IValue | string | IValueMap;
-}
+export type IPromptMap = Record<string, IValue | string | IValueMap>;
 
 export interface IErrorDetailsRepresentation {
     message: string;
@@ -173,7 +169,7 @@ export interface ICollectionMember extends IMember {
 
 export interface IActionMember extends IMember {
     id: string;
-    parameters: { [index: string]: IParameterRepresentation };
+    parameters: Record<string, IParameterRepresentation>;
     extensions: IActionExtensions;
 }
 
@@ -182,7 +178,7 @@ export interface IDomainObjectRepresentation extends IResourceRepresentation {
     instanceId?: string;
     serviceId?: string;
     title: string;
-    members: { [index: string]: IPropertyMember | IActionMember | ICollectionMember };
+    members: Record<string, IPropertyMember | IActionMember | ICollectionMember>;
     extensions: IDomainObjectExtensions;
 }
 
@@ -202,7 +198,7 @@ export interface IParameterRepresentation extends IResourceRepresentation {
 
 export interface IActionRepresentation extends IResourceRepresentation {
     id: string;
-    parameters: { [index: string]: IParameterRepresentation };
+    parameters: Record<string, IParameterRepresentation>;
     disabledReason?: string;
     extensions: IActionExtensions;
 }
@@ -230,7 +226,7 @@ export interface IDomainTypeRepresentation extends IResourceRepresentation {
     description: string;
     isService: string;
     typeActions: string;
-    members: { [index: string]: ILink };
+    members: Record<string, ILink>;
 }
 
 export interface IDomainTypePropertyDescriptionRepresentation extends IResourceRepresentation {

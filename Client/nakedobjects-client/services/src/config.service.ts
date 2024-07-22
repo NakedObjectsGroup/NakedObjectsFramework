@@ -59,13 +59,9 @@ export interface IAppConfig {
 
     // color set by first matching rule in order type, regex, subtype, default (faster to slower)
     colors?: {
-        typeMap?: {
-            [index: string]: number;
-        },
+        typeMap?: Record<string, number>,
         regexArray?: { regex: RegExp, color: number }[],
-        subtypeMap?: {
-            [index: string]: number;
-        },
+        subtypeMap?: Record<string, number>,
         default?: number;
         randomMaxIndex?: number;
     };
@@ -75,29 +71,23 @@ export interface IAppConfig {
     // This mask deliberately does not specify the timezone as "UTC+0", unlike the other masks,
     // with the result that the date+time will be transformed to the timezone of the client.
     masks?: {
-        currencyMasks?: {
-            [index: string]: {
+        currencyMasks?: Record<string, {
                 format: Ro.FormatType;
                 symbol?: string;
                 digits?: string;
                 locale?: string;
-            }
-        }
-        dateMasks?: {
-            [index: string]: {
+            }>
+        dateMasks?: Record<string, {
                 format: Ro.FormatType;
                 mask: string;
                 tz?: string;
                 locale?: string;
-            }
-        }
-        numberMasks?: {
-            [index: string]: {
+            }>
+        numberMasks?: Record<string, {
                 format: Ro.FormatType;
                 digits?: string;
                 locale?: string;
-            }
-        }
+            }>
     };
 }
 

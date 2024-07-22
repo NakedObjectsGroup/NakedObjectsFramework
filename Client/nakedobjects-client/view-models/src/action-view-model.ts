@@ -119,7 +119,7 @@ export class ActionViewModel {
 
     // open dialog on current pane always - invoke action goes to pane indicated by click
     // note this can be modified by decorators
-    // tslint:disable-next-line:member-ordering
+   
     doInvoke;
 
     private getInvokable() {
