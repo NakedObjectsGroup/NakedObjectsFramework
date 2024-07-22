@@ -1,4 +1,4 @@
-﻿import { HttpClientModule } from '@angular/common/http';
+﻿import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,24 +11,17 @@ import { RoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 // import { Base64ObfuscateService } from './base64obfuscate.service';
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         FormsModule,
         RoutingModule,
         ReactiveFormsModule,
-        HttpClientModule,
         ServicesModule.forRoot(),
         ViewModelModule.forRoot(),
         CiceroModule.forRoot(),
-        GeminiModule.forRoot(),
-    ],
-    providers: [
-        // {provide : ObfuscateService, useClass: Base64ObfuscateService}
-    ],
-    bootstrap: [AppComponent]
-})
+        GeminiModule.forRoot()], providers: [
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
