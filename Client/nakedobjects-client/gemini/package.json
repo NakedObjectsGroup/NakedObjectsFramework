@@ -47,7 +47,7 @@
         "@angular/platform-browser": "^18.1.1",
         "@angular/platform-browser-dynamic": "^18.1.1",
         "@angular/router": "^18.1.1",
-        "@nakedobjects/restful-objects": "~15.1.0",
+        "@nakedobjects/restful-objects": "~16.0.0",
         "@nakedobjects/services": "~16.0.0",
         "@nakedobjects/view-models": "~16.0.0",
         "rxjs": "~7.8.0",
