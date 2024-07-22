@@ -32,10 +32,10 @@
         "e2e": "ng e2e"
     },
     "dependencies": {
-        "auth0-js": "^9.23.0",
-        "lodash": "~4.17.21",
-        "lodash-es": "~4.17.21",
-        "tslib": "~2.6.0"
+        "auth0-js": "~9.26.0",
+        "lodash": "~4.17.0",
+        "lodash-es": "~4.17.0",
+        "tslib": "^2.6.0"
     },
     "peerDependencies": {
         "@angular/animations": "^18.1.1",
@@ -48,7 +48,7 @@
         "@angular/platform-browser-dynamic": "^18.1.1",
         "@angular/router": "^18.1.1",
         "@nakedobjects/restful-objects": "~16.0.0",
-        "rxjs": "~7.8.1",
+        "rxjs": "~7.8.0",
         "zone.js": "~0.14.0"
     }
 }

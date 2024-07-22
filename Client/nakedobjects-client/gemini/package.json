@@ -32,10 +32,10 @@
         "e2e": "ng e2e"
     },
     "dependencies": {
-        "auth0-js": "^9.23.0",
-        "lodash": "~4.17.21",
-        "lodash-es": "~4.17.21",
-        "tslib": "~2.6.0"
+        "auth0-js": "~9.26.0",
+        "lodash": "~4.17.0",
+        "lodash-es": "~4.17.0",
+        "tslib": "^2.6.0"
     },
     "peerDependencies": {
         "@angular/animations": "^18.1.1",
