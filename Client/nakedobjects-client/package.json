@@ -29,7 +29,7 @@
     "test": "ng test --watch false --progress false",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prepackage": "node prepackage.js",
+    "prepackage": "node prepackage.mjs",
     "compile:restful-objects": "yarn --ignore-scripts && rimraf dist/nakedobjects-restful-objects && ng-packagr -p restful-objects/ng-package.json",
     "pack:restful-objects": "cd dist/nakedobjects-restful-objects && yarn pack && cd ../..",
     "install:restful-objects": "yarn --ignore-scripts add file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v16.0.0.tgz",
