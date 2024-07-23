@@ -1937,6 +1937,48 @@
   resolved "https://registry.yarnpkg.com/@msgpackr-extract/msgpackr-extract-win32-x64/-/msgpackr-extract-win32-x64-3.0.3.tgz#0aa5502d547b57abfc4ac492de68e2006e417242"
   integrity sha512-x0fWaQtYp4E6sktbsdAqnehxDgEc/VwM7uLsRCYWaiGu0ykYdZPiS8zCWdnjHwyiumousxfBm4SO31eXqwEZhQ==
 
+"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v16.0.0.tgz":
+  version "16.0.0"
+  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v16.0.0.tgz#faf59d0bb9ab91b10e25614d3616c1f2cb0be62d"
+  dependencies:
+    lodash "~4.17.21"
+    lodash-es "~4.17.21"
+    tslib "~2.6.0"
+
+"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v16.0.0.tgz":
+  version "16.0.0"
+  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v16.0.0.tgz#cb40575879bfcbeb5b17e1f23b8b86b561d88bce"
+  dependencies:
+    auth0-js "~9.26.0"
+    lodash "~4.17.0"
+    lodash-es "~4.17.0"
+    tslib "^2.6.0"
+
+"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v16.0.0.tgz":
+  version "16.0.0"
+  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v16.0.0.tgz#fcd58ab12364ada148a928a8addc49c91d848fd6"
+  dependencies:
+    lodash "~4.17.0"
+    lodash-es "~4.17.0"
+    tslib "^2.3.0"
+
+"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v16.0.0.tgz":
+  version "16.0.0"
+  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v16.0.0.tgz#34590be263152372e7ae3be8ea9ee340e5df3cdd"
+  dependencies:
+    auth0-js "~9.26.0"
+    lodash "~4.17.0"
+    lodash-es "~4.17.0"
+    tslib "^2.6.0"
+
+"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v16.0.0.tgz":
+  version "16.0.0"
+  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v16.0.0.tgz#51bcd96099c659bf38d0439b838ce0ac36aff0a4"
+  dependencies:
+    lodash "~4.17.0"
+    lodash-es "~4.17.0"
+    tslib "^2.6.0"
+
 "@napi-rs/wasm-runtime@0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@napi-rs/wasm-runtime/-/wasm-runtime-0.2.4.tgz#d27788176f250d86e498081e3c5ff48a17606918"
@@ -5708,7 +5750,7 @@ locate-path@^7.1.0:
   dependencies:
     p-locate "^6.0.0"
 
-lodash-es@~4.17.21:
+lodash-es@~4.17.0, lodash-es@~4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
@@ -5723,7 +5765,7 @@ lodash.merge@^4.6.2:
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
-lodash@^4.17.21, lodash@~4.17.21:
+lodash@^4.17.21, lodash@~4.17.0, lodash@~4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -7890,7 +7932,7 @@ tsconfig-paths@^4.1.2:
     minimist "^1.2.6"
     strip-bom "^3.0.0"
 
-tslib@2.6.3, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.4.0, tslib@^2.6.3:
+tslib@2.6.3, tslib@^2.0.0, tslib@^2.1.0, tslib@^2.3.0, tslib@^2.4.0, tslib@^2.6.0, tslib@^2.6.3, tslib@~2.6.0:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
   integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
