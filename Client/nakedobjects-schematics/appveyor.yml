@@ -1,0 +1,28 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+image: Visual Studio 2022
+clone_depth: 1
+install:
+- cmd: >-
+    node -v
+
+    npm -v
+build_script:
+- cmd: >-
+    cd Client/nakedobjects-schematics
+
+    yarn
+
+
+    yarn prebuild
+
+    yarn build
+
+    yarn pack
+test_script:
+- cmd: "cd ..\nyarn global add @angular/cli@15.2.2 \nng new test-schematic\ncd test-schematic\n\nyarn add luxon --save\nyarn add @types/luxon --save-dev\nyarn add @types/lodash\n\nyarn add @nakedobjects/restful-objects@14.0.0\nyarn add @nakedobjects/services@14.0.0\nyarn add @nakedobjects/cicero@14.0.0\nyarn add @nakedobjects/view-models@14.0.0\nyarn add @angular/cdk\nyarn add @nakedobjects/gemini@14.0.0\n\nyarn\n\npwd\nMOVE \"../nakedobjects-schematics/nakedobjects-schematics*.tgz\" \"./nakedobjects-schematics.tgz\"\nyarn add file:./nakedobjects-schematics.tgz\nng generate @nakedobjects/schematics:new-project\nng build --no-progress --configuration=development"
+artifacts:
+- path: Client/test-schematic/nakedobjects-schematics.tgz
+  name: nakedobjects-schematics.tgz
