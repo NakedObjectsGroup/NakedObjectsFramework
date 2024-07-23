@@ -51,7 +51,7 @@
     "install:cicero": "yarn --ignore-scripts add file:./dist/nakedobjects-cicero/nakedobjects-cicero-v16.0.0.tgz",
     "build:cicero": "yarn --ignore-scripts && yarn compile:cicero && yarn pack:cicero && yarn install:cicero",
     "build:clean": "rimraf dist && rimraf node_modules/@nakedobjects && yarn cache clean && rimraf .angular/cache",
-    "build:libs:av": "yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
+    "build:libs:av": "yarn lint && yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
     "build:libs": "yarn lint && yarn build:clean && yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
     "build:app": "ng build packages --no-progress",
     "build:app:prod": "ng build packages --no-progress --configuration production"
@@ -86,7 +86,6 @@
     "@types/luxon": "~3.4.0",
     "@types/node": "~20.14.0",
     "angular-eslint": "18.1.0",
-    "cpr": "~3.0.0",
     "eslint": "^9.6.0",
     "find-in-files": "~0.5.0",
     "jasmine-core": "~5.2.0",

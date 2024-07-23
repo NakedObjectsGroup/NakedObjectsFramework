@@ -66,7 +66,6 @@
         "ng-packagr": "^18.1.1",
         "@types/lodash": "~4.17.0",
         "@types/lodash-es": "~4.17.0",
-        "cpr": "~3.0.1",
         "find-in-files": "~0.5.0",
         "replace-in-file": "~8.1.0",
         "rimraf": "~6.0.0"
