@@ -98,6 +98,7 @@
     "replace-in-file": "~8.1.0",
     "rimraf": "~6.0.0",
     "typescript": "~5.5.0",
-    "typescript-eslint": "8.0.0-alpha.38"
+    "typescript-eslint": "8.0.0-alpha.38",
+    "node-fetch": "2.6.7"
   }
 }
