@@ -130,7 +130,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         const editActions = allActions.filter(avm => avm.editProperties.length > 0);
         this.actions = without(allActions, ...editActions);
 
-        const editActionTuples: [ActionViewModel, string[]][] = map(editActions, a => [a, a.editProperties]);
+        const editActionTuples: [ActionViewModel, string[]][] = map(editActions, a => [a, a.editProperties]) as [ActionViewModel, string[]][];
 
         this.menuItems = Helpers.createMenuItems(this.actions);
 
