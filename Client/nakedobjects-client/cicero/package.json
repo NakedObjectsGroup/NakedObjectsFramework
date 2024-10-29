@@ -48,7 +48,7 @@
         "@nakedobjects/restful-objects": "~16.1.0",
         "@nakedobjects/services": "~16.1.0",
         "rxjs": "~7.8.0",
-        "zone.js": "~0.15.0"
+        "zone.js": "~0.14.0"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^18.2.9",
