@@ -54,7 +54,7 @@ public abstract class BaseTest {
     }
 
     protected static void InitChromeDriver() {
-        Driver = new ChromeDriver();
+        Driver = new ChromeDriver("./");
         Wait = new SafeWebDriverWait(Driver, TimeSpan.FromSeconds(TimeOut));
         Driver.Manage().Window.Maximize();
     }
