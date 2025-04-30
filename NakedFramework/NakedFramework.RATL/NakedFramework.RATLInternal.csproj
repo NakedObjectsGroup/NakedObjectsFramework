@@ -24,7 +24,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

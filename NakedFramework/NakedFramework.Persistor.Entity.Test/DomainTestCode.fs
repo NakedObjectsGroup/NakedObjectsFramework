@@ -11,7 +11,7 @@ open NakedFramework.Persistor.EF6.Component
 open NakedFramework.Core.Resolve
 open NUnit.Framework
 open System.Data.Common
-open System.Data.SqlClient
+open Microsoft.Data.SqlClient
 open System
 open System.Data.Entity.Core.Objects
 open Moq
@@ -34,7 +34,7 @@ let DomainLoadTestAssembly() =
     ()
 
 let DomainSetup() = 
-    DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+    DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance);
     DomainLoadTestAssembly()
 
 let CanCreateEntityPersistor persistor = Assert.IsNotNull(persistor)

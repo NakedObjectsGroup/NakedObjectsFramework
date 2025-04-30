@@ -6,14 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Data.Common;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 namespace NakedObjects.Rest.Test.App {
     public class Program {
         public static void Main(string[] args) {
-            DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance);
 
             CreateHostBuilder(args).Build().Run();
         }

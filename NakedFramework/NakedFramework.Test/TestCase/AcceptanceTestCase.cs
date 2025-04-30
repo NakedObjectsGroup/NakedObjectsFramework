@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -50,7 +50,7 @@ public abstract class AcceptanceTestCase {
     private IPrincipal testPrincipal;
 
     private AcceptanceTestCase(string name) {
-        DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+        DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance);
     }
 
     protected AcceptanceTestCase() : this("Unnamed") { }
