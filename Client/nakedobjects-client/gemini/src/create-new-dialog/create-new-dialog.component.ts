@@ -17,7 +17,8 @@ import { IActionHolder } from '../action/action.component';
 @Component({
     selector: 'nof-create-new-dialog',
     templateUrl: 'create-new-dialog.component.html',
-    styleUrls: ['create-new-dialog.component.css']
+    styleUrls: ['create-new-dialog.component.css'],
+    standalone: false
 })
 export class CreateNewDialogComponent extends BaseDialogComponent implements AfterViewInit, OnDestroy, OnChanges {
 

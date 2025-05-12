@@ -6,7 +6,8 @@ import { focus } from '../helpers-components';
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[nof-row]',
     templateUrl: 'row.component.html',
-    styleUrls: ['row.component.css']
+    styleUrls: ['row.component.css'],
+    standalone: false
 })
 export class RowComponent {
 

@@ -7,7 +7,8 @@ import { EditParameterComponent } from '../edit-parameter/edit-parameter.compone
 @Component({
     selector: 'nof-parameters',
     templateUrl: 'parameters.component.html',
-    styleUrls: ['parameters.component.css']
+    styleUrls: ['parameters.component.css'],
+    standalone: false
 })
 export class ParametersComponent {
 

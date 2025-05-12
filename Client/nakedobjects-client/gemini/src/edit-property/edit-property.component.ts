@@ -23,7 +23,8 @@ import { TimePickerFacadeComponent } from '../time-picker-facade/time-picker-fac
 @Component({
     selector: 'nof-edit-property',
     templateUrl: 'edit-property.component.html',
-    styleUrls: ['edit-property.component.css']
+    styleUrls: ['edit-property.component.css'],
+    standalone: false
 })
 export class EditPropertyComponent extends FieldComponent implements OnInit, OnDestroy, AfterViewInit {
 

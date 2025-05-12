@@ -6,7 +6,8 @@ import { AuthService, ConfigService, ContextService } from '@nakedobjects/servic
 @Component({
     selector: 'nof-logoff',
     templateUrl: 'logoff.component.html',
-    styleUrls: ['logoff.component.css']
+    styleUrls: ['logoff.component.css'],
+    standalone: false
 })
 export class LogoffComponent implements OnInit {
 

@@ -27,7 +27,8 @@ export interface ITimePickerInputEvent {
 @Component({
     selector: 'nof-time-picker',
     templateUrl: 'time-picker.component.html',
-    styleUrls: ['time-picker.component.css']
+    styleUrls: ['time-picker.component.css'],
+    standalone: false
 })
 export class TimePickerComponent implements OnInit, OnDestroy {
 

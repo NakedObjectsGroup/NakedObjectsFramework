@@ -9,7 +9,8 @@ import { accept, dropOn, focus, paste, safeUnsubscribe } from '../helpers-compon
 @Component({
     selector: 'nof-auto-complete',
     templateUrl: 'auto-complete.component.html',
-    styleUrls: ['auto-complete.component.css']
+    styleUrls: ['auto-complete.component.css'],
+    standalone: false
 })
 export class AutoCompleteComponent implements OnDestroy {
 

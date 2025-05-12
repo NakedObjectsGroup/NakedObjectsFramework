@@ -11,7 +11,8 @@ import { safeUnsubscribe } from '../helpers-components';
 @Component({
     selector: 'nof-action-bar',
     templateUrl: 'action-bar.component.html',
-    styleUrls: ['action-bar.component.css']
+    styleUrls: ['action-bar.component.css'],
+    standalone: false
 })
 export class ActionBarComponent implements OnDestroy, AfterViewInit {
 

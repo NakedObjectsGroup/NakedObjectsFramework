@@ -7,7 +7,8 @@ import { ITimePickerInputEvent, ITimePickerOutputEvent } from '../time-picker/ti
 @Component({
     selector: 'nof-time-picker-facade',
     templateUrl: 'time-picker-facade.component.html',
-    styleUrls: ['time-picker-facade.component.css']
+    styleUrls: ['time-picker-facade.component.css'],
+    standalone: false
 })
 export class TimePickerFacadeComponent implements AfterViewInit {
 

@@ -5,7 +5,8 @@ import { AttachmentViewModel } from '@nakedobjects/view-models';
 @Component({
     selector: 'nof-attachment-property',
     templateUrl: 'attachment-property.component.html',
-    styleUrls: ['attachment-property.component.css']
+    styleUrls: ['attachment-property.component.css'],
+    standalone: false
 })
 export class AttachmentPropertyComponent {
 

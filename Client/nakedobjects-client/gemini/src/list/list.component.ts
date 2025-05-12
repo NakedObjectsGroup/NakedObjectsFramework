@@ -20,7 +20,8 @@ import { safeUnsubscribe } from '../helpers-components';
 @Component({
     selector: 'nof-list',
     templateUrl: 'list.component.html',
-    styleUrls: ['list.component.css']
+    styleUrls: ['list.component.css'],
+    standalone: false
 })
 export class ListComponent implements OnInit, OnDestroy {
 

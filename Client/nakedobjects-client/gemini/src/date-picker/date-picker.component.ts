@@ -78,7 +78,8 @@ export interface ICalendarDate {
 @Component({
     selector: 'nof-date-picker',
     templateUrl: 'date-picker.component.html',
-    styleUrls: ['date-picker.component.css']
+    styleUrls: ['date-picker.component.css'],
+    standalone: false
 })
 export class DatePickerComponent implements OnInit, OnDestroy {
 

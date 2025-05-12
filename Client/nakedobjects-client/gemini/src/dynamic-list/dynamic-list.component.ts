@@ -10,7 +10,8 @@ import { PaneComponent } from '../pane/pane';
 @Component({
     selector: 'nof-dynamic-list',
     templateUrl: 'dynamic-list.component.html',
-    styleUrls: ['dynamic-list.component.css']
+    styleUrls: ['dynamic-list.component.css'],
+    standalone: false
 })
 export class DynamicListComponent extends PaneComponent implements OnDestroy {
 

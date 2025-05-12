@@ -1,6 +1,6 @@
 {
     "name": "@nakedobjects/gemini",
-    "version": "16.1.0",
+    "version": "17.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -38,19 +38,19 @@
         "tslib": "^2.6.0"
     },
     "peerDependencies": {
-        "@angular/animations": "^18.2.9",
-        "@angular/cdk": "^18.2.10",
-        "@angular/common": "^18.2.9",
-        "@angular/compiler": "^18.2.9",
-        "@angular/core": "^18.2.9",
-        "@angular/forms": "^18.2.9",
-        "@angular/platform-browser": "^18.2.9",
-        "@angular/platform-browser-dynamic": "^18.2.9",
-        "@angular/router": "^18.2.9",
-        "@nakedobjects/restful-objects": "~16.1.0",
-        "@nakedobjects/services": "~16.1.0",
-        "@nakedobjects/view-models": "~16.1.0",
+        "@angular/animations": "^19.2.10",
+        "@angular/cdk": "^19.2.15",
+        "@angular/common": "^19.2.10",
+        "@angular/compiler": "^19.2.10",
+        "@angular/core": "^19.2.10",
+        "@angular/forms": "^19.2.10",
+        "@angular/platform-browser": "^19.2.10",
+        "@angular/platform-browser-dynamic": "^19.2.10",
+        "@angular/router": "^19.2.10",
+        "@nakedobjects/restful-objects": "~17.0.0",
+        "@nakedobjects/services": "~17.0.0",
+        "@nakedobjects/view-models": "~17.0.0",
         "rxjs": "~7.8.0",
-        "zone.js": "~0.14.0"
+        "zone.js": "~0.15.0"
     }
 }

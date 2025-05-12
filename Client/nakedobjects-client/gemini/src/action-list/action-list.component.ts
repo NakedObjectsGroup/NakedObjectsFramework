@@ -13,7 +13,8 @@ import { safeUnsubscribe } from '../helpers-components';
 @Component({
     selector: 'nof-action-list',
     templateUrl: 'action-list.component.html',
-    styleUrls: ['action-list.component.css']
+    styleUrls: ['action-list.component.css'],
+    standalone: false
 })
 export class ActionListComponent implements AfterViewInit, OnDestroy {
 

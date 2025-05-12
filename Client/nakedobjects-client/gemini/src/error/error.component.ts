@@ -5,7 +5,8 @@ import { ViewModelFactoryService } from '@nakedobjects/view-models';
 @Component({
     selector: 'nof-error',
     templateUrl: 'error.component.html',
-    styleUrls: ['error.component.css']
+    styleUrls: ['error.component.css'],
+    standalone: false
 })
 export class ErrorComponent implements OnInit {
 

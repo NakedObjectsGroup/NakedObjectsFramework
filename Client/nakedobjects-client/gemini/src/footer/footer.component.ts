@@ -17,7 +17,8 @@ import { safeUnsubscribe } from '../helpers-components';
 @Component({
     selector: 'nof-footer',
     templateUrl: 'footer.component.html',
-    styleUrls: ['footer.component.css']
+    styleUrls: ['footer.component.css'],
+    standalone: false
 })
 export class FooterComponent implements OnInit, OnDestroy {
 

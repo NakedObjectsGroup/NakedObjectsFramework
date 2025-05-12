@@ -33,7 +33,8 @@ import { PropertiesComponent } from '../properties/properties.component';
 @Component({
     selector: 'nof-object',
     templateUrl: 'object.component.html',
-    styleUrls: ['object.component.css']
+    styleUrls: ['object.component.css'],
+    standalone: false
 })
 export class ObjectComponent implements OnInit, OnDestroy, AfterViewInit {
 

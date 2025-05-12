@@ -16,7 +16,8 @@ import { EditParameterComponent } from '../edit-parameter/edit-parameter.compone
 @Component({
     selector: 'nof-edit-dialog',
     templateUrl: 'edit-dialog.component.html',
-    styleUrls: ['edit-dialog.component.css']
+    styleUrls: ['edit-dialog.component.css'],
+    standalone: false
 })
 export class EditDialogComponent extends BaseDialogComponent implements AfterViewInit, OnDestroy, OnChanges {
 

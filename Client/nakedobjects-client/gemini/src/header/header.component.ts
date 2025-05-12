@@ -6,7 +6,8 @@ import { CollectionViewModel, ListViewModel } from '@nakedobjects/view-models';
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: '[nof-header]',
     templateUrl: 'header.component.html',
-    styleUrls: ['header.component.css']
+    styleUrls: ['header.component.css'],
+    standalone: false
 })
 export class HeaderComponent {
 

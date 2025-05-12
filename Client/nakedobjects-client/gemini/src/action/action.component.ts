@@ -33,7 +33,8 @@ export function wrapAction(a: ActionViewModel): IActionHolder {
 @Component({
     selector: 'nof-action',
     templateUrl: 'action.component.html',
-    styleUrls: ['action.component.css']
+    styleUrls: ['action.component.css'],
+    standalone: false
 })
 export class ActionComponent {
 

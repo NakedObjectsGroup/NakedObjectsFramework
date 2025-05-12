@@ -11,7 +11,8 @@ import { RowComponent } from '../row/row.component';
 @Component({
     selector: 'nof-recent',
     templateUrl: 'recent.component.html',
-    styleUrls: ['recent.component.css']
+    styleUrls: ['recent.component.css'],
+    standalone: false
 })
 export class RecentComponent extends PaneComponent implements AfterViewInit, OnInit, OnDestroy {
    

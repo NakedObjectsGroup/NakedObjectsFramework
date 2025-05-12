@@ -15,7 +15,8 @@ import { ParametersComponent } from '../parameters/parameters.component';
 @Component({
     selector: 'nof-dialog',
     templateUrl: 'dialog.component.html',
-    styleUrls: ['dialog.component.css']
+    styleUrls: ['dialog.component.css'],
+    standalone: false
 })
 export class DialogComponent extends BaseDialogComponent implements AfterViewInit, OnDestroy, OnChanges {
 

@@ -5,7 +5,8 @@ import { CustomComponentService } from '../custom-component.service';
 @Component({
     selector: 'nof-dynamic-error',
     templateUrl: 'dynamic-error.component.html',
-    styleUrls: ['dynamic-error.component.css']
+    styleUrls: ['dynamic-error.component.css'],
+    standalone: false
 })
 export class DynamicErrorComponent implements OnInit {
 

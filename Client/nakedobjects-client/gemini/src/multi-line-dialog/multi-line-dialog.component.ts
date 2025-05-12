@@ -18,7 +18,8 @@ import { ParametersComponent } from '../parameters/parameters.component';
 @Component({
     selector: 'nof-multi-line-dialog',
     templateUrl: 'multi-line-dialog.component.html',
-    styleUrls: ['multi-line-dialog.component.css']
+    styleUrls: ['multi-line-dialog.component.css'],
+    standalone: false
 })
 export class MultiLineDialogComponent extends PaneComponent implements AfterViewInit, OnDestroy {
 

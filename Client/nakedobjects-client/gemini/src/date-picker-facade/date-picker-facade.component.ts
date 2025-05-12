@@ -11,7 +11,8 @@ import { fixedDateFormat } from '@nakedobjects/services';
 @Component({
     selector: 'nof-date-picker-facade',
     templateUrl: 'date-picker-facade.component.html',
-    styleUrls: ['date-picker-facade.component.css']
+    styleUrls: ['date-picker-facade.component.css'],
+    standalone: false
 })
 export class DatePickerFacadeComponent implements AfterViewInit {
 

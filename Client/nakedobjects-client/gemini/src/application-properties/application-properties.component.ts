@@ -5,7 +5,8 @@ import { clientVersion } from '../version';
 @Component({
     selector: 'nof-application-properties',
     templateUrl: 'application-properties.component.html',
-    styleUrls: ['application-properties.component.css']
+    styleUrls: ['application-properties.component.css'],
+    standalone: false
 })
 export class ApplicationPropertiesComponent implements OnInit {
 

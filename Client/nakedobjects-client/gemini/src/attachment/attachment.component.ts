@@ -8,7 +8,8 @@ import { PaneComponent } from '../pane/pane';
 @Component({
     selector: 'nof-attachment',
     templateUrl: 'attachment.component.html',
-    styleUrls: ['attachment.component.css']
+    styleUrls: ['attachment.component.css'],
+    standalone: false
 })
 export class AttachmentComponent extends PaneComponent {
 

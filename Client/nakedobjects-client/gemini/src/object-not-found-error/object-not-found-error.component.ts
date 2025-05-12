@@ -4,7 +4,8 @@ import { Component, OnInit } from '@angular/core';
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'object-not-found-error',
     templateUrl: 'object-not-found-error.component.html',
-    styleUrls: ['object-not-found-error.component.css']
+    styleUrls: ['object-not-found-error.component.css'],
+    standalone: false
 })
 export class ObjectNotFoundErrorComponent implements OnInit {
     

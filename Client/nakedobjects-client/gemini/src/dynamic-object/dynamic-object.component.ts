@@ -9,7 +9,8 @@ import { PaneComponent } from '../pane/pane';
 @Component({
     selector: 'nof-dynamic-object',
     templateUrl: 'dynamic-object.component.html',
-    styleUrls: ['dynamic-object.component.css']
+    styleUrls: ['dynamic-object.component.css'],
+    standalone: false
 })
 export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
 

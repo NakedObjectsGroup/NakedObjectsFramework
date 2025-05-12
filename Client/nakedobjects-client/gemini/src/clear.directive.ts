@@ -11,7 +11,7 @@ import {
 import { safeUnsubscribe } from './helpers-components';
 import { BehaviorSubject, SubscriptionLike as ISubscription } from 'rxjs';
 
-@Directive({ selector: '[nofClear]' })
+@Directive({ selector: '[nofClear]', standalone: false })
 export class ClearDirective implements OnInit, OnDestroy {
 
     private readonly nativeEl: HTMLInputElement;

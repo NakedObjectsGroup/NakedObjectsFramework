@@ -4,7 +4,8 @@ import { DialogViewModel, ParameterViewModel } from '@nakedobjects/view-models';
 @Component({
     selector: 'nof-view-parameter',
     templateUrl: 'view-parameter.component.html',
-    styleUrls: ['view-parameter.component.css']
+    styleUrls: ['view-parameter.component.css'],
+    standalone: false
 })
 export class ViewParameterComponent {
 

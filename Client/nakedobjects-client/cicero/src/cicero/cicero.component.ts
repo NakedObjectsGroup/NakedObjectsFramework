@@ -22,7 +22,8 @@ import { focus, safeUnsubscribe } from '../helpers-components';
 @Component({
     selector: 'nof-cicero',
     templateUrl: 'cicero.component.html',
-    styleUrls: ['cicero.component.css']
+    styleUrls: ['cicero.component.css'],
+    standalone: false
 })
 export class CiceroComponent implements OnInit, OnDestroy {
 

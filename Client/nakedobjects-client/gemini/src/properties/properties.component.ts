@@ -7,7 +7,8 @@ import { EditPropertyComponent } from '../edit-property/edit-property.component'
 @Component({
     selector: 'nof-properties',
     templateUrl: 'properties.component.html',
-    styleUrls: ['properties.component.css']
+    styleUrls: ['properties.component.css'],
+    standalone: false
 })
 export class PropertiesComponent {
 

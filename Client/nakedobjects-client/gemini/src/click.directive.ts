@@ -1,6 +1,6 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
 
-@Directive({ selector: '[nofClick]' })
+@Directive({ selector: '[nofClick]', standalone: false })
 export class ClickDirective {
     private readonly el: HTMLElement;
     constructor(el: ElementRef) {

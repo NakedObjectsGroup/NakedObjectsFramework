@@ -7,7 +7,8 @@ import { safeUnsubscribe } from '../helpers-components';
 @Component({
     selector: 'nof-view-property',
     templateUrl: 'view-property.component.html',
-    styleUrls: ['view-property.component.css']
+    styleUrls: ['view-property.component.css'],
+    standalone: false
 })
 export class ViewPropertyComponent implements OnInit, OnDestroy {
 

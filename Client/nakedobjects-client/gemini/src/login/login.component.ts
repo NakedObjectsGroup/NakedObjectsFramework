@@ -4,7 +4,8 @@ import { AuthService, ConfigService, ContextService } from '@nakedobjects/servic
 @Component({
     selector: 'nof-login',
     templateUrl: 'login.component.html',
-    styleUrls: ['login.component.css']
+    styleUrls: ['login.component.css'],
+    standalone: false
 })
 export class LoginComponent {
 

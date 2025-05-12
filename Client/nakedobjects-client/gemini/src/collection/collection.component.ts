@@ -10,7 +10,8 @@ type State = 'summary' | 'list' | 'table';
 @Component({
     selector: 'nof-collection',
     templateUrl: 'collection.component.html',
-    styleUrls: ['collection.component.css']
+    styleUrls: ['collection.component.css'],
+    standalone: false
 })
 export class CollectionComponent implements OnInit, OnDestroy {
 
