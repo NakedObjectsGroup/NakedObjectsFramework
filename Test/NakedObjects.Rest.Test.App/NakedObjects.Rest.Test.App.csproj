@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.15" />
-    <PackageReference Include="NakedObjects.Server" Version="16.1.0" />
+    <PackageReference Include="NakedObjects.Server" Version="16.2.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
   </ItemGroup>
 
