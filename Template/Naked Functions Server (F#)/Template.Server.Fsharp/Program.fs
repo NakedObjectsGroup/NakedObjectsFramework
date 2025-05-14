@@ -8,7 +8,7 @@
 namespace NakedFunctions.Rest.App.Demo
 
 open System.Data.Common
-open System.Data.SqlClient
+open Microsoft.Data.SqlClient
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
@@ -25,7 +25,7 @@ module Program =
 
     [<EntryPoint>]
     let main args =
-        DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance)
+        DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance)
 
         let host = CreateHostBuilder(args).Build()
 
