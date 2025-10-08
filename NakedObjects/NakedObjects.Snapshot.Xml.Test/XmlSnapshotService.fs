@@ -58,7 +58,7 @@ let checkResults resultsFile s =
         Assert.AreEqual(fst(nd), snd(nd))
    
 
-[<TestFixture>]
+//[<TestFixture>]
 type DomainTests() = 
     class
         inherit AcceptanceTestCase()

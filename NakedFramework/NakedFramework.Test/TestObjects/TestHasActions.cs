@@ -35,11 +35,11 @@ internal abstract class TestHasActions : ITestHasActions {
     private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
         // ReSharper restore UnusedParameter.Local
         if (!actions.Any()) {
-            Assert.Fail("No Action named '{0}'{1}", actionName, condition);
+            Assert.Fail($"No Action named '{actionName}'{condition}");
         }
 
         if (actions.Length > 1) {
-            Assert.Fail("{0} Actions named '{1}' found{2}", actions.Length, actionName, condition);
+            Assert.Fail($"{actions.Length} Actions named '{actionName}' found{condition}");
         }
     }
 

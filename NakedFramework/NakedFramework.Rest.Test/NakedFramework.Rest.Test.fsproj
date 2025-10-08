@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
 
@@ -52,7 +52,7 @@
 
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="8.0.401" />
+    <PackageReference Update="FSharp.Core" Version="8.0.403" />
   </ItemGroup>
 
 </Project>

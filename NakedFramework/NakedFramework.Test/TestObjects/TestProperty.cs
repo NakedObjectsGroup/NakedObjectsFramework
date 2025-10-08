@@ -197,7 +197,7 @@ public class TestProperty : ITestProperty {
             return this;
         }
 
-        Assert.Fail("Object {0} was allowed in field {1} : expected it to be invalid", testObject, field);
+        Assert.Fail($"Object {testObject} was allowed in field {field} : expected it to be invalid");
         return this;
     }
 

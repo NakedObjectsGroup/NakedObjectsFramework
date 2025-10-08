@@ -35,7 +35,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,7 +55,7 @@
   
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="8.0.401" />
+    <PackageReference Update="FSharp.Core" Version="8.0.403" />
   </ItemGroup>
 
 </Project>

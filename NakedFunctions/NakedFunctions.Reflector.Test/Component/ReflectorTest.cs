@@ -1066,7 +1066,9 @@ coreOptions.AddNakedFunctions(options => {
 
     [TestMethod]
     [ExpectedException(typeof(ReflectionException), "string")]
+#pragma warning disable MSTEST0006
     public void ReflectDuplicateFunctionsSameType() {
+#pragma warning restore MSTEST0006
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddEF6Persistor(options => {  });
 coreOptions.AddNakedFunctions(options => {
@@ -1091,7 +1093,9 @@ coreOptions.AddNakedFunctions(options => {
 
     [TestMethod]
     [ExpectedException(typeof(ReflectionException), "string")]
+#pragma warning disable MSTEST0006
     public void ReflectDuplicateFunctionsDifferentType() {
+#pragma warning restore MSTEST0006
         static void Setup(NakedFrameworkOptions coreOptions) {
             coreOptions.AddEF6Persistor(options => {  });
 coreOptions.AddNakedFunctions(options => {
