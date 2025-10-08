@@ -58,7 +58,7 @@ let checkResults resultsFile s =
         Assert.AreEqual(fst(nd), snd(nd))
    
 
-//[<TestFixture>]
+[<TestFixture>]
 type DomainTests() = 
     class
         inherit AcceptanceTestCase()
@@ -139,6 +139,7 @@ type DomainTests() =
             x.TransformService.GetAction("Transform With Sub Object").InvokeReturnObject().NakedObject.GetDomainObject<Two.TransformFull>()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForSimpleObject() = 
             let testObject = x.SimpleTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -146,6 +147,7 @@ type DomainTests() =
             ()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForComplexObject() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -153,6 +155,7 @@ type DomainTests() =
             ()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForComplexObjectIncludeReference() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -161,6 +164,7 @@ type DomainTests() =
             ()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForComplexObjectIncludeCollection() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -169,6 +173,7 @@ type DomainTests() =
             ()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForComplexObjectIncludeReferenceWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -177,6 +182,7 @@ type DomainTests() =
             ()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForComplexObjectIncludeCollectionWithAnnotation() = 
             let testObject = x.ComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -185,6 +191,7 @@ type DomainTests() =
             ()
         
         [<Test>]
+        [<Ignore("")>]
         member x.XmlForComplexObjectIncludeNestedReference() = 
             let testObject = x.NestedComplexTestObject()
             let ss = x.GenerateSnapshot testObject
@@ -239,6 +246,7 @@ type DomainTests() =
                 raise (Exception())
         
         [<Test>]
+        [<Ignore("")>]
         member x.TransformXmlToMatchFull() = 
             let fullTestObject = x.TransFormFullObject()
             let nestedTestObject = x.TransFormWithSubObject()
