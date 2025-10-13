@@ -1,6 +1,6 @@
 {
     "name": "@nakedobjects/restful-objects",
-    "version": "17.0.0",
+    "version": "17.0.1",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",

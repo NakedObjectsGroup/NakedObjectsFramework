@@ -1,6 +1,6 @@
 {
     "name": "@nakedobjects/view-models",
-    "version": "17.0.0",
+    "version": "17.0.1",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -37,16 +37,16 @@
         "tslib": "^2.6.0"
     },
     "peerDependencies": {
-        "@angular/animations": "^19.2.10",
-        "@angular/common": "^19.2.10",
-        "@angular/compiler": "^19.2.10",
-        "@angular/core": "^19.2.10",
-        "@angular/forms": "^19.2.10",
-        "@angular/platform-browser": "^19.2.10",
-        "@angular/platform-browser-dynamic": "^19.2.10",
-        "@angular/router": "^19.2.10",
-        "@nakedobjects/restful-objects": "~17.0.0",
-        "@nakedobjects/services": "~17.0.0",
+        "@angular/animations": "^19.2.15",
+        "@angular/common": "^19.2.15",
+        "@angular/compiler": "^19.2.15",
+        "@angular/core": "^19.2.15",
+        "@angular/forms": "^19.2.15",
+        "@angular/platform-browser": "^19.2.15",
+        "@angular/platform-browser-dynamic": "^19.2.15",
+        "@angular/router": "^19.2.15",
+        "@nakedobjects/restful-objects": "~17.0.1",
+        "@nakedobjects/services": "~17.0.1",
         "rxjs": "~7.8.0",
         "zone.js": "~0.15.0"
     }
